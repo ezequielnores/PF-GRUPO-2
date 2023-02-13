@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "image": "https://img.freepik.com/vector-premium/bienestar-cuidado-salud_24877-41352.jpg",
+
+    "title": "Title1"
+  },
+  {
+    "id": 2,
+    "image": "https://fundacionasispa.org/wp-content/uploads/2021/09/salud-y-bienestar.jpg",
+
+    "title": "Title2"
+  },
+  {
+    "id": 3,
+    "image": "https://img.freepik.com/vector-gratis/concepto-conciencia-salud-mental_23-2148516138.jpg",
+
+    "title": "Title3"
+  }
+]
