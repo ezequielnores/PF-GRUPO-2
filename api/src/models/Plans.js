@@ -13,19 +13,19 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    precio: {
+    price: {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
-    duracionMeses: {
+    durationMonths: {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
-    estado: {
+    state: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
-    detalle: {
+    detail: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
