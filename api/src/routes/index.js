@@ -6,7 +6,11 @@ const turnsRouter = require("../routes/turnsRouter");
 
 const planRouter = require("./plans.js");
 
-const patientRouter = require("./patientRouter")
+const patientRouter = require("./patientRouter");
+
+const medicalHistoryRouter = require("./medicalHistoryRouter");
+
+const frequentQuestionsRouter = require("./frequentQuestionsRouter");
 
 
 const router = Router();
@@ -18,5 +22,9 @@ router.use("/turns", turnsRouter);
 router.use("/plans", planRouter);
 
 router.use("/patient", patientRouter);
+
+router.use("/medicalHistory", medicalHistoryRouter);
+
+router.use("/frequentQuestions", frequentQuestionsRouter);
 
 module.exports = router;
