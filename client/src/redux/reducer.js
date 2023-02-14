@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { patientGetDetail,doctorGetDetail } from "./actions";
-import { patientGetDetail, doctorGetDetail } from "./actions";
+
 
 const initialState = { patientDetail: {}, doctorDetail: {} };
 

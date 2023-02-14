@@ -51,6 +51,7 @@ function App() {
         <Route path="/blog/noteThree" element={<NoteThree />} />
         <Route path="/work" element={<Work />} />
         <Route path="/loginClient" element={<LoginClient />} />
+        <Route path="/loginClient" element={<LoginClient />} />
         <Route path="/work/registerForm" element={<MedicForm />} />
         <Route path="/HomeClient/Profile" element={<Profile />} />
         <Route path="/HomeClient/MyShifts" element={<MyShifts />} />
@@ -59,6 +60,12 @@ function App() {
         <Route path="/HomeClient/MedicalAppointments" element={<MedicalAppointments />} />
         <Route path="/HomeClient/Reviews" element={<Reviews />} />
         <Route path="/HomeClient/Urgency" element={<Urgency />} />
+        <Route path="/loginMedic" element={<LoginMedic />} />
+        <Route path="/HomeMedic/Profile" element = {<ProfileMedic />}/> 
+        <Route path="/HomeMedic/Agenda" element = {<Agenda />}/> 
+        <Route path="/HomeMedic/MedicalEmergency" element = {<MedicalEmergency />}/> 
+        <Route path="/HomeMedic/Reviews" element = {<ReviewsMedic />}/>
+
       </Routes>
     </div>
   );
