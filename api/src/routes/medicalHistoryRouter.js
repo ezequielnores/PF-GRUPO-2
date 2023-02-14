@@ -63,7 +63,7 @@ medicalHistoryRouter.put("/update/:id", async (req, res) => {
 
     try {
         if (!id) throw new Error("El id del historial clinico esta indefinido.");
-        if (!attributes) throw new Error("Datos incompletos para actualizar");
+        if (!attributes) throw new Error("Datos incompletos para actualizar.");
 
         const medicalHistoryUpdated = await updateMedicalHistoryById(attributes, id);
         if (!medicalHistoryUpdated) throw new Error(`EL historial clinico con el id ${id} no esta en la BDD.`);
@@ -89,6 +89,23 @@ medicalHistoryRouter.put("/addRegister/:id", async (req, res) => {
         if (!medicalHistoryNewRegister) throw new Error("Error al agregar un nuevo registro.");
 
         res.status(200).json(medicalHistoryNewRegister);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+medicalHistoryRouter.delete("/delete/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (!id) throw new Error("El id del historial clinico esta indefinido.");
+
+        const medicalHistoryDeleted = await deleteMedicalHistoryById(id);
+        if (!medicalHistoryDeleted) {
+            throw new Error(`No se encuentra un historial clinico con el id ${id} en la BDD.`);
+        }
+
+        res.status(200).json(medicalHistoryDeleted);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
