@@ -37,7 +37,7 @@ const Controller = {
         res.status(200).json(response);
       })
       .catch((err) => {
-        console.log(err.name);
+        console.log(err);
         res.status(400).json(err);
       });
   },
