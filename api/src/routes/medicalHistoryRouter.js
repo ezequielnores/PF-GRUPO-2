@@ -3,7 +3,8 @@ const {
     getMedicalHistoryById,
     findAllMedicalHistory,
     updateMedicalHistoryById,
-    deleteMedicalHistoryById
+    deleteMedicalHistoryById,
+    addRegisterMedicalHistory
 } = require("../controllers/medicalHistoryController");
 const { MedicalHistory, Patient, Doctor } = require("../db");
 const medicalHistoryRouter = Router();
@@ -68,6 +69,26 @@ medicalHistoryRouter.put("/update/:id", async (req, res) => {
         if (!medicalHistoryUpdated) throw new Error(`EL historial clinico con el id ${id} no esta en la BDD.`);
 
         res.status(200).json(medicalHistoryUpdated);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+medicalHistoryRouter.put("/addRegister/:id", async (req, res) => {
+    const { id } = req.params;
+    const { doctorId, date, diagnosis } = req.body;
+
+    try {
+        if (!id) throw new Error("El id del historial clinico esta indefinido.");
+        if (![doctorId, date, diagnosis].every(Boolean)) throw new Error("Datos incompletos.");
+
+        const medicalHistory = await getMedicalHistoryById(id);
+        if (!medicalHistory) throw new Error(`El historial clinico con el id ${id} no est en la BDD.`);
+        
+        const medicalHistoryNewRegister = await addRegisterMedicalHistory(medicalHistory.register, { doctorId, date, diagnosis }, medicalHistory.id);
+        if (!medicalHistoryNewRegister) throw new Error("Error al agregar un nuevo registro.");
+
+        res.status(200).json(medicalHistoryNewRegister);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
