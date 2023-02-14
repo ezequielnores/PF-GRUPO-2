@@ -31,7 +31,7 @@ const deleteTurnById = async id => {
     return turnDeleted;
 };
 
-const updateById = async (attributes, id) => {
+const updateTurnById = async (attributes, id) => {
     const turnUpdated = await Turns.update(attributes, { where: { id: id } });
     return turnUpdated;
 };
@@ -40,5 +40,5 @@ module.exports = {
     getTurnById,
     findAllTurns,
     deleteTurnById,
-    updateById
+    updateTurnById
 };
