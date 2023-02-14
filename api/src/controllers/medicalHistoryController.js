@@ -20,9 +20,17 @@ const updateMedicalHistoryById = async (attributes, id) => {
     return medicalHistoryUpdated;
 };
 
+const addRegisterMedicalHistory = async (oldRegister, newRegister, id) => {
+    const medicalHistoryUpdated = await MedicalHistory.update({
+        register: [...oldRegister, newRegister]
+    }, { where: { id: id } });
+    return medicalHistoryUpdated;
+};
+
 module.exports = {
     getMedicalHistoryById,
     findAllMedicalHistory,
     deleteMedicalHistoryById,
-    updateMedicalHistoryById
+    updateMedicalHistoryById,
+    addRegisterMedicalHistory
 };
