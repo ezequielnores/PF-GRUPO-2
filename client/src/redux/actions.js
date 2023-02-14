@@ -21,3 +21,14 @@ export const patientGetDetail = createAsyncThunk(
       });
   }
 );
+
+export const doctorGetDetail = createAsyncThunk(
+  DOCTOR_GETDETAIL,
+  async (id, thunkAPI) => {
+    await axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}/doctor/${id}`)
+      .then((response) => {
+        return response.data;
+      });
+  }
+);
