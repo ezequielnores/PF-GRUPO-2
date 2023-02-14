@@ -6,5 +6,6 @@ import MyShifts from "./MyShifts/MyShifts";
 import Profile from "./Profile/Profile";
 import Reviews from "./Reviews/Reviews";
 import Urgency from "./Urgency/Urgency";
+import HomeView from "./HomeView/HomeView";
 
-export { Chat, HomeClient, MedicalHistory, MedicalAppointments, MyShifts, Profile, Reviews, Urgency };
+export { Chat, HomeClient, MedicalHistory, MedicalAppointments, MyShifts, Profile, Reviews, Urgency, HomeView };

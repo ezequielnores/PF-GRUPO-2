@@ -23,6 +23,7 @@ import {
   Profile,
   Reviews,
   Urgency,
+  HomeView,
 } from "./components/HomeClient/index";
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         <Route path="/work" element={<Work />} />
         <Route path="/loginClient" element={<LoginClient />} />
         <Route path="/work/registerForm" element={<MedicForm />} />
+        {/* <Route path="/HomeClient" element={<HomeView />} />
         <Route path="/HomeClient/Profile" element={<Profile />} />
         <Route path="/HomeClient/MyShifts" element={<MyShifts />} />
         <Route path="/HomeClient/Chat" element={<Chat />} />
@@ -59,7 +61,7 @@ function App() {
           element={<MedicalAppointments />}
         />
         <Route path="/HomeClient/Reviews" element={<Reviews />} />
-        <Route path="/HomeClient/Urgency" element={<Urgency />} />
+        <Route path="/HomeClient/Urgency" element={<Urgency />} /> */}
       </Routes>
     </div>
   );
