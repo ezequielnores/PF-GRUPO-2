@@ -1,0 +1,37 @@
+.container{
+    border: 1px solid black;
+    display: flex;
+    margin-left: 30%;
+    width: fit-content;
+    padding: 10px;
+}
+
+.container1{
+    border-right: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: flex-start;
+    width: fit-content;
+}
+
+
+.image{
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
+
+.nombre{
+
+    height: fit-content;
+
+}
+
+
+.grafica{
+   height: fit-content;
+    width: fit-content;
+    margin-top: 50px;
+    margin-left: 50px;
+}
