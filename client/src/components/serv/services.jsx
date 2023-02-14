@@ -1,6 +1,4 @@
 import React from "react";
-import Navbar from "../landing/navbar/navBar";
-import Footer from "../landing/footer/footer";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 //styles
@@ -42,7 +40,6 @@ const finaldivText = {
 const services = () => {
   return (
     <div style={container}>
-      <Navbar />
       <Box>
         <div style={divContainer}>
           <Box
@@ -112,7 +109,6 @@ const services = () => {
           </div>
         </div>
       </Box>
-      <Footer />
     </div>
   );
 };
