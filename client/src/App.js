@@ -24,6 +24,7 @@ import {
   Profile,
   Reviews,
   Urgency,
+  HomeView,
 } from "./components/HomeClient/index";
 import {Agenda, HomeMedic,MedicalEmergency,ProfileMedic,ReviewsMedic } from "./components/HomeMedic/index";
 
@@ -35,7 +36,7 @@ function App() {
     <div className="App">
       {location.pathname.startsWith("/HomeClient") ? (
         <HomeClient />
-      ) : (
+      ) : location.pathname.startsWith("/HomeMedic")? (<HomeMedic />): (
         <>
           <Navbar />
           <Footer />
@@ -53,18 +54,12 @@ function App() {
         <Route path="/loginClient" element={<LoginClient />} />
         <Route path="/loginClient" element={<LoginClient />} />
         <Route path="/work/registerForm" element={<MedicForm />} />
-        <Route path="/HomeClient/Profile" element={<Profile />} />
-        <Route path="/HomeClient/MyShifts" element={<MyShifts />} />
-        <Route path="/HomeClient/Chat" element={<Chat />} />
-        <Route path="/HomeClient/MedicalHistory" element={<MedicalHistory />} />
-        <Route path="/HomeClient/MedicalAppointments" element={<MedicalAppointments />} />
-        <Route path="/HomeClient/Reviews" element={<Reviews />} />
-        <Route path="/HomeClient/Urgency" element={<Urgency />} />
         <Route path="/loginMedic" element={<LoginMedic />} />
         <Route path="/HomeMedic/Profile" element = {<ProfileMedic />}/> 
         <Route path="/HomeMedic/Agenda" element = {<Agenda />}/> 
         <Route path="/HomeMedic/MedicalEmergency" element = {<MedicalEmergency />}/> 
         <Route path="/HomeMedic/Reviews" element = {<ReviewsMedic />}/>
+
 
       </Routes>
     </div>
