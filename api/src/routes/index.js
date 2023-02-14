@@ -10,6 +10,8 @@ const patientRouter = require("./patientRouter");
 
 const medicalHistoryRouter = require("./medicalHistoryRouter");
 
+const doctorRouter = require("./doctorRouter"); 
+
 
 const router = Router();
 
@@ -18,6 +20,8 @@ const router = Router();
 router.use("/turns", turnsRouter);
 
 router.use("/plans", planRouter);
+
+router.use("/doctor", doctorRouter);
 
 router.use("/patient", patientRouter);
 
