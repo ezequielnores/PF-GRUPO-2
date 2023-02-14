@@ -19,3 +19,10 @@ const updateMedicalHistoryById = async (attributes, id) => {
     const medicalHistoryUpdated = await MedicalHistory.update(attributes, { where: { id: id } });
     return medicalHistoryUpdated;
 };
+
+module.exports = {
+    getMedicalHistoryById,
+    findAllMedicalHistory,
+    deleteMedicalHistoryById,
+    updateMedicalHistoryById
+};
