@@ -1,6 +1,6 @@
-const { DataTypes } = requiere ("sequelize")
+const { DataTypes } = require ("sequelize")
 
-module.export = (sequelize) => {
+module.exports = (sequelize) => {
     sequelize.define("paciente",
     {
         id: {
