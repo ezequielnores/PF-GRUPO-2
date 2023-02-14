@@ -2,7 +2,8 @@ const { Router } = require("express");
 const {
     getTurnById,
     findAllTurns,
-    deleteTurnById
+    deleteTurnById,
+    updateTurnById
 } = require("../controllers/turnsController");
 const turnsRouter = Router();
 const { Turns, Patient, Doctor } = require("../db");
@@ -70,6 +71,24 @@ turnsRouter.post("/", async (req, res) => {
         await medic.addTurn(turn);
 
         res.status(200).json(turn);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+turnsRouter.put("/update/:id", async (req, res) => {
+    const { id } = req.params;
+    const attributes = req.body;
+    delete attributes.id;
+
+    try {
+        if (!id) throw new Error("El id del turno a actualizar no esta definido.");
+        if (!attributes) throw new Error("No hay atributos modificados para actualizar el turno.");
+
+        const turnUpdated = await updateTurnById(attributes, id);
+        if (!turnUpdated) throw new Error("Error al actualizar el turno.");
+
+        res.status(200).json({ turnUpdated: turnUpdated});
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
