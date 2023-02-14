@@ -26,7 +26,13 @@ const findAllTurns = async () => {
     return turns;
 };
 
+const deleteTurnById = async id => {
+    const turnDeleted = await Turns.destroy({ where: { id: id } });
+    return turnDeleted;
+};
+
 module.exports = {
     getTurnById,
-    findAllTurns
+    findAllTurns,
+    deleteTurnById
 };
