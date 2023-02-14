@@ -67,4 +67,19 @@ frequentQuestionsRouter.put("/update/:id", async (req, res) => {
         res.status(400).json({ error: error.message })
     }
 });
+
+frequentQuestionsRouter.delete("/delete/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (!id) throw new Error("El id de la pregunta frecuente esta indefinido.");
+
+        const frequentAskDeleted = await deleteFrequentAskById(id);
+        if (!frequentAskDeleted) throw new Error(`No se encuentra una pregunta frecuente con el id ${id} en la BDD.`);
+
+        res.status(200).json(frequentAskDeleted);
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+});
 module.exports = frequentQuestionsRouter;
