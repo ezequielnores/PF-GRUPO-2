@@ -5,6 +5,9 @@ import Footer from "./components/landing/footer/footer";
 import Landing from "./components/landing/landing";
 import About from "./components/About/about";
 import Blog from "./components/blog/blog";
+import NoteOne from "./components/blog/note1/note";
+import NoteTwo from "./components/blog/note2/note";
+import NoteThree from "./components/blog/note 3/note";
 import Services from "./components/serv/services";
 import Work from "./components/work/work";
 import LoginClient from "./components/LoginClient/LoginClient";
@@ -41,6 +44,9 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/noteOne" element={<NoteOne />} />
+        <Route path="/blog/noteTwo" element={<NoteTwo />} />
+        <Route path="/blog/noteThree" element={<NoteThree />} />
         <Route path="/work" element={<Work />} />
         <Route path="/loginClient" element={<LoginClient />} />
         <Route path="/work/registerForm" element={<MedicForm />} />
