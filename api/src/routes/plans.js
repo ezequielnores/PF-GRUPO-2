@@ -6,7 +6,7 @@ const PlanController = require("../controllers/planController.js");
 
 router.get("/", PlanController.getPlans);
 router.post("/", PlanController.createPlan);
-router.put("/", PlanController.editPlan);
-router.delete("/", PlanController.deletePlan);
+router.put("/:id", PlanController.editPlan);
+router.delete("/:id", PlanController.deletePlan);
 
 module.exports = router;
