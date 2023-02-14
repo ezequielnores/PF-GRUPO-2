@@ -4,11 +4,12 @@ import { deepOrange} from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
 import logoICare from "../../../assets/logoiCare.png";
 import { useLocation } from "react-router-dom";
+import {useState} from "react";
 import {
     Chat,
     MedicalHistory,
     MedicalAppointments,
-    MyShifts,
+    MyAppointments,
     Profile,
     Reviews,
     Urgency,
@@ -16,6 +17,10 @@ import {
 } from "../index";
 const Home = () => {
     const location = useLocation();
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+        setOpen(!open);
+    };
     return (
         <div style={{position:"relative"}}>
             <img style={{width:"4rem",position:"absolute",top:"0.5rem",left:"4.3rem"}} src={logoICare}/>
@@ -30,11 +35,11 @@ const Home = () => {
                     {/* cambiar cuando tenga la imagen del usuario */}
                 </Avatar>
             </Stack> 
-            <SideBar />
-            <div style={{position:"absolute",top:"6rem",width:"85vw",right:"0"}}>
+            <SideBar open={open} handleOpen={handleOpen}/>
+            <div style={{position:"absolute",top:"6rem",width:open? "85vw":"95vw",right:"0"}}>
                 {location.pathname.endsWith("/HomeClient") && <HomeView />}
                 {location.pathname.endsWith("/HomeClient/Profile") && <Profile />}
-                {location.pathname.endsWith("/HomeClient/MyShifts") && <MyShifts />}
+                {location.pathname.endsWith("/HomeClient/MyAppointments") && <MyAppointments />}
                 {location.pathname.endsWith("/HomeClient/Urgency") && <Urgency />}
                 {location.pathname.endsWith("/HomeClient/MedicalAppointments") && <MedicalAppointments />}
                 {location.pathname.endsWith("/HomeClient/MedicalHistory") && <MedicalHistory />}
