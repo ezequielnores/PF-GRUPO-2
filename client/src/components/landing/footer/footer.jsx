@@ -10,7 +10,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import CopyrightIcon from "@mui/icons-material/Copyright";
 const footer = {
   backgroundColor: "#F0F8FF",
-  position: "fixed",
+  position: "absolute",
   bottom: 0,
   width: "100%",
   display: "flex",
@@ -19,6 +19,8 @@ const footer = {
   height: "8rem",
   alignItems: "center",
   textAlign: "center",
+
+
 };
 const divtext = {
   width: "30em",
@@ -34,8 +36,13 @@ const butonGroup = {
   display: "flex",
   flexDirection: "column",
 };
+
+
+
+
+
 const Navbar = () => (
-  <Box sx={{ flexGrow: 1 }}>
+  <Box sx={{ flexGrow: 1,flex:1 }}>
     <AppBar position="static">
       <Toolbar style={footer}>
         <Box style={divtext}>
