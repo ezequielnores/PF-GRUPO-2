@@ -4,7 +4,7 @@ const {
     findAllTurns
 } = require("../controllers/turnsController");
 const turnsRouter = Router();
-const { Turns, Patient, Medic } = require("../db");
+const { Turns, Patient, Doctor } = require("../db");
 
 turnsRouter.get("/", async (req, res) => {
     try {
@@ -46,7 +46,7 @@ turnsRouter.post("/", async (req, res) => {
         const patient = await Patient.findByPk(patientId);
         if (!patient) throw new Error(`El paciente con el id ${patientId} no se encunetra en la BDD.`);
 
-        const medic = await Medic.findByPk(medicId);
+        const medic = await Doctor.findByPk(medicId);
         if (!medic) throw new Error(`El medico con el id ${medicId} no se encunetra en la BDD.`);
 
         await turn.addPatient(patient);

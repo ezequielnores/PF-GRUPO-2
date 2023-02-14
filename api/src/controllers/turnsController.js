@@ -1,7 +1,7 @@
-const { Turns, Patient, Medic } = require("../db");
+const { Turns, Patient, Doctor } = require("../db");
 
 const getTurnById = async id => {
-    const turn = await Turns.findByPk(id, { include: [Patient, Medic] });
+    const turn = await Turns.findByPk(id, { include: [Patient, Doctor] });
     return turn;
 };
 
@@ -16,7 +16,7 @@ const findAllTurns = async () => {
                 }
             },
             {
-                model: Medic,
+                model: Doctor,
                 through: {
                     attributes: []
                 }
