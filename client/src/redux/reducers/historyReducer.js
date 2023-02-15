@@ -12,11 +12,29 @@ export const historyGetDetail = createAsyncThunk(
   }
 );
 
+
+
+///addRegister/:id
+
 export const historyGetAll = createAsyncThunk(
   "medicalHistory/getAll",
   async () => {
     await axios
       .get(`${process.env.REACT_APP_BACKEND_URL}/medicalHistory/`)
+      .then((response) => {
+        return response.data;
+      });
+  }
+);
+
+export const historyAddById = createAsyncThunk(
+  "medicalHistory/addById",
+  async (id, data) => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_BACKEND_URL}/medicalHistory/addRegister/${id}`,
+        data
+      )
       .then((response) => {
         return response.data;
       });
