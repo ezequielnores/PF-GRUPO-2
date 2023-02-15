@@ -41,14 +41,18 @@ medicalHistoryRouter.post("/", async (req, res) => {
             throw new Error("Datos incompletos.");
         }
 
-        const medicalHistory = await MedicalHistory.create({
-            register: [{ doctorId, date, diagnosis }]
-        });
-
         const patient = await Patient.findByPk(patientId);
         if (!patient) throw new Error(`El paciente con el id ${id} no se encuentra en la BDD.`);
 
-        await medicalHistory.addPatient(patient);
+        const medicalHistory = await MedicalHistory.create({
+            register: [{ doctorId, date, diagnosis }],
+            PatientId: patientId
+        });
+
+        // const patient = await Patient.findByPk(patientId);
+        // if (!patient) throw new Error(`El paciente con el id ${id} no se encuentra en la BDD.`);
+
+        // await medicalHistory.addPatient(patient);
 
         res.status(200).json(medicalHistory);
     } catch (error) {
