@@ -78,4 +78,19 @@ incomesRouter.put("/update/:id", async (req, res) => {
     }
 });
 
+incomesRouter.delete("/delete/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (!id) throw new Error("Error al obtener el id del ingreso desde params.");
+
+        const incomeDeleted = await deleteIncomeById(id);
+        if (!incomeDeleted) throw new Error(`No se encuentra ningun ingres en la BDD con el id ${id}.`);
+
+        res.status(200).json(incomeDeleted);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 module.exports = incomesRouter;
