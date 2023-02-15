@@ -1,18 +1,17 @@
 import { Paper, Button } from "@mui/material";
-
+import { Link } from "react-router-dom";
 function Item({ item }) {
   return (
     <Paper>
       <img
         src={item.image}
         alt="pe"
-        style={{ width: "100%", height: "30vh " }}
+        style={{ width: "60%", height: "30vh " }}
       />
       <div style={{ textAlign: "center" }}>
-        <h3>{item.title}</h3>
-        <Button className="CheckButton" variant="contained">
-          Mas informacion
-        </Button>
+        <Link to={`/blog/${item.blog}`}>
+          <Button className="CheckButton">{item.title}</Button>
+        </Link>
       </div>
     </Paper>
   );

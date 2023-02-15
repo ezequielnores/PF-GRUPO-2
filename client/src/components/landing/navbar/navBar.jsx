@@ -43,8 +43,12 @@ const Navbar = () => {
               <Link to="/blog">Blog</Link>
             </Button>
             <ButtonGroup style={butonLogin}>
-              <Button color="primary">Client Login</Button>
-              <Button color="primary">Medic Login </Button>
+              <Button color="primary">
+              <Link to="/loginClient">Client Login</Link>
+              </Button>
+              <Button color="primary">
+                <Link to ="/loginMedic">Medic Login</Link>
+                 </Button>
             </ButtonGroup>
           </ButtonGroup>
         </Toolbar>

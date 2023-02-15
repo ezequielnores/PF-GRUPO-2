@@ -1,7 +1,7 @@
 const {DataTypes} = require("sequelize");
 
 module.exports = (sequelize) => {
-    sequelize.define(doctor, {
+    sequelize.define("doctor", {
         id: {
             type: DataTypes.UUID,
             primaryKey: true,
@@ -71,5 +71,5 @@ module.exports = (sequelize) => {
             defaultValue: true
         }
 
-    })
+    }, {timestamps: true}, {createdAt: true}, {updatedAt: false})
 }
