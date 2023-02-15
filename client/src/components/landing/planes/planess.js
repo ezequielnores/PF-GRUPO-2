@@ -4,4 +4,5 @@ export const padreTarjeta = {
   alignItems: "center",
   width: "100%",
   marginTop: "2rem",
+  height: "100%",
 };
