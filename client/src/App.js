@@ -26,7 +26,7 @@ import {
   Urgency,
   HomeView,
 } from "./components/HomeClient/index";
-import {Agenda, HomeMedic,MedicalEmergency,ProfileMedic,ReviewsMedic } from "./components/HomeMedic/index";
+import { HomeMedic } from "./components/HomeMedic/index";
 
 function App() {
   const location = useLocation();
@@ -36,7 +36,9 @@ function App() {
     <div className="App">
       {location.pathname.startsWith("/HomeClient") ? (
         <HomeClient />
-      ) : location.pathname.startsWith("/HomeMedic")? (<HomeMedic />): (
+      ) : location.pathname.startsWith("/HomeMedic") ? (
+        <HomeMedic />
+      ) : (
         <>
           <Navbar />
           <Footer />
@@ -55,15 +57,8 @@ function App() {
         <Route path="/loginClient" element={<LoginClient />} />
         <Route path="/work/registerForm" element={<MedicForm />} />
         <Route path="/loginMedic" element={<LoginMedic />} />
-        <Route path="/HomeMedic/Profile" element = {<ProfileMedic />}/> 
-        <Route path="/HomeMedic/Agenda" element = {<Agenda />}/> 
-        <Route path="/HomeMedic/MedicalEmergency" element = {<MedicalEmergency />}/> 
-        <Route path="/HomeMedic/Reviews" element = {<ReviewsMedic />}/>
-
-
       </Routes>
     </div>
   );
 }
 export default App;
-
