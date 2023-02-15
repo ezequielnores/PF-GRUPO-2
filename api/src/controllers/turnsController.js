@@ -27,17 +27,69 @@ const findAllTurns = async () => {
 };
 
 const findAllTurnsByDate = async date => {
-    const turnsByDate = await Turns.findAll({ where: { date: date } });
+    const turnsByDate = await Turns.findAll({
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        include: [
+            {
+                model: Patient,
+                through: {
+                    attributes: []
+                }
+            },
+            {
+                model: Doctor,
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        where: { date: date }
+    });
     return turnsByDate;
 };
 
 const findAllTurnsByDoctor = async doctorId => {
-    const turnsByDoctor = await Turns.findAll({ where: { DoctorId: doctorId } });
+    const turnsByDoctor = await Turns.findAll({
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        include: [
+            {
+                model: Patient,
+                through: {
+                    attributes: []
+                }
+            },
+            {
+                model: Doctor,
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        where: { DoctorId: doctorId }
+    });
     return turnsByDoctor;
 };
 
 const findAllTurnsByPatient = async patientId => {
-    
+    const turnsByPatient = await Turns.findAll({
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        include: [
+            {
+                model: Patient,
+                through: {
+                    attributes: []
+                }
+            },
+            {
+                model: Doctor,
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        where: { PatientId: patientId }
+    });
+    return turnsByPatient;
 };
 
 const deleteTurnById = async id => {
