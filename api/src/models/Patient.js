@@ -1,6 +1,6 @@
-const { DataTypes } = requiere ("sequelize")
+const { DataTypes } = require ("sequelize")
 
-module.export = (sequelize) => {
+module.exports = (sequelize) => {
     sequelize.define("paciente",
     {
         id: {
@@ -32,7 +32,6 @@ module.export = (sequelize) => {
         weight:{
             type: DataTypes.INTEGER,
             allowNull: false
-
         },
         height:{
             type: DataTypes.INTEGER,
