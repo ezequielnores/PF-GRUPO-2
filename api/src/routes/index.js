@@ -18,7 +18,7 @@ const incomesRouter = require("./incomesRouter");
 
 const commentsRouter = require("./commentsRouter");
 
-const adminRouter = require("./adminRouter")
+const adminRouter = require("./adminRouter");
 
 
 const router = Router();
