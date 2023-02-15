@@ -41,23 +41,23 @@ function App() {
       ) : (
         <>
           <Navbar />
+          <Routes>
+            <Route exact path="/" element={<Landing />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/noteOne" element={<NoteOne />} />
+            <Route path="/blog/noteTwo" element={<NoteTwo />} />
+            <Route path="/blog/noteThree" element={<NoteThree />} />
+            <Route path="/work" element={<Work />} />
+            <Route path="/loginClient" element={<LoginClient />} />
+            <Route path="/loginClient" element={<LoginClient />} />
+            <Route path="/work/registerForm" element={<MedicForm />} />
+            <Route path="/loginMedic" element={<LoginMedic />} />
+          </Routes>
           <Footer />
         </>
       )}
-      <Routes>
-        <Route exact path="/" element={<Landing />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/noteOne" element={<NoteOne />} />
-        <Route path="/blog/noteTwo" element={<NoteTwo />} />
-        <Route path="/blog/noteThree" element={<NoteThree />} />
-        <Route path="/work" element={<Work />} />
-        <Route path="/loginClient" element={<LoginClient />} />
-        <Route path="/loginClient" element={<LoginClient />} />
-        <Route path="/work/registerForm" element={<MedicForm />} />
-        <Route path="/loginMedic" element={<LoginMedic />} />
-      </Routes>
     </div>
   );
 }
