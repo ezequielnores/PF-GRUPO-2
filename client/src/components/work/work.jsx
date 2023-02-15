@@ -1,10 +1,8 @@
 import React from "react";
-import Navbar from "../landing/navbar/navBar";
-import Footer from "../landing/footer/footer";
 import Card from "@mui/material/Card";
-
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 const divContainer = {
   height: "55rem",
@@ -17,7 +15,6 @@ const divContainer = {
 const Work = () => {
   return (
     <>
-      <Navbar />
       <div style={divContainer}>
         <Card
           style={{
@@ -62,10 +59,11 @@ const Work = () => {
             deserunt earum sed iusto voluptatibus sapiente.Lorem ipsum dolor si
             tenetur deserunt earum sed iusto voluptatibus sapiente.
           </Typography>
-          <Button variant="contained">Join the team!</Button>
+          <Link to="/work/registerForm">
+            <Button variant="contained">Join the team!</Button>
+          </Link>
         </Card>
       </div>
-      <Footer />
     </>
   );
 };

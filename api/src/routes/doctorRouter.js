@@ -4,10 +4,10 @@ const { getDoctors, getDoctor, postDoctor, putDoctor } = require("../controllers
 const router = Router()
 
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     const {name} = req.query;
     try {
-        const doctors = getDoctors(name);
+        const doctors = await getDoctors(name);
         if (!doctors) throw new Error();
         res.status(200).send(doctors);
     } catch (error) {
@@ -16,10 +16,10 @@ router.get("/", (req, res) => {
 });
 
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
     const {id} = req.params;
     try {
-        const doctor = getDoctor(id);
+        const doctor = await getDoctor(id);
         if (!doctor) throw new Error();
         res.status(200).send(doctor);
     } catch (error) {

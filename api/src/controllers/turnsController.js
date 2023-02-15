@@ -7,7 +7,7 @@ const getTurnById = async id => {
 
 const findAllTurns = async () => {
     const turns = await Turns.findAll({
-        attributes: ["id", "availability", "date", "hour", "type"],
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
             {
                 model: Patient,
@@ -31,8 +31,14 @@ const deleteTurnById = async id => {
     return turnDeleted;
 };
 
+const updateTurnById = async (attributes, id) => {
+    const turnUpdated = await Turns.update(attributes, { where: { id: id } });
+    return turnUpdated;
+};
+
 module.exports = {
     getTurnById,
     findAllTurns,
-    deleteTurnById
+    deleteTurnById,
+    updateTurnById
 };
