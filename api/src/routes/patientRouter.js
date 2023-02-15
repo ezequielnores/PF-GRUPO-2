@@ -1,55 +1,52 @@
 const { Router } = require("express");
 const axios = require("axios");
-const { getPatientInfo } = require("../controllers/patientController");
+
+const { getPatientInfo } = require("../controllers/patientController.js");
+
 const { Patient } = require("../db");
 
 const router = Router();
 
-router.get('/', async (req, res)=>{
+router.get("/", async (req, res) => {
   try {
     const { name } = req.query;
     const allPatient = getPatientInfo();
-    if(name){
+    if (name) {
       const patientName = await allPatient.filter((e) => {
-          e.name.toLowerCase().includes(name.toLowerCase())
+        e.name.toLowerCase().includes(name.toLowerCase());
       });
-      if(patientName.length){
-        res.status(200).send(patientName)
+      if (patientName.length) {
+        res.status(200).send(patientName);
       } else {
-        res.status(404).send('Patient not found')
+        res.status(404).send("Patient not found");
       }
     } else {
-      res.status(200).send(allPatient)
+      res.status(200).send(allPatient);
     }
-
-    } catch (error) {
-       res.status(404).json({ error: error.message }) 
-    }
-})
-
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+});
 
 router.get("/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const getById = await getPatientInfo();
-  
-      if (id) {
-        const patientById = getById.filter(
-          (e) => e.id === id
-        );
-        if (patientById) {
-          res.status(200).json(patientById);
-        } else {
-          res.status(404).send("No patients were found with this ID.");
-        }
-      } else {
-        res.status(404).send("No se encontró el id por params");
-      }
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
+  try {
+    const { id } = req.params;
+    const getById = await getPatientInfo();
 
+    if (id) {
+      const patientById = getById.filter((e) => e.id === id);
+      if (patientById) {
+        res.status(200).json(patientById);
+      } else {
+        res.status(404).send("No patients were found with this ID.");
+      }
+    } else {
+      res.status(404).send("No se encontró el id por params");
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 router.put("/edit/:id", async (req, res) => {
   try {
@@ -72,9 +69,10 @@ router.put("/edit/:id", async (req, res) => {
       socialSecurity,
       plan,
       active,
-      historyPayment
+      historyPayment,
     } = req.body;
-    if (id) {  
+
+    if (id) {
       if (name) {
         const findPatient = await Patient.findByPk(id);
         await findPatient.update(
@@ -96,7 +94,7 @@ router.put("/edit/:id", async (req, res) => {
             socialSecurity,
             plan,
             active,
-            historyPayment
+            historyPayment,
           },
           { where: { id: id } }
         );
@@ -110,6 +108,5 @@ router.put("/edit/:id", async (req, res) => {
     console.log("Error del put", error);
   }
 });
-  
-  module.exports = router;
-  
+
+module.exports = router;
