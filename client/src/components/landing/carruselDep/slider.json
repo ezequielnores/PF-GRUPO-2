@@ -1,20 +1,20 @@
 [
   {
     "id": 1,
-    "image": "https://img.freepik.com/vector-premium/bienestar-cuidado-salud_24877-41352.jpg",
-
-    "title": "Title1"
+    "image": "https://www.webtekno.com/images/editor/default/0003/62/722bcfc5a3f2503329888fdc51c55dd75aaf3a5c.jpeg",
+    "title": "Hydration in summer",
+    "blog": "noteOne"
   },
   {
     "id": 2,
-    "image": "https://fundacionasispa.org/wp-content/uploads/2021/09/salud-y-bienestar.jpg",
-
-    "title": "Title2"
+    "image": "https://palmharborpharmacy.com/wp-content/uploads/2021/07/theguidetoheatillnessandsunburn.jpeg",
+    "title": "Heat stroke",
+    "blog": "noteTwo"
   },
   {
     "id": 3,
-    "image": "https://img.freepik.com/vector-gratis/concepto-conciencia-salud-mental_23-2148516138.jpg",
-
-    "title": "Title3"
+    "image": "https://www.medidata.com/wp-content/uploads/2019/01/the-patient-experience-medidata-20160427.jpg",
+    "title": "Health technology",
+    "blog": "noteThree"
   }
 ]

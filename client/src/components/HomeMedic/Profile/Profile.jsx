@@ -1,11 +1,11 @@
 import React from 'react';
-const MyShifts = () => {
+const Profile = () => {
     
     return (
         <div>
 
-            <h2>My Shifts</h2>
+            <h2>Profile</h2>
         </div>
     )
 }
-export default MyShifts;
+export default Profile;
