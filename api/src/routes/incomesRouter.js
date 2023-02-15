@@ -61,4 +61,21 @@ incomesRouter.post("/", async (req, res) => {
     }
 });
 
+incomesRouter.put("/update/:id", async (req, res) => {
+    const { id } = req.params;
+    const attributes = req.body;
+    delete attributes.id;
+
+    try {
+        if (![id, attributes].every(Boolean)) throw new Error("Datos incompletos para actualizar.");
+
+        const incomeUpdated = await updateIncomeById(attributes, id);
+        if (!incomeUpdated) throw new Error(`No se encunetra ningun ingreso en la BDD con el id ${id}.`);
+
+        res.status(200).json(incomeUpdated);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 module.exports = incomesRouter;
