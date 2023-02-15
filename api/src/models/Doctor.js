@@ -51,7 +51,7 @@ module.exports = (sequelize) => {
         speciality: {
             type: DataTypes.ENUM,
             allowNull: false,
-            values: [""]    
+            values: ["Cardiology", "Gynecology", "Neurology", "Oncology", "Psychiatry", "Dermatology", "Ophthalmology", "Urology", "Endocrinology", "Gastroenterology", "General", "Deportologist"]    
         },
         lisence: {
             type: DataTypes.STRING,
