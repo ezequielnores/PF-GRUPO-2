@@ -36,6 +36,10 @@ const findAllTurnsByDoctor = async doctorId => {
     return turnsByDoctor;
 };
 
+const findAllTurnsByPatient = async patientId => {
+    
+};
+
 const deleteTurnById = async id => {
     const turnDeleted = await Turns.destroy({ where: { id: id } });
     return turnDeleted;
@@ -52,5 +56,6 @@ module.exports = {
     deleteTurnById,
     updateTurnById,
     findAllTurnsByDate,
-    findAllTurnsByDoctor
+    findAllTurnsByDoctor,
+    findAllTurnsByPatient
 };
