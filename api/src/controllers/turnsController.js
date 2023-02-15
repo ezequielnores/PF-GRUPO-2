@@ -7,7 +7,7 @@ const getTurnById = async id => {
 
 const findAllTurns = async () => {
     const turns = await Turns.findAll({
-        attributes: ["id", "availability", "date", "hour", "type"],
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
             {
                 model: Patient,
