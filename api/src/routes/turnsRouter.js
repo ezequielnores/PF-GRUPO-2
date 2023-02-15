@@ -3,7 +3,10 @@ const {
     getTurnById,
     findAllTurns,
     deleteTurnById,
-    updateTurnById
+    updateTurnById,
+    findAllTurnsByDate,
+    findAllTurnsByPatient,
+    findAllTurnsByDoctor
 } = require("../controllers/turnsController");
 const turnsRouter = Router();
 const { Turns, Patient, Doctor } = require("../db");
@@ -13,6 +16,33 @@ turnsRouter.get("/", async (req, res) => {
         const turns = await findAllTurns();
         if (!turns) throw new Error("No se encuentran turnos en la BDD.");
         res.status(200).json(turns);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+turnsRouter.get("/turnsByDate", async (req, res) => {
+    const { date } = req.body;
+
+    try {
+        if (!date) throw new Error("La fecha no esta definida.");
+
+        const turnsByDate = await findAllTurnsByDate(date);
+        if (!turnsByDate) throw new Error(`No se encuantran turnos en la BDD para la fecha ${date}.`);
+
+        res.status(200).json(turnsByDate);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+turnsRouter.get("/turnsByPatient/:id", async (req, res) => {
+    const { patientId } = req.params;
+
+    try {
+        if (!patientId) throw new Error("El id del paciente esta indefinido");
+
+        const turnByPatient = await
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
