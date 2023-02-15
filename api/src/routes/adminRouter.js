@@ -105,3 +105,5 @@ router.delete('/delete/:id', async(req, res) => {
         res.status(404).json({error: error.message}, 'Entro al error del delete')
     }
 });
+
+module.exports = router;
