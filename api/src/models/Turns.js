@@ -24,6 +24,14 @@ module.exports = (sequelize) => {
         },
         type: {
             type: DataTypes.STRING
+        },
+        ubication: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        doctorSpecialty: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     }, { timestamps: false });
 };
