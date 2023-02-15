@@ -5,7 +5,7 @@ const {
     updateIncomeById,
     deleteIncomeById
 } = require("../controllers/incomesController");
-const { Income, Patient } = require("../db");
+const { Incomes, Patient } = require("../db");
 const incomesRouter = Router();
 
 incomesRouter.get("/", async (req, res) => {
@@ -43,7 +43,7 @@ incomesRouter.post("/", async (req, res) => {
             throw new Error("Datos incompletos.");
         }
 
-        const incomeCreated = await Income.create({
+        const incomeCreated = await Incomes.create({
             date: date,
             amount: amount,
             detail: detail
