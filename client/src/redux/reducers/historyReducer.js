@@ -12,8 +12,6 @@ export const historyGetDetail = createAsyncThunk(
   }
 );
 
-///addRegister/:id
-
 export const historyGetAll = createAsyncThunk(
   "medicalHistory/getAll",
   async () => {
