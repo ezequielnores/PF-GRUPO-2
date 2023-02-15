@@ -1,7 +1,7 @@
 const { Doctor } = require("../db.js");
 
 const getDoctors = async (name) => {
-    const response = await Doctor.findall();
+    const response = await Doctor.findAll();
     if (name) {
         const filterResponse = response.filter((doctor) => {
             doctor.name.includes(name);

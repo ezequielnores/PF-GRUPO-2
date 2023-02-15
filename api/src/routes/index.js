@@ -20,6 +20,7 @@ const commentsRouter = require("./commentsRouter");
 
 const adminRouter = require("./adminRouter")
 
+const blogRouter = require("./blogRouter");
 
 const router = Router();
 
@@ -44,5 +45,7 @@ router.use("/comments", commentsRouter);
 router.use("./admin", adminRouter);
 
 
+
+router.use("/blog", blogRouter);
 
 module.exports = router;
