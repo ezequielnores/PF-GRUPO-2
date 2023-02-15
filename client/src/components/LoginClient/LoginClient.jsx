@@ -11,8 +11,6 @@ const formLoginClient = () => {
                     <Link to="/HomeClient">Aceptar</Link>
                 </Button>
             </ButtonGroup>
-            
-            <h1>workin</h1>
 
         </div>
     )
