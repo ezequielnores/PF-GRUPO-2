@@ -26,6 +26,72 @@ const findAllTurns = async () => {
     return turns;
 };
 
+const findAllTurnsByDate = async date => {
+    const turnsByDate = await Turns.findAll({
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        include: [
+            {
+                model: Patient,
+                through: {
+                    attributes: []
+                }
+            },
+            {
+                model: Doctor,
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        where: { date: date }
+    });
+    return turnsByDate;
+};
+
+const findAllTurnsByDoctor = async doctorId => {
+    const turnsByDoctor = await Turns.findAll({
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        include: [
+            {
+                model: Patient,
+                through: {
+                    attributes: []
+                }
+            },
+            {
+                model: Doctor,
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        where: { DoctorId: doctorId }
+    });
+    return turnsByDoctor;
+};
+
+const findAllTurnsByPatient = async patientId => {
+    const turnsByPatient = await Turns.findAll({
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        include: [
+            {
+                model: Patient,
+                through: {
+                    attributes: []
+                }
+            },
+            {
+                model: Doctor,
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        where: { PatientId: patientId }
+    });
+    return turnsByPatient;
+};
+
 const deleteTurnById = async id => {
     const turnDeleted = await Turns.destroy({ where: { id: id } });
     return turnDeleted;
@@ -40,5 +106,8 @@ module.exports = {
     getTurnById,
     findAllTurns,
     deleteTurnById,
-    updateTurnById
+    updateTurnById,
+    findAllTurnsByDate,
+    findAllTurnsByDoctor,
+    findAllTurnsByPatient
 };
