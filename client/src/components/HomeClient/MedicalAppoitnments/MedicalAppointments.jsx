@@ -1,3 +1,11 @@
+const obj={
+    "especialidad":[],
+    "fecha":["15/2","16/2","17/2","18/2"],
+    "hora":["15hs","16hs","17hs"]
+
+}
+
+
 const MedicalAppointments = () => {
     
     return (
