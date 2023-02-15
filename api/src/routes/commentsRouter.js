@@ -1,14 +1,9 @@
-const { Comments } = require('../db.js');
-const axios = require('axios');
-
 const {Router} = require('express');
+const axios = require('axios');
+const { getComments } = require('../controllers/commentsController')
+const { Comments } = require('../db.js');
 
 const router = Router();
-
-const getComments =  async()=>{
-    const infoComments = await Comments.findAll();
-    return infoComments
-};
 
 router.get('/', async (req, res)=>{
     try {
@@ -59,7 +54,7 @@ router.post('/', async (req, res)=>{
     } catch (error) {
         res.status(404).json({error: error.message})
     }
-})
+});
 
 router.put('/edit/:id', async (req, res) =>{
     try {
@@ -80,7 +75,7 @@ router.put('/edit/:id', async (req, res) =>{
     } catch (error) {
         res.status(404).json({error: error.massage}, 'Entro al error del put')
     }
-})
+});
 
 router.delete('/delete/:id', async(req, res)=>{
     const { id } = req.params;
