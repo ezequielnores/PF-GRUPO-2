@@ -14,6 +14,8 @@ const doctorRouter = require("./doctorRouter");
 
 const frequentQuestionsRouter = require("./frequentQuestionsRouter");
 
+const incomesRouter = require("./incomesRouter");
+
 
 const router = Router();
 
@@ -30,5 +32,7 @@ router.use("/patient", patientRouter);
 router.use("/medicalHistory", medicalHistoryRouter);
 
 router.use("/frequentQuestions", frequentQuestionsRouter);
+
+router.use("/incomes", incomesRouter);
 
 module.exports = router;

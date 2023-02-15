@@ -3,33 +3,22 @@ const { DataTypes } = require('sequelize');
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
     // defino el modelo
-    sequelize.define('turns', {
+    sequelize.define('incomes', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
         },
-        availability: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        },
         date: {
             type: DataTypes.DATEONLY,
             allowNull: false,
         },
-        hour: {
-            type: DataTypes.TIME,
+        amount: {
+            type: DataTypes.FLOAT,
             allowNull: false
         },
-        type: {
-            type: DataTypes.STRING
-        },
-        ubication: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        doctorSpecialty: {
+        detail: {
             type: DataTypes.STRING,
             allowNull: false
         }

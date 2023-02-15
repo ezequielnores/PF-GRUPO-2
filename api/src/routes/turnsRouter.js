@@ -44,10 +44,10 @@ turnsRouter.delete("/delete/:id", async (req, res) => {
 });
 
 turnsRouter.post("/", async (req, res) => {
-    const { availability, date, hour, type, medicId, patientId } = req.body;
+    const { availability, date, hour, type, ubication, doctorSpecialty, medicId, patientId } = req.body;
 
     try {
-        if (![availability, date, hour, medicId, patientId].every(Boolean)) {
+        if (![availability, date, hour, medicId, patientId, ubication, doctorSpecialty].every(Boolean)) {
             throw new Error("Datos incompletos.");
         }
 
@@ -56,6 +56,8 @@ turnsRouter.post("/", async (req, res) => {
             date: date,
             hour: hour,
             type: type ? type : null,
+            ubication: ubication,
+            doctorSpecialty: doctorSpecialty
         });
 
         const patient = await Patient.findByPk(patientId);
