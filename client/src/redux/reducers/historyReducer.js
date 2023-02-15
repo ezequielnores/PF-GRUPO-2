@@ -12,8 +12,6 @@ export const historyGetDetail = createAsyncThunk(
   }
 );
 
-
-
 ///addRegister/:id
 
 export const historyGetAll = createAsyncThunk(
@@ -71,6 +69,16 @@ const medicalHistorySlice = createSlice({
         state.list = action.payload;
       })
       .addCase(historyGetAll.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(historyAddById.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(historyAddById.fulfilled, (state, action) => {
+        state.status = "succeeded";
+      })
+      .addCase(historyAddById.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
