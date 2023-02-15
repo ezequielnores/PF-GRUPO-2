@@ -1,17 +1,27 @@
 const { Router } = require("express");
 const axios = require("axios");
+
 const { getPatientInfo } = require("../controllers/patientController.js");
+
 const { Patient } = require("../db");
 
 const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const infoPatient = getPatientInfo();
-    if (!infoPatient) {
-      res.status(404).send("No patients in the database!");
+    const { name } = req.query;
+    const allPatient = getPatientInfo();
+    if (name) {
+      const patientName = await allPatient.filter((e) => {
+        e.name.toLowerCase().includes(name.toLowerCase());
+      });
+      if (patientName.length) {
+        res.status(200).send(patientName);
+      } else {
+        res.status(404).send("Patient not found");
+      }
     } else {
-      res.status(200).send(infoPatient);
+      res.status(200).send(allPatient);
     }
   } catch (error) {
     res.status(404).json({ error: error.message });
@@ -61,16 +71,8 @@ router.put("/edit/:id", async (req, res) => {
       active,
       historyPayment,
     } = req.body;
+
     if (id) {
-      // let urlDeImagen = "";
-
-      // if (photo) {
-      //   urlDeImagen = photo;
-      // } else {
-      //   urlDeImagen =
-      //     "url imagen tipo";
-      // }
-
       if (name) {
         const findPatient = await Patient.findByPk(id);
         await findPatient.update(
@@ -97,10 +99,6 @@ router.put("/edit/:id", async (req, res) => {
           { where: { id: id } }
         );
 
-        // const typeDb = await Type.findAll({
-        //   where: { name: types },
-        // });
-        // await findPokemon.setTypes(typeDb);
         res.status(200).send("Paciente modificado con exito");
       } else {
         res.status(400).send("Faltaron datos para modificar el paciente");
