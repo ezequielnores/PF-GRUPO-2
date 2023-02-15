@@ -34,15 +34,7 @@ function App() {
   console.log(location.pathname);
   return (
     <div className="App">
-<<<<<<< HEAD
-      <h1>Henry Videogames</h1>
-      <h2>PROBANDO</h2>
-      <h2>PROBANDO MERGEEe</h2>
-      {/* <>EZEUQKAPOSD PROBANDOOOOOOOOOOO</> */}
-      <div>PROBANDO FETCH</div>
-      <>EZEQUIEL PROBANDO RAMA</>
-      
-=======
+
       {location.pathname.startsWith("/HomeClient") ? (
         <HomeClient />
       ) : location.pathname.startsWith("/HomeMedic")? (<HomeMedic />): (
@@ -71,7 +63,7 @@ function App() {
 
 
       </Routes>
->>>>>>> 5ec34eda27081072ba95098ce28839855d644ca1
+
     </div>
   );
 }
