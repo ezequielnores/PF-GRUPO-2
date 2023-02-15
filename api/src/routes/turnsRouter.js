@@ -42,7 +42,10 @@ turnsRouter.get("/turnsByPatient/:id", async (req, res) => {
     try {
         if (!patientId) throw new Error("El id del paciente esta indefinido");
 
-        const turnByPatient = await
+        const turnByPatient = await findAllTurnsByPatient(patientId);
+        if (!turnByPatient) throw new Error(`No se encontro ningun turno del paciente con el id ${id} en la BDD.`);
+
+        res.status(200).json(turnByPatient);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -52,11 +55,13 @@ turnsRouter.get("/:id", async (req, res) => {
     const { id } = req.body;
 
     try {
+        if (!id) throw new Error("El id del turno esta indefinido.");
+
         const turn = await getTurnById(id);
         if (!turn) throw new Error(`No se encontro un turno con el id ${id}.`);
         res.status(200).json(turn);    
     } catch (error) {
-        
+        res.status(400).json({ error: error.message });
     }
 });
 
