@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import {useState} from "react";
 import style from "./SideBar.module.css";
 import Stack from '@mui/material/Stack';
 import HomeIcon from '@mui/icons-material/Home';
@@ -12,11 +11,8 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import ForumIcon from '@mui/icons-material/Forum';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import LogoutIcon from '@mui/icons-material/Logout';
-const SideBar = () => {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => {
-        setOpen(!open);
-    };
+const SideBar = ({open , handleOpen}) => {
+    
     return (
         <div>
 
@@ -49,11 +45,11 @@ const SideBar = () => {
                                 </Link>
                         </button>
                         <button>
-                            <Link to="/HomeClient/MyShifts">
+                            <Link to="/HomeClient/MyAppointments">
                             {open? 
                                     <div className={style.divbutton}>
                                         <CalendarMonthIcon />
-                                        My Shifts
+                                        My Appointments
                                     </div>
                                     : <CalendarMonthIcon /> 
                                 }

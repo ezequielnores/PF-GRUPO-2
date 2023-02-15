@@ -19,8 +19,6 @@ const footer = {
   height: "8rem",
   alignItems: "center",
   textAlign: "center",
-
-
 };
 const divtext = {
   width: "30em",
@@ -36,10 +34,6 @@ const butonGroup = {
   display: "flex",
   flexDirection: "column",
 };
-
-
-
-
 
 const Navbar = () => (
   <Box sx={{ flexGrow: 1 }}>
