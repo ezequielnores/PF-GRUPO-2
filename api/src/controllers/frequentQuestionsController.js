@@ -5,6 +5,11 @@ const getFrequentAskById = async id => {
     return frequentAsk;
 };
 
+const getFrequentAskByAsk = async ask => {
+    const frequentAsk = await FrequentQuestions.findOne({ where: { ask: ask } });
+    return frequentAsk;
+};
+
 const findAllFrequentQuestions = async () => {
     const frequentQuestions = await FrequentQuestions.findAll();
     return frequentQuestions;
