@@ -36,7 +36,7 @@ const butonGroup = {
 };
 
 const Navbar = () => (
-  <Box sx={{ flexGrow: 1, flex: 1 }}>
+  <Box sx={{ flexGrow: 1 }}>
     <AppBar position="static">
       <Toolbar style={footer}>
         <Box style={divtext}>
