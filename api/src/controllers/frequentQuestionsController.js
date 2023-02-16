@@ -29,5 +29,6 @@ module.exports = {
     getFrequentAskById,
     findAllFrequentQuestions,
     updateFrequentAskById,
-    deleteFrequentAskById
+    deleteFrequentAskById,
+    getFrequentAskByAsk
 };
