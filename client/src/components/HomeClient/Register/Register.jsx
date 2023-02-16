@@ -29,6 +29,7 @@ const Register = () => {
     })
 
     const onChangeHandler = (name, value) => {
+        console.log(name);
         setForm({ ...form, [name]: value });
 
         validateForm({ ...form, [name]: value }, name)
@@ -48,35 +49,44 @@ const Register = () => {
             }else{
                 setError({ ...error, [name]: '' });
             }
-        }
+        };
     };
+
+
 
     return (
         <div style={{display:"flex", flexDirection:"column", width:"100%", height:"85vh", justifyContent:"space-between", alignItems:"center" }} >
 
             <h2>Pacient Register</h2>
 
+            <MuiTelInput
+                label="Phone" name='phone'  value={form.phone}  defaultCountry={"AR"}
+                style={{width:"40vh"}}  onChange={(value) => onChangeHandler( 'phone', value )} />
 
-            <TextField error={error.name} label="Name" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}  name='name' value={form.name}  />
+            <TextField 
+                error={error.name} label="Name" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}  name='name' value={form.name}  />
             
-            <TextField error={error.surname} label="Surname" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='surname' value={form.surname} />
+            <TextField 
+                error={error.surname} label="Surname" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='surname' value={form.surname} />
 
-            <TextField error={error.documentID} label="Document ID"  style={{width:"40vh"}}  onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='documentID' value={form.documentID}  />
+            <TextField 
+                error={error.documentID} label="Document ID"  style={{width:"40vh"}}  onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='documentID' value={form.documentID}  />
 
-            <TextField error={error.birthday} label="Birthday" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='birthday' value={form.birthday}  />
+            <TextField 
+                error={error.birthday} label="Birthday" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='birthday' value={form.birthday}  />
 
-            <TextField error={error.weight} label="Weight" style={{width:"40vh"}}  onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='weight' value={form.weight}  />
+            <TextField 
+                error={error.weight} label="Weight" style={{width:"40vh"}}  onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='weight' value={form.weight}  />
             
-            <TextField error={error.height} label="Height" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='height' value={form.phone}  />
+            <TextField 
+                 label="Height" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='height' value={form.height}  />
 
-            <TextField error={error.allergies} label="Allergies" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='allergies' value={form.allergies}  />
+            <TextField 
+                error={error.allergies} label="Allergies" style={{ width:"40vh" }} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='allergies' value={form.allergies}  />
             
-            <TextField error={error.location} label="Location" style={{width:"40vh"}} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='location' value={form.location}  />
-            
-            {/* <MuiTelInput label="Phone" fullWidth value={value} onChange={(e) => onChangeHandler(e.target.name, e.target.value)} /> */}
+            <TextField 
+                error={error.location} label="Location" style={{ width:"40vh" }} onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='location' value={form.location}  />
 
-            <MuiTelInput error={error.phone} label="Phone" style={{width:"40vh"}}  onChange={(e) => onChangeHandler(e.target.name, e.target.value)}   name='phone' value={form.phone}  />
-           
             <Button style={{border:"1px solid",}}> Save </Button>
 
         </div>
