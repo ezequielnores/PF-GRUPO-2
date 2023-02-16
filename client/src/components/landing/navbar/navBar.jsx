@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import Logo from "../../../assets/logoiCare.png";
 //styles
 const navbar = {
-  backgroundColor: "#faf9f9",
+  backgroundColor: "#F0F8FF",
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
@@ -20,14 +20,14 @@ const navbar = {
   paddingLeft: "5rem",
 };
 const butonLogin = {
-  marginLeft: "3.5rem",
+  marginLeft: "3rem",
 };
 //component
 const Navbar = () => {
   return (
-    <Box sx={{ flexGrow: 1, height: 100 }}>
-      <AppBar position="static" sx={{height: 100}}>
-        <Toolbar style={navbar} sx={{height: 100}}>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar style={navbar}>
           <Link to="/">
             <CardMedia component="img" height="90" image={Logo} alt="logo" />
           </Link>
