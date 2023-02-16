@@ -1,0 +1,11 @@
+/* style={{border:"none",backgroundColor:"transparent",color:"blue",cursor:"pointer"}} */
+.buttonfilter{
+    border:none;
+    background-color:transparent;
+    color:blue;
+    cursor:pointer;
+}
+.buttonfilter:hover{
+    color:red;
+
+}
