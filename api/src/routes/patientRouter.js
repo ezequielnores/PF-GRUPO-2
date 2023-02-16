@@ -10,7 +10,7 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     const { name } = req.query;
-    const allPatient = getPatientInfo();
+    const allPatient = await getPatientInfo();
     if (name) {
       const patientName = await allPatient.filter((e) => {
         e.name.toLowerCase().includes(name.toLowerCase());
@@ -34,7 +34,7 @@ router.get("/:id", async (req, res) => {
     const getById = await getPatientInfo();
 
     if (id) {
-      const patientById = getById.filter((e) => e.id === id);
+      const patientById = await Patient.findByPk(id);
       if (patientById) {
         res.status(200).json(patientById);
       } else {
@@ -46,6 +46,60 @@ router.get("/:id", async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+});
+
+router.post('/', async (req, res) => {
+  const { 
+    name, 
+    surname,
+    mail,
+    password,
+    birthday,
+    weight,
+    height,
+    bmi,
+    allergies,
+    chronicDiseases,
+    photo,
+    location,
+    dni,
+    phone,
+    socialSecurity,
+    plan,
+    active,
+    historyPayment
+  } = req.body
+
+try {
+
+  if(!name || !surname || !mail || !password || !weight || !height || !location || !dni){
+    res.status(404).send('faltan datos')
+  } else {
+    const newPatient = await Patient.create({
+      name, 
+      surname,
+      mail,
+      password,
+      birthday,
+      weight,
+      height,
+      bmi,
+      allergies,
+      chronicDiseases,
+      photo,
+      location,
+      dni,
+      phone,
+      socialSecurity,
+      plan,
+      active,
+      historyPayment
+    });
+    res.status(200).send('Patient create successfully')
+  } 
+} catch (error) {
+  res.status(404).send({error: error.message}, 'entro al error del post')
+}
 });
 
 router.put("/edit/:id", async (req, res) => {
@@ -106,6 +160,22 @@ router.put("/edit/:id", async (req, res) => {
     }
   } catch (error) {
     console.log("Error del put", error);
+  }
+});
+
+router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const patientDelete = await Patient.findByPk(id);
+    console.log('id:' + id);
+    if (!patientDelete) {
+      res.status(404).send("Patient not found");
+    } else {
+      patientDelete.destroy();
+      res.status(200).send("Patient delete successfully");
+    }
+  } catch (error) {
+    res.status(404).json({ error: error.message }, "Entro al error del delete");
   }
 });
 
