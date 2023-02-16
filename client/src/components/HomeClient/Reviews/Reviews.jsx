@@ -113,7 +113,7 @@ const changeHandler=(event)=>{
     <form onSubmit={submitHandler}>
 
         <h2 style={{color:"#307196"}}>Please fill the fields and send us a review</h2>
-        <div style={{border:"double", width:"fit-content",padding:50, display:"flex", flexDirection:"column",margin:"auto"}}>
+        <div style={{border:"double", width:"fit-content",padding:50, display:"flex", flexDirection:"column",margin:"auto",paddingLeft:80,paddingRight:150}}>
         <InputLabel id="demo-simple-select-filled-label" sx={{marginRight:19}}>Select the doctor: </InputLabel>
         <Select
         labelId="demo-simple-select-filled-label"
