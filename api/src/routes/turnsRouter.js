@@ -3,7 +3,10 @@ const {
     getTurnById,
     findAllTurns,
     deleteTurnById,
-    updateTurnById
+    updateTurnById,
+    findAllTurnsByDate,
+    findAllTurnsByPatient,
+    findAllTurnsByDoctor
 } = require("../controllers/turnsController");
 const turnsRouter = Router();
 const { Turns, Patient, Doctor } = require("../db");
@@ -18,15 +21,62 @@ turnsRouter.get("/", async (req, res) => {
     }
 });
 
+turnsRouter.get("/turnsByDate", async (req, res) => {
+    const { date } = req.body;
+
+    try {
+        if (!date) throw new Error("La fecha no esta definida.");
+
+        const turnsByDate = await findAllTurnsByDate(date);
+        if (!turnsByDate) throw new Error(`No se encuantran turnos en la BDD para la fecha ${date}.`);
+
+        res.status(200).json(turnsByDate);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+turnsRouter.get("/turnsByPatient/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (!id) throw new Error("El id del paciente esta indefinido");
+
+        const turnByPatient = await findAllTurnsByPatient(id);
+        if (!turnByPatient) throw new Error(`No se encontro ningun turno del paciente con el id ${id} en la BDD.`);
+
+        res.status(200).json(turnByPatient);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+turnsRouter.get("/tunrsByDoctor/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (!id) throw new Error("El id del paciente esta indefinido");
+
+        const turnByDoctor = await findAllTurnsByDoctor(id);
+        if (!turnByDoctor) throw new Error(`No se encontro ningun turno del doctor con el id ${id} en la BDD.`);
+
+        res.status(200).json(turnByDoctor);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 turnsRouter.get("/:id", async (req, res) => {
     const { id } = req.body;
 
     try {
+        if (!id) throw new Error("El id del turno esta indefinido.");
+
         const turn = await getTurnById(id);
         if (!turn) throw new Error(`No se encontro un turno con el id ${id}.`);
         res.status(200).json(turn);    
     } catch (error) {
-        
+        res.status(400).json({ error: error.message });
     }
 });
 
@@ -44,10 +94,10 @@ turnsRouter.delete("/delete/:id", async (req, res) => {
 });
 
 turnsRouter.post("/", async (req, res) => {
-    const { availability, date, hour, type, medicId, patientId } = req.body;
+    const { availability, date, hour, type, ubication, doctorSpecialty, medicId, patientId } = req.body;
 
     try {
-        if (![availability, date, hour, medicId, patientId].every(Boolean)) {
+        if (![availability, date, hour, medicId, patientId, ubication, doctorSpecialty].every(Boolean)) {
             throw new Error("Datos incompletos.");
         }
 
@@ -56,6 +106,8 @@ turnsRouter.post("/", async (req, res) => {
             date: date,
             hour: hour,
             type: type ? type : null,
+            ubication: ubication,
+            doctorSpecialty: doctorSpecialty
         });
 
         const patient = await Patient.findByPk(patientId);
