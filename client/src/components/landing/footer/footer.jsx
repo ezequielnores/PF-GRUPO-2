@@ -35,6 +35,7 @@ const butonGroup = {
   flexDirection: "column",
 };
 
+
 const Navbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -70,5 +71,4 @@ const Navbar = () => {
     </Box>
   );
 };
-
 export default Navbar;
