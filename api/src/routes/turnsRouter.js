@@ -6,7 +6,8 @@ const {
     updateTurnById,
     findAllTurnsByDate,
     findAllTurnsByPatient,
-    findAllTurnsByDoctor
+    findAllTurnsByDoctor,
+    deleteTurnsByExpiredDate
 } = require("../controllers/turnsController");
 const turnsRouter = Router();
 const { Turns, paciente, doctor } = require("../db");
@@ -88,6 +89,21 @@ turnsRouter.delete("/delete/:id", async (req, res) => {
         const turnDeleted = await deleteTurnById(id);
         if (!turnDeleted) throw new Error(`No se a eliminado ningun turno con el id ${id}.`);
         res.status(200).json({ turnDeleted: turnDeleted });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+turnsRouter.delete("/deleteTurnsByExpiredDate", async (req, res) => {
+    const { date } = req.body;
+
+    try {
+        if (!date) throw new Error("La fecha dada se encuentra indefinida.");
+
+        const turnsDeleted = await deleteTurnsByExpiredDate(date);
+        if (!turnsDeleted) throw new Error(`No se encuentran turnos para la fecha ${date} en la BDD.`);
+
+        res.status(200).json(turnsDeleted);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
