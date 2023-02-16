@@ -41,7 +41,7 @@ const blog = () => {
         <div style={container}>
           <Typography
             style={{
-              color: "#147bf4",
+              color: "#307196",
               fontWeight: "bold",
               fontSize: "2.2rem",
               marginTop: "3rem",
@@ -62,7 +62,12 @@ const blog = () => {
                 title="summer"
               />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  style={{ color: "#307196" }}
+                >
                   Hydration in summer
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -85,7 +90,12 @@ const blog = () => {
                 title="heat"
               />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  style={{ color: "#307196" }}
+                >
                   Heat stroke
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -107,7 +117,12 @@ const blog = () => {
                 title="tech"
               />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  style={{ color: "#307196" }}
+                >
                   Health technology
                 </Typography>
                 <Typography variant="body2" color="text.secondary">

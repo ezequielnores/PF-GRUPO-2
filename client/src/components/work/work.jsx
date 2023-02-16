@@ -30,7 +30,7 @@ const Work = () => {
         >
           <Typography
             style={{
-              color: "Black",
+              color: "#307196",
               marginTop: "1.5rem",
               marginBottom: "1.5rem",
               fontWeight: "bold",
