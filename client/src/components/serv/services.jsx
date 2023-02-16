@@ -4,11 +4,10 @@ import Typography from "@mui/material/Typography";
 //styles
 const imgContainer = {
   width: "50%",
-  height: "42vh",
+  height: "40vh",
 };
 const divContainer = {
-  height: "40vh",
-  marginTop: "15px",
+  height: "45vh",
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
@@ -17,7 +16,7 @@ const divContainer = {
 };
 const container = {
   width: "100%",
-  height: "100%",
+  height: "100vh",
   backgroundColor: "#f7f7f7",
 };
 const divText = {
@@ -52,7 +51,7 @@ const services = () => {
             <Typography
               align="justify"
               style={{
-                color: "#147bf4",
+                color: "#307196",
                 fontWeight: "bold",
                 fontSize: "2.2rem",
               }}
@@ -70,7 +69,7 @@ const services = () => {
           <div style={finaldivText}>
             <Typography
               style={{
-                color: "#147bf4",
+                color: "#307196",
                 fontWeight: "bold",
                 fontSize: "2.2rem",
               }}
@@ -93,7 +92,7 @@ const services = () => {
           <div style={finaldivText}>
             <Typography
               style={{
-                color: "#147bf4",
+                color: "#307196",
                 fontWeight: "bold",
                 fontSize: "2.2rem",
               }}
