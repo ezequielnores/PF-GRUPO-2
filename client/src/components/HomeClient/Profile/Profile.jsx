@@ -1,9 +1,8 @@
 import React from 'react';
-//import{actions} from ""
-// import {useSelector, useDispatch} from "react-redux";
+import{patientGetDetail} from "../../../redux/actions";
+import {useSelector, useDispatch} from "react-redux";
 // import {useParams} from "react-router-dom";
-// import {patientGetDetail} from "../../../redux/actions";
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 import style from "./Profile.module.css";
 import GraficIMC from './GraficIMC';
 import Avatar from '@mui/material/Avatar';
@@ -21,14 +20,17 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 const Profile = () => {
-    // const detail=useSelector((state=>state.patientDetail));
-    // const {id} =useParams();
-    // const dispatch=useDispatch();
+     const detail=useSelector((state=>state.patientDetail));
+
+     const dispatch=useDispatch();
 
 
-    // useEffect(()=>{
-    //     dispatch(patientGetDetail(id))
-    // },[dispatch,id])
+    //  useEffect(()=>{
+    //      dispatch(patientGetDetail(1))
+    //  },[dispatch])
+
+     console.log(detail)
+
     const infoPaciente=[{
         id:1,
         name:"Nicolas",
@@ -74,7 +76,7 @@ const Profile = () => {
                     <Item>Addres:{e.location} </Item>
                     <Item>Weight: {e.weight} </Item>
                     <Item>Heigth:{e.height} </Item>
-                    <Item>IMC: {e.bmi} </Item>
+                    <Item>DNI: {e.dni} </Item>
                     <Item>N° credential: {e.socialSecurity} </Item>
                     <Item>Plan: {e.plan} </Item>
                 </Stack>)})}
