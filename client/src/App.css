@@ -28,6 +28,16 @@
   color: white;
 }
 
+/*  */
+div { animation: divs-animation 1s; }
+
+@keyframes divs-animation{
+  from { opacity: 0.1;}
+  to { opacity: 1; }
+}
+/*  */
+
+
 .App-link {
   color: #61dafb;
 }

@@ -15,6 +15,9 @@ import {
     Urgency,
     HomeView,
 } from "../index";
+
+import Register from "../Register/Register.jsx";
+
 const Home = () => {
     const location = useLocation();
     const [open, setOpen] = useState(false);
@@ -23,7 +26,7 @@ const Home = () => {
     };
     return (
         <div style={{position:"relative"}}>
-            <img style={{width:"4rem",position:"absolute",top:"0.5rem",left:"4.3rem"}} src={logoICare}/>
+            <img style={{width:"4rem",position:"absolute",top:"0.5rem",left:"4.3rem"}} alt='icon' src={logoICare}/>
             <Stack style={{position:"absolute", top:"0", right:"0",height:"5rem",width:"85vw",background:"rgba(64, 184,200,0.5)",display:"flex",justifyContent:"flex-end",padding:"1rem 2rem",boxSizing:"border-box"}} direction="row" spacing={2}>
                 <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end"}}>
                     <p style={{margin:"0",fontWeight:"bolder",fontSize:"1.1rem"}}>Nombre de usuario</p>
@@ -45,6 +48,7 @@ const Home = () => {
                 {location.pathname.endsWith("/HomeClient/MedicalHistory") && <MedicalHistory />}
                 {location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />}
                 {location.pathname.endsWith("/HomeClient/Chat") && <Chat />}
+                {location.pathname.endsWith("/HomeClient/Register") && <Register />}
             </div>
             
         </div>
