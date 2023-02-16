@@ -1,16 +1,18 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import style from './Urgency.module.css';
 
 const handleTempError = (temp) =>{
-    if(temp === "") return false
+    
+    if(String(parseInt(temp)) === "NaN" && temp !== "" ) return true
+    else if(temp === "") return false
     else if(temp < 37 || temp > 44){
         return true
     }else{
@@ -19,213 +21,239 @@ const handleTempError = (temp) =>{
 }
 
 const Urgency= () => {
-    
+    const [openModal, setOpenModal] = React.useState(false)
+    const [body, setBody] = React.useState({
+        patient: "Nombre del paciente",
+        symptoms: " "
+    })
     const [addSymptom, setAddSymptom] = React.useState({
-        cough:false,
-        fiver: false,
-        nausea: false,
-        headache: false,
-        musclePain:false,
-        fatigue:false,
-        shortnessBreath:false,
-        chills:false,
-        nasalCongestion:false
+        Cough:false,
+        Fiver: false,
+        Nausea: false,
+        Headache: false,
+        MusclePain:false,
+        Fatigue:false,
+        ShortnessBreath:false,
+        Chills:false,
+        NasalCongestion:false,
+        Temperature: ""
     });
-    const [symptoms, setSymptoms] = React.useState(" ")
     const[observations, setObservations] = React.useState(" ")
-    const [temp, SetTemp] = React.useState(" ")
-    const [errorTemp, SetErrorTemp] = React.useState(false)
+    const [errorTemp, setErrorTemp] = React.useState(false)
 
+    const handleOpenModal = () => {
+        let symptoms = " "
+        for (let symptom in addSymptom){
+            if (symptom === "MusclePain" && addSymptom[symptom] === true) symptoms += "Muscle Pain, "
+            else if (symptom === "ShortnessBreath" && addSymptom[symptom] === true) symptoms += "Shortness of Breath, "
+            else if (symptom === "NasalCongestion" && addSymptom[symptom] === true) symptoms += "Nasal Congestion, "
+            else if (symptom === "Temperature" && addSymptom[symptom] !== "") symptoms += "Temperature :" + addSymptom[symptom] +", "
+            else if(addSymptom[symptom] === true) symptoms += symptom + ", "
+        }
+        if(symptoms === " ") symptoms = "No symptoms reported"
+        if(observations) symptoms+= "Observations: " + observations
+        setBody({
+            ...body,
+            symptoms: `Symptoms: ${symptoms} `
+        })
+        setOpenModal(!openModal)            
+    }
     const handleChange = (event) => {
         setAddSymptom({
             ...addSymptom,
             [event.target.name]: event.target.checked,
         });
-        if(event.target.checked === true){
-            if(event.target.name !== "fiver") setSymptoms(symptoms + event.target.name + ", ")
-            //  {
-            //     console.log(temp)
-            //     if (temp>=37 || temp<=44)  setSymptoms(symptoms + event.target.name + ":"+ temp + "°C, "+", ")
-            //     else setSymptoms(symptoms + event.target.name + ":"+ "not specified, "+", ")
-            // }
-            // else setSymptoms(symptoms + event.target.name + ", ")
-        }
-        else{
-            if(event.target.name !== "fiver") setSymptoms(symptoms.replace(event.target.name + ", ",""))
-            // {
-            //     if (temp === "") setSymptoms(symptoms.replace(event.target.name + ":"+ "not specified, "+", ",""))
-            //     else setSymptoms(symptoms.replace(event.target.name + ":"+ temp + "°C, "+", ",""))
-            // }
-            // else setSymptoms(symptoms.replace(event.target.name + ", ",""))
+        if(event.target.name === "Fiver" && event.target.checked === false){
+            setAddSymptom({
+                ...addSymptom,
+                [event.target.name]: event.target.checked,
+                Temperature: ""
+            })
         }
     };
     const handleObservations = (even) => {
         setObservations(even.target.value)
     }
-    const handleTemp = (even) =>{
-        SetTemp(even.target.value)
-        SetErrorTemp(handleTempError(even.target.value))
+    const handleTemp = (even) =>{            
+        setAddSymptom({
+            ...addSymptom,
+            Temperature: even.target.value
+        })
+        setErrorTemp(handleTempError(even.target.value))
     }
-    
-    
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(addSymptom)
-        if (addSymptom.fiver && temp === "") setSymptoms(symptoms + "fiver: not specified")
-        else if (addSymptom.fiver && temp !== "") setSymptoms(symptoms + "fiver:" + temp + "°C")
-        const body = {
-            patient: "Nombre del paciente", 
-            symptoms: `:${symptoms}
-                        Observations: ${observations}
-            `
-        }
         setAddSymptom({
-            cough:false,
-            fiver: false,
-            nausea: false,
-            headache: false,
-            musclePain:false,
-            fatigue:false,
-            shortnessBreath:false,
-            chills:false,
-            nasalCongestion:false
+            Cough:false,
+            Fiver: false,
+            Nausea: false,
+            Headache: false,
+            MusclePain:false,
+            Fatigue:false,
+            ShortnessBreath:false,
+            Chills:false,
+            NasalCongestion:false,
+            Temperature: ""
         })
-        setSymptoms(" ")
         setObservations(" ")
-        SetTemp(" ")
-        SetErrorTemp(false)
-        console.log(body)
+        setErrorTemp(false)
+        setBody({
+            patient: "Nombre del paciente",
+            symptoms: " "
+        })
+        setOpenModal(false)
+        
+        alert("Your information has been sent")
     }
-
     return (
-        <div>
-            <h2>Urgency</h2>
-            <p>In this section, you can be attended by a doctor immediately 24 hours a day.</p>
-            <p>Please complete the following form to be added to the waiting list.</p>
-            <Stack>
-                {/* <TextField
-                    id="patient"
-                    label="Patient"
-                    defaultValue="Nombre del paciente"
-                    InputProps={{
-                        readOnly: true,
-                    }}
-                    sx={{ width: 1/6 }}
-                /> */}
-                <Box sx={{ display: 'flex'}}>
-                    <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+        <div className={style.generalDiv}>
+            <div onClick={handleOpenModal} className={style.generalModalDiv} style={{display:openModal? "flex":"none"}}>
+                <div style={{display:openModal? "flex":"none"}} className={style.modalDiv}>
+                    <p>You have provided the following information</p>
+                    <p>Patient: {body.patient}</p>
+                    <p>{body.symptoms}</p>
+                    <button className={style.sendButton} onClick={handleSubmit}>
+                        <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                        Send
+                        </div>
+                                        
+                    </button>
+                </div>
+            </div>
+            <div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column",justifyContent:"flex-start",alignItems:"center"}}>
+                <div className={style.titleDiv}>
+                    <h2>Urgency</h2>
+                    <div style={{textAlign:"start",display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
+                        <p>In this section, you can be attended by a doctor immediately 24 hours a day.</p>
+                        <p>Please complete the following form to be added to the waiting list.</p>
+                    </div>
+                </div>
+                <div style={{width:"100%"}}>
+                    <FormControl sx={{width:1/1}} component="fieldset" variant="standard">
                     
-                    <div style={{display:"flex",width:"70vw",justifyContent:"center",alignItems:"center"}}>
-                        <div style={{width:"60%"}}>
-                            <FormGroup>
-                            <FormLabel component="legend">Symptomatology</FormLabel>
-                            <div style={{width:"100%",display:"flex",flexDirection:"row",justifyContent:"space-around"}}>
-                                <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={addSymptom.cough} onChange={handleChange} name="cough" />
-                                        }
-                                        label="Cough"
-                                    />
-                                    <div style={{display:"flex",justifyContent:"flex-start"}}>
+                    <div style={{display:"flex",width:"100%",justifyContent:"center"}}>
+                        <div className={style.symptomsAndUpload}>
+                            <FormGroup sx={{width:1/1}}>
+                            <div className={style.labelAndSymtoms}>
+                                <FormLabel component="legend" sx={{color:"#307196"}}>Symptomatology</FormLabel>
+                                <div className={style.symtoms}>
+                                    <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
                                         <FormControlLabel
                                             control={
-                                                <Checkbox checked={addSymptom.fiver} onChange={handleChange} name="fiver" />
+                                                <Checkbox checked={addSymptom.Cough} onChange={handleChange} name="Cough" />
                                             }
-                                            label="Fiver"
+                                            label="Cough"
                                         />
-                                        {addSymptom.fiver? 
-                                        errorTemp?
-                                            <TextField
-                                                error
-                                                id="Temp"
-                                                label="Temperature"
-                                                value={temp}
-                                                onChange={handleTemp}
-                                                helperText="Must be between 37 and 44 degrees"
-                                                sx={{ width: 100}}
+                                        
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox checked={addSymptom.Nausea} onChange={handleChange} name="Nausea" />
+                                            }
+                                            label="Nausea"
                                         />
-                                            :<TextField
-                                                id="Temp"
-                                                label="Temperature"
-                                                value={temp}
-                                                onChange={handleTemp}
-                                                sx={{ width: 100}}
-                                                
-                                        />
-                                        :
-                                        null
-                                        }
+                                        <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox checked={addSymptom.Fiver} onChange={handleChange} name="Fiver" />
+                                                }
+                                                label="Fiver"
+                                            />
+                                            {addSymptom.Fiver? 
+                                            errorTemp?
+                                                <TextField
+                                                    error
+                                                    id="Temp"
+                                                    label="Temperature"
+                                                    value={addSymptom.Temperature}
+                                                    onChange={handleTemp}
+                                                    helperText="Must be between 37 and 44 degrees"
+                                                    sx={{ width: 100}}
+                                            />
+                                                :<TextField
+                                                    id="Temp"
+                                                    label="Temperature"
+                                                    value={addSymptom.Temperature}
+                                                    onChange={handleTemp}
+                                                    sx={{ width: 100}}
+                                                    
+                                            />
+                                            :
+                                            null
+                                            }
+                                        </div>
                                     </div>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={addSymptom.nausea} onChange={handleChange} name="nausea" />
-                                        }
-                                        label="Nausea"
-                                    />
-                                </div>
-                                <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={addSymptom.headache} onChange={handleChange} name="headache" />
-                                        }
-                                        label="Headache"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={addSymptom.musclePain} onChange={handleChange} name="musclePain" />
-                                        }
-                                        label="Muscle pain"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={addSymptom.fatigue} onChange={handleChange} name="fatigue" />
-                                        }
-                                        label="Fatigue"
-                                    />
-                                </div>
-                                <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={addSymptom.shortnessBreath} onChange={handleChange} name="shortnessBreath" />
-                                        }
-                                        label="Shortness of breath"
-                                    /><FormControlLabel
-                                        control={
-                                            <Checkbox checked={addSymptom.chills} onChange={handleChange} name="chills" />
-                                        }
-                                        label="Chills"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={addSymptom.nasalCongestion} onChange={handleChange} name="nasalCongestion" />
-                                        }
-                                        label="Nasal congestion."
-                                    />
+                                    <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox checked={addSymptom.Headache} onChange={handleChange} name="Headache" />
+                                            }
+                                            label="Headache"
+                                        />
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox checked={addSymptom.MusclePain} onChange={handleChange} name="MusclePain" />
+                                            }
+                                            label="Muscle pain"
+                                        />
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox checked={addSymptom.Fatigue} onChange={handleChange} name="Fatigue" />
+                                            }
+                                            label="Fatigue"
+                                        />
+                                    </div>
+                                    <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox checked={addSymptom.ShortnessBreath} onChange={handleChange} name="ShortnessBreath" />
+                                            }
+                                            label="Shortness of breath"
+                                        /><FormControlLabel
+                                            control={
+                                                <Checkbox checked={addSymptom.Chills} onChange={handleChange} name="Chills" />
+                                            }
+                                            label="Chills"
+                                        />
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox checked={addSymptom.NasalCongestion} onChange={handleChange} name="NasalCongestion" />
+                                            }
+                                            label="Nasal congestion."
+                                        />
+                                    </div>
                                 </div>
                             </div>
+                            
                             </FormGroup>
+                            <button className={style.sendButton}>
+                                    <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                                        Upload file
+                                        <DriveFolderUploadIcon/>
+                                    </div>
+                                </button>
                         </div>
-                        <TextField
-                                id="comment"
-                                label="Observations"
-                                value={observations}
-                                onChange={handleObservations}
-                                multiline
-                                sx={{ width: 1/2, height: 1/2 }}
-                            />
+                        <div style={{border:"1px solid  rgba(131, 130, 130, 0.7)",borderRadius:"15px",height:"38vh",width:"40vw"}}>
+                            <div className={style.divTextArea} >
+                                <label className={style.labelText}>Observations</label>
+                                <textarea
+                                    value={observations}
+                                    onChange={handleObservations}  
+                                    className={style.textArea}
+                                    />
+                            </div>
+                        </div>
                     </div>
                     </FormControl>
-                </Box>
-                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                {errorTemp?
-                    <Button variant="contained" disabled sx={{width:1/9}}>Submit</Button>:
-                    <Button variant="contained" onClick={handleSubmit} sx={{width:1/9}}>Submit</Button>
-                }
+                    <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                    {errorTemp?
+                        <Button variant="contained" disabled sx={{width:1/9,borderRadius:9999}}>Submit</Button>:
+                        <Button variant="contained" onClick={handleOpenModal} sx={{width:1/9,borderRadius:9999}}>Submit</Button>
+                    }
 
-                    
+                        
+                    </div>
                 </div>
-            </Stack>
+            </div>
         </div>
     )
 }
