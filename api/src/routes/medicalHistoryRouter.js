@@ -4,7 +4,8 @@ const {
     findAllMedicalHistory,
     updateMedicalHistoryById,
     deleteMedicalHistoryById,
-    addRegisterMedicalHistory
+    addRegisterMedicalHistory,
+    findAllMedicalHistoryByPatient
 } = require("../controllers/medicalHistoryController");
 const { MedicalHistory, Patient, Doctor } = require("../db");
 const medicalHistoryRouter = Router();
@@ -14,6 +15,23 @@ medicalHistoryRouter.get("/", async (req, res) => {
         const medicalHistories = await findAllMedicalHistory();
         if (!medicalHistories.length) throw new Error("No se encuentran historiales medicos en la BDD.");
         res.status(200).json(medicalHistories);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+medicalHistoryRouter.get("/medicalHistoryByPatient/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (!id) throw new Error("El id del paciente esta indefinido.");
+
+        const medicalHistoryByPatient = await findAllMedicalHistoryByPatient(id);
+        if (!medicalHistoryByPatient) {
+            throw new Error(`No se encontro ningun historial clinico del paciente con el id ${id} en la BDD.`);
+        }
+
+        res.status(200).json(medicalHistoryByPatient);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -41,14 +59,18 @@ medicalHistoryRouter.post("/", async (req, res) => {
             throw new Error("Datos incompletos.");
         }
 
-        const medicalHistory = await MedicalHistory.create({
-            register: [{ doctorId, date, diagnosis }]
-        });
-
         const patient = await Patient.findByPk(patientId);
         if (!patient) throw new Error(`El paciente con el id ${id} no se encuentra en la BDD.`);
 
-        await medicalHistory.addPatient(patient);
+        const medicalHistory = await MedicalHistory.create({
+            register: [{ doctorId, date, diagnosis }],
+            PatientId: patientId
+        });
+
+        // const patient = await Patient.findByPk(patientId);
+        // if (!patient) throw new Error(`El paciente con el id ${id} no se encuentra en la BDD.`);
+
+        // await medicalHistory.addPatient(patient);
 
         res.status(200).json(medicalHistory);
     } catch (error) {

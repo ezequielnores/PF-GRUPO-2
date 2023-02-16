@@ -20,6 +20,22 @@ const findAllIncomes = async () => {
     return incomes;
 };
 
+const findAllIncomesByPatient = async patientId => {
+    const incomes = await Incomes.findAll({
+        attributes: ["id", "date", "amount", "detail"],
+        include: [
+            {
+                model: Patient,
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        where: { PatientId: patientId }
+    });
+    return incomes;
+};
+
 const updateIncomeById = async (attributes, id) => {
     const incomeUpdated = await Incomes.update(attributes, { where: { id: id } });
     return incomeUpdated;
@@ -34,5 +50,6 @@ module.exports = {
     getIncomeById,
     findAllIncomes,
     updateIncomeById,
-    deleteIncomeById
+    deleteIncomeById,
+    findAllIncomesByPatient
 };

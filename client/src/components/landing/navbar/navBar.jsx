@@ -44,11 +44,11 @@ const Navbar = () => {
             </Button>
             <ButtonGroup style={butonLogin}>
               <Button color="primary">
-              <Link to="/loginClient">Client Login</Link>
+                <Link to="/loginClient">Client Login</Link>
               </Button>
               <Button color="primary">
-                <Link to ="/loginMedic">Medic Login</Link>
-                 </Button>
+                <Link to="/loginMedic">Medic Login</Link>
+              </Button>
             </ButtonGroup>
           </ButtonGroup>
         </Toolbar>

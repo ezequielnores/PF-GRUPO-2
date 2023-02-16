@@ -21,8 +21,9 @@ const container = {
 };
 const carde = {
   width: "60rem",
-  height: "88rem",
+  height: "70rem",
   padding: "1rem",
+  marginBottom: "3rem",
 };
 const miniNav = {
   marginTop: "2rem",
@@ -54,7 +55,7 @@ const noteThree = () => {
           <div style={{ marginLeft: "5px", marginRight: "5px" }}>
             <Typography
               style={{
-                color: "#147bf4",
+                color: "#307196",
                 fontWeight: "bold",
                 fontSize: "2.5rem",
                 marginBottom: "0.5rem",
@@ -81,7 +82,7 @@ const noteThree = () => {
             <Typography
               variant="h5"
               style={{
-                color: "#147bf4",
+                color: "#307196",
                 fontWeight: "bold",
                 marginBottom: "0.5rem",
                 marginTop: "0.8rem",
