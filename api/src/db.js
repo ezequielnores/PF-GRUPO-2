@@ -44,7 +44,9 @@ const {
   Plans,
   MedicalHistory,
   FrequentQuestions,
-  Incomes
+  Incomes, 
+  Admins,
+  Comments,
 } = sequelize.models;
 
 // Aca vendrian las relaciones
