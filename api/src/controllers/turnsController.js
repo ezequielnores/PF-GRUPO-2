@@ -1,4 +1,5 @@
 const { Turns, Patient, Doctor } = require("../db");
+const { Op } = require("sequelize");
 
 const getTurnById = async id => {
     const turn = await Turns.findByPk(id, { include: [Patient, Doctor] });
@@ -94,6 +95,11 @@ const findAllTurnsByPatient = async patientId => {
 
 const deleteTurnById = async id => {
     const turnDeleted = await Turns.destroy({ where: { id: id } });
+    return turnDeleted;
+};
+
+const deleteTurnByExpiredDate = async date => {
+    const turnDeleted = await Turns.destroy({ where: { date: { [Op.lt]: date } } });
     return turnDeleted;
 };
 
