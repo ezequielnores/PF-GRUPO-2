@@ -5,7 +5,7 @@ import slider from "./slider.json";
 
 function Example() {
   return (
-    <Carousel height="25rem" animation="fade">
+    <Carousel height="25rem" animation="fade" indicators={false}>
       {slider.map((item, i) => (
         <Item key={item.id} item={item} />
       ))}
