@@ -42,7 +42,7 @@ router.use("/incomes", incomesRouter);
 
 router.use("/comments", commentsRouter);
 
-router.use("./admin", adminRouter);
+router.use("./admins", adminRouter);
 
 
 

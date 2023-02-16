@@ -3,22 +3,24 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import HomeIcon from "@mui/icons-material/Home";
 import { ButtonGroup } from "@mui/material";
+import CardMedia from "@mui/material/CardMedia";
+
 //router
 import { Link } from "react-router-dom";
-
+import Logo from "../../../assets/logoiCare.png";
 //styles
 const navbar = {
   backgroundColor: "#F0F8FF",
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-evenly",
-  // position: "fixed",
+  justifyContent: "space-between",
   width: "100%",
+  height: "6.5rem",
+  paddingLeft: "5rem",
 };
 const butonLogin = {
-  marginLeft: "2rem",
+  marginLeft: "3rem",
 };
 //component
 const Navbar = () => {
@@ -27,7 +29,7 @@ const Navbar = () => {
       <AppBar position="static">
         <Toolbar style={navbar}>
           <Link to="/">
-            <HomeIcon color="primary" fontSize="large" />
+            <CardMedia component="img" height="90" image={Logo} alt="logo" />
           </Link>
           <ButtonGroup>
             <Button color="primary">

@@ -18,7 +18,7 @@ const Planes = () => {
           <div style={{ width: "100%" }}>
             <Typography
               style={{
-                backgroundColor: "#0066b2",
+                backgroundColor: "#307196",
                 width: "100%",
                 color: "#F9F9FB",
                 fontWeight: "bold",
@@ -28,15 +28,21 @@ const Planes = () => {
             >
               iCare 360
             </Typography>
-            <Typography variant="h6" color="green">
+            <Typography
+              variant="h6"
+              color="green"
+              style={{ marginBottom: "5px", marginTop: "5px" }}
+            >
               $3000
             </Typography>
-            <Typography component="p">Incluye</Typography>
+            <Typography variant="h5" style={{ marginBottom: "1rem" }}>
+              Includes
+            </Typography>
             <ListItem style={{ display: "list-item" }}>
-              4 Consultas con especialistas
+              4 Consultations with specialists
             </ListItem>
             <ListItem style={{ display: "list-item" }}>
-              2 Guardias mensuales
+              2 Monthly guards
             </ListItem>
           </div>
         </Card>
@@ -44,7 +50,7 @@ const Planes = () => {
           <div style={{ width: "100%" }}>
             <Typography
               style={{
-                backgroundColor: "#0066b2",
+                backgroundColor: "#307196",
                 width: "100%",
                 color: "#F9F9FB",
                 fontWeight: "bold",
@@ -52,19 +58,27 @@ const Planes = () => {
                 fontSize: "2.5rem",
               }}
             >
-              iCare Guardia
+              iCare Guard
             </Typography>
-            <Typography variant="h6" color="green">
+            <Typography
+              variant="h6"
+              color="green"
+              style={{ marginBottom: "5px", marginTop: "5px" }}
+            >
               $1000
             </Typography>
-            <Typography variant="body1" component="p">
-              Incluye:
+            <Typography
+              variant="h5"
+              component="p"
+              style={{ marginBottom: "1rem" }}
+            >
+              Includes
             </Typography>
             <ListItem style={{ display: "list-item" }}>
-              5 Guardias mensuales
+              5 Monthly guards
             </ListItem>
             <ListItem style={{ display: "list-item" }}>
-              1 Consulta con especialista
+              1 Consultation with specialist
             </ListItem>
           </div>
         </Card>
@@ -72,7 +86,7 @@ const Planes = () => {
           <div style={{ width: "100%" }}>
             <Typography
               style={{
-                backgroundColor: "#0066b2",
+                backgroundColor: "#307196",
                 width: "100%",
                 color: "#F9F9FB",
                 fontWeight: "bold",
@@ -82,20 +96,28 @@ const Planes = () => {
             >
               iCare Full
             </Typography>
-            <Typography variant="h6" color="green">
+            <Typography
+              variant="h6"
+              color="green"
+              style={{ marginBottom: "5px", marginTop: "5px" }}
+            >
               $4000
             </Typography>
-            <Typography variant="body1" component="p">
-              Incluye:
+            <Typography
+              variant="h5"
+              component="p"
+              style={{ marginBottom: "1rem" }}
+            >
+              Includes
             </Typography>
             <ListItem style={{ display: "list-item" }}>
-              4 Consultas con especialistas
+              4 Consultations with specialists
             </ListItem>
             <ListItem style={{ display: "list-item" }}>
-              Todas las Guardias que necesites
+              All the guards you need
             </ListItem>
             <ListItem style={{ display: "list-item" }}>
-              Valido pago semestral
+              Valid semiannual payment
             </ListItem>
           </div>
         </Card>
