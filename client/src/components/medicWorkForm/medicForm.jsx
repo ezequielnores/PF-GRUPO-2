@@ -12,9 +12,9 @@ import Alert from "@mui/material/Alert";
 const divPadre = {
   display: "flex",
   justifyContent: "center",
-  alignItems: "center",
   width: "100%",
-  height: "calc(100vh - 150px)",
+  height: "100vh",
+  backgroundColor: "#43B8C8",
 };
 const box = {
   display: "flex",
@@ -22,14 +22,16 @@ const box = {
   textAlign: "center",
   alignItems: "center",
   width: "40rem",
-  height: "45rem",
+  height: "47rem",
   justifyContent: "space-evenly",
 };
 const cardDiv = {
+  marginTop: "4rem",
   display: "flex",
   flexDirection: "column",
-  width: "40rem",
-  height: "22rem",
+  width: "35rem",
+  height: "35rem",
+  boxShadow: "1px -1px 0px -1px rgba(255,255,255,0.75)",
 };
 const divHijo = {
   display: "flex",
@@ -39,6 +41,15 @@ const divHijo = {
   padding: "10px",
   margin: "10px",
 };
+const finalinput = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  gap: "3rem",
+  padding: "10px",
+  margin: "18px",
+};
+
 const MedicForm = () => {
   const [successForm, setSuccessForm] = useState(null);
   //logic form
@@ -82,22 +93,21 @@ const MedicForm = () => {
             This is an error alert — check it out !
           </Alert>
         )}
-        <Typography
-          variant="h2"
-          align="justify"
-          style={{
-            color: "gray",
-            marginTop: "1.5rem",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            fontWeight: "semibold",
-            fontFamily: "monospace",
-            fontSize: "2rem",
-          }}
-        >
-          Join us !
-        </Typography>
+
         <Card style={cardDiv}>
+          <div style={finalinput}>
+            <Typography
+              variant="h2"
+              align="justify"
+              style={{
+                color: "#307196",
+                fontWeight: "bold",
+                fontSize: "3rem",
+              }}
+            >
+              Join us !
+            </Typography>
+          </div>
           <div style={divHijo}>
             <Input
               type="text"
@@ -126,7 +136,7 @@ const MedicForm = () => {
               size="large"
             />
             <Input
-              type="number"
+              type="text"
               name="user_phone"
               placeholder="Phone"
               size="large"
@@ -149,13 +159,25 @@ const MedicForm = () => {
               size="large"
             />
           </div>
-          <div>
-            <TextField name="message" label="Especialty" variant="outlined" />
+          <div style={finalinput}>
+            <Input name="message" placeholder="Especialty" />
+            <Input name="message" placeholder="Location" />
+          </div>
+          <div style={{ marginTop: "3rem" }}>
+            <Button
+              variant="contained"
+              type="submit"
+              value="Send"
+              style={{
+                backgroundColor: "#307196",
+                width: "50%",
+                borderRadius: "12px",
+              }}
+            >
+              Submit
+            </Button>
           </div>
         </Card>
-        <Button variant="contained" type="submit" value="Send">
-          Submit
-        </Button>
       </form>
     </div>
   );
