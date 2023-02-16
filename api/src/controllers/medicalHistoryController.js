@@ -58,5 +58,6 @@ module.exports = {
     findAllMedicalHistory,
     deleteMedicalHistoryById,
     updateMedicalHistoryById,
-    addRegisterMedicalHistory
+    addRegisterMedicalHistory,
+    findAllMedicalHistoryByPatient
 };
