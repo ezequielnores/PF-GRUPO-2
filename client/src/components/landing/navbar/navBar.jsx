@@ -20,7 +20,7 @@ const navbar = {
   paddingLeft: "5rem",
 };
 const butonLogin = {
-  marginLeft: "2rem",
+  marginLeft: "3rem",
 };
 //component
 const Navbar = () => {
