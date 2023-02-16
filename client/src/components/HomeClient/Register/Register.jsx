@@ -37,12 +37,12 @@ const Register = () => {
 
         if(name === 'name' || name === 'surname'){
             if(/\d/.test(form[name]) || /\W/.test(form[name])){
-                setError({ ...error, [name]: 'Invalid Name' });
+                setError({ ...error, [name]: 'Input allows only characters' });
             } else setError({...error, [name]:""});
         };
 
         if(name === 'phone'){
-            if(/^(?:(?:00)?549?)?0?(?:11|[2368]\d)(?:(?=\d{0,2}15)\d{2})??\d{8}$/.test(form[name])){
+            if(/\D/.test(form[name])){
                 setError({ ...error, [name]: 'Invalid Phone' });
             };
         }

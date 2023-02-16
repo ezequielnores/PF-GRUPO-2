@@ -9,22 +9,6 @@ const container = {
   alignItems: "center",
 };
 const formLoginClient = () => {
-<<<<<<< HEAD
-    //aca va el codigo de login de cliente
-    return (
-        <div>
-            <h1>LOGIN</h1>
-            <ButtonGroup>
-                <Button color="primary">
-                    <Link to="/HomeClient">Aceptar</Link>
-                </Button>
-            </ButtonGroup>
-
-        </div>
-    )
-}
-export default formLoginClient;
-=======
   //aca va el codigo de login de cliente
   return (
     <div style={container}>
@@ -38,4 +22,3 @@ export default formLoginClient;
   );
 };
 export default formLoginClient;
->>>>>>> 290c4dc327e40dad2419d445f840076df13c342f
