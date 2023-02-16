@@ -4,20 +4,18 @@ import axios from "axios";
 export const patientGetDetail = createAsyncThunk(
   "patient/getDetail",
   async (id, thunkAPI) => {
-    await axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/patient/${id}`)
-      .then((response) => {
-        return response.data;
-      });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/patient/${id}`
+    );
+    return response;
   }
 );
 
 export const patientGetAll = createAsyncThunk("patient/getAll", async () => {
-  await axios
-    .get(`${process.env.REACT_APP_BACKEND_URL}/patient/`)
-    .then((response) => {
-      return response.data;
-    });
+  const response = await axios.get(
+    `${process.env.REACT_APP_BACKEND_URL}/patient/`
+  );
+  return response;
 });
 
 const patientSlice = createSlice({

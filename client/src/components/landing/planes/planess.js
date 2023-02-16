@@ -1,8 +1,6 @@
 export const padreTarjeta = {
-  display: "flex",
-  justifyContent: "space-evenly",
-  alignItems: "center",
+  backgroundColor: "#43B8C8",
   width: "100%",
   marginTop: "2rem",
-  height: "100%",
+  height: "50vh",
 };

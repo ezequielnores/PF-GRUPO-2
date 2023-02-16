@@ -1,3 +1,11 @@
+.menu{
+    text-align:end;
+    border-radius: 0  1rem 1rem 0;
+    height: 4vh;
+    border: none;
+    background-color: transparent;
+
+}
 .divbutton{
     display: flex;
     justify-content: space-between;
@@ -5,5 +13,28 @@
     align-items:center;
     text-align:end;
 }
+.icon{
+    color: #000000;
+    box-sizing: border-box;
+    border-radius: 0  1rem 1rem 0;
+    height: 4vh;
+    width: 9vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+}
+    /* background-color: #c2c1c1; */
+.buttonBar{
+    border: none;
+    background-color: transparent;
+}
 
+.buttonOut{
+    border: none;
+    background:#307196;
+    color: white;
+    border-radius: 0  1rem 1rem 0;
+    height: 4vh;
+    
+}

@@ -3,7 +3,8 @@ const {
     getFrequentAskById,
     findAllFrequentQuestions,
     updateFrequentAskById,
-    deleteFrequentAskById
+    deleteFrequentAskById,
+    getFrequentAskByAsk
 } = require("../controllers/frequentQuestionsController");
 const { FrequentQuestions } = require("../db");
 const frequentQuestionsRouter = Router();
@@ -14,6 +15,21 @@ frequentQuestionsRouter.get("/", async (req, res) => {
         if (!frequentQuestions.length) throw new Error("No se encuentran preguntas frecuentes en la BDD.");
 
         res.status(200).json(frequentQuestions);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+frequentQuestionsRouter.get("/frequentAskByAsk", async (req, res) => {
+    const { ask } = req.body;
+
+    try {
+        if (!ask) throw new Error("La pregunta esta indefinida.");
+
+        const frequentAsk = await getFrequentAskByAsk(ask);
+        if (!frequentAsk) throw new Error(`No se encontro la pregunta ${ask} en la BDD.`);
+
+        res.status(200).json(frequentAsk);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
