@@ -6,8 +6,34 @@ const getMedicalHistoryById = async id => {
 };
 
 const findAllMedicalHistory = async () => {
-    const medicalHistories = await MedicalHistory.findAll();
+    const medicalHistories = await MedicalHistory.findAll({
+        attributes: ["id", "register"],
+        include: [
+            {
+                model: Patient,
+                through: {
+                    attributes: []
+                }
+            }
+        ]
+    });
     return medicalHistories;
+};
+
+const findAllMedicalHistoryByPatient = async patientId => {
+    const medicalHistoryByPatient = await MedicalHistory.findAll({
+        attributes: ["id", "register"],
+        include: [
+            {
+                model: Patient,
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        where: { PatientId: patientId }
+    });
+    return medicalHistoryByPatient;
 };
 
 const deleteMedicalHistoryById = async id => {
