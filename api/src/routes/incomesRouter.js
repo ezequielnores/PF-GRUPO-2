@@ -43,17 +43,21 @@ incomesRouter.post("/", async (req, res) => {
             throw new Error("Datos incompletos.");
         }
 
+        const patient = await Patient.findByPk(patientId);
+        if (!patient) throw new Error(`No se encuentra ningun paciente en la BDD con el id ${id}.`);
+
         const incomeCreated = await Incomes.create({
             date: date,
             amount: amount,
-            detail: detail
+            detail: detail,
+            PatientId: patientId
         });
         if (!incomeCreated) throw new Error("Error al crear el ingreso.");
 
-        const patient = await Patient.findByPk(patientId);
-        if (!patient) throw new Error(`No se encuentra ningun paciente en la BDD con el id ${id}`);
+        // const patient = await Patient.findByPk(patientId);
+        // if (!patient) throw new Error(`No se encuentra ningun paciente en la BDD con el id ${id}.`);
 
-        await incomeCreated.addPatient(patient);
+        // await incomeCreated.addPatient(patient);
 
         res.status(200).json(incomeCreated);
     } catch (error) {
