@@ -29,10 +29,10 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         symptoms: {
-            type: DataTypes.ARRAY
+            type: DataTypes.ARRAY(DataTypes.STRING)
         },
         tips: {
-            type: DataTypes.ARRAY,
+            type: DataTypes.ARRAY(DataTypes.STRING),
             allowNull: false
         },
         extraText: {
