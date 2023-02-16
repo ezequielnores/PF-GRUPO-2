@@ -11,7 +11,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import ForumIcon from '@mui/icons-material/Forum';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import LogoutIcon from '@mui/icons-material/Logout';
-const SideBar = ({open , handleOpen}) => {
+const SideBar = ({open , handleOpen,path}) => {
     
     return (
         <div>
@@ -21,97 +21,119 @@ const SideBar = ({open , handleOpen}) => {
 
                     <Stack spacing={1} width = {open? 200 : 45}>
 
-                    <button onClick={handleOpen} style={{textAlign:"end"}}><MenuIcon/></button>
-                        <button>
+                    <button onClick={handleOpen} className={style.menu}><MenuIcon/></button>
+                        <button className={style.buttonBar}>
                             <Link to="/HomeClient">
                             {open? 
                                     <div className={style.divbutton}>
-                                        <HomeIcon />
+                                        {path.endsWith("/HomeClient")? 
+                                        <div className={style.icon} style={{background:"#307196"}}><HomeIcon style={{color:"white"}}/></div> : 
+                                        <div className={style.icon} style={{background:"#c2c1c1"}}><HomeIcon /></div> }
                                         Home
                                     </div>
-                                    : <HomeIcon/> 
+                                    : path.endsWith("/HomeClient")?<HomeIcon/> : <HomeIcon style={{color:"grey"}}/>
                                 }
                             </Link>
                         </button>
-                        <button >
+                        <button className={style.buttonBar}>
                             <Link to="/HomeClient/Profile">
                                 {open? 
                                     <div className={style.divbutton}>
-                                        <AccountCircleIcon />
+                                        {path.endsWith("/HomeClient/Profile")? 
+                                        <div className={style.icon} style={{background:"#307196"}}><AccountCircleIcon style={{color:"white"}}/></div> : 
+                                        <div className={style.icon} style={{background:"#c2c1c1"}}><AccountCircleIcon /></div> }                                        
                                         Profile
                                     </div>
-                                    : <AccountCircleIcon/> 
+                                    : path.endsWith("/HomeClient/Profile")? <AccountCircleIcon/> : <AccountCircleIcon style={{color:"grey"}}/>
                                 }
                                 </Link>
                         </button>
-                        <button>
+                        <button className={style.buttonBar}>
                             <Link to="/HomeClient/MyAppointments">
                             {open? 
                                     <div className={style.divbutton}>
-                                        <CalendarMonthIcon />
+                                        {path.endsWith("/HomeClient/MyAppointments")? 
+                                        <div className={style.icon} style={{background:"#307196"}}><CalendarMonthIcon style={{color:"white"}}/></div> : 
+                                        <div className={style.icon} style={{background:"#c2c1c1"}}><CalendarMonthIcon/></div> }
                                         My Appointments
                                     </div>
-                                    : <CalendarMonthIcon /> 
+                                    : path.endsWith("/HomeClient/MyAppointments")? <CalendarMonthIcon /> : <CalendarMonthIcon style={{color:"grey"}}/>
                                 }
                             </Link>
                         </button>
-                        <button>
+                        <button className={style.buttonBar}>
                             <Link to="/HomeClient/Urgency">
                             {open? 
                                     <div className={style.divbutton}>
-                                        <MedicalServicesIcon />
+                                        {path.endsWith("/HomeClient/Urgency")? 
+                                        <div className={style.icon} style={{background:"#307196"}}><MedicalServicesIcon style={{color:"white"}}/></div> : 
+                                        <div className={style.icon} style={{background:"#c2c1c1"}}><MedicalServicesIcon/></div> }
                                         Urgency
                                     </div>
-                                    : <MedicalServicesIcon /> 
+                                    : path.endsWith("/HomeClient/Urgency")?<MedicalServicesIcon /> : <MedicalServicesIcon style={{color:"grey"}}/>
                                 }
                             </Link>
                         </button>
-                        <button>
+                        <button className={style.buttonBar}>
                             <Link to="/HomeClient/MedicalAppointments">
                             {open? 
                                     <div className={style.divbutton}>
-                                        <AddCardIcon/>
+                                        {path.endsWith("/HomeClient/MedicalAppointments")? 
+                                        <div className={style.icon} style={{background:"#307196"}}><AddCardIcon style={{color:"white"}}/></div> : 
+                                        <div className={style.icon} style={{background:"#c2c1c1"}}><AddCardIcon/></div> }
                                         Medical Appointments
                                     </div>
-                                    : <AddCardIcon /> 
+                                    : 
+                                    path.endsWith("/HomeClient/MedicalAppointments")? <AddCardIcon />: <AddCardIcon style={{color:"grey"}}/> 
                                 }
                             </Link>
                         </button>
-                        <button>
+                        <button className={style.buttonBar}>
                             <Link to="/HomeClient/MedicalHistory">
                             {open? 
                                     <div className={style.divbutton}>
-                                        <AssignmentIcon/>
+                                        {path.endsWith("/HomeClient/MedicalHistory")? 
+                                        <div className={style.icon} style={{background:"#307196"}}><AssignmentIcon style={{color:"white"}}/></div> : 
+                                        <div className={style.icon} style={{background:"#c2c1c1"}}><AssignmentIcon/></div> }
                                         Medical History
                                     </div>
-                                    : <AssignmentIcon /> 
+                                    : path.endsWith("/HomeClient/MedicalHistory")? <AssignmentIcon /> : <AssignmentIcon style={{color:"grey"}}/>
                                 }
                             </Link>
                         </button>
-                        <button>
+                        <button className={style.buttonBar}>
                             <Link to="/HomeClient/Chat">
                             {open? 
                                     <div className={style.divbutton}>
-                                        <ForumIcon/>
+                                        {path.endsWith("/HomeClient/Chat")? 
+                                        <div className={style.icon} style={{background:"#307196"}}><ForumIcon style={{color:"white"}}/></div> : 
+                                        <div className={style.icon} style={{background:"#c2c1c1"}}><ForumIcon/></div> }
                                         Chat
                                     </div>
-                                    : <ForumIcon /> 
+                                    : 
+                                    path.endsWith("/HomeClient/Chat")? <ForumIcon /> : <ForumIcon style={{color:"grey"}}/>
                                 }
                             </Link>
                         </button>
-                        <button>
+                        <button className={style.buttonBar}>
                             <Link to="/HomeClient/Reviews">
                             {open? 
                                     <div className={style.divbutton}>
-                                        <RateReviewIcon/>
+                                        {path.endsWith("HomeClient/Reviews")? 
+                                        <div className={style.icon} style={{background:"#307196"}}><RateReviewIcon style={{color:"white"}}/></div> : 
+                                        <div className={style.icon} style={{background:"#c2c1c1"}}><RateReviewIcon/></div> }
                                         Reviews
                                     </div>
-                                    : <RateReviewIcon /> 
+                                    : 
+                                    path.endsWith("HomeClient/Reviews")? 
+                                    <RateReviewIcon/>
+                                    :
+                                    <RateReviewIcon style={{color:"grey"}}/>
                                 }
                             </Link>
                         </button>
                     </Stack>
-                    <button style={{background:"#307196"}}>
+                    <button className={style.buttonOut} style={{width:open? "9vw":"2vw"}}>
                         <Link to="/">
                         {open? 
                                     <div className={style.divbutton} style={{color:"white"}}>
