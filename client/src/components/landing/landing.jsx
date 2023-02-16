@@ -39,7 +39,7 @@ const landing = () => {
             <Typography variant="h1" style={{ color: "#43B8C8" }}>
               i
             </Typography>
-            <Typography variant="h1" style={{ color: "#307196" }}>
+            <Typography variant="h1" style={{ color: /* "#307196" */"black" }}>
               Care
             </Typography>
           </div>
