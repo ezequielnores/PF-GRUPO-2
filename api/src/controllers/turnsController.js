@@ -98,9 +98,9 @@ const deleteTurnById = async id => {
     return turnDeleted;
 };
 
-const deleteTurnByExpiredDate = async date => {
-    const turnDeleted = await Turns.destroy({ where: { date: { [Op.lt]: date } } });
-    return turnDeleted;
+const deleteTurnsByExpiredDate = async date => {
+    const turnsDeleted = await Turns.destroy({ where: { date: { [Op.lt]: date } } });
+    return turnsDeleted;
 };
 
 const updateTurnById = async (attributes, id) => {
@@ -116,5 +116,5 @@ module.exports = {
     findAllTurnsByDate,
     findAllTurnsByDoctor,
     findAllTurnsByPatient,
-    deleteTurnByExpiredDate
+    deleteTurnsByExpiredDate
 };
