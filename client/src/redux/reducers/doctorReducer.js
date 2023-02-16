@@ -4,38 +4,37 @@ import axios from "axios";
 export const doctorGetDetail = createAsyncThunk(
   "doctor/get",
   async (id, thunkAPI) => {
-    await axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/doctor/${id}`)
-      .then((response) => {
-        return response.data;
-      });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/doctor/${id}`
+    );
+
+    return response;
   }
 );
 
 export const docrtorGetAll = createAsyncThunk("doctor/getAll", async () => {
-  await axios
-    .get(`${process.env.REACT_APP_BACKEND_URL}/doctor/`)
-    .then((response) => {
-      return response.data;
-    });
+  const response = await axios.get(
+    `${process.env.REACT_APP_BACKEND_URL}/doctor/`
+  );
+  return response;
 });
 
 export const doctorAdd = createAsyncThunk("doctor/addById", async (data) => {
-  await axios
-    .post(`${process.env.REACT_APP_BACKEND_URL}/doctor`, data)
-    .then((response) => {
-      return response.data;
-    });
+  const response = await axios.post(
+    `${process.env.REACT_APP_BACKEND_URL}/doctor`,
+    data
+  );
+  return response;
 });
 
 export const doctorUpdate = createAsyncThunk(
   "doctor/updateById",
   async (id, data) => {
-    await axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}/doctor/update/${id}`, data)
-      .then((response) => {
-        return response.data;
-      });
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/doctor/update/${id}`,
+      data
+    );
+    return response;
   }
 );
 
