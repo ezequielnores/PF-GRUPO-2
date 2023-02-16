@@ -4,36 +4,31 @@ import axios from "axios";
 export const historyGetDetail = createAsyncThunk(
   "medicalHistory/get",
   async (id, thunkAPI) => {
-    await axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/patient/${id}`)
-      .then((response) => {
-        return response.data;
-      });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/patient/${id}`
+    );
+    return response;
   }
 );
 
 export const historyGetAll = createAsyncThunk(
   "medicalHistory/getAll",
   async () => {
-    await axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/medicalHistory/`)
-      .then((response) => {
-        return response.data;
-      });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/medicalHistory/`
+    );
+    return response;
   }
 );
 
 export const historyAddById = createAsyncThunk(
   "medicalHistory/addById",
   async (id, data) => {
-    await axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URL}/medicalHistory/addRegister/${id}`,
-        data
-      )
-      .then((response) => {
-        return response.data;
-      });
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/medicalHistory/addRegister/${id}`,
+      data
+    );
+    return response;
   }
 );
 
