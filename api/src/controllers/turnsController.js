@@ -115,5 +115,6 @@ module.exports = {
     updateTurnById,
     findAllTurnsByDate,
     findAllTurnsByDoctor,
-    findAllTurnsByPatient
+    findAllTurnsByPatient,
+    deleteTurnByExpiredDate
 };
