@@ -32,17 +32,17 @@ const Navbar = () => {
             <CardMedia component="img" height="90" image={Logo} alt="logo" />
           </Link>
           <ButtonGroup>
-            <Button style={buttons}>
-              <Link style={links} to="/work">Work with us</Link>
+            <Button>
+              <Link to="/work">Work with us</Link>
             </Button>
-            <Button style={buttons}>
-              <Link style={links} to="/about">About</Link>
+            <Button>
+              <Link to="/about">About</Link>
             </Button>
-            <Button style={buttons}>
-              <Link style={links} to="/services">Services</Link>
+            <Button>
+              <Link to="/services">Services</Link>
             </Button>
-            <Button style={buttons}>
-              <Link style={links}to="/blog">Blog</Link>
+            <Button>
+              <Link to="/blog">Blog</Link>
             </Button>
             <ButtonGroup style={butonLogin}>
               <Button color="primary">
