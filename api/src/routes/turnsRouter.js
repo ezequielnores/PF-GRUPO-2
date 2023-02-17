@@ -29,7 +29,7 @@ turnsRouter.get("/turnsByDate", async (req, res) => {
         if (!date) throw new Error("La fecha no esta definida.");
 
         const turnsByDate = await findAllTurnsByDate(date);
-        if (!turnsByDate) throw new Error(`No se encuantran turnos en la BDD para la fecha ${date}.`);
+        if (!turnsByDate.length) throw new Error(`No se encuantran turnos en la BDD para la fecha ${date}.`);
 
         res.status(200).json(turnsByDate);
     } catch (error) {
@@ -43,25 +43,25 @@ turnsRouter.get("/turnsByPatient/:id", async (req, res) => {
     try {
         if (!id) throw new Error("El id del paciente esta indefinido");
 
-        const turnByPatient = await findAllTurnsByPatient(id);
-        if (!turnByPatient) throw new Error(`No se encontro ningun turno del paciente con el id ${id} en la BDD.`);
+        const turnsByPatient = await findAllTurnsByPatient(id);
+        if (!turnsByPatient.length) throw new Error(`No se encontro ningun turno del paciente con el id ${id} en la BDD.`);
 
-        res.status(200).json(turnByPatient);
+        res.status(200).json(turnsByPatient);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
 
-turnsRouter.get("/tunrsByDoctor/:id", async (req, res) => {
+turnsRouter.get("/turnsByDoctor/:id", async (req, res) => {
     const { id } = req.params;
 
     try {
         if (!id) throw new Error("El id del paciente esta indefinido");
 
-        const turnByDoctor = await findAllTurnsByDoctor(id);
-        if (!turnByDoctor) throw new Error(`No se encontro ningun turno del doctor con el id ${id} en la BDD.`);
+        const turnsByDoctor = await findAllTurnsByDoctor(id);
+        if (!turnsByDoctor.length) throw new Error(`No se encontro ningun turno del doctor con el id ${id} en la BDD.`);
 
-        res.status(200).json(turnByDoctor);
+        res.status(200).json(turnsByDoctor);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
