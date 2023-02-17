@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const {
+    createTurn,
     getTurnById,
     findAllTurns,
     deleteTurnById,
@@ -10,7 +11,6 @@ const {
     deleteTurnsByExpiredDate
 } = require("../controllers/turnsController");
 const turnsRouter = Router();
-const { Turns, Patient, Doctor } = require("../db");
 
 turnsRouter.get("/", async (req, res) => {
     try {
@@ -117,19 +117,8 @@ turnsRouter.post("/", async (req, res) => {
             throw new Error("Datos incompletos.");
         }
 
-        const turn = await Turns.create({
-            availability: availability,
-            date: date,
-            hour: hour,
-            type: type ? type : null,
-            ubication: ubication,
-            doctorSpecialty: doctorSpecialty,
-        });
-
+        const turn = await createTurn(availability, date, hour, type, ubication, doctorSpecialty, doctorId, patientId);
         if (!turn) throw new Error("Error al crear el turno.");
-
-        await turn.setDoctor(doctorId);
-        await turn.setPatient(patientId);
 
         res.status(200).json(turn);
     } catch (error) {
