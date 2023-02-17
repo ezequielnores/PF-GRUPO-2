@@ -6,7 +6,7 @@ const {
     updateMedicalHistoryById,
     deleteMedicalHistoryById,
     addRegisterMedicalHistory,
-    findAllMedicalHistoryByPatient
+    getMedicalHistoryByPatient
 } = require("../controllers/medicalHistoryController");
 const medicalHistoryRouter = Router();
 
@@ -26,7 +26,7 @@ medicalHistoryRouter.get("/medicalHistoryByPatient/:id", async (req, res) => {
     try {
         if (!id) throw new Error("El id del paciente esta indefinido.");
 
-        const medicalHistoryByPatient = await findAllMedicalHistoryByPatient(id);
+        const medicalHistoryByPatient = await getMedicalHistoryByPatient(id);
         if (!medicalHistoryByPatient) {
             throw new Error(`No se encontro ningun historial clinico del paciente con el id ${id} en la BDD.`);
         }
