@@ -1,6 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const doctorLogin = createAsyncThunk(
+  "doctor/login",
+  async (data, thunkAPI) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/doctor/login}`,
+      data
+    );
+
+    return response.data;
+  }
+);
+
 export const doctorGetDetail = createAsyncThunk(
   "doctor/get",
   async (id, thunkAPI) => {
@@ -45,6 +57,7 @@ const doctorSlice = createSlice({
     list: [],
     status: "idle",
     error: null,
+    loggedIn: {},
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -78,6 +91,17 @@ const doctorSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(doctorAdd.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(doctorLogin.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(doctorLogin.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.loggedIn = action.payload;
+      })
+      .addCase(doctorLogin.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
