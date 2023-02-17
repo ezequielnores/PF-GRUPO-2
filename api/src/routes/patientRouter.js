@@ -71,13 +71,12 @@ router.post('/', async (req, res) => {
     active,
     historyPayment
   } = req.body
-
 try {
 
   if(!name || !surname || !mail || !password || !weight || !height || !location || !dni){
     res.status(404).send('faltan datos')
   } else {
-    const newPatient = await Patient.create({
+    await Patient.create({
       name, 
       surname,
       mail,

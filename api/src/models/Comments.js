@@ -6,11 +6,11 @@ module.exports = (sequelize) =>{
         id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoincrement: true,
+            autoIncrement: true,
             allowNull: false
         },
         message: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
+            type: DataTypes.ARRAY(DataTypes.JSONB),
             allowNull: false
         }
     },{
