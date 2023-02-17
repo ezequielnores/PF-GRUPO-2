@@ -91,9 +91,7 @@ try {
       dni: dni,
       phone: phone,
       socialSecurity: socialSecurity,
-      plan: plan,
       active: active,
-      historyPayment:historyPayment
     });
     res.status(200).send('Patient create successfully')
   } 
