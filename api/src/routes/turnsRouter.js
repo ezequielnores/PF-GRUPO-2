@@ -11,7 +11,6 @@ const {
     deleteTurnsByExpiredDate
 } = require("../controllers/turnsController");
 const turnsRouter = Router();
-const { Turns, Patient, Doctor } = require("../db");
 
 turnsRouter.get("/", async (req, res) => {
     try {
