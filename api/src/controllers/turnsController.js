@@ -39,7 +39,7 @@ const findAllTurnsByDoctor = async doctorId => {
             { model: Patient },
             { model: Doctor }
         ],
-        where: { DoctorId: doctorId }
+        where: { doctorId: doctorId }
     });
     return turnsByDoctor;
 };
