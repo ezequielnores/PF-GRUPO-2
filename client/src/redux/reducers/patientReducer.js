@@ -15,9 +15,25 @@ export const patientLogin = createAsyncThunk(
   "patient/login",
   async (data, thunkAPI) => {
     const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/patientr/login}`,
+      `${process.env.REACT_APP_BACKEND_URL}/patient/login`,
       data
     );
+    return response.data;
+  }
+);
+
+export const patientRegister = createAsyncThunk(
+  "patient/register",
+  async (data) => {
+    const response = await axios
+      .post(`${process.env.REACT_APP_BACKEND_URL}/patient`, data)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((err) => {
+        throw new Error("Failed");
+      });
+    console.log(response);
     return response.data;
   }
 );
