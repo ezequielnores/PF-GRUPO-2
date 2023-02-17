@@ -1,5 +1,13 @@
 const { MedicalHistory, Patient } = require("../db");
 
+const createMedicalHistory = async (patientId, doctorId, date, diagnosis) => {
+    const medicalHistory = await MedicalHistory.create({
+        register: [{ doctorId, date, diagnosis }],
+    });
+    await medicalHistory.setPatient(patientId);
+    return medicalHistory;
+};
+
 const getMedicalHistoryById = async id => {
     const medicalHistory = await MedicalHistory.findByPk(id, { include: { model: Patient } });
     return medicalHistory;
@@ -8,29 +16,15 @@ const getMedicalHistoryById = async id => {
 const findAllMedicalHistory = async () => {
     const medicalHistories = await MedicalHistory.findAll({
         attributes: ["id", "register"],
-        include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            }
-        ]
+        include: { model: Patient }
     });
     return medicalHistories;
 };
 
 const findAllMedicalHistoryByPatient = async patientId => {
-    const medicalHistoryByPatient = await MedicalHistory.findAll({
+    const medicalHistoryByPatient = await MedicalHistory.findOne({
         attributes: ["id", "register"],
-        include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            }
-        ],
+        include: { model: Patient },
         where: { PatientId: patientId }
     });
     return medicalHistoryByPatient;
@@ -54,6 +48,7 @@ const addRegisterMedicalHistory = async (oldRegister, newRegister, id) => {
 };
 
 module.exports = {
+    createMedicalHistory,
     getMedicalHistoryById,
     findAllMedicalHistory,
     deleteMedicalHistoryById,
