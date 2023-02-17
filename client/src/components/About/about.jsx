@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 
 //Style
 const divPadre = {
-  backgroundColor: "#f7f7f7",
+  backgroundColor: "#43B8C8",
   width: "100%",
   height: "100vh",
   display: "flex",
@@ -15,7 +15,6 @@ const divPadre = {
 };
 const containerCards = {
   marginTop: "2rem",
-  // height: "100%",
   width: "100%",
   display: "flex",
   flexDirection: "row",
@@ -42,44 +41,68 @@ const about = () => {
           <Card
             style={{
               width: "25rem",
-              height: "25rem",
+              height: "26.5rem",
               marginLeft: "2rem",
-              opacity: ".8",
+              opacity: ".9",
               borderRadius: "8px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "start",
             }}
           >
-            <Typography
+            <div
               style={{
-                color: "#307196",
-                marginTop: "1.5rem",
-                marginBottom: "1.5rem",
-                fontWeight: "bold",
-                fontFamily: "sans-serif",
-                fontSize: "2.5rem",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
               }}
             >
-              Icare
+              <Typography
+                style={{
+                  color: "#43B8C8",
+                  marginTop: "1.5rem",
+                  marginBottom: "1.5rem",
+                  fontWeight: "bold",
+                  fontSize: "2.5rem",
+                }}
+              >
+                i
+              </Typography>
+              <Typography
+                style={{
+                  color: "#307196",
+                  marginTop: "1.5rem",
+                  marginBottom: "1.5rem",
+                  fontWeight: "bold",
+                  fontSize: "2.5rem",
+                }}
+              >
+                Care
+              </Typography>
+            </div>
+
+            <Typography
+              style={{ padding: "10px", fontWeight: "semibold" }}
+              align="justify"
+              variant="body1"
+              color="text.secondary"
+            >
+              At our digital healthcare team, we are committed to improving
+              people's health from the comfort of their home. Our virtual care
+              service offers medical consultations through video calls and
+              specialized appointments, allowing our patients to access
+              high-quality medical care without having to leave home.{" "}
             </Typography>
             <Typography
+              style={{ padding: "10px", fontWeight: "semibold" }}
               align="justify"
-              style={{
-                color: "gray",
-                marginBottom: "1.5rem",
-                paddingLeft: "10px",
-                paddingRight: "10px",
-                fontWeight: "semibold",
-                fontFamily: "sans-serif",
-                fontSize: "1rem",
-              }}
+              variant="body1"
+              color="text.secondary"
             >
-              Lorem ipsum dolor si tenetur deserunt earum sed iusto voluptatibus
-              sapiente.Lorem ipsum dolor si tenetur deserunt earum sed iusto
-              voluptatibus sapiente.Lorem ipsum dolor si tenetur deserunt earum
-              sed iusto voluptatibus sapiente.Lorem ipsum dolor si tenetur
-              deserunt earum sed iusto voluptatibus sapiente
+              We believe that healthcare should be accessible and convenient for
+              everyone, regardless of their location or personal situation. Our
+              goal is to transform the way people access healthcare, making it
+              easier and more convenient for everyone.
             </Typography>
           </Card>
         </div>
@@ -87,7 +110,7 @@ const about = () => {
           <Card
             style={{
               width: "30rem",
-              height: "10rem",
+              height: "11rem",
               backgroundColor: "#eeeeee",
             }}
           >
@@ -105,25 +128,28 @@ const about = () => {
                 New group with great ideas
               </Typography>
               <Typography
-                component="p"
-                align="justify"
                 style={{
+                  padding: "10px",
+                  fontWeight: "semibold",
                   paddingLeft: "10px",
-                  paddingRight: "10px",
-                  color: "#454546",
                 }}
+                align="justify"
+                variant="body1"
+                color="text.secondary"
+                variant-="body1"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Nesciunt, voluptatum illo! Natus debitis nemo totam officia,
-                officiis accusamus quisquam neque, recusandae expedita enim
-                velit dolorum omnis repellendus, est maxime aspernatur!
+                We believe that innovation and creative ideas are key to
+                creating a unique and effective experience for our users.We work
+                tirelessly to deliver an experience that exceeds our users'
+                expectations and offer innovative solutions that meet their
+                needs.
               </Typography>
             </div>
           </Card>
           <Card
             style={{
               width: "30rem",
-              height: "10rem",
+              height: "11rem",
               backgroundColor: "#eeeeee",
             }}
           >
@@ -141,21 +167,28 @@ const about = () => {
                 With a clear objective, health
               </Typography>
               <Typography
-                component="p"
+                style={{
+                  padding: "10px",
+                  fontWeight: "semibold",
+                  paddingLeft: "10px",
+                }}
                 align="justify"
-                style={{ paddingLeft: "10px", paddingRight: "10px" }}
+                variant="body1"
+                color="text.secondary"
+                variant-="body1"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Nesciunt, voluptatum illo! Natus debitis nemo totam officia,
-                officiis accusamus quisquam neque, recusandae expedita enim
-                velit dolorum omnis repellendus, est maxime aspernatur!
+                Our main goal is your health. We are proud to provide you with a
+                service that focuses on your well-being and helping you improve
+                your quality of life. Whether you need a primary care
+                consultation, a specialist or just someone to talk to about your
+                health concerns, we are here to support you.
               </Typography>
             </div>
           </Card>
           <Card
             style={{
               width: "30rem",
-              height: "10rem",
+              height: "11rem",
               backgroundColor: "#eeeeee",
             }}
           >
@@ -173,20 +206,33 @@ const about = () => {
                 Technology that takes care of your health
               </Typography>
               <Typography
-                component="p"
+                style={{
+                  padding: "10px",
+                  fontWeight: "semibold",
+                  paddingLeft: "10px",
+                }}
                 align="justify"
-                style={{ paddingLeft: "10px", paddingRight: "10px" }}
+                variant="body1"
+                color="text.secondary"
+                variant-="body1"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Nesciunt, voluptatum illo! Natus debitis nemo totam officia,
-                officiis accusamus quisquam neque, recusandae expedita enim
-                velit dolorum omnis repellendus, est maxime aspernatur!
+                Our virtual health care services allow you to receive medical
+                care from the comfort of your home, without having to worry
+                about traveling or waiting in a waiting room. With our advanced
+                technology, you can connect with high-quality medical
+                professionals online and get personalized, affordable care.
               </Typography>
             </div>
           </Card>
         </div>
         <Link to="/services">
-          <Button variant="contained" style={{ marginTop: "1.5rem" }}>
+          <Button
+            variant="contained"
+            style={{
+              marginTop: "3rem",
+              backgroundColor: "#307196",
+            }}
+          >
             Know more
           </Button>
         </Link>
