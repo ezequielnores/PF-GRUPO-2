@@ -21,7 +21,7 @@ const findAllMedicalHistory = async () => {
     return medicalHistories;
 };
 
-const findAllMedicalHistoryByPatient = async patientId => {
+const getMedicalHistoryByPatient = async patientId => {
     const medicalHistoryByPatient = await MedicalHistory.findOne({
         attributes: ["id", "register"],
         include: { model: Patient },
@@ -54,5 +54,5 @@ module.exports = {
     deleteMedicalHistoryById,
     updateMedicalHistoryById,
     addRegisterMedicalHistory,
-    findAllMedicalHistoryByPatient
+    getMedicalHistoryByPatient
 };
