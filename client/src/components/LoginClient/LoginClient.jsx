@@ -8,6 +8,7 @@ import Card from "@mui/material/Card";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { patientGetAll } from "../../redux/reducers/patientReducer";
+import { Alert } from "@mui/material";
 //styles
 const divPadre = {
   display: "flex",
@@ -47,6 +48,7 @@ const buton = {
 const FormLoginClient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [successLogin, setSuccessLogin] = useState(null);
   //me creo estado para guardar lo que toma de inptus
   const [info, setInfo] = useState({
     mail: "",
@@ -64,19 +66,19 @@ const FormLoginClient = () => {
   const pacientes = useSelector((state) => state.patient.list);
 
 
-  //SUBMITTTT
+  //SUBMIT
   const handleSubmit = (e) => {
     e.preventDefault();
     const authenticatedPatient = pacientes.find((paciente) => {
-      return paciente.mail === paciente.mail && paciente.password === paciente.password;
+      return paciente.mail === info.mail && paciente.password === info.password;
     });
-    console.log(authenticatedPatient.id);
+
     if (authenticatedPatient) {
       const id = authenticatedPatient.id;
       localStorage.setItem("id", id);
       navigate("/HomeClient/Profile", { state: { id } });
     } else {
-      alert("Error en credenciales");
+      setSuccessLogin("error");
     }
   };
   //primera carga
@@ -89,7 +91,7 @@ const FormLoginClient = () => {
     }
   }, []);
 
-  console.log(info);
+
 
   return (
     <div style={divPadre}>
@@ -102,6 +104,9 @@ const FormLoginClient = () => {
         noValidate
         autoComplete="off"
       >
+        {successLogin === "error" && (
+          <Alert severity="error">Incorrect or missing information</Alert>
+        )}
         <Card style={cardDiv}>
           <Typography
             variant="h2"
