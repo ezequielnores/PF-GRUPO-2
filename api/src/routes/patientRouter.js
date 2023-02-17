@@ -10,7 +10,7 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     const { name } = req.query;
-    const allPatient = getPatientInfo();
+    const allPatient = await getPatientInfo();
     if (name) {
       const patientName = await allPatient.filter((e) => {
         e.name.toLowerCase().includes(name.toLowerCase());
@@ -76,24 +76,24 @@ try {
     res.status(404).send('faltan datos')
   } else {
     const newPatient = await Patient.create({
-      name, 
-      surname,
-      mail,
-      password,
-      birthday,
-      weight,
-      height,
-      bmi,
-      allergies,
-      chronicDiseases,
-      photo,
-      location,
-      dni,
-      phone,
-      socialSecurity,
-      plan,
-      active,
-      historyPayment
+      name: name, 
+      surname: surname,
+      mail: mail,
+      password: password,
+      birthday: birthday,
+      weight: weight,
+      height: height,
+      bmi: bmi,
+      allergies: allergies,
+      chronicDiseases: chronicDiseases,
+      photo: photo,
+      location: location,
+      dni: dni,
+      phone: phone,
+      socialSecurity: socialSecurity,
+      plan: plan,
+      active: active,
+      historyPayment:historyPayment
     });
     res.status(200).send('Patient create successfully')
   } 
