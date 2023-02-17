@@ -1,13 +1,13 @@
 const { Router } = require("express");
 const {
+    createMedicalHistory,
     getMedicalHistoryById,
     findAllMedicalHistory,
     updateMedicalHistoryById,
     deleteMedicalHistoryById,
     addRegisterMedicalHistory,
-    findAllMedicalHistoryByPatient
+    getMedicalHistoryByPatient
 } = require("../controllers/medicalHistoryController");
-const { MedicalHistory, Patient, Doctor } = require("../db");
 const medicalHistoryRouter = Router();
 
 medicalHistoryRouter.get("/", async (req, res) => {
@@ -26,7 +26,7 @@ medicalHistoryRouter.get("/medicalHistoryByPatient/:id", async (req, res) => {
     try {
         if (!id) throw new Error("El id del paciente esta indefinido.");
 
-        const medicalHistoryByPatient = await findAllMedicalHistoryByPatient(id);
+        const medicalHistoryByPatient = await getMedicalHistoryByPatient(id);
         if (!medicalHistoryByPatient) {
             throw new Error(`No se encontro ningun historial clinico del paciente con el id ${id} en la BDD.`);
         }
@@ -59,18 +59,9 @@ medicalHistoryRouter.post("/", async (req, res) => {
             throw new Error("Datos incompletos.");
         }
 
-        const patient = await Patient.findByPk(patientId);
-        if (!patient) throw new Error(`El paciente con el id ${id} no se encuentra en la BDD.`);
+        const medicalHistory = await createMedicalHistory(patientId, doctorId, date, diagnosis);
 
-        const medicalHistory = await MedicalHistory.create({
-            register: [{ doctorId, date, diagnosis }],
-            PatientId: patientId
-        });
-
-        // const patient = await Patient.findByPk(patientId);
-        // if (!patient) throw new Error(`El paciente con el id ${id} no se encuentra en la BDD.`);
-
-        // await medicalHistory.addPatient(patient);
+        if (!medicalHistory) throw new Error("Error al crear el historial clinico.");
 
         res.status(200).json(medicalHistory);
     } catch (error) {

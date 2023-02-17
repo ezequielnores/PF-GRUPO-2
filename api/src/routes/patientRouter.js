@@ -15,14 +15,12 @@ router.get("/", async (req, res) => {
       const patientName = await allPatient.filter((e) => {
         e.name.toLowerCase().includes(name.toLowerCase());
       });
-      if (patientName.length){
+      if (patientName.length) {
         res.status(200).send(patientName);
       } else {
         res.status(404).send("Patient not found");
       }
-    } else if(!allPatient.length){
-      res.status(404).send('Not patients in DB')
-    }else {
+    } else {
       res.status(200).send(allPatient);
     }
   } catch (error) {
@@ -50,9 +48,9 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
-  const { 
-    name, 
+router.post("/", async (req, res) => {
+  const {
+    name,
     surname,
     mail,
     password,
@@ -69,32 +67,31 @@ router.post('/', async (req, res) => {
     socialSecurity,
     plan,
     active,
-    historyPayment
-  } = req.body
+    historyPayment,
+  } = req.body;
+  
 try {
 
   if(!name || !surname || !mail || !password || !weight || !height || !location || !dni){
     res.status(404).send('faltan datos')
   } else {
-    await Patient.create({
-      name, 
-      surname,
-      mail,
-      password,
-      birthday,
-      weight,
-      height,
-      bmi,
-      allergies,
-      chronicDiseases,
-      photo,
-      location,
-      dni,
-      phone,
-      socialSecurity,
-      plan,
-      active,
-      historyPayment
+    const newPatient = await Patient.create({
+      name: name, 
+      surname: surname,
+      mail: mail,
+      password: password,
+      birthday: birthday,
+      weight: weight,
+      height: height,
+      bmi: bmi,
+      allergies: allergies,
+      chronicDiseases: chronicDiseases,
+      photo: photo,
+      location: location,
+      dni: dni,
+      phone: phone,
+      socialSecurity: socialSecurity,
+      active: active,
     });
     res.status(200).send('Patient create successfully')
   } 
@@ -168,6 +165,7 @@ router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const patientDelete = await Patient.findByPk(id);
+    console.log("id:" + id);
     if (!patientDelete) {
       res.status(404).send("Patient not found");
     } else {
@@ -177,6 +175,21 @@ router.delete("/delete/:id", async (req, res) => {
   } catch (error) {
     res.status(404).json({ error: error.message }, "Entro al error del delete");
   }
+});
+
+router.post("/login", async (req, res) => {
+  const { mail, password } = req.body;
+  await Patient.findOne({ where: { mail: mail } })
+    .then((response) => {
+      if (response.password == password) {
+        delete response.password;
+        res.status(200).json(response);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(200).send("Incorrect login information");
+    });
 });
 
 module.exports = router;

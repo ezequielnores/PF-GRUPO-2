@@ -7,7 +7,7 @@ export const historyGetDetail = createAsyncThunk(
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/patient/${id}`
     );
-    return response;
+    return response.data;
   }
 );
 
@@ -17,7 +17,7 @@ export const historyGetAll = createAsyncThunk(
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/medicalHistory/`
     );
-    return response;
+    return response.data;
   }
 );
 
@@ -28,7 +28,7 @@ export const historyAddById = createAsyncThunk(
       `${process.env.REACT_APP_BACKEND_URL}/medicalHistory/addRegister/${id}`,
       data
     );
-    return response;
+    return response.data;
   }
 );
 
