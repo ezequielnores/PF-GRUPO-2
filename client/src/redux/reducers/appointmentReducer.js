@@ -4,33 +4,31 @@ import axios from "axios";
 export const appointmentGetDetail = createAsyncThunk(
   "appointment/getOne",
   async (id, thunkAPI) => {
-    await axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/turns/${id}`)
-      .then((response) => {
-        return response.data;
-      });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/turns/${id}`
+    );
+    return response.data;
   }
 );
 
 export const appointmentGetAll = createAsyncThunk(
   "appointment/getAll",
   async () => {
-    await axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/turns/`)
-      .then((response) => {
-        return response.data;
-      });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/turns/`
+    );
+    return response.data;
   }
 );
 
 export const appointmentCreate = createAsyncThunk(
   "appointment/create",
   async (data) => {
-    await axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}/turns`, data)
-      .then((response) => {
-        return response.data;
-      });
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/turns`,
+      data
+    );
+    return response.data;
   }
 );
 
@@ -78,7 +76,7 @@ const appointmentSlice = createSlice({
       .addCase(appointmentCreate.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
-      })
+      });
   },
 });
 

@@ -10,11 +10,16 @@ const hijoTarjeta = {
   alignItems: "center",
   height: "30rem",
 };
+const tarjetitas = {
+  width: "22rem",
+  height: "20rem",
+  boxShadow: "box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2)",
+};
 const Planes = () => {
   return (
     <div style={padreTarjeta}>
       <div style={hijoTarjeta}>
-        <Card style={{ width: "22rem", height: "20rem" }}>
+        <Card style={tarjetitas}>
           <div style={{ width: "100%" }}>
             <Typography
               style={{
@@ -46,7 +51,7 @@ const Planes = () => {
             </ListItem>
           </div>
         </Card>
-        <Card style={{ width: "22rem", height: "20rem" }}>
+        <Card style={tarjetitas}>
           <div style={{ width: "100%" }}>
             <Typography
               style={{
@@ -75,14 +80,14 @@ const Planes = () => {
               Includes
             </Typography>
             <ListItem style={{ display: "list-item" }}>
-              5 Monthly guards
+              1 Consultation with specialist
             </ListItem>
             <ListItem style={{ display: "list-item" }}>
-              1 Consultation with specialist
+              5 Monthly guards
             </ListItem>
           </div>
         </Card>
-        <Card style={{ width: "22rem", height: "20rem" }}>
+        <Card style={tarjetitas}>
           <div style={{ width: "100%" }}>
             <Typography
               style={{

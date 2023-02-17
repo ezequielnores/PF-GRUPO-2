@@ -34,7 +34,7 @@ router.get("/:id", async (req, res) => {
     const getById = await getPatientInfo();
 
     if (id) {
-      const patientById = getById.filter((e) => e.id === id);
+      const patientById = await Patient.findByPk(id);
       if (patientById) {
         res.status(200).json(patientById);
       } else {
@@ -48,9 +48,9 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
-  const { 
-    name, 
+router.post("/", async (req, res) => {
+  const {
+    name,
     surname,
     mail,
     password,
@@ -67,9 +67,9 @@ router.post('/', async (req, res) => {
     socialSecurity,
     plan,
     active,
-    historyPayment
-  } = req.body
-
+    historyPayment,
+  } = req.body;
+  
 try {
 
   if(!name || !surname || !mail || !password || !weight || !height || !location || !dni){
@@ -161,6 +161,37 @@ router.put("/edit/:id", async (req, res) => {
   } catch (error) {
     console.log("Error del put", error);
   }
+});
+
+router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const patientDelete = await Patient.findByPk(id);
+    console.log("id:" + id);
+    if (!patientDelete) {
+      res.status(404).send("Patient not found");
+    } else {
+      patientDelete.destroy();
+      res.status(200).send("Patient delete successfully");
+    }
+  } catch (error) {
+    res.status(404).json({ error: error.message }, "Entro al error del delete");
+  }
+});
+
+router.post("/login", async (req, res) => {
+  const { mail, password } = req.body;
+  await Patient.findOne({ where: { mail: mail } })
+    .then((response) => {
+      if (response.password == password) {
+        delete response.password;
+        res.status(200).json(response);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(200).send("Incorrect login information");
+    });
 });
 
 module.exports = router;
