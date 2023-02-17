@@ -1,4 +1,4 @@
-import SideBar from "../SideBar/SideBar";
+import SideBar from "../sideBar/sideBar";
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
@@ -41,7 +41,7 @@ const Home = () => {
             justifyContent: "center",
           }}
         >
-          <img style={{ width: "4.3vw", marginTop: "0.3vw" }} src={logoICare} />
+          <img style={{ width: "4.3vw", marginTop: "0.3vw" }} src={logoICare} alt="" />
         </div>
         <Stack
           style={{
@@ -96,10 +96,16 @@ const Home = () => {
       >
         {location.pathname.endsWith("/HomeClient") && <HomeView />}
         {location.pathname.endsWith("/HomeClient/Profile") && <Profile />}
-        {location.pathname.endsWith("/HomeClient/MyAppointments") && ( <MyAppointments /> )}
+        {location.pathname.endsWith("/HomeClient/MyAppointments") && (
+          <MyAppointments />
+        )}
         {location.pathname.endsWith("/HomeClient/Urgency") && <Urgency />}
-        {location.pathname.endsWith("/HomeClient/MedicalAppointments") && ( <MedicalAppointments /> )}
-        {location.pathname.endsWith("/HomeClient/MedicalHistory") && (  <MedicalHistory />  )}
+        {location.pathname.endsWith("/HomeClient/MedicalAppointments") && (
+          <MedicalAppointments />
+        )}
+        {location.pathname.endsWith("/HomeClient/MedicalHistory") && (
+          <MedicalHistory />
+        )}
         {location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />}
         {location.pathname.endsWith("/HomeClient/Chat") && <Chat />}
         {location.pathname.endsWith("/HomeClient/Register") && <Register />}

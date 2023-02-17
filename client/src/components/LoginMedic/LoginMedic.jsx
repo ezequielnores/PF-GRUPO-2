@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
+import { Alert } from "@mui/material";
 //logic
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,13 +45,14 @@ const buton = {
 };
 
 const FormLoginMedic = () => {
+  //Estado error para alert
+  const [successLogin, setSuccessLogin] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //me creo estado para guardar lo que toma de inptus
   const [info, setInfo] = useState({
     mail: "",
     password: "",
-    id: "",
   });
   //seteo la info con los inputs
   const handleChange = (evento) => {
@@ -63,19 +65,18 @@ const FormLoginMedic = () => {
   const doctores = useSelector((state) => state.doctor.list);
   console.log(doctores);
 
-  //SUBMITTTT
+  //SUBMIT
   const handleSubmit = (e) => {
     e.preventDefault();
     const authenticatedDoctor = doctores.find((doctor) => {
       return doctor.mail === info.mail && doctor.password === info.password;
     });
-    console.log(authenticatedDoctor.id);
     if (authenticatedDoctor) {
       const id = authenticatedDoctor.id;
       localStorage.setItem("id", id);
-      navigate("/HomeMedic/Profile", { state: { id } });
+      navigate("/HomeMedic/Profile");
     } else {
-      alert("Error en credenciales");
+      setSuccessLogin("error");
     }
   };
   //primera carga
@@ -89,7 +90,7 @@ const FormLoginMedic = () => {
   }, []);
 
   console.log(info);
-
+  //RENDER
   return (
     <div style={divPadre}>
       <form
@@ -101,6 +102,9 @@ const FormLoginMedic = () => {
         noValidate
         autoComplete="off"
       >
+        {successLogin === "error" && (
+          <Alert severity="error">Incorrect or missing information</Alert>
+        )}
         <Card style={cardDiv}>
           <Typography
             variant="h2"

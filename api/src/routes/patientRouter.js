@@ -15,12 +15,14 @@ router.get("/", async (req, res) => {
       const patientName = await allPatient.filter((e) => {
         e.name.toLowerCase().includes(name.toLowerCase());
       });
-      if (patientName.length) {
+      if (patientName.length){
         res.status(200).send(patientName);
       } else {
         res.status(404).send("Patient not found");
       }
-    } else {
+    } else if(!allPatient.length){
+      res.status(404).send('Not patients in DB')
+    }else {
       res.status(200).send(allPatient);
     }
   } catch (error) {
@@ -69,7 +71,7 @@ router.post("/", async (req, res) => {
     active,
     historyPayment,
   } = req.body;
-  
+
 try {
 
   if(!name || !surname || !mail || !password || !weight || !height || !location || !dni){
@@ -165,7 +167,6 @@ router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const patientDelete = await Patient.findByPk(id);
-    console.log("id:" + id);
     if (!patientDelete) {
       res.status(404).send("Patient not found");
     } else {
