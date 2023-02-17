@@ -8,7 +8,6 @@ const {
     addRegisterMedicalHistory,
     findAllMedicalHistoryByPatient
 } = require("../controllers/medicalHistoryController");
-const { MedicalHistory } = require("../db");
 const medicalHistoryRouter = Router();
 
 medicalHistoryRouter.get("/", async (req, res) => {

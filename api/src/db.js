@@ -69,9 +69,6 @@ Patient.hasMany(Comments, { as: "comments" });
 Incomes.hasOne(Patient);
 Patient.belongsToMany(Incomes, { through: "IncomesPatient" });
 
-// Admin.belongsToMany(Comments, { through: "AdminComments" });
-// Comments.belongsToMany(Admin, { through: "AdminComments" });
-
 Patient.hasOne(Plans);
 Plans.belongsToMany(Patient, { through: "PlansPatient" });
 
