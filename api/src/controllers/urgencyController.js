@@ -1,20 +1,20 @@
 const { Urgency } = require("../db.js");
 
 const getUrgencies = async () => {
-    const response = await Urgency.getAll();
+    const response = await Urgency.findAll();
     return response;
 };
 
 const getNotAttendedUrgencies = async () => {
-    const response = await Urgency.getAll();
+    const response = await Urgency.findAll();
     const filterResponse = response.filter((urgency) => {
-        urgency.attended === false
+        return urgency.dataValues.attended === false
     });
     return filterResponse;
 }
 
 const getUrgency = async (id) => {
-    const response = await Urgency.getByPk(id);
+    const response = await Urgency.findByPk(id);
     return response;
 };
 

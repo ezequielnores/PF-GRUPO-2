@@ -41,7 +41,7 @@ const Home = () => {
             justifyContent: "center",
           }}
         >
-          <img style={{ width: "4.3vw", marginTop: "0.3vw" }} src={logoICare} />
+          <img style={{ width: "4.3vw", marginTop: "0.3vw" }} src={logoICare} alt="" />
         </div>
         <Stack
           style={{
