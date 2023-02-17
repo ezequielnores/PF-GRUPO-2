@@ -50,6 +50,7 @@ const FormLoginMedic = () => {
   const [info, setInfo] = useState({
     mail: "",
     password: "",
+    id: "",
   });
   //seteo la info con los inputs
   const handleChange = (evento) => {
@@ -61,21 +62,34 @@ const FormLoginMedic = () => {
   };
   const doctores = useSelector((state) => state.doctor.list.data);
   console.log(doctores);
+
   //SUBMITTTT
   const handleSubmit = (e) => {
     e.preventDefault();
-    const dataDoctor = doctores[0].mail;
-    const passDoctor = doctores[0].password;
-    if (dataDoctor === info.mail && passDoctor === info.password) {
-      navigate("/HomeMedic/profile");
+    const authenticatedDoctor = doctores.find((doctor) => {
+      return doctor.mail === info.mail && doctor.password === info.password;
+    });
+    console.log(authenticatedDoctor.id);
+    if (authenticatedDoctor) {
+      const id = authenticatedDoctor.id;
+      localStorage.setItem("id", id);
+      navigate("/HomeMedic/Profile", { state: { id } });
     } else {
       alert("Error en credenciales");
     }
   };
   //primera carga
   useEffect(() => {
-    dispatch(docrtorGetAll());
+    const id = localStorage.getItem("id");
+    if (id) {
+      navigate("/HomeMedic/Profile");
+    } else {
+      dispatch(docrtorGetAll());
+    }
   }, []);
+
+  console.log(info);
+
   return (
     <div style={divPadre}>
       <form
