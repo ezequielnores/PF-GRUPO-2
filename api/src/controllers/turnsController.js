@@ -49,6 +49,7 @@ const findAllTurnsByDate = async date => {
     return turnsByDate;
 };
 
+
 const findAllTurnsByDoctor = async doctorId => {
     const turnsByDoctor = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],

@@ -110,18 +110,12 @@ turnsRouter.delete("/deleteTurnsByExpiredDate", async (req, res) => {
 });
 
 turnsRouter.post("/", async (req, res) => {
-    const { availability, date, hour, type, ubication, doctorSpecialty, medicId, patientId } = req.body;
+    const { availability, date, hour, type, ubication, doctorSpecialty, doctorId, patientId } = req.body;
 
     try {
-        if (![availability, date, hour, medicId, patientId, ubication, doctorSpecialty].every(Boolean)) {
+        if (![availability, date, hour, doctorId, patientId, ubication, doctorSpecialty].every(Boolean)) {
             throw new Error("Datos incompletos.");
         }
-
-        const patient = await paciente.findByPk(patientId);
-        if (!patient) throw new Error(`El paciente con el id ${patientId} no se encunetra en la BDD.`);
-
-        const medic = await doctor.findByPk(medicId);
-        if (!medic) throw new Error(`El medico con el id ${medicId} no se encunetra en la BDD.`);
 
         const turn = await Turns.create({
             availability: availability,
@@ -130,21 +124,12 @@ turnsRouter.post("/", async (req, res) => {
             type: type ? type : null,
             ubication: ubication,
             doctorSpecialty: doctorSpecialty,
-            DoctorId: medicId,
-            PatientId: patientId
         });
 
-        // const patient = await Patient.findByPk(patientId);
-        // if (!patient) throw new Error(`El paciente con el id ${patientId} no se encunetra en la BDD.`);
+        if (!turn) throw new Error("Error al crear el turno.");
 
-        // const medic = await Doctor.findByPk(medicId);
-        // if (!medic) throw new Error(`El medico con el id ${medicId} no se encunetra en la BDD.`);
-
-        // await turn.addPatient(patient);
-        // await patient.addTurn(turn);
-
-        // await turn.addDoctor(medic);
-        // await medic.addTurn(turn);
+        await turn.setDoctor(doctorId);
+        await turn.setPatient(patientId);
 
         res.status(200).json(turn);
     } catch (error) {
