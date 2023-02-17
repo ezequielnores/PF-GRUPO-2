@@ -10,7 +10,7 @@ const {
     deleteTurnsByExpiredDate
 } = require("../controllers/turnsController");
 const turnsRouter = Router();
-const { Turns, paciente, doctor } = require("../db");
+const { Turns, Patient, Doctor } = require("../db");
 
 turnsRouter.get("/", async (req, res) => {
     try {
@@ -29,7 +29,7 @@ turnsRouter.get("/turnsByDate", async (req, res) => {
         if (!date) throw new Error("La fecha no esta definida.");
 
         const turnsByDate = await findAllTurnsByDate(date);
-        if (!turnsByDate) throw new Error(`No se encuantran turnos en la BDD para la fecha ${date}.`);
+        if (!turnsByDate.length) throw new Error(`No se encuantran turnos en la BDD para la fecha ${date}.`);
 
         res.status(200).json(turnsByDate);
     } catch (error) {
@@ -43,32 +43,32 @@ turnsRouter.get("/turnsByPatient/:id", async (req, res) => {
     try {
         if (!id) throw new Error("El id del paciente esta indefinido");
 
-        const turnByPatient = await findAllTurnsByPatient(id);
-        if (!turnByPatient) throw new Error(`No se encontro ningun turno del paciente con el id ${id} en la BDD.`);
+        const turnsByPatient = await findAllTurnsByPatient(id);
+        if (!turnsByPatient.length) throw new Error(`No se encontro ningun turno del paciente con el id ${id} en la BDD.`);
 
-        res.status(200).json(turnByPatient);
+        res.status(200).json(turnsByPatient);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
 
-turnsRouter.get("/tunrsByDoctor/:id", async (req, res) => {
+turnsRouter.get("/turnsByDoctor/:id", async (req, res) => {
     const { id } = req.params;
 
     try {
         if (!id) throw new Error("El id del paciente esta indefinido");
 
-        const turnByDoctor = await findAllTurnsByDoctor(id);
-        if (!turnByDoctor) throw new Error(`No se encontro ningun turno del doctor con el id ${id} en la BDD.`);
+        const turnsByDoctor = await findAllTurnsByDoctor(id);
+        if (!turnsByDoctor.length) throw new Error(`No se encontro ningun turno del doctor con el id ${id} en la BDD.`);
 
-        res.status(200).json(turnByDoctor);
+        res.status(200).json(turnsByDoctor);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
 
 turnsRouter.get("/:id", async (req, res) => {
-    const { id } = req.body;
+    const { id } = req.params;
 
     try {
         if (!id) throw new Error("El id del turno esta indefinido.");
@@ -110,18 +110,12 @@ turnsRouter.delete("/deleteTurnsByExpiredDate", async (req, res) => {
 });
 
 turnsRouter.post("/", async (req, res) => {
-    const { availability, date, hour, type, ubication, doctorSpecialty, medicId, patientId } = req.body;
+    const { availability, date, hour, type, ubication, doctorSpecialty, doctorId, patientId } = req.body;
 
     try {
-        if (![availability, date, hour, medicId, patientId, ubication, doctorSpecialty].every(Boolean)) {
+        if (![availability, date, hour, doctorId, patientId, ubication, doctorSpecialty].every(Boolean)) {
             throw new Error("Datos incompletos.");
         }
-
-        const patient = await paciente.findByPk(patientId);
-        if (!patient) throw new Error(`El paciente con el id ${patientId} no se encunetra en la BDD.`);
-
-        const medic = await doctor.findByPk(medicId);
-        if (!medic) throw new Error(`El medico con el id ${medicId} no se encunetra en la BDD.`);
 
         const turn = await Turns.create({
             availability: availability,
@@ -130,21 +124,12 @@ turnsRouter.post("/", async (req, res) => {
             type: type ? type : null,
             ubication: ubication,
             doctorSpecialty: doctorSpecialty,
-            DoctorId: medicId,
-            PatientId: patientId
         });
 
-        // const patient = await Patient.findByPk(patientId);
-        // if (!patient) throw new Error(`El paciente con el id ${patientId} no se encunetra en la BDD.`);
+        if (!turn) throw new Error("Error al crear el turno.");
 
-        // const medic = await Doctor.findByPk(medicId);
-        // if (!medic) throw new Error(`El medico con el id ${medicId} no se encunetra en la BDD.`);
-
-        // await turn.addPatient(patient);
-        // await patient.addTurn(turn);
-
-        // await turn.addDoctor(medic);
-        // await medic.addTurn(turn);
+        await turn.setDoctor(doctorId);
+        await turn.setPatient(patientId);
 
         res.status(200).json(turn);
     } catch (error) {

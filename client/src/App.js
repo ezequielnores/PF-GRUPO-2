@@ -34,6 +34,7 @@ function App() {
   console.log(location.pathname);
   return (
     <div className="App">
+
       {location.pathname.startsWith("/HomeClient") ? (
         <HomeClient />
       ) : location.pathname.startsWith("/HomeMedic") ? (

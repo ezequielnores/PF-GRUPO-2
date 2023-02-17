@@ -69,45 +69,35 @@ router.post("/", async (req, res) => {
     active,
     historyPayment,
   } = req.body;
+  
+try {
 
-  try {
-    if (
-      !name ||
-      !surname ||
-      !mail ||
-      !password ||
-      !weight ||
-      !height ||
-      !location ||
-      !dni
-    ) {
-      res.status(404).send("faltan datos");
-    } else {
-      const newPatient = await Patient.create({
-        name,
-        surname,
-        mail,
-        password,
-        birthday,
-        weight,
-        height,
-        bmi,
-        allergies,
-        chronicDiseases,
-        photo,
-        location,
-        dni,
-        phone,
-        socialSecurity,
-        plan,
-        active,
-        historyPayment,
-      });
-      res.status(200).send("Patient create successfully");
-    }
-  } catch (error) {
-    res.status(404).send({ error: error.message }, "entro al error del post");
-  }
+  if(!name || !surname || !mail || !password || !weight || !height || !location || !dni){
+    res.status(404).send('faltan datos')
+  } else {
+    const newPatient = await Patient.create({
+      name: name, 
+      surname: surname,
+      mail: mail,
+      password: password,
+      birthday: birthday,
+      weight: weight,
+      height: height,
+      bmi: bmi,
+      allergies: allergies,
+      chronicDiseases: chronicDiseases,
+      photo: photo,
+      location: location,
+      dni: dni,
+      phone: phone,
+      socialSecurity: socialSecurity,
+      active: active,
+    });
+    res.status(200).send('Patient create successfully')
+  } 
+} catch (error) {
+  res.status(404).send({error: error.message}, 'entro al error del post')
+}
 });
 
 router.put("/edit/:id", async (req, res) => {
