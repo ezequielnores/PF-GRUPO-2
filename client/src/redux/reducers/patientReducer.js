@@ -7,7 +7,18 @@ export const patientGetDetail = createAsyncThunk(
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/patient/${id}`
     );
-    return response;
+    return response.data;
+  }
+);
+
+export const patientLogin = createAsyncThunk(
+  "patient/login",
+  async (data, thunkAPI) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/patientr/login}`,
+      data
+    );
+    return response.data;
   }
 );
 
@@ -15,7 +26,7 @@ export const patientGetAll = createAsyncThunk("patient/getAll", async () => {
   const response = await axios.get(
     `${process.env.REACT_APP_BACKEND_URL}/patient/`
   );
-  return response;
+  return response.data;
 });
 
 const patientSlice = createSlice({
@@ -25,6 +36,7 @@ const patientSlice = createSlice({
     list: [],
     status: "idle",
     error: null,
+    loggedIn: {},
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -48,6 +60,17 @@ const patientSlice = createSlice({
         state.list = action.payload;
       })
       .addCase(patientGetAll.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(patientLogin.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(patientLogin.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.loggedIn = action.payload;
+      })
+      .addCase(patientLogin.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

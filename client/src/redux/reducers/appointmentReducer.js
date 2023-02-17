@@ -7,7 +7,7 @@ export const appointmentGetDetail = createAsyncThunk(
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/turns/${id}`
     );
-    return response;
+    return response.data;
   }
 );
 
@@ -17,7 +17,7 @@ export const appointmentGetAll = createAsyncThunk(
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/turns/`
     );
-    return response;
+    return response.data;
   }
 );
 
@@ -28,7 +28,7 @@ export const appointmentCreate = createAsyncThunk(
       `${process.env.REACT_APP_BACKEND_URL}/turns`,
       data
     );
-    return response;
+    return response.data;
   }
 );
 
