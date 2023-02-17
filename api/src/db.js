@@ -44,11 +44,36 @@ const {
   Plans,
   MedicalHistory,
   FrequentQuestions,
-  Incomes
+  Incomes,
+  Comments,
+  Admin
 } = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
+Doctor.hasMany(Turns, { as: "turns" });
+Turns.belongsTo(Doctor);
+
+Patient.hasMany(Turns, { as: "turns" });
+Turns.belongsTo(Patient);
+
+Patient.hasOne(MedicalHistory);
+MedicalHistory.belongsTo(Patient);
+
+Comments.belongsTo(Doctor);
+Doctor.hasMany(Comments, { as: "comments" });
+
+Comments.belongsTo(Patient);
+Patient.hasMany(Comments, { as: "comments" });
+
+Incomes.hasOne(Patient);
+Patient.belongsToMany(Incomes, { through: "IncomesPatient" });
+
+// Admin.belongsToMany(Comments, { through: "AdminComments" });
+// Comments.belongsToMany(Admin, { through: "AdminComments" });
+
+Patient.hasOne(Plans);
+Plans.belongsToMany(Patient, { through: "PlansPatient" });
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
