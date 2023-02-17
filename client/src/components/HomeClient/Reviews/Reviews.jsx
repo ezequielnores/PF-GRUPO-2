@@ -93,9 +93,9 @@ const changeHandler=(event)=>{
 
     const submitHandler=(event)=>{
         event.preventDefault();
-        //   dispatch(postComment(fields))
+       dispatch(postComment(fields)).then(setModalAbierto(true))
 
-    setModalAbierto(true);
+        
     }
 
     const closeModal = () => {
