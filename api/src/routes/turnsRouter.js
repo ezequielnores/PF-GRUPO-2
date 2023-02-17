@@ -101,9 +101,9 @@ turnsRouter.delete("/deleteTurnsByExpiredDate", async (req, res) => {
         if (!date) throw new Error("La fecha dada se encuentra indefinida.");
 
         const turnsDeleted = await deleteTurnsByExpiredDate(date);
-        if (!turnsDeleted.length) throw new Error(`No se encuentran turnos para la fecha ${date} en la BDD.`);
+        if (!turnsDeleted) throw new Error(`No se encuentran turnos anterior a la fecha ${date} en la BDD.`);
 
-        res.status(200).json(turnsDeleted);
+        res.status(200).json({ turnsDeleted: turnsDeleted });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
