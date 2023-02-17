@@ -12,7 +12,12 @@ import {
   ProfileEdit,
   Agenda,
 } from "../index";
+import { useSelector } from "react-redux";
 const Home = () => {
+  //logic para mostrar render el doc actual logeado
+  const dataDoc = useSelector((state) => state.doctor.detail);
+  console.log(dataDoc);
+
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -54,7 +59,7 @@ const Home = () => {
           }}
         >
           <p style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem" }}>
-            Nombre de medico
+            {dataDoc.name} {dataDoc.lastName}
           </p>
           <p
             style={{
@@ -64,7 +69,7 @@ const Home = () => {
               color: "gray",
             }}
           >
-            Medico Clinico
+            {dataDoc.speciality}
           </p>
         </div>
         <Avatar
