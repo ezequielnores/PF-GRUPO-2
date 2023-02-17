@@ -24,18 +24,8 @@ const findAllTurnsByDate = async date => {
     const turnsByDate = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            },
-            {
-                model: Doctor,
-                through: {
-                    attributes: []
-                }
-            }
+            { model: Patient },
+            { model: Doctor }
         ],
         where: { date: date }
     });
@@ -46,20 +36,10 @@ const findAllTurnsByDoctor = async doctorId => {
     const turnsByDoctor = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            },
-            {
-                model: Doctor,
-                through: {
-                    attributes: []
-                }
-            }
+            { model: Patient },
+            { model: Doctor }
         ],
-        where: { DoctorId: doctorId }
+        where: { doctorId: doctorId }
     });
     return turnsByDoctor;
 };
@@ -68,18 +48,8 @@ const findAllTurnsByPatient = async patientId => {
     const turnsByPatient = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            },
-            {
-                model: Doctor,
-                through: {
-                    attributes: []
-                }
-            }
+            { model: Patient },
+            { model: Doctor }
         ],
         where: { PatientId: patientId }
     });
