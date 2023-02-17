@@ -1,18 +1,21 @@
 .container{
-    border: 1px solid black;
+    border: 4px solid #307196;
+    border-radius: 5%;
     display: flex;
-    margin-left: 30%;
+    margin-left: 25%;
     width: fit-content;
-    padding: 10px;
+    padding: 15px;
+    
 }
 
 .container1{
-    border-right: 1px solid black;
+
     display: flex;
     flex-direction: column;
     width: 50%;
     align-items: flex-start;
     width: fit-content;
+    margin-right: 55px;
 }
 
 
@@ -23,7 +26,7 @@
 }
 
 .nombre{
-
+    color: #307196;
     height: fit-content;
 
 }

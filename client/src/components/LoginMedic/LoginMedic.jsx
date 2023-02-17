@@ -1,21 +1,146 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { ButtonGroup } from "@mui/material";
-const container = {
+import Input from "@mui/material/Input";
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+//logic
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { docrtorGetAll } from "../../redux/reducers/doctorReducer";
+//styles
+const divPadre = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "start",
   width: "100%",
   height: "100vh",
+  backgroundColor: "#43B8C8",
 };
-const formLoginMedic = () => {
-  //aca va el codigo de login de cliente
+const box = {
+  display: "flex",
+  flexDirection: "column",
+  textAlign: "center",
+  alignItems: "center",
+  width: "40rem",
+  height: "45rem",
+  justifyContent: "space-evenly",
+};
+const cardDiv = {
+  display: "flex",
+  flexDirection: "column",
+  width: "30rem",
+  height: "25rem",
+  justifyContent: "space-around",
+
+  padding: "2rem",
+};
+const inputs = {
+  fontSize: "1rem",
+  color: "#333333",
+};
+const buton = {
+  backgroundColor: "#307196",
+  borderRadius: "15px",
+};
+
+const FormLoginMedic = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  //me creo estado para guardar lo que toma de inptus
+  const [info, setInfo] = useState({
+    mail: "",
+    password: "",
+    id: "",
+  });
+  //seteo la info con los inputs
+  const handleChange = (evento) => {
+    evento.preventDefault();
+    setInfo({
+      ...info,
+      [evento.target.name]: evento.target.value,
+    });
+  };
+  const doctores = useSelector((state) => state.doctor.list.data);
+  console.log(doctores);
+
+  //SUBMITTTT
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const authenticatedDoctor = doctores.find((doctor) => {
+      return doctor.mail === info.mail && doctor.password === info.password;
+    });
+    console.log(authenticatedDoctor.id);
+    if (authenticatedDoctor) {
+      const id = authenticatedDoctor.id;
+      localStorage.setItem("id", id);
+      navigate("/HomeMedic/Profile", { state: { id } });
+    } else {
+      alert("Error en credenciales");
+    }
+  };
+  //primera carga
+  useEffect(() => {
+    const id = localStorage.getItem("id");
+    if (id) {
+      navigate("/HomeMedic/Profile");
+    } else {
+      dispatch(docrtorGetAll());
+    }
+  }, []);
+
+  console.log(info);
+
   return (
-    <div style={container}>
-      <h1>LOGIN</h1>
-      <ButtonGroup>
-        <Button color="primary">
-          <Link to="/HomeMedic">Ingresar</Link>
-        </Button>
-      </ButtonGroup>
+    <div style={divPadre}>
+      <form
+        component="form"
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "25ch" },
+        }}
+        style={box}
+        noValidate
+        autoComplete="off"
+      >
+        <Card style={cardDiv}>
+          <Typography
+            variant="h2"
+            align="center"
+            style={{
+              color: "#307196",
+              marginBottom: "2rem",
+              fontWeight: "semibold",
+              fontFamily: "monospace",
+              fontSize: "3rem",
+            }}
+          >
+            Login
+          </Typography>
+          <label>Email</label>
+          <Input
+            type="email"
+            name="mail"
+            style={inputs}
+            onChange={(e) => handleChange(e)}
+          />
+          <label>Password</label>
+          <Input
+            type="password"
+            name="password"
+            style={inputs}
+            onChange={(e) => handleChange(e)}
+          />
+          <Button
+            variant="contained"
+            type="submit"
+            value="Send"
+            style={buton}
+            onClick={(e) => handleSubmit(e)}
+          >
+            Submit
+          </Button>
+        </Card>
+      </form>
     </div>
   );
 };
-export default formLoginMedic;
+export default FormLoginMedic;

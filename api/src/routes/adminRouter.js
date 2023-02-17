@@ -1,17 +1,19 @@
 const { Router } = require("express");
 const axios = require("axios");
 const { getAdmins } = require('../controllers/adminController')
-const { Admin } = require('../db.js');
+const { Admins } = require('../db.js');
 
 const router = Router();
 
-router.get('/', async (req, res) => {
-    const { name } = req.query;
+router.get("/", async (req, res) => {
+    console.log('prueba');
     try {
-        const allAdmins = getAdmins();
-        if(name){
+        const { name } = req.query;
+        const allAdmins = await getAdmins();
+        console.log(allAdmins);
+        if (name) {
             const adminName = await allAdmins.filter((e)=>{
-                e.name.toLowerCase().includes(name.toLowerCase())
+               e.name.toLowerCase().includes(name.toLowerCase())
             });
             if(adminName.length){
                 res.status(200).send(adminName)
@@ -22,7 +24,7 @@ router.get('/', async (req, res) => {
             res.status(200).send(allAdmins)
         }
     } catch (error) {
-        res.status(404).json({error: error.message})
+        console.log({ error: error.message }, 'entro al error del get')
     }
 });
 
@@ -54,7 +56,7 @@ router.post('/', async (req, res) => {
         if(!name || !surname || !mail || !password){
             res.status(404).send('No estan todos los datos requeridos')
         } else {
-            const newAndmin = await Admin.create({
+            const newAndmin = await Admins.create({
                 name,
                 surname,
                 mail,
@@ -72,7 +74,7 @@ router.put('/edit/:id', async (req, res) => {
         const { id } = req.params;
         const { name, surname, mail, password } = req.body;
         if(id){
-            const findAdmin = await Admin.findByPk(id);
+            const findAdmin = await Admins.findByPk(id);
             await findAdmin.update(
                 {
                     name, 
@@ -94,7 +96,7 @@ router.put('/edit/:id', async (req, res) => {
 router.delete('/delete/:id', async(req, res) => {
     const {id} =  req.params;
     try {
-        const adminDelete = await Admin.findByPk(id);
+        const adminDelete = await Admins.findByPk(id);
         if(!adminDelete){
             res.status(404).send('Admin not found');
         } else {
