@@ -26,9 +26,16 @@ const putDoctor = async (id, values) => {
     return doctor;
 }
 
+const findByMail = async (mail) => {
+    const doctor = await Doctor.findOne({where: {mail: mail}})
+    return doctor
+}
+
 module.exports = {
     getDoctors,
     getDoctor,
     postDoctor,
-    putDoctor
-}
+    putDoctor,
+    findByMail
+    }
+

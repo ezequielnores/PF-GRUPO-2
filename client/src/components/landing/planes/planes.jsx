@@ -80,10 +80,10 @@ const Planes = () => {
               Includes
             </Typography>
             <ListItem style={{ display: "list-item" }}>
-              5 Monthly guards
+              1 Consultation with specialist
             </ListItem>
             <ListItem style={{ display: "list-item" }}>
-              1 Consultation with specialist
+              5 Monthly guards
             </ListItem>
           </div>
         </Card>

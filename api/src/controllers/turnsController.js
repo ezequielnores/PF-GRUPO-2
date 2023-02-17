@@ -2,7 +2,10 @@ const { Turns, Patient, Doctor } = require("../db");
 const { Op } = require("sequelize");
 
 const getTurnById = async id => {
-    const turn = await Turns.findByPk(id, { include: [Patient, Doctor] });
+    const turn = await Turns.findByPk(id, { include: [
+        { model: Patient },
+        { model: Doctor }
+    ]});
     return turn;
 };
 
@@ -10,18 +13,8 @@ const findAllTurns = async () => {
     const turns = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            },
-            {
-                model: Doctor,
-                through: {
-                    attributes: []
-                }
-            }
+            { model: Patient },
+            { model: Doctor }
         ]
     });
     return turns;

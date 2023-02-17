@@ -1,7 +1,7 @@
 const { MedicalHistory, Patient } = require("../db");
 
 const getMedicalHistoryById = async id => {
-    const medicalHistory = await MedicalHistory.findByPk(id, { include: [Patient] });
+    const medicalHistory = await MedicalHistory.findByPk(id, { include: { model: Patient } });
     return medicalHistory;
 };
 
