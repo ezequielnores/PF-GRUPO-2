@@ -8,6 +8,11 @@ import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import LogoutIcon from "@mui/icons-material/Logout";
 const SideBar = ({ open, handleOpen }) => {
+  //delete id de localstorage, deslogeo
+  const handleLogOut = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("id");
+  };
   return (
     <div>
       <div style={{ position: "fixed", left: "0", top: "9rem" }}>
@@ -65,7 +70,10 @@ const SideBar = ({ open, handleOpen }) => {
               </Link>
             </button>
           </Stack>
-          <button style={{ background: "#307196" }}>
+          <button
+            style={{ background: "#307196" }}
+            onClick={(e) => handleLogOut(e)}
+          >
             <Link to="/">
               {open ? (
                 <div className={style.divbutton} style={{ color: "white" }}>

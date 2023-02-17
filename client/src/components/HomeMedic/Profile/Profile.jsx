@@ -41,7 +41,7 @@ const passwordStyle = {
 const Profile = () => {
   const dispatch = useDispatch();
   //ME TRAGIO EL DETAIL CON LA INFO DEL DOC!
-  const dataDoc = useSelector((state) => state.doctor.detail.data);
+  const dataDoc = useSelector((state) => state.doctor.detail);
   console.log(dataDoc);
   //Estado para ocultar o mostrar la pass
   const [showPassword, setShowPassword] = useState(false);
@@ -62,7 +62,7 @@ const Profile = () => {
         variant="h2"
         gutterBottom
         style={{
-          color: "#147bf4",
+          color: "#307196",
           fontWeight: "bold",
           fontSize: "2.5rem",
           marginBottom: "2rem",
@@ -71,7 +71,7 @@ const Profile = () => {
         Personal information
       </Typography>
       {/* PREGUNTO SI EXISTE ALGO EN DATADOC , OSEAS SI REALMENTE TENGO UN DOCTOR ! SI NO NADA ! */}
-      {dataDoc ? (
+      {Object.keys(dataDoc).length > 0 ? (
         <Card style={carde}>
           <Typography style={typoTitle} gutterBottom>
             Name :
@@ -136,11 +136,16 @@ const Profile = () => {
           </Typography>
           <Typography variant="body1">{dataDoc.clinicMail}</Typography>
           <Divider />
+          <Link to="/HomeMedic/Profile/Edit">
+            <Button
+              variant="contained"
+              style={{ marginTop: "2rem", backgroundColor: "#307196" }}
+            >
+              Edit personal information
+            </Button>
+          </Link>
         </Card>
       ) : null}
-      <Link to="/HomeMedic/Profile/Edit">
-        <Button variant="contained">Edit personal information</Button>
-      </Link>
     </div>
   );
 };

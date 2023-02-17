@@ -60,7 +60,7 @@ const FormLoginMedic = () => {
       [evento.target.name]: evento.target.value,
     });
   };
-  const doctores = useSelector((state) => state.doctor.list.data);
+  const doctores = useSelector((state) => state.doctor.list);
   console.log(doctores);
 
   //SUBMITTTT
