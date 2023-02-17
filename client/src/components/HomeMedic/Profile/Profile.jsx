@@ -82,13 +82,13 @@ const Profile = () => {
           <Typography style={typoTitle} gutterBottom>
             Last name :
           </Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{dataDoc.lastName}</Typography>
           <Divider />
 
           <Typography style={typoTitle} gutterBottom>
             Personal Email :
           </Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{dataDoc.mail}</Typography>
           <Divider />
           <div style={passwordStyle}>
             <Typography style={typoTitle} gutterBottom>
@@ -104,37 +104,37 @@ const Profile = () => {
           <Typography style={typoTitle} gutterBottom>
             Date of birth :
           </Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{dataDoc.birthdate}</Typography>
           <Divider />
           <Typography style={typoTitle} gutterBottom>
             Location:
           </Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{dataDoc.location}</Typography>
           <Divider />
           <Typography style={typoTitle} gutterBottom>
             Document :
           </Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{dataDoc.dni}</Typography>
           <Divider />
           <Typography style={typoTitle} gutterBottom>
             Phone :
           </Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{dataDoc.phone}</Typography>
           <Divider />
           <Typography style={typoTitle} gutterBottom>
             Specialty :
           </Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{dataDoc.speciality}</Typography>
           <Divider />
           <Typography style={typoTitle} gutterBottom>
             License :
           </Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{dataDoc.lisence}</Typography>
           <Divider />
           <Typography style={typoTitle} gutterBottom>
             Clinic email :
           </Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{dataDoc.clinicMail}</Typography>
           <Divider />
         </Card>
       ) : null}
