@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import Logo from "../../../assets/logoiCare.png";
 //styles
 const navbar = {
-  backgroundColor: "#f4f8fc",
+  backgroundColor: "#F0F8FF",
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
@@ -38,11 +38,21 @@ const Navbar = () => {
             <CardMedia component="img" height="90" image={Logo} alt="logo" />
           </Link>
           <ButtonGroup>
-            <Link style={link} to="/" >Home</Link>
-            <Link style={link} to="/work">Work with us</Link>
-            <Link style={link} to="/about">About</Link>
-            <Link style={link} to="/services">Services</Link>
-            <Link style={link} to="/blog">Blog</Link>
+            <Link style={link} to="/">
+              Home
+            </Link>
+            <Link style={link} to="/work">
+              Work with us
+            </Link>
+            <Link style={link} to="/about">
+              About
+            </Link>
+            <Link style={link} to="/services">
+              Services
+            </Link>
+            <Link style={link} to="/blog">
+              Blog
+            </Link>
             <ButtonGroup style={butonLogin}>
               <Button color="primary">
                 <Link to="/loginClient">Client Login</Link>

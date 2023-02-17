@@ -1,12 +1,13 @@
 const { Router } = require("express");
 const {
+    createIncome,
     getIncomeById,
     findAllIncomes,
     updateIncomeById,
     deleteIncomeById,
     findAllIncomesByPatient
 } = require("../controllers/incomesController");
-const { Incomes, Patient } = require("../db");
+const { Patient } = require("../db");
 const incomesRouter = Router();
 
 incomesRouter.get("/", async (req, res) => {
@@ -24,10 +25,12 @@ incomesRouter.get("/incomesByPatient/:id", async (req, res) => {
     const { id } = req.params;
 
     try {
-        if (!id) throw new Error("El id del paciente esta indefinido.");
+        if (!id) throw new Error("El id del paciente no esta indefinido.");
 
         const incomesByPatient = await findAllIncomesByPatient(id);
-        if (!incomesByPatient) throw new Error(`El paciente con el id ${id} no esta en la BDD.`);
+        if (!incomesByPatient.length) {
+            throw new Error(`No se encuentran ingresos del paciente con el id ${id} no esta en la BDD.`);
+        }
 
         res.status(200).json(incomesByPatient);
     } catch (error) {
@@ -37,7 +40,6 @@ incomesRouter.get("/incomesByPatient/:id", async (req, res) => {
 
 incomesRouter.get("/:id", async (req, res) => {
     const { id } = req.params;
-
 
     try {
         if (!id) throw new Error("Error al obtener el id desde params.");
@@ -62,18 +64,8 @@ incomesRouter.post("/", async (req, res) => {
         const patient = await Patient.findByPk(patientId);
         if (!patient) throw new Error(`No se encuentra ningun paciente en la BDD con el id ${id}.`);
 
-        const incomeCreated = await Incomes.create({
-            date: date,
-            amount: amount,
-            detail: detail,
-            PatientId: patientId
-        });
+        const incomeCreated = await createIncome(patient, date, amount, detail);
         if (!incomeCreated) throw new Error("Error al crear el ingreso.");
-
-        // const patient = await Patient.findByPk(patientId);
-        // if (!patient) throw new Error(`No se encuentra ningun paciente en la BDD con el id ${id}.`);
-
-        // await incomeCreated.addPatient(patient);
 
         res.status(200).json(incomeCreated);
     } catch (error) {

@@ -10,8 +10,6 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import CopyrightIcon from "@mui/icons-material/Copyright";
 const footer = {
   backgroundColor: "#F0F8FF",
-  // position: "fixed",
-  // bottom: 0,
   width: "100%",
   display: "flex",
   flexDirection: "row",
@@ -35,7 +33,6 @@ const butonGroup = {
   flexDirection: "column",
 };
 
-
 const Navbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -43,11 +40,15 @@ const Navbar = () => {
         <Toolbar style={footer}>
           <Box style={divtext}>
             <CopyrightIcon style={{ color: "black" }} />
-            <Typography variant="subtitle2" color="black" align="justify">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem,
-              deserunt cumque similique quos sapiente optio placeat sequi,
-              blanditiis corporis sit ipsam illum molestiae quasi unde quibusdam
-              consequatur, aspernatur consectetur suscipit.
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              align="justify"
+              style={{ fontWeight: "semibold" }}
+            >
+              iCare is an online health care service that allows you to connect
+              with highly qualified medical professionals and receive quality
+              medical care from the comfort of your home.
             </Typography>
           </Box>
           <Box style={butonGroup}>

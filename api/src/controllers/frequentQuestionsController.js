@@ -1,5 +1,13 @@
 const { FrequentQuestions } = require("../db");
 
+const createFrequentAsk = async (answer, ask) => {
+    const frequentAskCreated = await FrequentQuestions.create({
+        answer: answer,
+        ask: ask
+    });
+    return frequentAskCreated;
+};
+
 const getFrequentAskById = async id => {
     const frequentAsk = await FrequentQuestions.findByPk(id);
     return frequentAsk;
@@ -26,6 +34,7 @@ const deleteFrequentAskById = async id => {
 };
 
 module.exports = {
+    createFrequentAsk,
     getFrequentAskById,
     findAllFrequentQuestions,
     updateFrequentAskById,
