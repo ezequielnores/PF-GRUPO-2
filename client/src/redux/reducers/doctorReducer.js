@@ -1,6 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const doctorLogin = createAsyncThunk(
+  "doctor/login",
+  async (data, thunkAPI) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/doctor/login}`,
+      data
+    );
+
+    return response.data;
+  }
+);
+
 export const doctorGetDetail = createAsyncThunk(
   "doctor/get",
   async (id, thunkAPI) => {
@@ -8,7 +20,7 @@ export const doctorGetDetail = createAsyncThunk(
       `${process.env.REACT_APP_BACKEND_URL}/doctor/${id}`
     );
 
-    return response;
+    return response.data;
   }
 );
 
@@ -16,7 +28,7 @@ export const docrtorGetAll = createAsyncThunk("doctor/getAll", async () => {
   const response = await axios.get(
     `${process.env.REACT_APP_BACKEND_URL}/doctor/`
   );
-  return response;
+  return response.data;
 });
 
 export const doctorAdd = createAsyncThunk("doctor/addById", async (data) => {
@@ -24,7 +36,7 @@ export const doctorAdd = createAsyncThunk("doctor/addById", async (data) => {
     `${process.env.REACT_APP_BACKEND_URL}/doctor`,
     data
   );
-  return response;
+  return response.data;
 });
 
 export const doctorUpdate = createAsyncThunk(
@@ -34,7 +46,7 @@ export const doctorUpdate = createAsyncThunk(
       `${process.env.REACT_APP_BACKEND_URL}/doctor/update/${id}`,
       data
     );
-    return response;
+    return response.data;
   }
 );
 
@@ -45,6 +57,7 @@ const doctorSlice = createSlice({
     list: [],
     status: "idle",
     error: null,
+    loggedIn: {},
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -78,6 +91,17 @@ const doctorSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(doctorAdd.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(doctorLogin.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(doctorLogin.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.loggedIn = action.payload;
+      })
+      .addCase(doctorLogin.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

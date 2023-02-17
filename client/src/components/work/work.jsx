@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 
 const divContainer = {
-  height: "55rem",
+  height: "50.3rem",
   display: "flex",
   alignItems: "center",
   backgroundImage:
@@ -19,9 +19,9 @@ const Work = () => {
         <Card
           style={{
             width: "25rem",
-            height: "30rem",
+            height: "25rem",
             marginLeft: "2rem",
-            opacity: ".8",
+            opacity: "0.9",
             borderRadius: "8px",
             display: "flex",
             flexDirection: "column",
@@ -32,7 +32,7 @@ const Work = () => {
             style={{
               color: "#307196",
               marginTop: "1.5rem",
-              marginBottom: "1.5rem",
+              marginBottom: "3rem",
               fontWeight: "bold",
               fontFamily: "monospace",
               fontSize: "2.5rem",
@@ -43,21 +43,17 @@ const Work = () => {
           <Typography
             align="justify"
             style={{
-              color: "gray",
-              marginBottom: "1.5rem",
+              marginBottom: "3rem",
               paddingLeft: "10px",
               paddingRight: "10px",
               fontWeight: "semibold",
-              fontFamily: "monospace",
               fontSize: "1rem",
             }}
           >
-            Lorem ipsum dolor si tenetur deserunt earum sed iusto voluptatibus
-            sapiente.Lorem ipsum dolor si tenetur deserunt earum sed iusto
-            voluptatibus sapiente.Lorem ipsum dolor si tenetur deserunt earum
-            sed iusto voluptatibus sapiente.Lorem ipsum dolor si tenetur
-            deserunt earum sed iusto voluptatibus sapiente.Lorem ipsum dolor si
-            tenetur deserunt earum sed iusto voluptatibus sapiente.
+            Join our digital healthcare team and help improve people's health
+            from the comfort of your own home. We offer virtual care services
+            through video calls, specialty appointments and more - work with us
+            to transform the way people access health care!
           </Typography>
           <Link to="/work/registerForm">
             <Button variant="contained">Join the team!</Button>

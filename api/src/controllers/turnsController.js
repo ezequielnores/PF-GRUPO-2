@@ -2,7 +2,10 @@ const { Turns, Patient, Doctor } = require("../db");
 const { Op } = require("sequelize");
 
 const getTurnById = async id => {
-    const turn = await Turns.findByPk(id, { include: [Patient, Doctor] });
+    const turn = await Turns.findByPk(id, { include: [
+        { model: Patient },
+        { model: Doctor }
+    ]});
     return turn;
 };
 
@@ -10,18 +13,8 @@ const findAllTurns = async () => {
     const turns = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            },
-            {
-                model: Doctor,
-                through: {
-                    attributes: []
-                }
-            }
+            { model: Patient },
+            { model: Doctor }
         ]
     });
     return turns;
@@ -31,18 +24,8 @@ const findAllTurnsByDate = async date => {
     const turnsByDate = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            },
-            {
-                model: Doctor,
-                through: {
-                    attributes: []
-                }
-            }
+            { model: Patient },
+            { model: Doctor }
         ],
         where: { date: date }
     });
@@ -54,20 +37,10 @@ const findAllTurnsByDoctor = async doctorId => {
     const turnsByDoctor = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            },
-            {
-                model: Doctor,
-                through: {
-                    attributes: []
-                }
-            }
+            { model: Patient },
+            { model: Doctor }
         ],
-        where: { DoctorId: doctorId }
+        where: { doctorId: doctorId }
     });
     return turnsByDoctor;
 };
@@ -76,18 +49,8 @@ const findAllTurnsByPatient = async patientId => {
     const turnsByPatient = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
         include: [
-            {
-                model: Patient,
-                through: {
-                    attributes: []
-                }
-            },
-            {
-                model: Doctor,
-                through: {
-                    attributes: []
-                }
-            }
+            { model: Patient },
+            { model: Doctor }
         ],
         where: { PatientId: patientId }
     });
