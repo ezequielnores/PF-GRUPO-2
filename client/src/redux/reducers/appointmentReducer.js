@@ -21,6 +21,26 @@ export const appointmentGetAll = createAsyncThunk(
   }
 );
 
+export const appointmentGetAllByPatientId = createAsyncThunk(
+  "appointment/getByPatientId",
+  async (id) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/turns/turnsByPatient/${id}`
+    );
+    return response.data;
+  }
+);
+
+export const appointmentGetAllByDoctorId = createAsyncThunk(
+  "appointment/getByDoctorId",
+  async (id) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/turns/tunrsByDoctor/${id}`
+    );
+    return response.data;
+  }
+);
+
 export const appointmentCreate = createAsyncThunk(
   "appointment/create",
   async (data) => {
@@ -74,6 +94,28 @@ const appointmentSlice = createSlice({
         state.detail = action.payload;
       })
       .addCase(appointmentCreate.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(appointmentGetAllByDoctorId.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(appointmentGetAllByDoctorId.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(appointmentGetAllByDoctorId.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(appointmentGetAllByPatientId.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(appointmentGetAllByPatientId.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(appointmentGetAllByPatientId.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
