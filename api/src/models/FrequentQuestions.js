@@ -12,7 +12,8 @@ module.exports = (sequelize) => {
         },
         ask: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         answer: {
             type: DataTypes.STRING,

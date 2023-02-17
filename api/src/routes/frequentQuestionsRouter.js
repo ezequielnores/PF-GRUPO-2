@@ -10,7 +10,16 @@ const {
 const frequentQuestionsRouter = Router();
 
 frequentQuestionsRouter.get("/", async (req, res) => {
+    const { ask } = req.query;
+
     try {
+        if (ask) {
+            const frequentAsk = await getFrequentAskByAsk(ask);
+            if (!frequentAsk) throw new Error(`No se encuentra una pregunta frecuente como ${frequentAsk} en la BDD.`);
+            res.status(200).json(frequentAsk);
+            return;
+        }
+
         const frequentQuestions = await findAllFrequentQuestions();
         if (!frequentQuestions.length) throw new Error("No se encuentran preguntas frecuentes en la BDD.");
 
