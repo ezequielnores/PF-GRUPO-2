@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const {
+    createMedicalHistory,
     getMedicalHistoryById,
     findAllMedicalHistory,
     updateMedicalHistoryById,
@@ -7,7 +8,7 @@ const {
     addRegisterMedicalHistory,
     findAllMedicalHistoryByPatient
 } = require("../controllers/medicalHistoryController");
-const { MedicalHistory, Patient, Doctor } = require("../db");
+const { MedicalHistory } = require("../db");
 const medicalHistoryRouter = Router();
 
 medicalHistoryRouter.get("/", async (req, res) => {
@@ -59,13 +60,9 @@ medicalHistoryRouter.post("/", async (req, res) => {
             throw new Error("Datos incompletos.");
         }
 
-        const medicalHistory = await MedicalHistory.create({
-            register: [{ doctorId, date, diagnosis }],
-        });
+        const medicalHistory = await createMedicalHistory(patientId, doctorId, date, diagnosis);
 
         if (!medicalHistory) throw new Error("Error al crear el historial clinico.");
-
-        await medicalHistory.setPatient(patientId);
 
         res.status(200).json(medicalHistory);
     } catch (error) {
