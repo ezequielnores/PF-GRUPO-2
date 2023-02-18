@@ -8,22 +8,40 @@ const getComments =  async () => {
     return infoComments;
 };
 
-const allCommentsByDoc = async (doctorId, patientId) => {
+const allCommentsByDoc = async (doctorId) => {
     const commentsDoc = await Comments.findAll({
-        attributes: ['id', 'message'],
+        attributes: ['id', 'message', 'doctorId'],
         include: [
             {
                 model: Doctor,
-                through: {
-                    attributes: []
-                }
+                attributes: ['name', 'lastName']
+             
             
-            }
-        ]
-    })
-}
+            } ] , where: { doctorId: doctorId }
+       
+    });
+    return commentsDoc;
+};
+
+const allCommentsByPatient = async (patientId) => {
+    const commentsPat = await Comments.findAll({
+        attributes: ['id', 'message', 'PatientId'],
+        include: [
+            {
+                model: Patient,
+                attributes: ['name', 'surname']
+             
+            
+            } ] , where: { PatientId: patientId }
+       
+    });
+    return commentsPat;
+};
+
 
 module.exports = {
     getComments, 
-    allCommentsByDoc
+    allCommentsByDoc,
+    allCommentsByPatient
+
 }

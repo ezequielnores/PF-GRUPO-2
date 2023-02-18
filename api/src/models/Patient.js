@@ -58,6 +58,7 @@ module.exports = (sequelize) => {
       dni: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
       },
       phone: {
         type: DataTypes.INTEGER,
@@ -65,17 +66,10 @@ module.exports = (sequelize) => {
       socialSecurity: {
         type: DataTypes.STRING,
       },
-      plan: {
-        type: DataTypes.STRING,
-      },
       active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-      },
-      historyPayment: {
-        //este campo es necesario? para que?
-        type: DataTypes.STRING,
-      },
+      }
     },
     {
       timestamps: false,
