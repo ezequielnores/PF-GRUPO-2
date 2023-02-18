@@ -72,7 +72,7 @@ console.log(patientDetail)
                         </div>
                         <div style={{display:"flex", flexDirection:"row"}}>
                             <Item sx={{backgroundColor:"#D9D9D9", color:"#307196",fontWeight:"bold"}}>Heigth:</Item>
-                            <Item sx={{marginLeft:3,color:"black"}}>{patientDetail?.heigth} </Item>
+                            <Item sx={{marginLeft:3,color:"black"}}>{patientDetail?.height} </Item>
                         </div>
                         <div style={{display:"flex", flexDirection:"row"}}>
                             <Item sx={{backgroundColor:"#D9D9D9", color:"#307196",fontWeight:"bold"}}>Plan:</Item>

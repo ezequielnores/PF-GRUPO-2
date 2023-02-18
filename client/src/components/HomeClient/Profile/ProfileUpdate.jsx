@@ -32,12 +32,13 @@ const ProfileEdit = () => {
   // const detailPatient = useSelector((state) => state.patientDetail);
   // const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [info, setInfo] = useState({
     name: "",
     surname: "",
     mail: "",
     password: "",
-    birthday: "",
+    birthday: new Date(),
     photo: "",
     weight: "",
     height: "",
@@ -56,13 +57,23 @@ const ProfileEdit = () => {
       [evento.target.name]: evento.target.value,
     });
   };
+
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     //dispatch(putPatient(info))
     alert("Personal information updated");
     navigate("/HomeClient/Profile");
   };
-  console.log(info);
+
+
+  // useEffect(() => {
+  //   const doctorId = localStorage.getItem("id");
+  //   if (doctorId) {
+  //     dispatch(doctorGetDetail(doctorId));
+  //   }
+  // }, []);
+
   return (
     <div style={padreDiv}>
       <Typography
@@ -103,6 +114,7 @@ const ProfileEdit = () => {
           gutterBottom
           onChange={(e) => handleChange(e)}
         />
+
         <TextField
           name="mail"
           label="Mail"
