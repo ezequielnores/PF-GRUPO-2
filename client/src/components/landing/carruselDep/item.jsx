@@ -8,7 +8,7 @@ function Item({ item }) {
         <img
           src={item.image}
           alt="pe"
-          style={{ width: "100%", height: "35vh " }}
+          style={{ width: "100%", height: "44vh " }}
         />
         <div
           style={{
