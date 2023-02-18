@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 //
+import { isEmail, isNumeric, isStrongPassword, isAlpha } from "validator";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -43,7 +44,7 @@ const ProfileEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const dataDoc = useSelector((state) => state.doctor.detail);
-
+  //estado para controlar los inputs
   const [infoNueva, setInfoNueva] = useState({
     name: dataDoc ? dataDoc.name : "",
     lastName: dataDoc ? dataDoc.lastName : "",
@@ -52,32 +53,79 @@ const ProfileEdit = () => {
     clinicMail: dataDoc ? dataDoc.clinicMail : "",
     birthdate: dataDoc ? dataDoc.birthdate : new Date(),
     phone: dataDoc ? dataDoc.phone : "",
-    image: dataDoc ? dataDoc.image : null,
   });
-
+  //estado para validar el button
+  const [hasChanged, setHasChanged] = useState(false);
+  //estado de errores validaciones
+  const [errors, setErrors] = useState({
+    name: "",
+    mail: "",
+    phone: "",
+    password: "",
+    clinicMail: "",
+    birthdate: "",
+    lastName: "",
+  });
   const handleChange = (evento) => {
     evento.preventDefault();
     setInfoNueva({
       ...infoNueva,
       [evento.target.name]: evento.target.value,
     });
+    setHasChanged(true);
   };
   const handleFechaNacimientoChange = (date) => {
     setInfoNueva({ ...infoNueva, birthdate: date });
   };
   console.log(dataDoc.id);
-  console.log(infoNueva);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(dataDoc.id);
-    console.log(infoNueva);
-    dispatch(doctorUpdate({ id: dataDoc.id, data: infoNueva }));
-    alert("Information updated");
-    navigate("/HomeMedic/Profile");
+    const errors = validateFields();
+    if (Object.keys(errors).length === 0) {
+      dispatch(doctorUpdate({ id: dataDoc.id, data: infoNueva }));
+      alert("Information updated");
+      navigate("/HomeMedic/Profile");
+    } else {
+      setErrors(errors);
+    }
   };
+  //validaciones mediante libereria validator js
+  const validateFields = () => {
+    const errors = {};
 
+    if (!isAlpha(infoNueva.name)) {
+      errors.name = "Please enter valid name";
+    }
+
+    if (!isAlpha(infoNueva.lastName)) {
+      errors.lastName = "Please enter valid last name";
+    }
+
+    if (!isEmail(infoNueva.mail)) {
+      errors.mail = "Please enter a valid email address";
+    }
+
+    if (!isStrongPassword(infoNueva.password)) {
+      errors.password = "Please enter a valid password";
+    }
+
+    if (!isEmail(infoNueva.clinicMail)) {
+      errors.clinicMail = "Please enter a valid email address";
+    }
+
+    if (new Date(infoNueva.birthdate) > new Date()) {
+      errors.birthdate = "Please enter a valid birthdate";
+    }
+
+    if (!isNumeric(infoNueva.phone)) {
+      errors.phone = "Please enter a valid phone number";
+    }
+
+    return errors;
+  };
+  //cambie el id del localstorage, genera errores por el id del cliente con el mismo nombre (id)
   useEffect(() => {
-    const doctorId = localStorage.getItem("id");
+    const doctorId = localStorage.getItem("idMedic");
     if (doctorId) {
       dispatch(doctorGetDetail(doctorId));
     }
@@ -88,7 +136,7 @@ const ProfileEdit = () => {
         variant="h2"
         gutterBottom
         style={{
-          color: "#147bf4",
+          color: "#307196",
           fontWeight: "bold",
           fontSize: "2.5rem",
         }}
@@ -106,24 +154,32 @@ const ProfileEdit = () => {
           label="Name"
           style={typoTitle}
           onChange={handleChange}
+          error={Boolean(errors.name)}
+          helperText={errors.name}
         />
         <TextField
           name="lastName"
           label="Last name"
           style={typoTitle}
           onChange={handleChange}
+          error={Boolean(errors.lasName)}
+          helperText={errors.lastName}
         />
         <TextField
           name="password"
           label="Password"
           style={typoTitle}
           onChange={handleChange}
+          error={Boolean(errors.password)}
+          helperText={errors.password}
         />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Birthdate"
             value={infoNueva.birthdate}
             onChange={handleFechaNacimientoChange}
+            error={Boolean(errors.birthdate)}
+            helperText={errors.birthdate}
             format="dd/MM/yyyy"
             maxDate={new Date()}
             inputVariant="outlined"
@@ -135,21 +191,31 @@ const ProfileEdit = () => {
           label="Phone"
           style={typoTitle}
           onChange={handleChange}
+          error={Boolean(errors.phone)}
+          helperText={errors.phone}
         />
         <TextField
           name="clinicMail"
           label="Clinic email"
           style={typoTitle}
           onChange={handleChange}
+          error={Boolean(errors.clinicMail)}
+          helperText={errors.clinicMail}
         />
         <TextField
           name="mail"
           label="Email"
           style={typoTitle}
           onChange={handleChange}
+          error={Boolean(errors.mail)}
+          helperText={errors.mail}
         />
       </Card>
-      <Button variant="contained" onClick={(e) => handleSubmit(e)}>
+      <Button
+        variant="contained"
+        onClick={(e) => handleSubmit(e)}
+        disabled={!hasChanged}
+      >
         Update information
       </Button>
     </div>

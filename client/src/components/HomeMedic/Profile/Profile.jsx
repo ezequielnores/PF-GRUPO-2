@@ -26,10 +26,10 @@ const carde = {
   marginBottom: "2rem",
 };
 const typoTitle = {
-  fontSize: "16px",
+  fontSize: "18px",
   fontWeight: "bold",
-  marginTop: "3px",
-  marginBottom: "2px",
+  marginTop: "4px",
+  marginBottom: "4px",
 };
 const passwordStyle = {
   display: "flex",
@@ -51,7 +51,7 @@ const Profile = () => {
   const inputPassword = showPassword ? dataDoc.password : "****";
   //Aca hago dispatch con el id que tengo en localstorage
   useEffect(() => {
-    const doctorId = localStorage.getItem("id");
+    const doctorId = localStorage.getItem("idMedic");
     if (doctorId) {
       dispatch(doctorGetDetail(doctorId));
     }
@@ -60,7 +60,6 @@ const Profile = () => {
     <div style={padreDiv}>
       <Typography
         variant="h2"
-        gutterBottom
         style={{
           color: "#307196",
           fontWeight: "bold",
@@ -73,27 +72,19 @@ const Profile = () => {
       {/* PREGUNTO SI EXISTE ALGO EN DATADOC , OSEAS SI REALMENTE TENGO UN DOCTOR ! SI NO NADA ! */}
       {Object.keys(dataDoc).length > 0 ? (
         <Card style={carde}>
-          <Typography style={typoTitle} gutterBottom>
-            Name :
-          </Typography>
+          <Typography style={typoTitle}>Name :</Typography>
           <Typography variant="body1">{dataDoc.name}</Typography>
           <Divider />
 
-          <Typography style={typoTitle} gutterBottom>
-            Last name :
-          </Typography>
+          <Typography style={typoTitle}>Last name :</Typography>
           <Typography variant="body1">{dataDoc.lastName}</Typography>
           <Divider />
 
-          <Typography style={typoTitle} gutterBottom>
-            Personal Email :
-          </Typography>
+          <Typography style={typoTitle}>Personal Email :</Typography>
           <Typography variant="body1">{dataDoc.mail}</Typography>
           <Divider />
           <div style={passwordStyle}>
-            <Typography style={typoTitle} gutterBottom>
-              Password :
-            </Typography>
+            <Typography style={typoTitle}>Password :</Typography>
             <IconButton onClick={handleClickShowPassword}>
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </IconButton>
@@ -101,39 +92,25 @@ const Profile = () => {
           <Typography variant="body1">{inputPassword}</Typography>
           <Divider />
 
-          <Typography style={typoTitle} gutterBottom>
-            Date of birth :
-          </Typography>
+          <Typography style={typoTitle}>Date of birth :</Typography>
           <Typography variant="body1">{dataDoc.birthdate}</Typography>
           <Divider />
-          <Typography style={typoTitle} gutterBottom>
-            Location:
-          </Typography>
+          <Typography style={typoTitle}>Location:</Typography>
           <Typography variant="body1">{dataDoc.location}</Typography>
           <Divider />
-          <Typography style={typoTitle} gutterBottom>
-            Document :
-          </Typography>
+          <Typography style={typoTitle}>Document :</Typography>
           <Typography variant="body1">{dataDoc.dni}</Typography>
           <Divider />
-          <Typography style={typoTitle} gutterBottom>
-            Phone :
-          </Typography>
+          <Typography style={typoTitle}>Phone :</Typography>
           <Typography variant="body1">{dataDoc.phone}</Typography>
           <Divider />
-          <Typography style={typoTitle} gutterBottom>
-            Specialty :
-          </Typography>
+          <Typography style={typoTitle}>Specialty :</Typography>
           <Typography variant="body1">{dataDoc.speciality}</Typography>
           <Divider />
-          <Typography style={typoTitle} gutterBottom>
-            License :
-          </Typography>
+          <Typography style={typoTitle}>License :</Typography>
           <Typography variant="body1">{dataDoc.lisence}</Typography>
           <Divider />
-          <Typography style={typoTitle} gutterBottom>
-            Clinic email :
-          </Typography>
+          <Typography style={typoTitle}>Clinic email :</Typography>
           <Typography variant="body1">{dataDoc.clinicMail}</Typography>
           <Divider />
           <Link to="/HomeMedic/Profile/Edit">
