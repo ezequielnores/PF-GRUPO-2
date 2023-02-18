@@ -95,7 +95,7 @@ const updateTurnById = async (attributes, id) => {
         delete attributes.doctorId;
     }
     if (attributes.patientId) {
-        const patient = await Patient.findByPk(attributes.doctorId);
+        const patient = await Patient.findByPk(attributes.patientId);
         await turnToUpdate.setDoctor(patient);
         await turnToUpdate.save();
         delete attributes.patientId;
