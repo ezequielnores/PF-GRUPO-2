@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,17 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+//
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+//redux
+import {
+  doctorUpdate,
+  doctorGetDetail,
+} from "../../../redux/reducers/doctorReducer";
+import { useDispatch, useSelector } from "react-redux";
+
 //styles
 const padreDiv = {
   width: "100%",
@@ -29,32 +40,48 @@ const typoTitle = {
 };
 
 const ProfileEdit = () => {
-  // const detailPatient = useSelector((state) => state.patientDetail);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [info, setInfo] = useState({
-    name: "",
-    lastName: "",
-    mail: "",
-    clinicMail: "",
-    phone: "",
-    birthdate: "",
-    image: "",
+  const dataDoc = useSelector((state) => state.doctor.detail);
+
+  const [infoNueva, setInfoNueva] = useState({
+    name: dataDoc ? dataDoc.name : "",
+    lastName: dataDoc ? dataDoc.lastName : "",
+    mail: dataDoc ? dataDoc.mail : "",
+    password: dataDoc ? dataDoc.password : "",
+    clinicMail: dataDoc ? dataDoc.clinicMail : "",
+    birthdate: dataDoc ? dataDoc.birthdate : new Date(),
+    phone: dataDoc ? dataDoc.phone : "",
+    image: dataDoc ? dataDoc.image : null,
   });
+
   const handleChange = (evento) => {
     evento.preventDefault();
-    setInfo({
-      ...info,
+    setInfoNueva({
+      ...infoNueva,
       [evento.target.name]: evento.target.value,
     });
   };
+  const handleFechaNacimientoChange = (date) => {
+    setInfoNueva({ ...infoNueva, birthdate: date });
+  };
+  console.log(dataDoc.id);
+  console.log(infoNueva);
   const handleSubmit = (e) => {
     e.preventDefault();
-    //dispatch(putPatient(info))
+    console.log(dataDoc.id);
+    console.log(infoNueva);
+    dispatch(doctorUpdate({ id: dataDoc.id, data: infoNueva }));
     alert("Information updated");
     navigate("/HomeMedic/Profile");
   };
-  console.log(info);
+
+  useEffect(() => {
+    const doctorId = localStorage.getItem("id");
+    if (doctorId) {
+      dispatch(doctorGetDetail(doctorId));
+    }
+  }, []);
   return (
     <div style={padreDiv}>
       <Typography
@@ -78,50 +105,48 @@ const ProfileEdit = () => {
           name="name"
           label="Name"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
         />
         <TextField
           name="lastName"
           label="Last name"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
         />
         <TextField
-          name="birthdate"
-          label="Date of birth"
+          name="password"
+          label="Password"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
         />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Birthdate"
+            value={infoNueva.birthdate}
+            onChange={handleFechaNacimientoChange}
+            format="dd/MM/yyyy"
+            maxDate={new Date()}
+            inputVariant="outlined"
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
         <TextField
           name="phone"
           label="Phone"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
         />
         <TextField
           name="clinicMail"
           label="Clinic email"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
         />
         <TextField
           name="mail"
           label="Email"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
-        />
-        <TextField
-          name="image"
-          label="Image"
-          style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
         />
       </Card>
       <Button variant="contained" onClick={(e) => handleSubmit(e)}>
