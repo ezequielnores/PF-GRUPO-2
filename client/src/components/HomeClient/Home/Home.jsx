@@ -1,4 +1,4 @@
-import SideBar from "../sideBar/sideBar";
+import SideBar from "../SideBar/SideBar";
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
@@ -6,7 +6,7 @@ import logoICare from "../../../assets/logoiCare.png";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import {
-  Chat,
+  Faq,
   MedicalHistory,
   MedicalAppointments,
   MyAppointments,
@@ -107,7 +107,7 @@ const Home = () => {
           <MedicalHistory />
         )}
         {location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />}
-        {location.pathname.endsWith("/HomeClient/Chat") && <Chat />}
+        {location.pathname.endsWith("/HomeClient/Faq") && <Faq />}
         {location.pathname.endsWith("/HomeClient/Register") && <Register />}
       </div>
     </div>
