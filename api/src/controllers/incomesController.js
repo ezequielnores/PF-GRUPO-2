@@ -30,7 +30,8 @@ const findAllIncomesByPatient = async patientId => {
 };
 
 const updateIncomeById = async (attributes, id) => {
-    const incomeUpdated = await Incomes.update(attributes, { where: { id: id } });
+    await Incomes.update(attributes, { where: { id: id } });
+    const incomeUpdated = await Incomes.findByPk(id, { include: [Patient] });
     return incomeUpdated;
 };
 
