@@ -1,16 +1,25 @@
 const { Router } = require("express");
 const {
+    createFrequentAsk,
     getFrequentAskById,
     findAllFrequentQuestions,
     updateFrequentAskById,
     deleteFrequentAskById,
     getFrequentAskByAsk
 } = require("../controllers/frequentQuestionsController");
-const { FrequentQuestions } = require("../db");
 const frequentQuestionsRouter = Router();
 
 frequentQuestionsRouter.get("/", async (req, res) => {
+    const { ask } = req.query;
+
     try {
+        if (ask) {
+            const frequentAsk = await getFrequentAskByAsk(ask);
+            if (!frequentAsk) throw new Error(`No se encuentra una pregunta frecuente como ${frequentAsk} en la BDD.`);
+            res.status(200).json(frequentAsk);
+            return;
+        }
+
         const frequentQuestions = await findAllFrequentQuestions();
         if (!frequentQuestions.length) throw new Error("No se encuentran preguntas frecuentes en la BDD.");
 
@@ -56,10 +65,7 @@ frequentQuestionsRouter.post("/", async (req, res) => {
         if (!answer) throw new Error("La respuesta no esta definida");
         if (!ask) throw new Error("La pregunta no esta definida");
 
-        const frequentAskCreated = await FrequentQuestions.create({
-            answer: answer,
-            ask: ask
-        });
+        const frequentAskCreated = await createFrequentAsk(answer, ask);
         if (!frequentAskCreated) throw new Error("Error al crear la pregunta frecuente.");
 
         res.status(200).json(frequentAskCreated);

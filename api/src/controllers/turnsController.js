@@ -1,6 +1,22 @@
 const { Turns, Patient, Doctor } = require("../db");
 const { Op } = require("sequelize");
 
+const createTurn = async (availability, date, hour, type, ubication, doctorSpecialty, doctorId, patientId) => {
+    const turn = await Turns.create({
+        availability: availability,
+        date: date,
+        hour: hour,
+        type: type ? type : null,
+        ubication: ubication,
+        doctorSpecialty: doctorSpecialty,
+    });
+
+    await turn.setDoctor(doctorId);
+    await turn.setPatient(patientId);
+
+    return turn;
+};
+
 const getTurnById = async id => {
     const turn = await Turns.findByPk(id, { include: [
         { model: Patient },
@@ -73,6 +89,7 @@ const updateTurnById = async (attributes, id) => {
 };
 
 module.exports = {
+    createTurn,
     getTurnById,
     findAllTurns,
     deleteTurnById,

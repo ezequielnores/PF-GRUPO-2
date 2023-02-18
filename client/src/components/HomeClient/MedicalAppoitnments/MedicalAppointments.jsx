@@ -7,11 +7,16 @@ import SendIcon from '@mui/icons-material/Send';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Datetime from "react-datetime";
+ import "react-datetime/css/react-datetime.css";
 
 
-
-     const MedicalAppointments= ()=>{
+const MedicalAppointments= ()=>{
     
+
+
         const dataTurnos=[{
             id:1,
             date:"12/03/2023",                     
@@ -51,12 +56,11 @@ import InputLabel from '@mui/material/InputLabel';
             availability:"false",
             }]
 
+            const [selectedDate, setSelectedDate] = useState(new Date());
+            const [selectedTime, setSelectedTime] = useState("");
 
-        const [info,setInfo]=useState({ 
-            date:"",                     
-            hour:"",                                                
-            doctorSpecialty:"",
-        })
+
+        const [doctorSpecialty,setDoctorSpecialty]=useState("")
 
         const [modalAbierto, setModalAbierto] = useState(false);
     
@@ -70,35 +74,23 @@ import InputLabel from '@mui/material/InputLabel';
         //  }
 
          const handleSelectDoctor=(e)=>{
-            setInfo({...info,
-                doctorSpecialty:e.target.value})
+            setDoctorSpecialty(e.target.value)
         }
+
          const handleSelectDate=(e)=>{
-                setInfo({
-                    ...info,
-                    date:e.target.value
-                })
+            setSelectedDate(e)
+
         }
-         const handleSelectHour=(e)=>{
-                setInfo({
-                    ...info,
-                    hour:e.target.value
-                })
-        }
+
+        const handleSelectHour = time => setSelectedTime(time.format("HH:mm"));
     
         const handleSubmit = (event) => {
             event.preventDefault();
             setModalAbierto(true);
-          }
+        }
 
           const closeModal = () => {
-            setModalAbierto(false);
-            setInfo({
-                date:"",                     
-                hour:"",                                                
-                doctorSpecialty:"",
-            });
-            
+            setModalAbierto(false); 
           }
     
             return(
@@ -108,7 +100,9 @@ import InputLabel from '@mui/material/InputLabel';
                     <h2 style={{marginBottom:40,display:"flex",justifyContent:"center", color:"#307196", backgroundColor:"#D9D9D9", padding:5, borderRadius:10}}>Select your appoinment </h2>
                     <div style={{display:"flex", flexDirection:"column" }}>
                     <InputLabel id="demo-simple-select-required">Date </InputLabel>
-                        <Select
+
+                        <DatePicker selected={selectedDate} onChange={handleSelectDate} value={selectedDate} name="selectedDate"  />
+                        {/* <Select
                             labelId="demo-simple-select-required-label"
                             id="demo-simple-select-required"
 
@@ -119,9 +113,20 @@ import InputLabel from '@mui/material/InputLabel';
                                 {dataTurnos.filter((turno) => turno.availability === "true").map((turno) => {
                                     return (
                             <MenuItem value={turno.date}>{turno.date}</MenuItem>)})}
-                        </Select>
+                        </Select> */}
+                        <br></br>
                         <InputLabel id="demo-simple-select-required">Time </InputLabel>
-                        <Select
+
+                        <Datetime
+                        dateFormat={false}
+                        input={false} onChange={handleSelectHour}
+                         name="selectedTime"
+                         
+                         
+                            />
+
+
+                        {/* <Select
                             labelId="demo-simple-select-required-label"
                             id="demo-simple-select-required"
                             onChange={handleSelectHour}
@@ -131,7 +136,7 @@ import InputLabel from '@mui/material/InputLabel';
                                 {dataTurnos.filter((turno) => turno.availability === "true").map((turno) => {
                                     return (
                             <MenuItem value={turno.hour}>{turno.hour}</MenuItem>)})}
-                        </Select>
+                        </Select> */}
 
                         <InputLabel id="demo-simple-select-required">Speciality: </InputLabel>
                         <Select
@@ -140,7 +145,7 @@ import InputLabel from '@mui/material/InputLabel';
                             onChange={handleSelectDoctor}
                             sx={{ minWidth: 150, borderRadius: 2 ,marginRight:3}}
                             >
-                            <MenuItem value={info.doctorSpecialty} name="doctorSpecialty">Speciality: </MenuItem>
+                            <MenuItem value={doctorSpecialty} name="doctorSpecialty">Speciality: </MenuItem>
                                 {dataTurnos.filter((turno) => turno.availability === "true").map((turno) => {
                                     return (
                             <MenuItem value={turno.doctorSpecialty}>{turno.doctorSpecialty}</MenuItem>)})}
@@ -149,7 +154,7 @@ import InputLabel from '@mui/material/InputLabel';
 
 
                     <Stack direction="flex" spacing={2} >
-                        {(!info.date || !info.hour || !info.doctorSpecialty) ? 
+                        {(!selectedDate || !selectedTime || !doctorSpecialty) ? 
                         <Button variant="contained" disabled>RESERVE</Button>
                         :
                         <Button variant="contained" type="submit"  endIcon={<SendIcon />}>RESERVE</Button>}
@@ -160,9 +165,9 @@ import InputLabel from '@mui/material/InputLabel';
                     <Modal isOpen={modalAbierto} onRequestClose={closeModal} >
                         <div style={{border:"solid", justifyContent:"center", marginTop:"5%", borderRadius:10, paddingBottom:50}}>
                             <h2 style={{display:"flex",flexDirection:"row", justifyContent:"center", color:"#D9D9D9",backgroundColor:"#307196"}}>Info about your appoinment </h2>
-                            <h3 style={{marginLeft:5}}>Date: {info.date}</h3>
-                            <h3 style={{marginLeft:5}}>Time: {info.hour}</h3>
-                            <h3 style={{marginLeft:5}}>Speciality: {info.doctorSpecialty}</h3>
+                            <h3 style={{marginLeft:5}}>Date: {selectedDate.toString()}</h3>
+                            <h3 style={{marginLeft:5}}>Time: {selectedTime}</h3>
+                            <h3 style={{marginLeft:5}}>Speciality: {doctorSpecialty}</h3>
                             <Button variant="contained" onClick={closeModal} style={{marginLeft:"10%", marginTop:"5%",scale:"1.2"}}>Cerrar</Button>
                         </div>
                     </Modal>
@@ -172,3 +177,4 @@ import InputLabel from '@mui/material/InputLabel';
     }
     
      export default MedicalAppointments;
+
