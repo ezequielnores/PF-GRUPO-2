@@ -84,8 +84,33 @@ const deleteTurnsByExpiredDate = async date => {
 };
 
 const updateTurnById = async (attributes, id) => {
-    const turnUpdated = await Turns.update(attributes, { where: { id: id } });
-    return turnUpdated;
+    const turnToUpdate = await Turns.findOne({ where: { id: id }, include: [
+        { model: Doctor }, { model: Patient }
+    ] });
+
+    if (attributes.doctorId) {
+        const doctor = await Doctor.findByPk(attributes.doctorId);
+        await turnToUpdate.setDoctor(doctor);
+        await turnToUpdate.save();
+        delete attributes.doctorId;
+    }
+    if (attributes.patientId) {
+        const patient = await Patient.findByPk(attributes.doctorId);
+        await turnToUpdate.setDoctor(patient);
+        await turnToUpdate.save();
+        delete attributes.patientId;
+    }
+
+    if (!Object.values(attributes).length) {
+        const turnUpdated = await Turns.findByPk(turnToUpdate.id, { include: [
+            { model: Doctor }, { model: Patient }
+        ] });
+        return turnUpdated;
+    }
+
+    await Turns.update(attributes, { where: { id: id } });
+    const turnUpdated2 = await Turns.findByPk(id, { include: [{ model: Doctor }, { model: Patient }] });
+    return turnUpdated2;
 };
 
 module.exports = {
