@@ -11,7 +11,7 @@ const SideBar = ({ open, handleOpen }) => {
   //delete id de localstorage, deslogeo
   const handleLogOut = (e) => {
     e.preventDefault();
-    localStorage.removeItem("id");
+    localStorage.removeItem("idMedic");
   };
   return (
     <div>
