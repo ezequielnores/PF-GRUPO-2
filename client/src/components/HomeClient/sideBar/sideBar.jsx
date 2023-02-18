@@ -12,7 +12,7 @@ import ForumIcon from '@mui/icons-material/Forum';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import LogoutIcon from '@mui/icons-material/Logout';
 const SideBar = ({open , handleOpen,path}) => {
-    const logout=localStorage.removeItem('id')
+    
     return (
         <div>
 
@@ -134,7 +134,7 @@ const SideBar = ({open , handleOpen,path}) => {
                         </button>
                     </Stack>
                     <button className={style.buttonOut} style={{width:open? "9vw":"2vw"}}>
-                        <Link to="/" logout={logout}>
+                        <Link to="/" >
                         {open? 
                                     <div className={style.divbutton} style={{color:"white"}}>
                                         <LogoutIcon />

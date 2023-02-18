@@ -2,6 +2,7 @@ import React from "react";
 import Carrusel from "./carruselDep/carusel";
 import Planes from "./planes/planes";
 import { Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 //mui
 const container = {
   width: "100%",
@@ -24,13 +25,16 @@ const carru = {
   width: "50%",
   marginRight: "4rem",
   marginTop: "4rem",
+/*   marginBottom: "1rem" */
 };
 const textoMarca = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
 };
-const landing = () => {
+const Landing = () => {
+const navigate = useNavigate()
+
   return (
     <div style={container}>
       <div style={hijoContainer}>
@@ -46,7 +50,7 @@ const landing = () => {
           <Typography variant="h5" color="text.secondary">
             Online health services
           </Typography>
-          <Button style={{ marginTop: "2rem", fontSize: "15px" }}>
+          <Button onClick={()=> navigate('/register')} style={{ marginTop: "2rem", fontSize: "15px" }}>
             Register client
           </Button>
         </div>
@@ -59,4 +63,4 @@ const landing = () => {
   );
 };
 
-export default landing;
+export default Landing;
