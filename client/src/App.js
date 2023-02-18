@@ -12,6 +12,7 @@ import Services from "./components/serv/services";
 import Work from "./components/work/work";
 import LoginClient from "./components/LoginClient/LoginClient";
 import MedicForm from "./components/medicWorkForm/medicForm";
+import Register from "./components/HomeClient/Register/Register";
 import LoginMedic from "./components/LoginMedic/LoginMedic";
 import { Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -31,10 +32,8 @@ import { HomeMedic } from "./components/HomeMedic/index";
 function App() {
   const location = useLocation();
 
-  console.log(location.pathname);
   return (
     <div className="App">
-
       {location.pathname.startsWith("/HomeClient") ? (
         <HomeClient />
       ) : location.pathname.startsWith("/HomeMedic") ? (
@@ -55,6 +54,7 @@ function App() {
             <Route path="/loginClient" element={<LoginClient />} />
             <Route path="/work/registerForm" element={<MedicForm />} />
             <Route path="/loginMedic" element={<LoginMedic />} />
+            <Route path="/register" element={<Register />}/>
           </Routes>
           <Footer />
         </>
