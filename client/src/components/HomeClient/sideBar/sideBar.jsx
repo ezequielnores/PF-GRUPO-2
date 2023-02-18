@@ -12,7 +12,12 @@ import ForumIcon from '@mui/icons-material/Forum';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import LogoutIcon from '@mui/icons-material/Logout';
 const SideBar = ({open , handleOpen,path}) => {
-    
+
+    const handleLogOut = (e) => {
+        e.preventDefault();
+        localStorage.removeItem("id");
+      };
+
     return (
         <div>
 
@@ -133,7 +138,7 @@ const SideBar = ({open , handleOpen,path}) => {
                             </Link>
                         </button>
                     </Stack>
-                    <button className={style.buttonOut} style={{width:open? "9vw":"2vw"}}>
+                    <button className={style.buttonOut} style={{width:open? "9vw":"2vw"}} onClick={(e) => handleLogOut(e)}>
                         <Link to="/" >
                         {open? 
                                     <div className={style.divbutton} style={{color:"white"}}>
