@@ -24,6 +24,7 @@ const carru = {
   width: "50%",
   marginRight: "4rem",
   marginTop: "4rem",
+/*   marginBottom: "1rem" */
 };
 const textoMarca = {
   display: "flex",

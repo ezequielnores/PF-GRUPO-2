@@ -22,6 +22,8 @@ const adminRouter = require("./adminRouter");
 
 const blogRouter = require("./blogRouter");
 
+const urgencyRouter = require("./urgencyRouter");
+
 const router = Router();
 
 // Configurar los routers
@@ -44,7 +46,7 @@ router.use("/comments", commentsRouter);
 
 router.use("./admins", adminRouter);
 
-
+router.use("/urgency", urgencyRouter);
 
 router.use("/blog", blogRouter);
 

@@ -19,7 +19,6 @@ export const doctorGetDetail = createAsyncThunk(
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/doctor/${id}`
     );
-
     return response.data;
   }
 );
@@ -41,8 +40,8 @@ export const doctorAdd = createAsyncThunk("doctor/addById", async (data) => {
 
 export const doctorUpdate = createAsyncThunk(
   "doctor/updateById",
-  async (id, data) => {
-    const response = await axios.post(
+  async ({ id, data }) => {
+    const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/doctor/update/${id}`,
       data
     );

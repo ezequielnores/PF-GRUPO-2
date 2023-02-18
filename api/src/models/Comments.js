@@ -10,7 +10,7 @@ module.exports = (sequelize) =>{
             allowNull: false
         },
         message: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
+            type: DataTypes.ARRAY(DataTypes.JSONB),
             allowNull: false
         }
     },{
