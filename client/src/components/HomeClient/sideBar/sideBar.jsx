@@ -107,16 +107,16 @@ const SideBar = ({open , handleOpen,path}) => {
                             </Link>
                         </button>
                         <button className={style.buttonBar}>
-                            <Link to="/HomeClient/Chat">
+                            <Link to="/HomeClient/Faq">
                             {open? 
                                     <div className={style.divbutton}>
-                                        {path.endsWith("/HomeClient/Chat")? 
+                                        {path.endsWith("/HomeClient/Faq")? 
                                         <div className={style.icon} style={{background:"#307196"}}><ForumIcon style={{color:"white"}}/></div> : 
                                         <div className={style.icon} style={{background:"#c2c1c1"}}><ForumIcon/></div> }
-                                        Chat
+                                        FAQ
                                     </div>
                                     : 
-                                    path.endsWith("/HomeClient/Chat")? <ForumIcon /> : <ForumIcon style={{color:"grey"}}/>
+                                    path.endsWith("/HomeClient/Faq")? <ForumIcon /> : <ForumIcon style={{color:"grey"}}/>
                                 }
                             </Link>
                         </button>

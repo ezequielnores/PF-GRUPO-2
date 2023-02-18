@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const axios = require("axios");
-const { getComments, allCommentsByDoc } = require("../controllers/commentsController");
+const { getComments, allCommentsByDoc, allCommentsByPatient } = require("../controllers/commentsController");
 const { Comments } = require("../db.js");
 
 const router = Router();
@@ -19,20 +19,41 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get('/commentsDoctor/:id', async (req, res) => {
+//-------------------------- trae los comentario por Doctor
+router.get('/doctor/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    if(!id){
-      res.status(404).send("id not found")
-    }
-    const commentsDoctor = await allCommentsByDoc(id);
-    if(commentsDoctor){
-      res.status(200).send(commentsDoctor);
+    if(id){
+      const commentsDoctor = await allCommentsByDoc(id);
+      if(commentsDoctor.length){
+        res.status(200).send(commentsDoctor);
+      } else {
+        res.status(404).send('The doctor has no comments')
+      }
     } else {
-      res.status(404).send('El doctor no tiene comentarios')
+      res.status(404).send("Id not found")
     }
   } catch (error) {
-    res.status(404).send({error: error.message}, 'Error de get commentsDoctor')
+    res.status(404).json({ error: error.message }, 'Error get doctor/:id')
+  }
+});
+
+//-------------------------- trae los comentario por Paciente
+router.get('/patient/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    if(id){
+      const commentsPatient = await allCommentsByPatient(id);
+      if(commentsPatient.length){
+        res.status(200).send(commentsPatient);
+      } else {
+        res.status(404).send('The patient has no comments')
+      }
+    } else {
+      res.status(404).send("Id not found")
+    }
+  } catch (error) {
+    res.status(404).json({ error: error.message }, 'Error get patient/:id')
   }
 });
 
@@ -49,10 +70,10 @@ router.get("/:id", async (req, res) => {
         res.status(404).send("Comment not found");
       }
     } else {
-      res.status(404).send("No se encontró el id por params");
+      res.status(404).send("Id not found");
     }
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(404).json({ error: error.message }, 'Error de get id');
   }
 });
 

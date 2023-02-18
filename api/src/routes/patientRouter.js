@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const axios = require("axios");
 
-const { getPatientInfo } = require("../controllers/patientController.js");
+const { getPatient, getPatientActive, getPatientInactive } = require("../controllers/patientController.js");
 
 const { Patient } = require("../db");
 
@@ -10,19 +10,17 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     const { name } = req.query;
-    const allPatient = await getPatientInfo();
+    const allPatient = await getPatient();
     if (name) {
       const patientName = await allPatient.filter((e) => {
         e.name.toLowerCase().includes(name.toLowerCase());
       });
-      if (patientName.length){
+      if (patientName.length) {
         res.status(200).send(patientName);
       } else {
         res.status(404).send("Patient not found");
       }
-    } else if(!allPatient.length){
-      res.status(404).send('Not patients in DB')
-    }else {
+    } else {
       res.status(200).send(allPatient);
     }
   } catch (error) {
@@ -30,10 +28,40 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+//------------------------ trae todos los pacientes activos
+router.get('/active', async (req, res) => {
+  try {
+    const patientAct = await getPatientActive();
+    if(patientAct.length){
+      res.status(200).send(patientAct);
+    } else {
+      res.status(404).send('No active patients')
+    }
+  } catch (error) {
+      res.status(404).json({ error: error.message })
+  }
+});
+
+//------------------------ trae todos los pacientes inactivos
+router.get('/inactive', async (req, res) => {
+  try {
+    const patientInac = await getPatientInactive();
+
+    if(patientInac.length){
+      res.status(200).send(patientInac);
+    } else {
+      res.status(404).send('No inactive patients')
+    }
+  } catch (error) {
+      res.status(404).json({ error: error.message })
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const getById = await getPatientInfo();
+    const getById = await getPatient();
 
     if (id) {
       const patientById = await Patient.findByPk(id);
@@ -43,7 +71,7 @@ router.get("/:id", async (req, res) => {
         res.status(404).send("No patients were found with this ID.");
       }
     } else {
-      res.status(404).send("No se encontró el id por params");
+      res.status(404).send("Id not found");
     }
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -67,11 +95,8 @@ router.post("/", async (req, res) => {
     dni,
     phone,
     socialSecurity,
-    plan,
     active,
-    historyPayment,
   } = req.body;
-
   try {
     if (
       !name ||
@@ -130,9 +155,7 @@ router.put("/edit/:id", async (req, res) => {
       dni,
       phone,
       socialSecurity,
-      plan,
       active,
-      historyPayment,
     } = req.body;
 
     if (id) {
@@ -155,16 +178,14 @@ router.put("/edit/:id", async (req, res) => {
             dni,
             phone,
             socialSecurity,
-            plan,
             active,
-            historyPayment,
           },
           { where: { id: id } }
         );
 
-        res.status(200).send("Paciente modificado con exito");
+        res.status(200).send("Patient modified successfully");
       } else {
-        res.status(400).send("Faltaron datos para modificar el paciente");
+        res.status(400).send("Missing data to modify patient");
       }
     }
   } catch (error) {
@@ -179,11 +200,11 @@ router.delete("/delete/:id", async (req, res) => {
     if (!patientDelete) {
       res.status(404).send("Patient not found");
     } else {
-      patientDelete.destroy();
+      patientDelete.update({active: false}, {where: { id: id }});
       res.status(200).send("Patient delete successfully");
     }
   } catch (error) {
-    res.status(404).json({ error: error.message }, "Entro al error del delete");
+    res.status(404).json({ error: error.message });
   }
 });
 
@@ -198,7 +219,7 @@ router.post("/login", async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(200).send("Incorrect login information");
+      res.status(404).send("Incorrect login information");
     });
 });
 
