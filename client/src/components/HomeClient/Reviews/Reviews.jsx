@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import Button from '@mui/material/Button';
@@ -8,130 +8,97 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import Modal from 'react-modal';
+import {docrtorGetAll} from "../../../redux/reducers/doctorReducer";
+import Rating from '@mui/material/Rating';
+import Typography from '@mui/material/Typography';
 
 function Reviews() {
     const dispatch=useDispatch();
     const [modalAbierto, setModalAbierto] = useState(false);
- 
-   const doctorBDD= [{
-        "name":"Mario gonzalez",
-        "lastName":"Buvet",
-        "mail":"nicobovet@gmail.com",
-        "password":"nionico",
-        "birthdate":"3/11/1996",
-        "image":"sdasdasdasd", 
-        "location":"quilmes",
-        "dni":"40009555",
-        "phone":"1233123123", 
-        "speciality":"Neuogy",
-        "lisence":"asdasdad",
-        "cv":"adad",
-        "clinicMail":"nico@mail.com"
-    },{
-        "name":"Roberto Vella",
-        "lastName":"Buvet",
-        "mail":"nicobovet@gmail.com",
-        "password":"nionico",
-        "birthdate":"3/11/1996",
-        "image":"sdasdasdasd", 
-        "location":"quilmes",
-        "dni":"40009555",
-        "phone":"1233123123", 
-        "speciality":"Neuogy",
-        "lisence":"asdasdad",
-        "cv":"adad",
-        "clinicMail":"nico@mail.com"
-    },{
-        "name":"Juan Roll",
-        "lastName":"Buvet",
-        "mail":"nicobovet@gmail.com",
-        "password":"nionico",
-        "birthdate":"3/11/1996",
-        "image":"sdasdasdasd", 
-        "location":"quilmes",
-        "dni":"40009555",
-        "phone":"1233123123", 
-        "speciality":"Neuogy",
-        "lisence":"asdasdad",
-        "cv":"adad",
-        "clinicMail":"nico@mail.com"
-    },{
-        "name":"Ruben Bellozo",
-        "lastName":"Buvet",
-        "mail":"nicobovet@gmail.com",
-        "password":"nionico",
-        "birthdate":"3/11/1996",
-        "image":"sdasdasdasd", 
-        "location":"quilmes",
-        "dni":"40009555",
-        "phone":"1233123123", 
-        "speciality":"Neuogy",
-        "lisence":"asdasdad",
-        "cv":"adad",
-        "clinicMail":"nico@mail.com"
-    }]
+    const doctors = useSelector(state => state.doctor.list);
+    const [name,setDoctor]=useState({ doctorId: '', name: '' , lastName:''})
+    const [value, setValue] = React.useState(0);
+    const patientIdLocal = localStorage.getItem("id");
+
+    useEffect(() => {
+      dispatch(docrtorGetAll());
+  }, [])
 
 
+  const handleSelectDoc = (event) => {
+    const id = event.target.value;
+    const doctor = doctors.find((e) => e.id === id);
+    setDoctor({ doctorId:id, name: doctor.name, lastName:doctor.lastName });
+  };
 
   const [fields, setFields]=useState({
-    comment:"",
-    doctors:"",
-    titulo:"",
+    message:"",
+    title:"",
 })
+
 const changeHandler=(event)=>{
     const property=event.target.name;
     const value=event.target.value;
     
-    setFields({...fields,[property]:value})}
+    setFields({...fields,[property]:value})
+  }
 
-    const handleSelectDoc=(e)=>{
-        setFields({
-            ...fields,
-            doctors:e.target.value
-        })
-}
-
-    // const submitHandler=(event)=>{
-    //     event.preventDefault();
-    //    dispatch(postComment(fields)).then(setModalAbierto(true))
-
-        
-    // }
+    const submitHandler=(event)=>{
+        event.preventDefault();
+    //     dispatch(postReview({message:fields.message,
+    //       title:fields.title,
+    //       doctorId:name.doctorId,
+    //       PatientId:patientIdLocal,
+    //       doctorName:name.name,
+    //       doctorLastName:name.lastName,
+    //       stars:value}))
+          
+       setModalAbierto(true)
+   
+    }
 
     const closeModal = () => {
       setModalAbierto(false);
-      setFields({
-        comment:"",
-        doctors:"",
-        titulo:"",
-    })
-          .catch(err=>err)
+
      }
+
+
 
   return (
     <div>
-    <form >
+    <form onSubmit={submitHandler}>
     
         <h2 style={{color:"#307196"}}>Please fill the fields and send us a review</h2>
         <div style={{border:"double", width:"fit-content",padding:50, display:"flex", flexDirection:"column",margin:"auto",paddingLeft:80,paddingRight:150}}>
         <InputLabel id="demo-simple-select-filled-label" sx={{marginRight:19}}>Select the doctor: </InputLabel>
+        <div>
         <Select
         labelId="demo-simple-select-filled-label"
         id="demo-simple-select-filled"
         onChange={handleSelectDoc}
-        sx={{width:200}}
+        sx={{width:200, marginLeft:12}}
         variant="filled"
         >
-            <MenuItem value={fields.doctors} name="date" label="Select">Date: </MenuItem>
-                {doctorBDD.map((doc) => {
+            <MenuItem value={name} name="date" label="Select"></MenuItem>
+                {doctors?.map((doc) => {
                     return (
-            <MenuItem value={doc.name}>{doc.name}</MenuItem>)})}
+            <MenuItem value={doc.id}>{doc.name}  {doc.lastName}</MenuItem>)})}
         </Select>
+          <Rating
+        name="simple-controlled"
+        value={value}
+        sx={{marginLeft:5}}
+        size="large"
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+      />
+      </div>
         <br/>
       
         <div>
         <InputLabel id="demo-simple-select-filled-label" sx={{marginRight:32}}>Title: </InputLabel>
-        <TextField id="filled-basic" label="Required" variant="filled" value={fields.title} name="title" sx={{marginRight:11}} />
+        <TextField id="filled-basic" label="Required" variant="filled" value={fields.title} name="title" sx={{marginRight:11,width:"fit-content"}}onChange={changeHandler}  />
             
         </div>
         <br /><br/>
@@ -144,22 +111,26 @@ const changeHandler=(event)=>{
           rows={6}
           defaultValue="Default Value"
           variant="filled"
-          value={fields.comment} onChange={changeHandler}
-          name="comment"
+          value={fields.message} onChange={changeHandler}
+          name="message"
           sx={{width:300}}
         /> 
         </div>
       <br/><br/>
-        <Button variant="contained" endIcon={<SendIcon />} sx={{backgroundColor:"#307196"}} type="submit">Send</Button>
+        <Button variant="contained" endIcon={<SendIcon />} sx={{backgroundColor:"#307196",marginLeft:9}} type="submit">Send</Button>
         </div>
     </form>
 
         <Modal isOpen={modalAbierto} onRequestClose={closeModal} >
         <div style={{border:"solid", justifyContent:"center", marginTop:"5%", borderRadius:10, paddingBottom:50}}>
-        <h3 style={{display:"flex",flexDirection:"row", justifyContent:"center", color:"#D9D9D9",backgroundColor:"#307196"}}>Your comment has been sent, thanks for your review</h3>
-        <h3 style={{marginLeft:5}}>Doctor: {fields.doctors}</h3>
-        <h3 style={{marginLeft:5}}>Title: {fields.titulo}</h3>
-        <h3 style={{marginLeft:5}}>Comment: {fields.comment}</h3>
+        <h2 style={{display:"flex",flexDirection:"row", justifyContent:"center", color:"#D9D9D9",backgroundColor:"#307196"}}>Your comment has been sent, thanks for your review</h2>
+        <h3 style={{marginLeft:5}}>Doctor: {name.name} {name.lastName}</h3>
+        <h3 style={{marginLeft:5}}>Rating: {value} stars</h3>
+        <h3 style={{marginLeft:5}}>Title: {fields.title}</h3>
+        <h3 style={{marginLeft:5}}>Comment: {fields.message}</h3>
+        <h3 style={{marginLeft:5}}>Comment: {name.doctorId}</h3>
+
+        
         <Button variant="contained" onClick={closeModal} style={{marginLeft:"10%", marginTop:"5%",scale:"1.2"}}>Cerrar</Button>
         </div>
         </Modal>
