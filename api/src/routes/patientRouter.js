@@ -10,20 +10,12 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const { name } = req.query;
     const allPatient = await getPatient();
-    if (name) {
-      const patientName = await allPatient.filter((e) => {
-        e.name.toLowerCase().includes(name.toLowerCase());
-      });
-      if (patientName.length) {
-        res.status(200).send(patientName);
+      if (allPatient.length) {
+        res.status(200).send(allPatient);
       } else {
-        res.status(404).send("Patient not found");
+        res.status(404).send("No patients en DB");
       }
-    } else {
-      res.status(200).send(allPatient);
-    }
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
