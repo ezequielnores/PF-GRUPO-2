@@ -35,7 +35,7 @@ const MedicalAppointments= ()=>{
 
 
 
-    useEffect(() => {
+        useEffect(() => {
               dispatch(docrtorGetAll());
           }, [])
 
