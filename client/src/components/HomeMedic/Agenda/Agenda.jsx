@@ -73,7 +73,7 @@ const Agenda = () => {
           value={
             proximoTurno
               ? `${proximoTurno.Patient.name} ${proximoTurno.Patient.surname} - ${proximoTurno.date} - ${proximoTurno.hour}`
-              : "No hay turnos próximos"
+              : "No upcoming shifts"
           }
           fullWidth
           InputProps={{
