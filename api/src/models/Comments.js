@@ -9,8 +9,15 @@ module.exports = (sequelize) =>{
             autoIncrement: true,
             allowNull: false
         },
+        title:{
+            type: DataTypes.STRING
+        },
         message: {
-            type: DataTypes.ARRAY(DataTypes.JSONB),
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        rating:{
+            type: DataTypes.STRING,
             allowNull: false
         }
     },{
