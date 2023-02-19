@@ -35,7 +35,7 @@ export const appointmentGetAllByDoctorId = createAsyncThunk(
   "appointment/getByDoctorId",
   async (id) => {
     const response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/turns/tunrsByDoctor/${id}`
+      `${process.env.REACT_APP_BACKEND_URL}/turns/turnsByDoctor/${id}`
     );
     return response.data;
   }
