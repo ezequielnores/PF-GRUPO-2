@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const axios = require("axios");
+const { Op } = require("sequelize");
 
 const { getPatient, getPatientActive, getPatientInactive } = require("../controllers/patientController.js");
 
@@ -27,6 +28,36 @@ router.get("/", async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 });
+
+//------------------------ busca pacientes por coincidencia en nombre o apellido
+router.get('/find', async (req, res)=>{
+  try {
+    const { input } = req.query;
+    console.log('input: ' + input);
+    const allPatients =  await getPatient();
+    const filterPatient = await Patient.findAll({
+      where :{
+        [Op.or]: [
+          {
+            name: {
+              [Op.iLike]: `${input}%`,
+            },
+          },
+          {
+              surname: {
+                [Op.iLike]: `${input}%`,
+              },
+            },
+        ],
+      },
+    });
+    if(filterPatient.length){
+      res.status(200).json(filterPatient);
+    }
+  } catch (error) {
+    res.status(404).json({ error: error.message});
+  }
+})
 
 
 //------------------------ trae todos los pacientes activos
