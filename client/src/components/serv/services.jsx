@@ -56,12 +56,11 @@ const services = () => {
                 fontSize: "2.2rem",
               }}
             >
-              Guardia Online
+              Online emergency
             </Typography>
             <Typography align="justify">
-              Accede a los mejores profesionales de la salud. Realiza
-              videollamadas de guardia, sin restricciones de horario, los 7 días
-              de la semana, 365 días del año.
+              Access to the best health professionals. Make on-call video calls,
+              with no time restrictions, 7 days a week, 365 days a year.
             </Typography>
           </div>
         </div>
@@ -74,13 +73,12 @@ const services = () => {
                 fontSize: "2.2rem",
               }}
             >
-              Especialista online y presencial
+              Online and on-site specialist
             </Typography>
             <Typography align="justify">
-              Los mejores especialistas de nuestra servicio a solo un click de
-              distancia. Acceda a las agendas disponibles de los
-              profesionales,tanto presencial como virtual, seleccione una fecha
-              acorde a tus necesidades ¡y listo!
+              The best specialists of our service are just a click away. Access
+              the available agendas of the professionals, both face-to-face and
+              virtual, select a date according to your needs and that's it!
             </Typography>
           </div>
           <Box
@@ -97,13 +95,11 @@ const services = () => {
                 fontSize: "2.2rem",
               }}
             >
-              Testeo rapido de Covid
+              Autotest Covid
             </Typography>
             <Typography align="justify">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum,
-              sunt explicabo, ea expedita facere quia nobis suscipit corrupti
-              ipsum totam qui iusto impedit accusamus, ipsam doloribus voluptate
-              fugit atque beatae!
+              Aimed to help you take appropriate action if you have symptoms of
+              coronavirus.
             </Typography>
           </div>
         </div>

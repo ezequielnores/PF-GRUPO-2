@@ -73,7 +73,7 @@ const FormLoginMedic = () => {
     });
     if (authenticatedDoctor) {
       const id = authenticatedDoctor.id;
-      localStorage.setItem("id", id);
+      localStorage.setItem("idMedic", id);
       navigate("/HomeMedic/Profile");
     } else {
       setSuccessLogin("error");
@@ -81,7 +81,7 @@ const FormLoginMedic = () => {
   };
   //primera carga
   useEffect(() => {
-    const id = localStorage.getItem("id");
+    const id = localStorage.getItem("idMedic");
     if (id) {
       navigate("/HomeMedic/Profile");
     } else {

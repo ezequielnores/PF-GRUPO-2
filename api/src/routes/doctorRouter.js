@@ -86,7 +86,7 @@ router.post("/login", async (req, res) => {
   await findByMail(mail)
     .then((response) => {
       if (response.password == password) {
-        delete response.password
+        delete response.password;
         res.status(200).json(response);
       }
     })

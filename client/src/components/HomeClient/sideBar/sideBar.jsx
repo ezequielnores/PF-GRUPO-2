@@ -12,7 +12,7 @@ import ForumIcon from '@mui/icons-material/Forum';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import LogoutIcon from '@mui/icons-material/Logout';
 const SideBar = ({open , handleOpen,path}) => {
-    const logout=localStorage.removeItem('id')
+    
     return (
         <div>
 
@@ -102,16 +102,16 @@ const SideBar = ({open , handleOpen,path}) => {
                             </Link>
                         </button>
                         <button className={style.buttonBar}>
-                            <Link to="/HomeClient/Chat">
+                            <Link to="/HomeClient/Faq">
                             {open? 
                                     <div className={style.divbutton}>
-                                        {path.endsWith("/HomeClient/Chat")? 
+                                        {path.endsWith("/HomeClient/Faq")? 
                                         <div className={style.icon} style={{background:"#307196"}}><ForumIcon style={{color:"white"}}/></div> : 
                                         <div className={style.icon} style={{background:"#c2c1c1"}}><ForumIcon/></div> }
-                                        Chat
+                                        FAQ
                                     </div>
                                     : 
-                                    path.endsWith("/HomeClient/Chat")? <ForumIcon /> : <ForumIcon style={{color:"grey"}}/>
+                                    path.endsWith("/HomeClient/Faq")? <ForumIcon /> : <ForumIcon style={{color:"grey"}}/>
                                 }
                             </Link>
                         </button>
@@ -134,7 +134,7 @@ const SideBar = ({open , handleOpen,path}) => {
                         </button>
                     </Stack>
                     <button className={style.buttonOut} style={{width:open? "9vw":"2vw"}}>
-                        <Link to="/" logout={logout}>
+                        <Link to="/" >
                         {open? 
                                     <div className={style.divbutton} style={{color:"white"}}>
                                         <LogoutIcon />

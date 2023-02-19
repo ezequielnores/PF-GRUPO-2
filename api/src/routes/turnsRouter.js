@@ -15,7 +15,7 @@ const turnsRouter = Router();
 turnsRouter.get("/", async (req, res) => {
     try {
         const turns = await findAllTurns();
-        if (!turns) throw new Error("No se encuentran turnos en la BDD.");
+        if (!turns.length) throw new Error("No se encuentran turnos en la BDD.");
         res.status(200).json(turns);
     } catch (error) {
         res.status(400).json({ error: error.message });

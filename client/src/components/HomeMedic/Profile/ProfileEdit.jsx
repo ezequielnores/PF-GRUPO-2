@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,18 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+//
+import { isEmail, isNumeric, isStrongPassword, isAlpha } from "validator";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+//redux
+import {
+  doctorUpdate,
+  doctorGetDetail,
+} from "../../../redux/reducers/doctorReducer";
+import { useDispatch, useSelector } from "react-redux";
+
 //styles
 const padreDiv = {
   width: "100%",
@@ -29,39 +41,102 @@ const typoTitle = {
 };
 
 const ProfileEdit = () => {
-  // const detailPatient = useSelector((state) => state.patientDetail);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [info, setInfo] = useState({
+  const dataDoc = useSelector((state) => state.doctor.detail);
+  //estado para controlar los inputs
+  const [infoNueva, setInfoNueva] = useState({
+    name: dataDoc ? dataDoc.name : "",
+    lastName: dataDoc ? dataDoc.lastName : "",
+    mail: dataDoc ? dataDoc.mail : "",
+    password: dataDoc ? dataDoc.password : "",
+    clinicMail: dataDoc ? dataDoc.clinicMail : "",
+    birthdate: dataDoc ? dataDoc.birthdate : new Date(),
+    phone: dataDoc ? dataDoc.phone : "",
+  });
+  //estado para validar el button
+  const [hasChanged, setHasChanged] = useState(false);
+  //estado de errores validaciones
+  const [errors, setErrors] = useState({
     name: "",
-    lastName: "",
     mail: "",
-    clinicMail: "",
     phone: "",
+    password: "",
+    clinicMail: "",
     birthdate: "",
-    image: "",
+    lastName: "",
   });
   const handleChange = (evento) => {
     evento.preventDefault();
-    setInfo({
-      ...info,
+    setInfoNueva({
+      ...infoNueva,
       [evento.target.name]: evento.target.value,
     });
+    setHasChanged(true);
   };
+  const handleFechaNacimientoChange = (date) => {
+    setInfoNueva({ ...infoNueva, birthdate: date });
+  };
+  console.log(dataDoc.id);
   const handleSubmit = (e) => {
     e.preventDefault();
-    //dispatch(putPatient(info))
-    alert("Information updated");
-    navigate("/HomeMedic/Profile");
+    const errors = validateFields();
+    if (Object.keys(errors).length === 0) {
+      dispatch(doctorUpdate({ id: dataDoc.id, data: infoNueva }));
+      alert("Information updated");
+      navigate("/HomeMedic/Profile");
+    } else {
+      setErrors(errors);
+    }
   };
-  console.log(info);
+  //validaciones mediante libereria validator js
+  const validateFields = () => {
+    const errors = {};
+
+    if (!isAlpha(infoNueva.name)) {
+      errors.name = "Please enter valid name";
+    }
+
+    if (!isAlpha(infoNueva.lastName)) {
+      errors.lastName = "Please enter valid last name";
+    }
+
+    if (!isEmail(infoNueva.mail)) {
+      errors.mail = "Please enter a valid email address";
+    }
+
+    if (!isStrongPassword(infoNueva.password)) {
+      errors.password = "Please enter a valid password";
+    }
+
+    if (!isEmail(infoNueva.clinicMail)) {
+      errors.clinicMail = "Please enter a valid email address";
+    }
+
+    if (new Date(infoNueva.birthdate) > new Date()) {
+      errors.birthdate = "Please enter a valid birthdate";
+    }
+
+    if (!isNumeric(infoNueva.phone)) {
+      errors.phone = "Please enter a valid phone number";
+    }
+
+    return errors;
+  };
+  //cambie el id del localstorage, genera errores por el id del cliente con el mismo nombre (id)
+  useEffect(() => {
+    const doctorId = localStorage.getItem("idMedic");
+    if (doctorId) {
+      dispatch(doctorGetDetail(doctorId));
+    }
+  }, []);
   return (
     <div style={padreDiv}>
       <Typography
         variant="h2"
         gutterBottom
         style={{
-          color: "#147bf4",
+          color: "#307196",
           fontWeight: "bold",
           fontSize: "2.5rem",
         }}
@@ -78,53 +153,69 @@ const ProfileEdit = () => {
           name="name"
           label="Name"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
+          error={Boolean(errors.name)}
+          helperText={errors.name}
         />
         <TextField
           name="lastName"
           label="Last name"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
+          error={Boolean(errors.lasName)}
+          helperText={errors.lastName}
         />
         <TextField
-          name="birthdate"
-          label="Date of birth"
+          name="password"
+          label="Password"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
+          error={Boolean(errors.password)}
+          helperText={errors.password}
         />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Birthdate"
+            value={infoNueva.birthdate}
+            onChange={handleFechaNacimientoChange}
+            error={Boolean(errors.birthdate)}
+            helperText={errors.birthdate}
+            format="dd/MM/yyyy"
+            maxDate={new Date()}
+            inputVariant="outlined"
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
         <TextField
           name="phone"
           label="Phone"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
+          error={Boolean(errors.phone)}
+          helperText={errors.phone}
         />
         <TextField
           name="clinicMail"
           label="Clinic email"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
+          error={Boolean(errors.clinicMail)}
+          helperText={errors.clinicMail}
         />
         <TextField
           name="mail"
           label="Email"
           style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
-        />
-        <TextField
-          name="image"
-          label="Image"
-          style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
+          error={Boolean(errors.mail)}
+          helperText={errors.mail}
         />
       </Card>
-      <Button variant="contained" onClick={(e) => handleSubmit(e)}>
+      <Button
+        variant="contained"
+        onClick={(e) => handleSubmit(e)}
+        disabled={!hasChanged}
+      >
         Update information
       </Button>
     </div>
