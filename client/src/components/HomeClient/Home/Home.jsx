@@ -14,6 +14,7 @@ import {
   Reviews,
   Urgency,
   HomeView,
+  ProfileUpdate
 } from "../index";
 
 import Register from "../Register/Register.jsx";
@@ -100,6 +101,9 @@ const Home = () => {
       >
         {location.pathname.endsWith("/HomeClient") && <HomeView />}
         {location.pathname.endsWith("/HomeClient/Profile") && <Profile />}
+        {location.pathname.endsWith("/HomeClient/Profile/Edit") && (
+          <ProfileUpdate />
+        )}
         {location.pathname.endsWith("/HomeClient/MyAppointments") && (
           <MyAppointments />
         )}
