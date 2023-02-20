@@ -30,7 +30,8 @@ const findAllFrequentQuestions = async () => {
 };
 
 const updateFrequentAskById = async (attributes, id) => {
-    const frequentAskUpdated = await FrequentQuestions.update(attributes, { where: { id: id } });
+    await FrequentQuestions.update(attributes, { where: { id: id } });
+    const frequentAskUpdated = await FrequentQuestions.findByPk(id);
     return frequentAskUpdated;
 };
 
