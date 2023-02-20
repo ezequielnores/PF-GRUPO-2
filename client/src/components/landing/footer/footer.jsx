@@ -1,13 +1,14 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { ButtonGroup, Typography } from "@mui/material";
+import { ButtonGroup, CardMedia, TextField, Typography } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import IconButton from "@mui/material/IconButton";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import CopyrightIcon from "@mui/icons-material/Copyright";
+import Logo from "../../../assets/logoiCare.png";
 const footer = {
   backgroundColor: "#F0F8FF",
   width: "100%",
@@ -32,6 +33,10 @@ const butonGroup = {
   display: "flex",
   flexDirection: "column",
 };
+const logo = {
+  height: "7vh",
+  width: "3.3vw"
+}
 
 const Navbar = () => {
   return (
@@ -39,16 +44,16 @@ const Navbar = () => {
       <AppBar position="static">
         <Toolbar style={footer}>
           <Box style={divtext}>
-            <CopyrightIcon style={{ color: "black" }} />
+            <CopyrightIcon style={{ color: "black", marginRight: "0.8vw" }} />
+          <img src={Logo} style={logo} alt="" />
+          <Typography variant="h5" color="black">iCare</Typography>
             <Typography
               variant="body1"
               color="text.secondary"
               align="justify"
               style={{ fontWeight: "semibold" }}
             >
-              iCare is an online health care service that allows you to connect
-              with highly qualified medical professionals and receive quality
-              medical care from the comfort of your home.
+              
             </Typography>
           </Box>
           <Box style={butonGroup}>

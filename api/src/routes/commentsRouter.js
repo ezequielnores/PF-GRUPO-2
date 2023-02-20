@@ -1,9 +1,13 @@
 const { Router } = require("express");
 const axios = require("axios");
-const { getComments, allCommentsByDoc, allCommentsByPatient } = require("../controllers/commentsController");
+const { getComments, allCommentsByDoc, allCommentsByPatient, containOffensiveWords } = require("../controllers/commentsController");
 const { Comments } = require("../db.js");
+// const BadWords = require('bad-words');
 
 const router = Router();
+// const filter = new BadWords();
+
+
 
 router.get("/", async (req, res) => {
   try {
@@ -79,10 +83,13 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { message, doctorId, patientId} = req.body;
+    const { title, message, rating, doctorId, patientId} = req.body;
     if (message) {
+      const filterMessage = containOffensiveWords(message);
       const comment = await Comments.create({
-        message: message,
+        title: title,
+        message: filterMessage,
+        rating: rating,
       });
 
       await comment.setDoctor(doctorId);

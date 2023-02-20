@@ -30,8 +30,8 @@ frequentQuestionsRouter.get("/", async (req, res) => {
 });
 
 frequentQuestionsRouter.get("/frequentAskByAsk", async (req, res) => {
-    const { ask } = req.body;
-
+    // const { ask } = req.body;
+    const { ask } = req.query;
     try {
         if (!ask) throw new Error("La pregunta esta indefinida.");
 

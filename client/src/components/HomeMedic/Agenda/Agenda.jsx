@@ -28,6 +28,11 @@ const hijoContainer = {
   marginTop: "3rem",
   width: "80%",
 };
+const header = {
+  fontSize: "23px",
+  fontWeight: "bold",
+  color: "white",
+};
 //COMPONENTE
 const Agenda = () => {
   const [openRow, setOpenRow] = useState(null);
@@ -68,7 +73,7 @@ const Agenda = () => {
           value={
             proximoTurno
               ? `${proximoTurno.Patient.name} ${proximoTurno.Patient.surname} - ${proximoTurno.date} - ${proximoTurno.hour}`
-              : "No hay turnos próximos"
+              : "No upcoming shifts"
           }
           fullWidth
           InputProps={{
@@ -80,24 +85,31 @@ const Agenda = () => {
 
         <TableContainer component={Paper}>
           <Table aria-label="turnera">
-            <TableHead>
+            <TableHead style={{ backgroundColor: "#307196" }}>
               <TableRow>
-                <TableCell>Patient</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell>Hour</TableCell>
-                <TableCell>Type</TableCell>
+                <TableCell style={header}>Patient</TableCell>
+                <TableCell style={header}>Date</TableCell>
+                <TableCell style={header}>Hour</TableCell>
+                <TableCell style={header}>Type</TableCell>
+                <TableCell style={header}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {dataTurnos?.map((turno, index) => (
                 <React.Fragment key={turno.id}>
                   <TableRow onClick={() => handleRowClick(index)}>
-                    <TableCell>
+                    <TableCell style={{ fontSize: "17px" }}>
                       {turno.Patient.name} {turno.Patient.surname}
                     </TableCell>
-                    <TableCell>{turno.date}</TableCell>
-                    <TableCell>{turno.hour}</TableCell>
-                    <TableCell>{turno.type}</TableCell>
+                    <TableCell style={{ fontSize: "17px" }}>
+                      {turno.date}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "17px" }}>
+                      {turno.hour}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "17px" }}>
+                      {turno.type}
+                    </TableCell>
                     <TableCell>
                       <IconButton size="small">
                         {openRow === index ? (
@@ -119,30 +131,58 @@ const Agenda = () => {
                         unmountOnExit
                       >
                         <Box sx={{ margin: 1 }}>
-                          <Typography variant="h6" gutterBottom component="div">
+                          <Typography
+                            component="div"
+                            style={{
+                              backgroundColor: "#307196",
+                              color: "white",
+                              fontSize: "19px",
+                              fontWeight: "bold",
+                              borderRadius: "4px",
+                              paddingLeft: "4px",
+                            }}
+                          >
                             Shift details
                           </Typography>
                           <Table size="small">
                             <TableBody>
                               <TableRow>
-                                <TableCell>Allergies:</TableCell>
-                                <TableCell>{turno.Patient.allergies}</TableCell>
+                                <TableCell style={{ fontSize: "15px" }}>
+                                  Allergies:
+                                </TableCell>
+                                <TableCell style={{ fontSize: "14px" }}>
+                                  {turno.Patient.allergies}
+                                </TableCell>
                               </TableRow>
                               <TableRow>
-                                <TableCell>BMI:</TableCell>
-                                <TableCell>{turno.Patient.bmi}</TableCell>
+                                <TableCell style={{ fontSize: "15px" }}>
+                                  BMI:
+                                </TableCell>
+                                <TableCell style={{ fontSize: "15px" }}>
+                                  {turno.Patient.bmi}
+                                </TableCell>
                               </TableRow>
                               <TableRow>
-                                <TableCell>Weight:</TableCell>
-                                <TableCell>{turno.Patient.weight}</TableCell>
+                                <TableCell style={{ fontSize: "15px" }}>
+                                  Weight:
+                                </TableCell>
+                                <TableCell style={{ fontSize: "15px" }}>
+                                  {turno.Patient.weight}
+                                </TableCell>
                               </TableRow>
                               <TableRow>
-                                <TableCell>Height:</TableCell>
-                                <TableCell>{turno.Patient.height}</TableCell>
+                                <TableCell style={{ fontSize: "15px" }}>
+                                  Height:
+                                </TableCell>
+                                <TableCell style={{ fontSize: "15px" }}>
+                                  {turno.Patient.height}
+                                </TableCell>
                               </TableRow>
                               <TableRow>
-                                <TableCell>chronicDiseases:</TableCell>
-                                <TableCell>
+                                <TableCell style={{ fontSize: "15px" }}>
+                                  Choronic Diseases:
+                                </TableCell>
+                                <TableCell style={{ fontSize: "15px" }}>
                                   {turno.Patient.chronicDiseases}
                                 </TableCell>
                               </TableRow>
