@@ -10,158 +10,206 @@ import InputLabel from '@mui/material/InputLabel';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Datetime from "react-datetime";
- import "react-datetime/css/react-datetime.css";
+import "react-datetime/css/react-datetime.css";
 import { useDispatch, useSelector } from "react-redux";
 import {docrtorGetAll} from "../../../redux/reducers/doctorReducer";
 import {appointmentCreate} from "../../../redux/reducers/appointmentReducer"
-
-const MedicalAppointments= ()=>{
-    const dispatch=useDispatch();
-    const doctors = useSelector(state => state.doctor.list);
-
-    const [date, setSelectedDate] = useState(new Date());
-    const [hour, setSelectedTime] = useState(""); 
-    const [speciality,setDoctorSpecialty]=useState("")
-    const [modalAbierto, setModalAbierto] = useState(false);
-    const patientIdLocal = localStorage.getItem("id");
-    const [patientId, setDoctorId] = useState(patientIdLocal.toString()); 
-    const [name,setDoctor]=useState({ doctorId: '', name: '' })
-
-    const ubication="avellaneda"
-    const availability=true
-    const type="sadad"  
-
-    const dateModify=date.toLocaleDateString('ja-JP', {year: 'numeric', month: '2-digit', day: '2-digit'}).split('/').join('-')
+import { Box, Container, Paper, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 
 
+const MedicalAppointments = () => {
+  const dispatch = useDispatch();
+  const doctors = useSelector(state => state.doctor.list);
 
-        useEffect(() => {
-              dispatch(docrtorGetAll());
-          }, [])
+  const [date, setSelectedDate] = useState(new Date());
+  const [hour, setSelectedTime] = useState("");
+  const [speciality, setDoctorSpecialty] = useState("");
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const patientIdLocal = localStorage.getItem("id");
+  const [patientId, setDoctorId] = useState(patientIdLocal.toString());
+  const [name, setDoctor] = useState({ doctorId: '', name: '' });
 
+  const ubication = "avellaneda";
+  const availability = true;
+  const type = "sadad";
 
+  const dateModify = date.toLocaleDateString('ja-JP', {year: 'numeric', month: '2-digit', day: '2-digit'}).split('/').join('-');
 
-         const handleSelectDoctor=(e)=>{
-            setDoctorSpecialty(e.target.value)
-        }
+  useEffect(() => {
+    dispatch(docrtorGetAll());
+  }, []);
 
-        const handleSelectName = (event) => {
-            const id = event.target.value;
-            const doctor = doctors.find((e) => e.id === id);
-            setDoctor({ doctorId:id, name: doctor.name });
-          };
+  const handleSelectDoctor = (e) => {
+    setDoctorSpecialty(e.target.value);
+  }
 
+  const handleSelectName = (event) => {
+    const id = event.target.value;
+    const doctor = doctors.find((e) => e.id === id);
+    setDoctor({ doctorId: id, name: doctor.name });
+  };
 
-         const handleSelectDate=(e)=>{
+  const handleSelectDate = (e) => {
+    setSelectedDate(e)
+  }
 
-            setSelectedDate(e)
-        }
+  const handleSelectHour = (time) => {
+    setSelectedTime(time.format("HH:mm"))
+  };
 
-        const handleSelectHour = (time) => {
-            setSelectedTime(time.format("HH:mm"))};
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-            
-
-
+    dispatch(appointmentCreate({
+      date: dateModify,
+      hour: hour,
+      doctorSpecialty: speciality,
+      doctorId: name.doctorId,
+      type,
+      ubication,
+      availability,
+      patientId: patientId
+    }))
+      // setSelectedTime("")
+      // setDoctorSpecialty("");
+      // setDoctor({ doctorId: '', name: '' })
     
-        const handleSubmit = (event) => {
-            event.preventDefault();
-        
-             dispatch(appointmentCreate({date:dateModify,hour:hour,doctorSpecialty:speciality,doctorId:name.doctorId,type,ubication,availability,patientId:patientId}))
-            setModalAbierto(true);
-        }
+    setModalAbierto(true)
+    
+  }
 
+  const closeModal = () => {
+    setModalAbierto(false)
+        setSelectedTime("")
+       setDoctorSpecialty("")
+       setDoctor({ doctorId: '', name: '' })
+       window.location.reload()
 
+  }
 
+  const filteredDoctors = speciality ? doctors.filter((doctor) => doctor.speciality === speciality) : doctors;
 
-
-
-          const closeModal = () => {
-            setModalAbierto(false); 
-          }
-
+  return (
+    <Container maxWidth="sm">
+      <Box my={4}>
+        <Paper elevation={3} sx={{ p: 4 }}>
+          <Typography variant="h4" sx={{ mb: 3,color:"#307196" }}>
+            Select your appointment
+          </Typography>
           
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <InputLabel id="demo-simple-select-required">Date </InputLabel>
+            <DatePicker selected={date} onChange={handleSelectDate} value={date} name="selectedDate" />
 
-        const filteredDoctors = speciality
-            ? doctors.filter((doctor) => doctor.speciality === speciality)
-            : doctors;
+            <br />
 
-
+            <Box sx={{ mt: 2 }}>
+            <InputLabel id="demo-simple-select-required">Doctor Specialty</InputLabel>
+            <Select
+             labelId="demo-simple-select-required"
+             id="demo-simple-select-required"
+             //value={speciality}
+             label="Doctor Specialty"
+             onChange={handleSelectDoctor}
+             fullWidth
+           >
+            <MenuItem value={speciality} name="speciality">None</MenuItem>
+            {doctors.map((e)=>{
+                return(
+                    <MenuItem value={e.speciality} >{e.speciality}</MenuItem>
+                )
+            })}
             
-            return(
-            <div style={{width:"fit-content", marginLeft:"25%"}}>
-                <form onSubmit={handleSubmit} style={{marginTop:15, border:"solid",width:"fit-content",padding:35, borderRadius:10, }}>
+            </Select>
+            </Box>        <Box sx={{ mt: 2 }}>
+          <InputLabel id="demo-simple-select-required">Doctor Name</InputLabel>
+          <Select
+            labelId="demo-simple-select-required"
+            id="demo-simple-select-required"
+            value={name.doctorId}
+            label="Doctor Name"
+            onChange={handleSelectName}
+            fullWidth
+            disabled={!speciality}
+          >
+            {filteredDoctors.map((doctor) => (
+              <MenuItem key={doctor.id} value={doctor.id} name="name">
+                {doctor.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
 
-                    <h2 style={{marginBottom:40,display:"flex",justifyContent:"center", color:"#307196", backgroundColor:"#D9D9D9", padding:5, borderRadius:10}}>Select your appoinment </h2>
-                    <div style={{display:"flex", flexDirection:"column" }}>
-                    <InputLabel id="demo-simple-select-required">Date </InputLabel>
+        <Box sx={{ mt: 2 }}>
+          <InputLabel id="demo-simple-select-required">Hour</InputLabel>
+          <Datetime
+            dateFormat={false}
+            //value={hour}
+            onChange={handleSelectHour}
+            name="hour"
+          />
 
-                        <DatePicker selected={date} onChange={handleSelectDate} value={date} name="selectedDate"  />
+        </Box>
+                <br/>
+        <Stack sx={{ mt: 2 }} direction="row" spacing={2} justifyContent="center">
+            {(!date || !hour || !speciality) ? 
+            <Button variant="contained" disabled>Reserve</Button>
+            :
+            
+          <Button sx={{backgroundColor:"#307196", color:"#D9D9D9"}} variant="contained" type="submit" endIcon={<SendIcon />} >
+            Reserve
+          </Button>}
+        </Stack>
+      </Box>
+      
+      <Modal isOpen={modalAbierto} ariaHideApp={false}>
+  <Box sx={{ p: 2 }}>
+    <Typography variant="h5" sx={{ mb: 2 ,color:"#307196"}}>
+      Appointment created successfully
+    </Typography><br/><br/>
+    <Grid container spacing={2}>
+      <Grid item xs={6}>
+        <Typography variant="subtitle1" sx={{ mb: 1, fontWeight:"bold" }}>
+          Date:
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 2 }}>
+          {dateModify}
+        </Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 ,fontWeight:"bold"}}>
+          Time:
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 2 }}>
+          {hour}
+        </Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="subtitle1" sx={{ mb: 1 ,fontWeight:"bold"}}>
+          Speciality:
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 2 }}>
+          {speciality}
+        </Typography>
+        <Typography variant="subtitle1" sx={{ mb: 1 ,fontWeight:"bold"}}>
+          Doctor's name:
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 2 }}>
+          {name.name}
+        </Typography>
+      </Grid>
+    </Grid><br/><br/>
+    <Stack sx={{ mt: 2 }} direction="row" spacing={2} >
+      <Button variant="outlined" onClick={closeModal} color="error" size="medium">
+        Close
+      </Button>
+    </Stack>
+  </Box>
+</Modal>
 
-                        <br></br>
-                        <InputLabel id="demo-simple-select-required">Time </InputLabel>
+    </Paper>
+  </Box>
+</Container>
+);
+};
 
-                        <Datetime
-                        dateFormat={false}
-                        input={false} onChange={handleSelectHour}
-                         name="hour"
-                            />
-
-
-                        <InputLabel id="demo-simple-select-required">Speciality: </InputLabel>
-                        <Select
-                            labelId="demo-simple-select-required-label"
-                            id="demo-simple-select-required"
-                            onChange={handleSelectDoctor}
-                            sx={{ minWidth: 150, borderRadius: 2 ,marginRight:3}}
-                            >
-                            <MenuItem value={speciality} name="speciality">Speciality: </MenuItem>
-                                {doctors.map((e) => {
-                                    return (
-                            <MenuItem value={e.speciality}>{e.speciality}</MenuItem>)})}
-                        </Select>
-                        <br/>
-                        <InputLabel id="demo-simple-select-required">Doctor´s name:  </InputLabel>
-                        <Select
-                            labelId="demo-simple-select-required-label"
-                            id="demo-simple-select-required"
-                            onChange={handleSelectName}
-                            sx={{ minWidth: 150, borderRadius: 2 ,marginRight:3}}
-                            >
-                            <MenuItem value="" name="name">Doctors name: </MenuItem>
-                                {filteredDoctors?.map((e) => {
-                                    return (
-                            <MenuItem value={e.id}>{e.name}</MenuItem>)})}
-                        </Select>
-
-
-                        </div><br/>
-
-
-                    <Stack direction="flex" spacing={2} >
-                        {(!date || !hour || !speciality) ? 
-                        <Button variant="contained" disabled>RESERVE</Button>
-                        :
-                        <Button variant="contained" type="submit"  endIcon={<SendIcon />}>RESERVE</Button>}
-                    </Stack>
-
-                </form>
-
-                    <Modal isOpen={modalAbierto} onRequestClose={closeModal} >
-                        <div style={{border:"solid", justifyContent:"center", marginTop:"5%", borderRadius:10, paddingBottom:50}}>
-                            <h2 style={{display:"flex",flexDirection:"row", justifyContent:"center", color:"#D9D9D9",backgroundColor:"#307196"}}>Info about your appoinment </h2>
-                            <h3 style={{marginLeft:5}}>Date: {dateModify}</h3>
-                            <h3 style={{marginLeft:5}}>Time: {hour}</h3>
-                            <h3 style={{marginLeft:5}}>Speciality: {speciality}</h3>
-                            <h3 style={{marginLeft:5}}>Doctor´s name: {name.name}</h3>
-                            <Button variant="contained" onClick={closeModal} style={{marginLeft:"10%", marginTop:"5%",scale:"1.2"}}>Cerrar</Button>
-                        </div>
-                    </Modal>
-
-            </div>
-        )
-    }
-    
-     export default MedicalAppointments;
-
- 
+export default MedicalAppointments;
