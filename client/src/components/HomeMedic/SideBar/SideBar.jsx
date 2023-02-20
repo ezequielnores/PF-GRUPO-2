@@ -7,11 +7,23 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import LogoutIcon from "@mui/icons-material/Logout";
+import swal from "sweetalert";
+
 const SideBar = ({ open, handleOpen }) => {
   //delete id de localstorage, deslogeo
   const handleLogOut = (e) => {
     e.preventDefault();
-    localStorage.removeItem("idMedic");
+    swal({
+      title: "Are you sure you want to log out?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        localStorage.removeItem("idMedic");
+        window.location.href = "http://localhost:3000/";
+      }
+    });
   };
   return (
     <div>
@@ -74,7 +86,7 @@ const SideBar = ({ open, handleOpen }) => {
             style={{ background: "#307196" }}
             onClick={(e) => handleLogOut(e)}
           >
-            <Link to="/">
+            <Link>
               {open ? (
                 <div className={style.divbutton} style={{ color: "white" }}>
                   <LogoutIcon />
