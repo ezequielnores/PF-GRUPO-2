@@ -65,7 +65,7 @@ const noteThree = () => {
             </Typography>
             <CardMedia
               sx={{ height: 400, marginBottom: "1rem" }}
-              image="https://www.medidata.com/wp-content/uploads/2019/01/the-patient-experience-medidata-20160427.jpg"
+              image="https://static.timesofisrael.com/www/uploads/2022/01/iStock-1300745916.jpg"
               title="tech"
             />
             <Typography variant="h6">

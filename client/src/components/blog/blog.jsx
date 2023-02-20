@@ -58,7 +58,7 @@ const blog = () => {
             <Card sx={{ maxWidth: 345 }}>
               <CardMedia
                 sx={{ height: 140 }}
-                image="https://www.webtekno.com/images/editor/default/0003/62/722bcfc5a3f2503329888fdc51c55dd75aaf3a5c.jpeg"
+                image="https://www.nebraskamed.com/sites/default/files/images/primary%20care/heatexhaustion_opengraph.jpg"
                 title="summer"
               />
               <CardContent>
@@ -86,7 +86,7 @@ const blog = () => {
             <Card sx={{ maxWidth: 345 }}>
               <CardMedia
                 sx={{ height: 140 }}
-                image="https://palmharborpharmacy.com/wp-content/uploads/2021/07/theguidetoheatillnessandsunburn.jpeg"
+                image="https://cdn.shopify.com/s/files/1/0257/1046/0991/articles/woman-suffering-from-heatstroke.jpg?v=1670585662"
                 title="heat"
               />
               <CardContent>
@@ -113,7 +113,7 @@ const blog = () => {
             <Card sx={{ maxWidth: 345 }}>
               <CardMedia
                 sx={{ height: 140 }}
-                image="https://www.medidata.com/wp-content/uploads/2019/01/the-patient-experience-medidata-20160427.jpg"
+                image="https://static.timesofisrael.com/www/uploads/2022/01/iStock-1300745916.jpg"
                 title="tech"
               />
               <CardContent>
