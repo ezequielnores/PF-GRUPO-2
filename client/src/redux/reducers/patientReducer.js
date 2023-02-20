@@ -45,6 +45,17 @@ export const patientGetAll = createAsyncThunk("patient/getAll", async () => {
   return response.data;
 });
 
+export const patientUpdate = createAsyncThunk(
+  "patient/editById",
+  async ({ id, data }) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/patient/edit/${id}`,
+      data
+    );
+    return response.data;
+  }
+);
+
 const patientSlice = createSlice({
   name: "patient",
   initialState: {
