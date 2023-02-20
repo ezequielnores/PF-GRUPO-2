@@ -13,8 +13,14 @@ const getFrequentAskById = async id => {
     return frequentAsk;
 };
 
+// const getFrequentAskByAsk = async ask => {
+//     const frequentAsk = await FrequentQuestions.findOne({ where: { ask: ask } });
+//     return frequentAsk;
+// };
 const getFrequentAskByAsk = async ask => {
-    const frequentAsk = await FrequentQuestions.findOne({ where: { ask: ask } });
+    console.log("ask: ", ask);
+    let frequentAsk = await FrequentQuestions.findAll();
+    frequentAsk = frequentAsk.filter(frequentAsk => frequentAsk.ask.toLowerCase().includes(ask.toLowerCase()));
     return frequentAsk;
 };
 
