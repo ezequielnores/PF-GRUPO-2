@@ -44,7 +44,7 @@ router.use("/incomes", incomesRouter);
 
 router.use("/comments", commentsRouter);
 
-router.use("./admins", adminRouter);
+router.use("/admins", adminRouter);
 
 router.use("/urgency", urgencyRouter);
 

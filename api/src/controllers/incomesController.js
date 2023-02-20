@@ -1,11 +1,12 @@
 const { Incomes, Patient } = require("../db");
 
-const createIncome = async (patient, date, amount, detail) => {
+const createIncome = async (patientId, date, amount, detail) => {
     const incomeCreated = await Incomes.create({
         date: date,
         amount: amount,
         detail: detail
     });
+    const patient = await Patient.findByPk(patientId);
     await patient.addIncome(incomeCreated.id);
     return incomeCreated;
 };
