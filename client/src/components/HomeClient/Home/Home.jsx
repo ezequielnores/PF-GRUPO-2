@@ -16,10 +16,21 @@ import {
   HomeView,
   ProfileUpdate
 } from "../index";
+import { useEffect } from "react";
+import { useDispatch,useSelector} from "react-redux";
+import {patientGetDetail} from "../../../redux/reducers/patientReducer";
 
 import Register from "../Register/Register.jsx";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const patientId = localStorage.getItem("id");
+    if (patientId) {
+      dispatch(patientGetDetail(patientId));
+    }
+  }, []) 
+  const patient = useSelector((state) => state.patient.detail);
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -69,9 +80,11 @@ const Home = () => {
             }}
           >
             <p
-              style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem" }}
+              style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem"}}
             >
-              Nombre de usuario
+
+              {patient?.name+" "+patient?.surname}
+              
             </p>
             <p
               style={{
@@ -81,12 +94,16 @@ const Home = () => {
                 color: "gray",
               }}
             >
-              Plan del usuario
+              {patient.plan? patient.plan : "Without plan"}
+              
             </p>
           </div>
 
           <Avatar sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}>
-            N{/* cambiar cuando tenga la imagen del usuario */}
+            {/* cambiar cuando tenga la imagen del usuario */}
+            {patient?.name?.charAt(0)}
+            {patient?.surname?.charAt(0)}
+
           </Avatar>
         </Stack>
       </div>
