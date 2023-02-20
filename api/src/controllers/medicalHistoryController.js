@@ -36,14 +36,16 @@ const deleteMedicalHistoryById = async id => {
 };
 
 const updateMedicalHistoryById = async (attributes, id) => {
-    const medicalHistoryUpdated = await MedicalHistory.update(attributes, { where: { id: id } });
+    await MedicalHistory.update(attributes, { where: { id: id } });
+    const medicalHistoryUpdated = await MedicalHistory.findByPk(id);
     return medicalHistoryUpdated;
 };
 
 const addRegisterMedicalHistory = async (oldRegister, newRegister, id) => {
-    const medicalHistoryUpdated = await MedicalHistory.update({
+    await MedicalHistory.update({
         register: [...oldRegister, newRegister]
     }, { where: { id: id } });
+    const medicalHistoryUpdated = await MedicalHistory.findByPk(id);
     return medicalHistoryUpdated;
 };
 

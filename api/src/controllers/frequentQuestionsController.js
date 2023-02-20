@@ -13,8 +13,14 @@ const getFrequentAskById = async id => {
     return frequentAsk;
 };
 
+// const getFrequentAskByAsk = async ask => {
+//     const frequentAsk = await FrequentQuestions.findOne({ where: { ask: ask } });
+//     return frequentAsk;
+// };
 const getFrequentAskByAsk = async ask => {
-    const frequentAsk = await FrequentQuestions.findOne({ where: { ask: ask } });
+    console.log("ask: ", ask);
+    let frequentAsk = await FrequentQuestions.findAll();
+    frequentAsk = frequentAsk.filter(frequentAsk => frequentAsk.ask.toLowerCase().includes(ask.toLowerCase()));
     return frequentAsk;
 };
 
@@ -24,7 +30,8 @@ const findAllFrequentQuestions = async () => {
 };
 
 const updateFrequentAskById = async (attributes, id) => {
-    const frequentAskUpdated = await FrequentQuestions.update(attributes, { where: { id: id } });
+    await FrequentQuestions.update(attributes, { where: { id: id } });
+    const frequentAskUpdated = await FrequentQuestions.findByPk(id);
     return frequentAskUpdated;
 };
 

@@ -8,6 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import style from './Urgency.module.css';
+import axios from 'axios';
 
 const handleTempError = (temp) =>{
     
@@ -21,10 +22,12 @@ const handleTempError = (temp) =>{
 }
 
 const Urgency= () => {
+    const patientId = localStorage.getItem("id")
     const [openModal, setOpenModal] = React.useState(false)
     const [body, setBody] = React.useState({
-        patient: "Nombre del paciente",
-        symptoms: " "
+        patient: patientId,
+        symptomatology: " ",
+        attended: false
     })
     const [addSymptom, setAddSymptom] = React.useState({
         Cough:false,
@@ -54,7 +57,7 @@ const Urgency= () => {
         if(observations) symptoms+= "Observations: " + observations
         setBody({
             ...body,
-            symptoms: `Symptoms: ${symptoms} `
+            symptomatology: `Symptoms: ${symptoms} `
         })
         setOpenModal(!openModal)            
     }
@@ -81,37 +84,43 @@ const Urgency= () => {
         })
         setErrorTemp(handleTempError(even.target.value))
     }
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setAddSymptom({
-            Cough:false,
-            Fiver: false,
-            Nausea: false,
-            Headache: false,
-            MusclePain:false,
-            Fatigue:false,
-            ShortnessBreath:false,
-            Chills:false,
-            NasalCongestion:false,
-            Temperature: ""
-        })
-        setObservations(" ")
-        setErrorTemp(false)
-        setBody({
-            patient: "Nombre del paciente",
-            symptoms: " "
-        })
-        setOpenModal(false)
-        
-        alert("Your information has been sent")
+    const handleSubmit = async (event) => {
+        try {
+            event.preventDefault();
+            setAddSymptom({
+                Cough:false,
+                Fiver: false,
+                Nausea: false,
+                Headache: false,
+                MusclePain:false,
+                Fatigue:false,
+                ShortnessBreath:false,
+                Chills:false,
+                NasalCongestion:false,
+                Temperature: ""
+            })
+            setObservations(" ")
+            setErrorTemp(false)
+            setBody({
+                patient: " ",
+                symptomatology: " ",
+                attended: false
+            })
+            setOpenModal(false)
+
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}/urgency`, body)
+            alert("Your information has been sent")
+        }
+        catch (error) {
+            alert(error.message)
+        }
     }
     return (
         <div className={style.generalDiv}>
             <div onClick={handleOpenModal} className={style.generalModalDiv} style={{display:openModal? "flex":"none"}}>
                 <div style={{display:openModal? "flex":"none"}} className={style.modalDiv}>
                     <p>You have provided the following information</p>
-                    <p>Patient: {body.patient}</p>
-                    <p>{body.symptoms}</p>
+                    <p>{body. symptomatology}</p>
                     <button className={style.sendButton} onClick={handleSubmit}>
                         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
                         Send
@@ -225,12 +234,13 @@ const Urgency= () => {
                             </div>
                             
                             </FormGroup>
-                            <button className={style.sendButton}>
+                            {/* decomentar las siguientes lineas cuando en la bd se pueda subir archivos */}
+                            {/* <button className={style.sendButton}>
                                     <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
                                         Upload file
                                         <DriveFolderUploadIcon/>
                                     </div>
-                                </button>
+                            </button> */}
                         </div>
                         <div style={{border:"1px solid  rgba(131, 130, 130, 0.7)",borderRadius:"15px",height:"38vh",width:"40vw"}}>
                             <div className={style.divTextArea} >
