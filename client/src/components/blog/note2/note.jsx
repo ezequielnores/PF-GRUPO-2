@@ -65,7 +65,7 @@ const noteTwo = () => {
             </Typography>
             <CardMedia
               sx={{ height: 400, marginBottom: "1rem" }}
-              image="https://palmharborpharmacy.com/wp-content/uploads/2021/07/theguidetoheatillnessandsunburn.jpeg"
+              image="https://cdn.shopify.com/s/files/1/0257/1046/0991/articles/woman-suffering-from-heatstroke.jpg?v=1670585662"
               title="heat stroke"
             />
             <Typography variant="h6">
