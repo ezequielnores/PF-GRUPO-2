@@ -1,4 +1,4 @@
-import SideBar from "../SideBar/sideBar";
+import SideBar from "../sideBar/sideBar";
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
@@ -42,7 +42,11 @@ const Home = () => {
             justifyContent: "center",
           }}
         >
-          <img style={{ width: "4.3vw", marginTop: "0.3vw" }} src={logoICare} alt="" />
+          <img
+            style={{ width: "4.3vw", marginTop: "0.3vw" }}
+            src={logoICare}
+            alt=""
+          />
         </div>
         <Stack
           style={{

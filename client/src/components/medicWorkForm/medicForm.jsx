@@ -1,12 +1,14 @@
 import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
+import TextField from "@mui/material/TextField";
+
+//validaciones
+import { isEmail, isNumeric, isAlpha, isDate } from "validator";
 
 //style
 const divPadre = {
@@ -21,56 +23,148 @@ const box = {
   flexDirection: "column",
   textAlign: "center",
   alignItems: "center",
-  width: "40rem",
-  height: "47rem",
+  width: "50rem",
+  height: "50rem",
   justifyContent: "space-evenly",
 };
 const cardDiv = {
   marginTop: "4rem",
   display: "flex",
   flexDirection: "column",
-  width: "35rem",
-  height: "35rem",
-  boxShadow: "1px -1px 0px -1px rgba(255,255,255,0.75)",
+  width: "48rem",
+  height: "45rem",
+  boxShadow:
+    "-10px 10px 0px #307196,-20px 20px 0px rgba(48, 113, 150, 0.7),-30px 30px 0px rgba(48, 113, 150, 0.4),-40px 40px 0px rgba(48, 113, 150, 0.1)",
 };
 const divHijo = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
-  gap: "3rem",
   padding: "10px",
   margin: "10px",
+  gap: "1.5rem",
 };
 const finalinput = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
-  gap: "3rem",
   padding: "10px",
-  margin: "18px",
+  margin: "10px",
 };
 
 const MedicForm = () => {
   const [successForm, setSuccessForm] = useState(null);
-  //logic form
+  //validacion state
+  const [errors, setErrors] = useState({
+    user_name: "",
+    user_lastName: "",
+    user_mail: "",
+    user_clinicMail: "",
+    user_phone: "",
+    user_dni: "",
+    user_license: "",
+    user_birthdate: "",
+    user_speciality: "",
+    user_location: "",
+  });
+  const [value, setValue] = useState({
+    name: "",
+    lastName: "",
+    mail: "",
+    clinicMail: "",
+    phone: "",
+    dni: "",
+    license: "",
+    birthdate: "",
+    speciality: "",
+    location: "",
+  });
+  //validacion submit button
+  const [hasChanged, setHasChanged] = useState(false);
+  //handler de inputs
+  const handleChange = (evento) => {
+    evento.preventDefault();
+    const fieldName = evento.target.name;
+    //Lo que tomo son :
+    setValue({
+      ...value,
+      [evento.target.name]: evento.target.value,
+    });
+    // Validar solo el campo que está cambiando
+    const errorsForField = validateFields(fieldName);
+    // Actualizar el estado de errores solo para el campo que está cambiando
+    setErrors({
+      ...errors,
+      [fieldName]: errorsForField[fieldName],
+    });
+    //Para el submiteo
+    setHasChanged(true);
+  };
+  const validateFields = () => {
+    const errors = {};
+
+    if (!isAlpha(value.name)) {
+      errors.name = "Please enter valid name";
+    }
+
+    if (!isAlpha(value.lastName)) {
+      errors.lastName = "Please enter valid last name";
+    }
+    if (!isAlpha(value.location)) {
+      errors.location = "Please enter a valid location";
+    }
+    if (!isAlpha(value.speciality)) {
+      errors.speciality = "Please enter a valid speciality";
+    }
+    if (!isEmail(value.mail)) {
+      errors.mail = "Please enter valid email";
+    }
+
+    if (!isEmail(value.clinicMail)) {
+      errors.clinicMail = "Please enter valid email";
+    }
+
+    if (!isDate(value.birthdate)) {
+      errors.birthdate = "Please enter valid birthdate";
+    }
+
+    if (!isNumeric(value.phone)) {
+      errors.phone = "Please enter valid phone number";
+    }
+
+    if (!isNumeric(value.license)) {
+      errors.license = "Please enter valid license";
+    }
+    if (!isNumeric(value.dni)) {
+      errors.dni = "Please enter valid d.n.i";
+    }
+    return errors;
+  };
+  //Logic form
   const form = useRef();
   const sendEmail = (e) => {
     e.preventDefault();
-    emailjs
-      .sendForm(
-        "service_smqws2i",
-        "template_br2o0og",
-        form.current,
-        "Lx1ljNbkdCzYTpZTP"
-      )
-      .then(
-        (result) => {
-          setSuccessForm("success");
-        },
-        (error) => {
-          setSuccessForm("error");
-        }
-      );
+    const errors = validateFields();
+    console.log(errors);
+    if (Object.keys(errors).length === 0) {
+      emailjs
+        .sendForm(
+          "service_smqws2i",
+          "template_br2o0og",
+          form.current,
+          "Lx1ljNbkdCzYTpZTP"
+        )
+        .then(
+          (result) => {
+            setSuccessForm("success");
+          },
+          (error) => {
+            setSuccessForm("error");
+          }
+        );
+    } else {
+      setErrors(errors);
+    }
   };
   return (
     <div style={divPadre}>
@@ -103,71 +197,99 @@ const MedicForm = () => {
                 color: "#307196",
                 fontWeight: "bold",
                 fontSize: "3rem",
+                marginBottom: "2rem",
               }}
             >
               Join us !
             </Typography>
           </div>
           <div style={divHijo}>
-            <Input
-              type="text"
-              name="user_firstName"
-              placeholder=" First Name"
-              size="large"
+            <TextField
+              name="name"
+              label=" First Name"
+              onChange={handleChange}
+              error={Boolean(errors.name)}
+              helperText={errors.name}
             />
-            <Input
-              type="text"
-              name="user_lastName"
-              placeholder="Last Name"
+            <TextField
+              name="lastName"
+              label="Last Name"
               size="large"
+              onChange={handleChange}
+              error={Boolean(errors.lastName)}
+              helperText={errors.lastName}
             />
-            <Input
-              type="email"
-              name="user_email"
-              placeholder="Email"
-              size="large"
+            <TextField
+              name="mail"
+              label="Email"
+              onChange={handleChange}
+              error={Boolean(errors.mail)}
+              helperText={errors.mail}
             />
           </div>
           <div style={divHijo}>
-            <Input
-              type="text"
-              name="user_birthday"
-              placeholder="Birthday"
-              size="large"
+            <TextField
+              name="birthdate"
+              label="Birthdate"
+              onChange={handleChange}
+              error={Boolean(errors.birthdate)}
+              helperText={errors.birthdate}
             />
-            <Input
-              type="text"
-              name="user_phone"
-              placeholder="Phone"
-              size="large"
+            <TextField
+              name="phone"
+              label="Phone"
+              onChange={handleChange}
+              error={Boolean(errors.phone)}
+              helperText={errors.phone}
             />
-            <Input
-              type="text"
-              name="user_address"
-              placeholder="Address"
-              size="large"
+            <TextField
+              name="location"
+              label="Location"
+              onChange={handleChange}
+              error={Boolean(errors.location)}
+              helperText={errors.location}
             />
           </div>
           <Divider />
           <div style={divHijo}>
-            <Input name="user_dni" placeholder="D.N.I" size="large" />
-            <Input name="user_license" placeholder="License" size="large" />
-            <Input
+            <TextField
+              name="dni"
+              label="D.N.I"
+              onChange={handleChange}
+              error={Boolean(errors.dni)}
+              helperText={errors.dni}
+            />
+            <TextField
+              name="license"
+              label="License"
+              onChange={handleChange}
+              error={Boolean(errors.license)}
+              helperText={errors.license}
+            />
+            <TextField
               type="email"
-              name="user_emailClinic"
-              placeholder="Clinic mail"
-              size="large"
+              name="clinicMail"
+              label="Clinic mail"
+              onChange={handleChange}
+              error={Boolean(errors.clinicMail)}
+              helperText={errors.clinicMail}
             />
           </div>
           <div style={finalinput}>
-            <Input name="message" placeholder="Especialty" />
-            <Input name="message" placeholder="Location" />
+            <TextField
+              name="speciality"
+              label="Especialty"
+              onChange={handleChange}
+              error={Boolean(errors.speciality)}
+              helperText={errors.speciality}
+            />
           </div>
-          <div style={{ marginTop: "3rem" }}>
+          <div style={{ marginTop: "2rem" }}>
             <Button
               variant="contained"
               type="submit"
               value="Send"
+              disabled={!hasChanged}
               style={{
                 backgroundColor: "#307196",
                 width: "50%",

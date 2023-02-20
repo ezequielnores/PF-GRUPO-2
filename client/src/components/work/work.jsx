@@ -56,7 +56,9 @@ const Work = () => {
             to transform the way people access health care!
           </Typography>
           <Link to="/work/registerForm">
-            <Button variant="contained">Join the team!</Button>
+            <Button variant="contained" style={{ backgroundColor: "#307196" }}>
+              Join the team!
+            </Button>
           </Link>
         </Card>
       </div>

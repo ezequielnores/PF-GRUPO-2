@@ -32,8 +32,9 @@ const cardDiv = {
   width: "30rem",
   height: "25rem",
   justifyContent: "space-around",
-
   padding: "2rem",
+  boxShadow:
+    "-10px 10px 0px #307196,-20px 20px 0px rgba(48, 113, 150, 0.7),-30px 30px 0px rgba(48, 113, 150, 0.4),-40px 40px 0px rgba(48, 113, 150, 0.1)",
 };
 const inputs = {
   fontSize: "1rem",
