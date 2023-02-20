@@ -7,7 +7,6 @@ const {
     deleteIncomeById,
     findAllIncomesByPatient
 } = require("../controllers/incomesController");
-const { Patient } = require("../db");
 const incomesRouter = Router();
 
 incomesRouter.get("/", async (req, res) => {
@@ -61,10 +60,7 @@ incomesRouter.post("/", async (req, res) => {
             throw new Error("Datos incompletos.");
         }
 
-        const patient = await Patient.findByPk(patientId);
-        if (!patient) throw new Error(`No se encuentra ningun paciente en la BDD con el id ${id}.`);
-
-        const incomeCreated = await createIncome(patient, date, amount, detail);
+        const incomeCreated = await createIncome(patientId, date, amount, detail);
         if (!incomeCreated) throw new Error("Error al crear el ingreso.");
 
         res.status(200).json(incomeCreated);
