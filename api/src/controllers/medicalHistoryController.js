@@ -42,9 +42,10 @@ const updateMedicalHistoryById = async (attributes, id) => {
 };
 
 const addRegisterMedicalHistory = async (oldRegister, newRegister, id) => {
-    const medicalHistoryUpdated = await MedicalHistory.update({
+    await MedicalHistory.update({
         register: [...oldRegister, newRegister]
     }, { where: { id: id } });
+    const medicalHistoryUpdated = await MedicalHistory.findByPk(id);
     return medicalHistoryUpdated;
 };
 
