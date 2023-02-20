@@ -6,9 +6,12 @@ import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 //validaciones
-import { isEmail, isNumeric, isAlpha, isDate } from "validator";
+import { isEmail, isNumeric, isAlpha } from "validator";
 
 //style
 const divPadre = {
@@ -75,7 +78,7 @@ const MedicForm = () => {
     phone: "",
     dni: "",
     license: "",
-    birthdate: "",
+    birthdate: "02-03-1999",
     speciality: "",
     location: "",
   });
@@ -99,6 +102,16 @@ const MedicForm = () => {
     });
     //Para el submiteo
     setHasChanged(true);
+  };
+  const handleFechaNacimientoChange = (date) => {
+    const errorsForField = validateFields();
+
+    setValue({ ...value, birthdate: date });
+    setHasChanged(true);
+    setErrors({
+      ...errors,
+      [value]: errorsForField,
+    });
   };
   const validateFields = () => {
     const errors = {};
@@ -124,8 +137,8 @@ const MedicForm = () => {
       errors.clinicMail = "Please enter valid email";
     }
 
-    if (!isDate(value.birthdate)) {
-      errors.birthdate = "Please enter valid birthdate";
+    if (new Date(value.birthdate) > new Date() || value.birthdate === null) {
+      errors.birthdate = "Please enter a valid birthdate";
     }
 
     if (!isNumeric(value.phone)) {
@@ -140,6 +153,7 @@ const MedicForm = () => {
     }
     return errors;
   };
+  console.log(value);
   //Logic form
   const form = useRef();
   const sendEmail = (e) => {
@@ -183,9 +197,7 @@ const MedicForm = () => {
           <Alert severity="success">Will be in contact soon !</Alert>
         )}
         {successForm === "error" && (
-          <Alert severity="error">
-            This is an error alert — check it out !
-          </Alert>
+          <Alert severity="error">Server error !</Alert>
         )}
 
         <Card style={cardDiv}>
@@ -228,13 +240,32 @@ const MedicForm = () => {
             />
           </div>
           <div style={divHijo}>
-            <TextField
+            {/* <TextField
               name="birthdate"
               label="Birthdate"
               onChange={handleChange}
               error={Boolean(errors.birthdate)}
               helperText={errors.birthdate}
-            />
+            /> */}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                name="birthdate"
+                label="Birthdate"
+                value={value.birthdate}
+                format="dd/MM/yyyy"
+                maxDate={new Date()}
+                inputVariant="outlined"
+                onChange={handleFechaNacimientoChange}
+                helperText={errors.birthdate}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    helperText={errors.birthdate}
+                    error={Boolean(errors.birthdate)}
+                  />
+                )}
+              />
+            </LocalizationProvider>
             <TextField
               name="phone"
               label="Phone"

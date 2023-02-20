@@ -33,7 +33,8 @@ const cardDiv = {
   width: "30rem",
   height: "25rem",
   justifyContent: "space-around",
-
+  boxShadow:
+    "-10px 10px 0px #307196,-20px 20px 0px rgba(48, 113, 150, 0.7),-30px 30px 0px rgba(48, 113, 150, 0.4),-40px 40px 0px rgba(48, 113, 150, 0.1)",
   padding: "2rem",
 };
 const inputs = {
@@ -65,7 +66,6 @@ const FormLoginClient = () => {
   };
   const pacientes = useSelector((state) => state.patient.list);
 
-
   //SUBMIT
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -90,8 +90,6 @@ const FormLoginClient = () => {
       dispatch(patientGetAll());
     }
   }, []);
-
-
 
   return (
     <div style={divPadre}>
@@ -150,7 +148,6 @@ const FormLoginClient = () => {
   );
 };
 export default FormLoginClient;
-
 
 // import { Link } from "react-router-dom";
 // import Button from "@mui/material/Button";
