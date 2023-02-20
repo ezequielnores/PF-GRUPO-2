@@ -89,7 +89,8 @@ const MedicalAppointments = () => {
   }
 
   const filteredDoctors = speciality ? doctors.filter((doctor) => doctor.speciality === speciality) : doctors;
-
+  const filterSpeciality=doctors.map(doctor => doctor.speciality)
+  .filter((speciality, index, self) => self.indexOf(speciality) === index);
   return (
     <Container maxWidth="sm">
       <Box my={4}>
@@ -109,17 +110,17 @@ const MedicalAppointments = () => {
             <Select
              labelId="demo-simple-select-required"
              id="demo-simple-select-required"
-             //value={speciality}
-             label="Doctor Specialty"
+ 
              onChange={handleSelectDoctor}
              fullWidth
            >
             <MenuItem value={speciality} name="speciality">None</MenuItem>
-            {doctors.map((e)=>{
-                return(
-                    <MenuItem value={e.speciality} >{e.speciality}</MenuItem>
-                )
-            })}
+
+            {filterSpeciality.map((speciality, index) => (
+                    <MenuItem key={index} value={speciality}>
+                        {speciality}
+                    </MenuItem>
+            ))}
             
             </Select>
             </Box>        <Box sx={{ mt: 2 }}>
@@ -128,7 +129,6 @@ const MedicalAppointments = () => {
             labelId="demo-simple-select-required"
             id="demo-simple-select-required"
             value={name.doctorId}
-            label="Doctor Name"
             onChange={handleSelectName}
             fullWidth
             disabled={!speciality}

@@ -66,7 +66,7 @@ const getComments =  async () => {
 
 const allCommentsByDoc = async (doctorId) => {
     const commentsDoc = await Comments.findAll({
-        attributes: ['id', 'message', 'doctorId'],
+        attributes: ['id', 'rating', 'title', 'message', 'doctorId'],
         include: [
             {
                 model: Doctor,
