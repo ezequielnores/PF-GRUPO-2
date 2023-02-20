@@ -42,12 +42,13 @@ const Work = () => {
           </Typography>
           <Typography
             align="justify"
+            variant="body1"
+            color="text.secondary"
             style={{
               marginBottom: "3rem",
               paddingLeft: "10px",
               paddingRight: "10px",
               fontWeight: "semibold",
-              fontSize: "1rem",
             }}
           >
             Join our digital healthcare team and help improve people's health
