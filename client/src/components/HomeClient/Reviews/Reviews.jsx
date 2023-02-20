@@ -11,6 +11,8 @@ import Modal from 'react-modal';
 import {docrtorGetAll} from "../../../redux/reducers/doctorReducer";
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
+import {postComments} from "../../../redux/reducers/commentsReducer"
+
 
 function Reviews() {
     const dispatch=useDispatch();
@@ -45,13 +47,13 @@ const changeHandler=(event)=>{
 
     const submitHandler=(event)=>{
         event.preventDefault();
-    //     dispatch(postReview({message:fields.message,
-    //       title:fields.title,
-    //       doctorId:name.doctorId,
-    //       PatientId:patientIdLocal,
-    //       doctorName:name.name,
-    //       doctorLastName:name.lastName,
-    //       stars:value}))
+        dispatch(postComments({message:fields.message,
+          title:fields.title,
+          doctorId:name.doctorId,
+          PatientId:patientIdLocal,
+          doctorName:name.name,
+          doctorLastName:name.lastName,
+          rating:value}))
           
        setModalAbierto(true)
    
@@ -98,7 +100,7 @@ const changeHandler=(event)=>{
       
         <div>
         <InputLabel id="demo-simple-select-filled-label" sx={{marginRight:32}}>Title: </InputLabel>
-        <TextField id="filled-basic" label="Required" variant="filled" value={fields.title} name="title" sx={{marginRight:11,width:"fit-content"}}onChange={changeHandler}  />
+        <TextField id="filled-basic" variant="filled" value={fields.title} name="title" sx={{marginRight:11,width:"fit-content"}}onChange={changeHandler}  />
             
         </div>
         <br /><br/>
@@ -106,7 +108,6 @@ const changeHandler=(event)=>{
         <InputLabel id="demo-simple-select-filled-label" sx={{marginRight:28}}>Comment: </InputLabel>
         <TextField
           id="filled-multiline-static"
-          label="Review"
           multiline
           rows={6}
           defaultValue="Default Value"
@@ -117,7 +118,9 @@ const changeHandler=(event)=>{
         /> 
         </div>
       <br/><br/>
-        <Button variant="contained" endIcon={<SendIcon />} sx={{backgroundColor:"#307196",marginLeft:9}} type="submit">Send</Button>
+      {(!name.name || !name.lastName || !doctors.length || !value || !fields.title || !fields.message)?
+      (<Button variant="contained" disabled>Send</Button>) : 
+        <Button variant="contained" endIcon={<SendIcon />} sx={{backgroundColor:"#307196",marginLeft:9}} type="submit">Send</Button>}
         </div>
     </form>
 
@@ -128,7 +131,7 @@ const changeHandler=(event)=>{
         <h3 style={{marginLeft:5}}>Rating: {value} stars</h3>
         <h3 style={{marginLeft:5}}>Title: {fields.title}</h3>
         <h3 style={{marginLeft:5}}>Comment: {fields.message}</h3>
-        <h3 style={{marginLeft:5}}>Comment: {name.doctorId}</h3>
+
 
         
         <Button variant="contained" onClick={closeModal} style={{marginLeft:"10%", marginTop:"5%",scale:"1.2"}}>Cerrar</Button>
@@ -142,4 +145,4 @@ const changeHandler=(event)=>{
 
 export default Reviews;
 
-// onSubmit={submitHandler} 
+

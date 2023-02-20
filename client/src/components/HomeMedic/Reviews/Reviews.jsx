@@ -1,12 +1,4 @@
 import React, { useState } from "react";
-// import { makeStyles } from "@material-ui/core/styles";
-// import Typography from "@material-ui/core/Typography";
-// import FormControl from "@material-ui/core/FormControl";
-// import Select from "@material-ui/core/Select";
-// import MenuItem from "@material-ui/core/MenuItem";
-// import Paper from '@material-ui/core/Paper';
-// import Box from '@material-ui/core/Box';
-// import Rating from '@material-ui/lab/Rating';
 import {
   Select,
   MenuItem,
@@ -15,8 +7,13 @@ import {
   Rating,
   Typography,
   FormControl,
+  Divider,
 } from "@mui/material";
-// const useStyles = makeStyles((theme) => ({
+import { useDispatch, useSelector } from "react-redux";
+import {commentsByDoctor} from "../../../redux/reducers/commentsReducer"
+import { useEffect } from "react";
+
+
 const root = {
   padding: "1rem",
   marginLeft: "3rem",
@@ -65,35 +62,11 @@ const divider = {
 
 const Reviews = () => {
   // const classes = useStyles();
-
-  const reviews = [
-    {
-      id: 1,
-      title: "Very satisfied",
-      message: "Excellent care, the doctor is very kind and professional.",
-      rating: 5,
-      doctorId: null,
-      PatientId: null,
-    },
-    {
-      id: 2,
-      title: "I'm not satisfied",
-      message:
-        "I was treated by an intern instead of the doctor I had requested, the attention was bad and it did not solve my health problem",
-      rating: 1,
-      doctorId: null,
-      PatientId: null,
-    },
-    {
-      id: 3,
-      title: "Regular",
-      message:
-        "The attention was correct, but I had to wait a long time to be attended.",
-      rating: 3,
-      doctorId: null,
-      PatientId: null,
-    },
-  ];
+const reviews =useSelector(state=>state.comments.list);
+const doctorIdLocal = localStorage.getItem("idMedic");
+const dispatch = useDispatch();
+console.log(reviews)
+console.log(doctorIdLocal)
 
   const [filter, setFilter] = useState("all");
 
@@ -109,61 +82,13 @@ const Reviews = () => {
     }
   });
 
-  return (
-    // <Paper className={classes.root}>
-    //   <div className={classes.header}>
-    //     <Typography className={classes.title}>Patients reviews</Typography>
-    //     <Typography className={classes.subtitle}>Filter by rating:</Typography>
-    //     <FormControl className={classes.formControl}>
-    //       <Select
-    //         value={filter}
-    //         onChange={handleFilterChange}
-    //         displayEmpty
-    //         inputProps={{ "aria-label": "Filtrar por calificación" }}
-    //       >
-    //         <MenuItem value="all">All</MenuItem>
-    //         <MenuItem value="5">5 stars</MenuItem>
-    //         <MenuItem value="4">4 stars</MenuItem>
-    //         <MenuItem value="3">3 stars</MenuItem>
-    //         <MenuItem value="2">2 stars</MenuItem>
-    //         <MenuItem value="1">1 star</MenuItem>
-    //       </Select>
-    //     </FormControl>
-    //   </div>
+  console.log(filteredReviews)
 
-    //   {filteredReviews.length > 0 ? (
-    //     <div>
-    //       {filteredReviews.map((review) => (
-    //         <Box className={classes.reviewContainer} key={review.id}>
-    //           <div className={classes.ratingContainer}>
-    //             <Rating name="read-only" value={review.rating} readOnly />
-    //             <Typography variant="body2" color="textSecondary">
-    //               {" "}
-    //               ({review.rating})
-    //             </Typography>
-    //           </div>
-    //           <Typography className={classes.reviewerName}>
-    //             Review #{review.id}
-    //           </Typography>
-    //           <br />
-    //           <Typography className={classes.reviewText}>
-    //             {review.message}
-    //           </Typography>
-    //           <Typography variant="caption">
-    //             <i>By anonymus patient</i>
-    //           </Typography>
-    //         </Box>
-    //       ))}
-    //     </div>
-    //   ) : (
-    //     <Typography className={classes.reviewerName}>
-    //       <br />
-    //       <br />
-    //       <br />
-    //       There are no reviews with that rating
-    //     </Typography>
-    //   )}
-    // </Paper>
+  useEffect(() => {
+    dispatch(commentsByDoctor(doctorIdLocal));
+  }, []);
+
+  return (
     <Paper style={root}>
       <div style={header}>
         <Typography style={title}>Patients reviews</Typography>
@@ -186,18 +111,21 @@ const Reviews = () => {
       </div>
 
       {filteredReviews.length > 0 ? (
-        <div>
+        <div >
           {filteredReviews.map((review) => (
-            <Box key={review.id} style={reviewContainer}>
+            <Box key={review.id} style={reviewContainer} sx={{padding:2}}>
               <div style={ratingContainer}>
-                <Rating name="read-only" value={review.rating} readOnly />
+                <Rating name="read-only" value={review.rating} readOnly/>
                 <Typography variant="body2" color="textSecondary">
                   {" "}
                   ({review.rating})
                 </Typography>
+                <Typography style={reviewerName} sx={{marginLeft:52}}>Review #{review.id}</Typography>
               </div>
-              <Typography style={reviewerName}>Review #{review.id}</Typography>
-              <br />
+              
+
+              <br/>
+              <Typography style={reviewText} sx={{fontWeight:"bold"}}>{review.title}</Typography>
               <Typography style={reviewText}>{review.message}</Typography>
               <Typography variant="caption">
                 <i>By anonymus patient</i>
