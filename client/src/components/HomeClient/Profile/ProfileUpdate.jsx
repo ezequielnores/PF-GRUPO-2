@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,16 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+import {patientUpdate,patientGetDetail} from "../../../redux/reducers/patientReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { isEmail, isNumeric, isStrongPassword, isAlpha, isInt } from "validator";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
+
+
+
 //styles
 const padreDiv = {
   width: "100%",
@@ -29,50 +39,111 @@ const typoTitle = {
 };
 
 const ProfileEdit = () => {
-  // const detailPatient = useSelector((state) => state.patientDetail);
-  // const dispatch = useDispatch();
+  const detailPatient = useSelector((state) => state.patient.detail);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [info, setInfo] = useState({
+  const [infoNueva, setInfoNueva] = useState({
+    name: detailPatient? detailPatient.name:"",
+    surname: detailPatient? detailPatient.surname:"",
+    mail: detailPatient? detailPatient.mail:"",
+    password: detailPatient? detailPatient.password:"",
+    birthday: detailPatient? detailPatient.birthday:new Date(),
+    photo: detailPatient? detailPatient.photo:"",
+    weight: detailPatient? detailPatient.weight:"",
+    height: detailPatient? detailPatient.height:"",
+    allergies: detailPatient? detailPatient.allergies:"",
+    chronicDiseases: detailPatient? detailPatient.chronicDiseases:"",
+    location: detailPatient? detailPatient.location:"",
+    phone: detailPatient? detailPatient.phone:"",
+  });
+
+  const [hasChanged, setHasChanged] = useState(false);
+
+  const [errors, setErrors] = useState({
     name: "",
-    surname: "",
     mail: "",
-    password: "",
-    birthday: new Date(),
-    photo: "",
-    weight: "",
-    height: "",
-    bmi: "",
-    allergies: "",
-    chronicDiseases: "",
-    location: "",
     phone: "",
+    password: "",
+    clinicMail: "",
+    birthday: "",
+    surname: "",
+    weight:"",
+    height:""
   });
 
 
   const handleChange = (evento) => {
     evento.preventDefault();
-    setInfo({
-      ...info,
+    setInfoNueva({
+      ...infoNueva,
       [evento.target.name]: evento.target.value,
     });
+    setHasChanged(true);
   };
 
- 
+  const handleFechaNacimientoChange = (date) => {
+    setInfoNueva({ ...infoNueva, birthdate: date });
+  };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    //dispatch(putPatient(info))
-    alert("Personal information updated");
-    navigate("/HomeClient/Profile");
+    const errors = validateFields();
+    if (Object.keys(errors).length === 0) {
+      dispatch(patientUpdate({ id: detailPatient.id, data: infoNueva }));
+      alert("Information updated");
+      navigate("/HomeClient/Profile");
+    } else {
+      setErrors(errors);
+    }
   };
 
 
-  // useEffect(() => {
-  //   const doctorId = localStorage.getItem("id");
-  //   if (doctorId) {
-  //     dispatch(doctorGetDetail(doctorId));
-  //   }
-  // }, []);
+  const validateFields = () => {
+    const errors = {};
+
+    if (!isAlpha(infoNueva.name)) {
+      errors.name = "Please enter valid name";
+    }
+
+    if (!isAlpha(infoNueva.surname)) {
+      errors.surname = "Please enter valid last name";
+    }
+
+    if (!isEmail(infoNueva.mail)) {
+      errors.mail = "Please enter a valid email address";
+    }
+
+    if (!isStrongPassword(infoNueva.password)) {
+      errors.password = "Please enter a valid password";
+    }
+
+    if (new Date(infoNueva.birthday) > new Date()) {
+      errors.birthday = "Please enter a valid birthdate";
+    }
+
+    if (!isNumeric(infoNueva.phone)) {
+      errors.phone = "Please enter a valid phone number";
+    }
+    if (!isInt(infoNueva.weight)) {
+      errors.weight = "Please enter a valid weight";
+    }
+    if (!isInt(infoNueva.height)) {
+      errors.height = "Please enter a valid height";
+    }
+
+    return errors;
+  };
+
+
+  useEffect(() => {
+    const patientId = localStorage.getItem("id");
+    if (patientId) {
+      dispatch(patientGetDetail(patientId));
+    }
+  }, []);
+
 
   return (
     <div style={padreDiv}>
@@ -99,6 +170,8 @@ const ProfileEdit = () => {
           style={typoTitle}
           gutterBottom
           onChange={(e) => handleChange(e)}
+          error={Boolean(errors.name)}
+          helperText={errors.name}
         />
         <TextField
           name="surname"
@@ -106,14 +179,23 @@ const ProfileEdit = () => {
           style={typoTitle}
           gutterBottom
           onChange={(e) => handleChange(e)}
+          error={Boolean(errors.surname)}
+          helperText={errors.surname}
         />
-        <TextField
-          name="birthday"
-          label="Date of birth"
-          style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
-        />
+
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Birthdate"
+            value={infoNueva.birthday}
+            onChange={handleFechaNacimientoChange}
+            error={Boolean(errors.birthday)}
+            helperText={errors.birthday}
+            format="dd/MM/yyyy"
+            maxDate={new Date()}
+            inputVariant="outlined"
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
 
         <TextField
           name="mail"
@@ -121,6 +203,8 @@ const ProfileEdit = () => {
           style={typoTitle}
           gutterBottom
           onChange={(e) => handleChange(e)}
+          error={Boolean(errors.mail)}
+          helperText={errors.mail}
         />
         <TextField
           name="password"
@@ -128,6 +212,8 @@ const ProfileEdit = () => {
           style={typoTitle}
           gutterBottom
           onChange={(e) => handleChange(e)}
+          error={Boolean(errors.password)}
+          helperText={errors.password}
         />
         <TextField
           name="photo"
@@ -142,6 +228,8 @@ const ProfileEdit = () => {
           style={typoTitle}
           gutterBottom
           onChange={(e) => handleChange(e)}
+          error={Boolean(errors.weight)}
+          helperText={errors.weight}
         />
         <TextField
           name="height"
@@ -149,6 +237,8 @@ const ProfileEdit = () => {
           style={typoTitle}
           gutterBottom
           onChange={(e) => handleChange(e)}
+          error={Boolean(errors.height)}
+          helperText={errors.height}
         />
         <TextField
           name="allergies"
@@ -177,6 +267,8 @@ const ProfileEdit = () => {
           style={typoTitle}
           gutterBottom
           onChange={(e) => handleChange(e)}
+          error={Boolean(errors.phone)}
+          helperText={errors.phone}
         />
         <TextField
           name="bmi"
@@ -186,7 +278,7 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e)}
         />
       </Card>
-      <Button variant="contained" onClick={(e) => handleSubmit(e)}>
+      <Button variant="contained" onClick={(e) => handleSubmit(e)} disabled={!hasChanged}>
         Update information
       </Button>
       <br/><br/>

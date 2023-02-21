@@ -23,7 +23,8 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         type: {
-            type: DataTypes.STRING
+            type: DataTypes.ENUM("Virtual", "Face-to-face"),
+            allowNull: false
         },
         ubication: {
             type: DataTypes.STRING,
@@ -31,6 +32,10 @@ module.exports = (sequelize) => {
         },
         doctorSpecialty: {
             type: DataTypes.STRING,
+            allowNull: false
+        },
+        attended: {
+            type: DataTypes.BOOLEAN,
             allowNull: false
         }
     }, { timestamps: false });
