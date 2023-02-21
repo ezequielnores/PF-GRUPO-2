@@ -43,6 +43,26 @@ turnsRouter.get("/turnByDateAndHourAndDoctor", async (req, res) => {
     }
 });
 
+turnsRouter.get("/turnsAttended", async (req, res) => {
+    try {
+        const turnsAttended = await findAllTurnsAttended();
+        if (!turnsAttended.length) throw new Error("No se encuentran turnos atendidos en la BDD.");
+        res.status(200).json(turnsAttended);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+turnsRouter.get("/turnsNoAttended", async (req, res) => {
+    try {
+        const turnsNoAttended = await findAllTurnsNoAttended();
+        if (!turnsNoAttended.length) throw new Error("No se encuentran turnos sin atender en la BDD.");
+        res.status(200).json(turnsNoAttended);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 turnsRouter.get("/turnsByDate", async (req, res) => {
     const { date } = req.body;
 
