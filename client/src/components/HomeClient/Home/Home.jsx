@@ -1,4 +1,4 @@
-import SideBar from "../SideBar/SideBar";
+import SideBar from "../sideBar/sideBar";
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
@@ -14,11 +14,11 @@ import {
   Reviews,
   Urgency,
   HomeView,
-  ProfileUpdate
+  ProfileUpdate,
 } from "../index";
 import { useEffect } from "react";
-import { useDispatch,useSelector} from "react-redux";
-import {patientGetDetail} from "../../../redux/reducers/patientReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { patientGetDetail } from "../../../redux/reducers/patientReducer";
 
 import Register from "../Register/Register.jsx";
 
@@ -29,7 +29,7 @@ const Home = () => {
     if (patientId) {
       dispatch(patientGetDetail(patientId));
     }
-  }, []) 
+  }, []);
   const patient = useSelector((state) => state.patient.detail);
   const location = useLocation();
   const [open, setOpen] = useState(false);
@@ -80,11 +80,9 @@ const Home = () => {
             }}
           >
             <p
-              style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem"}}
+              style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem" }}
             >
-
-              {patient?.name+" "+patient?.surname}
-              
+              {patient?.name + " " + patient?.surname}
             </p>
             <p
               style={{
@@ -94,8 +92,7 @@ const Home = () => {
                 color: "gray",
               }}
             >
-              {patient.plan? patient.plan : "Without plan"}
-              
+              {patient.plan ? patient.plan : "Without plan"}
             </p>
           </div>
 
@@ -103,7 +100,6 @@ const Home = () => {
             {/* cambiar cuando tenga la imagen del usuario */}
             {patient?.name?.charAt(0)}
             {patient?.surname?.charAt(0)}
-
           </Avatar>
         </Stack>
       </div>
