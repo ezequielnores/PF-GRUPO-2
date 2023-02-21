@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const {
     createTurn,
+    getTurnByDateAndHourAndDoctor,
     getTurnById,
     findAllTurns,
     deleteTurnById,
@@ -8,6 +9,8 @@ const {
     findAllTurnsByDate,
     findAllTurnsByPatient,
     findAllTurnsByDoctor,
+    findAllTurnsAttended,
+    findAllTurnsNoAttended,
     deleteTurnsByExpiredDate
 } = require("../controllers/turnsController");
 const turnsRouter = Router();
@@ -17,6 +20,24 @@ turnsRouter.get("/", async (req, res) => {
         const turns = await findAllTurns();
         if (!turns.length) throw new Error("No se encuentran turnos en la BDD.");
         res.status(200).json(turns);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+turnsRouter.get("/turnByDateAndHourAndDoctor", async (req, res) => {
+    const { date, hour, doctorId } = req.body;
+
+    try {
+        if (!date) throw new Error("Fecha indefinida para filtrar.");
+        if (!hour) throw new Error("Hora indefinida para filtrar.");
+
+        const turn = await getTurnByDateAndHourAndDoctor(date, hour, doctorId);
+        if (!turn) {
+            res.status(200).send(`Turno disponible para la fecha ${date} y hora ${hour}.`);
+            return;
+        }
+        res.status(200).send(`Turno no disponible para la fecha ${date} y hora ${hour}.`);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
