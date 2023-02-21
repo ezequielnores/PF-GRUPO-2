@@ -162,7 +162,7 @@ const ProfileEdit = () => {
           label="Last name"
           style={typoTitle}
           onChange={handleChange}
-          error={Boolean(errors.lasName)}
+          error={Boolean(errors.lastName)}
           helperText={errors.lastName}
         />
         <TextField
