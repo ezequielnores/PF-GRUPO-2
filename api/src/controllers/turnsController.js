@@ -9,6 +9,7 @@ const createTurn = async (availability, date, hour, type, ubication, doctorSpeci
         type: type ? type : null,
         ubication: ubication,
         doctorSpecialty: doctorSpecialty,
+        attended: false
     });
 
     await turn.setDoctor(doctorId);
@@ -27,22 +28,24 @@ const getTurnById = async id => {
 
 const findAllTurns = async () => {
     const turns = await Turns.findAll({
-        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty", "attended"],
         include: [
             { model: Patient },
             { model: Doctor }
-        ]
+        ],
+        order: [["date", "ASC"], ["hour", "ASC"]]
     });
     return turns;
 };
 
 const findAllTurnsByDate = async date => {
     const turnsByDate = await Turns.findAll({
-        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty", "attended"],
         include: [
             { model: Patient },
             { model: Doctor }
         ],
+        order: [["date", "ASC"], ["hour", "ASC"]],
         where: { date: date }
     });
     return turnsByDate;
@@ -51,11 +54,12 @@ const findAllTurnsByDate = async date => {
 
 const findAllTurnsByDoctor = async doctorId => {
     const turnsByDoctor = await Turns.findAll({
-        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty", "attended"],
         include: [
             { model: Patient },
             { model: Doctor }
         ],
+        order: [["date", "ASC"], ["hour", "ASC"]],
         where: { doctorId: doctorId }
     });
     return turnsByDoctor;
@@ -63,11 +67,12 @@ const findAllTurnsByDoctor = async doctorId => {
 
 const findAllTurnsByPatient = async patientId => {
     const turnsByPatient = await Turns.findAll({
-        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty"],
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty", "attended"],
         include: [
             { model: Patient },
             { model: Doctor }
         ],
+        order: [["date", "ASC"], ["hour", "ASC"]],
         where: { PatientId: patientId }
     });
     return turnsByPatient;
