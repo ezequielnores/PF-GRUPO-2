@@ -26,6 +26,18 @@ const getTurnById = async id => {
     return turn;
 };
 
+const getTurnByDateAndHourAndDoctor = async (date, hour, doctorId) => {
+    const turn = await Turns.findOne({
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty", "attended"],
+        include: [
+            { model: Patient },
+            { model: Doctor }
+        ],
+        where: { doctorId: doctorId, date: date, hour: hour }
+    });
+    return turn;
+};
+
 const findAllTurns = async () => {
     const turns = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty", "attended"],
@@ -38,6 +50,32 @@ const findAllTurns = async () => {
     return turns;
 };
 
+const findAllTurnsAttended = async () => {
+    const turns = await Turns.findAll({
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty", "attended"],
+        include: [
+            { model: Patient },
+            { model: Doctor }
+        ],
+        order: [["date", "ASC"], ["hour", "ASC"]],
+        where: { attended: true }
+    });
+    return turns;
+};
+
+const findAllTurnsNoAttended = async () => {
+    const turns = await Turns.findAll({
+        attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty", "attended"],
+        include: [
+            { model: Patient },
+            { model: Doctor }
+        ],
+        order: [["date", "ASC"], ["hour", "ASC"]],
+        where: { attended: false }
+    });
+    return turns;
+};
+
 const findAllTurnsByDate = async date => {
     const turnsByDate = await Turns.findAll({
         attributes: ["id", "availability", "date", "hour", "type", "ubication", "doctorSpecialty", "attended"],
@@ -46,7 +84,7 @@ const findAllTurnsByDate = async date => {
             { model: Doctor }
         ],
         order: [["date", "ASC"], ["hour", "ASC"]],
-        where: { date: date }
+        where: { date: date, attended: false }
     });
     return turnsByDate;
 };
@@ -60,7 +98,7 @@ const findAllTurnsByDoctor = async doctorId => {
             { model: Doctor }
         ],
         order: [["date", "ASC"], ["hour", "ASC"]],
-        where: { doctorId: doctorId }
+        where: { doctorId: doctorId, attended: false }
     });
     return turnsByDoctor;
 };
@@ -73,7 +111,7 @@ const findAllTurnsByPatient = async patientId => {
             { model: Doctor }
         ],
         order: [["date", "ASC"], ["hour", "ASC"]],
-        where: { PatientId: patientId }
+        where: { PatientId: patientId, attended: false }
     });
     return turnsByPatient;
 };
@@ -121,11 +159,14 @@ const updateTurnById = async (attributes, id) => {
 module.exports = {
     createTurn,
     getTurnById,
+    getTurnByDateAndHourAndDoctor,
     findAllTurns,
     deleteTurnById,
     updateTurnById,
     findAllTurnsByDate,
     findAllTurnsByDoctor,
+    findAllTurnsAttended,
+    findAllTurnsNoAttended,
     findAllTurnsByPatient,
     deleteTurnsByExpiredDate
 };
