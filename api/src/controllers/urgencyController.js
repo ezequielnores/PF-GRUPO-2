@@ -1,12 +1,24 @@
-const { Urgency } = require("../db.js");
+const { Urgency, Patient } = require("../db.js");
 
-const getUrgencies = async () => {
-    const response = await Urgency.findAll();
+const getUrgencies = async (patientId) => {
+    const response = await Urgency.findAll({
+        attributes: ['id', 'symptomatology', 'attended', 'PatientId'],
+        include: {
+            model: Patient,
+            attributes: ['name', 'surname']
+        }, where: { PatientId: patientId }
+    });
     return response;
 };
 
-const getNotAttendedUrgencies = async () => {
-    const response = await Urgency.findAll();
+const getNotAttendedUrgencies = async (patientId) => {
+    const response = await Urgency.findAll({
+        attributes: ['id', 'symptomatology', 'attended', 'PatientId'],
+        include: {
+            model: Patient,
+            attributes: ['name', 'surname']
+        }, where: { PatientId: patientId }
+    });
     const filterResponse = response.filter((urgency) => {
         return urgency.dataValues.attended === false
     });
@@ -14,7 +26,9 @@ const getNotAttendedUrgencies = async () => {
 }
 
 const getUrgency = async (id) => {
-    const response = await Urgency.findByPk(id);
+    const response = await Urgency.findByPk(id, { include: 
+        { model: Patient},
+    });
     return response;
 };
 
