@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Register.module.css";
 import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { MuiTelInput } from "mui-tel-input";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { patientRegister } from "../../../redux/reducers/patientReducer";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
@@ -42,7 +42,6 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const [imageInputValue, setImageInputValue] = useState("");
-
   const [form, setForm] = React.useState({
     name: "",
     surname: "",
@@ -72,26 +71,24 @@ const Register = () => {
     mail: "",
     password: "",
   });
-  
+
   const handleImage = (e) => {
-    setImageInputValue(e.target.value)
+    setImageInputValue(e.target.value);
     const file = e.target.files[0];
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setForm({ ...form, image: reader.result });
-    
-      validateForm({ ...form, image: reader.result }, "image");
-    }
-  }
 
+      validateForm({ ...form, image: reader.result }, "image");
+    };
+  };
 
   const onChangeHandler = (name, value) => {
     setForm({ ...form, [name]: value });
-    
+
     validateForm({ ...form, [name]: value }, name);
   };
-
 
   const handleFechaNacimientoChange = (date, name) => {
     setForm({ ...form, birthday: date });
@@ -147,7 +144,6 @@ const Register = () => {
       alert("Please complete all fields");
     }
   };
-
   return (
     <div
       // style={{
@@ -193,6 +189,7 @@ const Register = () => {
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="name"
             value={form.name}
+            helperText={error.name}
           />
 
           <TextField
@@ -202,6 +199,7 @@ const Register = () => {
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="surname"
             value={form.surname}
+            helperText={error.surname}
           />
 
           <TextField
@@ -211,8 +209,8 @@ const Register = () => {
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="mail"
             value={form.mail}
+            helperText={error.mail}
           />
-
           <TextField
             error={error.password}
             label="Password*"
@@ -221,6 +219,7 @@ const Register = () => {
             name="password"
             value={form.password}
             type="password"
+            helperText={error.password}
           />
 
           <TextField
@@ -231,7 +230,6 @@ const Register = () => {
             name="dni"
             value={form.dni}
           />
-
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
@@ -287,24 +285,37 @@ const Register = () => {
           <TextField
             error={error.image}
             label="Image"
-            style={form.image ? {width: "40vh", marginBottom: "1vh"} : { width: "40vh", "label": {paddingLeft: "5vw"} }}
+            style={
+              form.image
+                ? { width: "40vh", marginBottom: "1vh" }
+                : { width: "40vh", label: { paddingLeft: "5vw" } }
+            }
             onChange={handleImage}
             name="image"
             value={imageInputValue ? imageInputValue : ""}
             type="file"
             InputProps={
-              !form.image ? {inputProps: {style: {paddingLeft: "4vw"}}} :
-              {
-              endAdornment: (
-                <InputAdornment position="end">
-                  {form.image && (
-                    <IconButton onClick={() => {setForm({ ...form, image: null }, setImageInputValue(""));}}>
-                      X
-                    </IconButton>
-                  )}
-                </InputAdornment>
-              ),
-            }}
+              !form.image
+                ? { inputProps: { style: { paddingLeft: "4vw" } } }
+                : {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {form.image && (
+                          <IconButton
+                            onClick={() => {
+                              setForm(
+                                { ...form, image: null },
+                                setImageInputValue("")
+                              );
+                            }}
+                          >
+                            X
+                          </IconButton>
+                        )}
+                      </InputAdornment>
+                    ),
+                  }
+            }
           />
 
           <Button

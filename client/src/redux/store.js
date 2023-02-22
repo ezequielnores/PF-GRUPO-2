@@ -17,7 +17,7 @@ const store = configureStore({
     comments: commentsReducer,
     attend: attendReducer,
     urgency: urgencyReducer,
-    admin: adminReducer
+    admin: adminReducer,
   },
 });
 
