@@ -5,6 +5,7 @@ import historyReducer from "./reducers/historyReducer.js";
 import patientReducer from "./reducers/patientReducer.js";
 import commentsReducer from "./reducers/commentsReducer";
 import urgencyReducer from "./reducers/urgencyReducer";
+
 const store = configureStore({
   reducer: {
     patient: patientReducer,
