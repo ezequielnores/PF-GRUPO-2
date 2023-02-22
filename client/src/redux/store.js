@@ -15,7 +15,7 @@ const store = configureStore({
     doctor: doctorReducer,
     comments: commentsReducer,
     urgency: urgencyReducer,
-    admin: adminReducer
+    admin: adminReducer,
   },
 });
 

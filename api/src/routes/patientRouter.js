@@ -1,9 +1,13 @@
 const { Router } = require("express");
 const axios = require("axios");
 const { Op } = require("sequelize");
-const {cloudinary} = require("../utils/cloudinary")
+const { cloudinary } = require("../utils/cloudinary");
 
-const { getPatient, getPatientActive, getPatientInactive } = require("../controllers/patientController.js");
+const {
+  getPatient,
+  getPatientActive,
+  getPatientInactive,
+} = require("../controllers/patientController.js");
 
 const { Patient } = require("../db");
 
@@ -12,24 +16,24 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     const allPatient = await getPatient();
-      if (allPatient.length) {
-        res.status(200).send(allPatient);
-      } else {
-        res.status(404).send("No patients en DB");
-      }
+    if (allPatient.length) {
+      res.status(200).send(allPatient);
+    } else {
+      res.status(404).send("No patients en DB");
+    }
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 });
 
 //------------------------ busca pacientes por coincidencia en nombre o apellido
-router.get('/find', async (req, res)=>{
+router.get("/find", async (req, res) => {
   try {
     const { input } = req.query;
-    console.log('input: ' + input);
-    const allPatients =  await getPatient();
+    console.log("input: " + input);
+    const allPatients = await getPatient();
     const filterPatient = await Patient.findAll({
-      where :{
+      where: {
         [Op.or]: [
           {
             name: {
@@ -37,48 +41,47 @@ router.get('/find', async (req, res)=>{
             },
           },
           {
-              surname: {
-                [Op.iLike]: `${input}%`,
-              },
+            surname: {
+              [Op.iLike]: `${input}%`,
             },
+          },
         ],
       },
     });
-    if(filterPatient.length){
+    if (filterPatient.length) {
       res.status(200).json(filterPatient);
     }
   } catch (error) {
-    res.status(404).json({ error: error.message});
+    res.status(404).json({ error: error.message });
   }
-})
-
+});
 
 //------------------------ trae todos los pacientes activos
-router.get('/active', async (req, res) => {
+router.get("/active", async (req, res) => {
   try {
     const patientAct = await getPatientActive();
-    if(patientAct.length){
+    if (patientAct.length) {
       res.status(200).send(patientAct);
     } else {
-      res.status(404).send('No active patients')
+      res.status(404).send("No active patients");
     }
   } catch (error) {
-      res.status(404).json({ error: error.message })
+    res.status(404).json({ error: error.message });
   }
 });
 
 //------------------------ trae todos los pacientes inactivos
-router.get('/inactive', async (req, res) => {
+router.get("/inactive", async (req, res) => {
   try {
     const patientInac = await getPatientInactive();
 
-    if(patientInac.length){
+    if (patientInac.length) {
       res.status(200).send(patientInac);
     } else {
-      res.status(404).send('No inactive patients')
+      res.status(404).send("No inactive patients");
     }
   } catch (error) {
-      res.status(404).json({ error: error.message })
+    res.status(404).json({ error: error.message });
   }
 });
 
@@ -134,7 +137,9 @@ router.post("/", async (req, res) => {
     ) {
       res.status(400).send("faltan datos");
     } else {
-      const uploadedResponse = await cloudinary.uploader.upload(image, {upload_preset: "iCare_Henry"});
+      const uploadedResponse = await cloudinary.uploader.upload(image, {
+        upload_preset: "iCare_Henry",
+      });
 
       const newPatient = await Patient.create({
         name: name,
@@ -157,7 +162,7 @@ router.post("/", async (req, res) => {
       res.status(200).send(newPatient);
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(404).json({ error: error.message });
   }
 });
@@ -226,7 +231,7 @@ router.delete("/delete/:id", async (req, res) => {
     if (!patientDelete) {
       res.status(404).send("Patient not found");
     } else {
-      patientDelete.update({active: false}, {where: { id: id }});
+      patientDelete.update({ active: false }, { where: { id: id } });
       res.status(200).send("Patient delete successfully");
     }
   } catch (error) {
