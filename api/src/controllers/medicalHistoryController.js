@@ -1,8 +1,8 @@
 const { MedicalHistory, Patient } = require("../db");
 
-const createMedicalHistory = async (patientId, doctorId, date, diagnosis) => {
+const createMedicalHistory = async (patientId, doctorId, date, hour, reason, treatment, diagnosis) => {
     const medicalHistory = await MedicalHistory.create({
-        register: [{ doctorId, date, diagnosis }],
+        register: [{ doctorId, date, hour, reason, treatment, diagnosis }],
     });
     await medicalHistory.setPatient(patientId);
     return medicalHistory;
