@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Register.module.css";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { MuiTelInput } from "mui-tel-input";
 import { useDispatch, useSelector } from "react-redux";
 import { patientRegister } from "../../../redux/reducers/patientReducer";
@@ -14,7 +14,7 @@ const cardDiv = {
   display: "flex",
   flexDirection: "column",
   width: "30rem",
-  height: "49rem",
+  height: "75rem",
   justifyContent: "space-around",
   padding: "2rem",
   boxShadow:
@@ -26,7 +26,7 @@ const box = {
   textAlign: "center",
   alignItems: "center",
   width: "40rem",
-  height: "55rem",
+  height: "70rem",
   justifyContent: "space-evenly",
   marginBottom: "7rem",
 };
@@ -35,11 +35,13 @@ const divPadre = {
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "100vh",
+  height: "135vh",
   backgroundColor: "#43B8C8",
 };
 const Register = () => {
   const dispatch = useDispatch();
+
+  const [imageInputValue, setImageInputValue] = useState("");
 
   const [form, setForm] = React.useState({
     name: "",
@@ -51,6 +53,7 @@ const Register = () => {
     birthday: "03/02/1999",
     dni: "",
     location: "",
+    image: "",
     mail: "",
     password: "",
   });
@@ -65,19 +68,36 @@ const Register = () => {
     birthday: "",
     dni: "",
     location: "",
+    image: "",
     mail: "",
     password: "",
   });
+  
+  const handleImage = (e) => {
+    setImageInputValue(e.target.value)
+    const file = e.target.files[0];
+    const reader = new FileReader()
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setForm({ ...form, image: reader.result });
+    
+      validateForm({ ...form, image: reader.result }, "image");
+    }
+  }
+
 
   const onChangeHandler = (name, value) => {
     setForm({ ...form, [name]: value });
-
+    
     validateForm({ ...form, [name]: value }, name);
   };
+
+
   const handleFechaNacimientoChange = (date, name) => {
     setForm({ ...form, birthday: date });
     validateForm({ ...form, [name]: form }, name);
   };
+
   const validateForm = (form, name) => {
     if (name === "name" || name === "surname") {
       if (/\d/.test(form[name]) /* || /\W/.test(form[name]) */) {
@@ -162,14 +182,14 @@ const Register = () => {
             name="phone"
             value={form.phone}
             defaultCountry={"AR"}
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(value) => onChangeHandler("phone", value)}
           />
 
           <TextField
             error={error.name}
             label="Name*"
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="name"
             value={form.name}
@@ -178,7 +198,7 @@ const Register = () => {
           <TextField
             error={error.surname}
             label="Surname*"
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="surname"
             value={form.surname}
@@ -187,7 +207,7 @@ const Register = () => {
           <TextField
             error={error.mail}
             label="Email*"
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="mail"
             value={form.mail}
@@ -196,7 +216,7 @@ const Register = () => {
           <TextField
             error={error.password}
             label="Password*"
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="password"
             value={form.password}
@@ -206,11 +226,23 @@ const Register = () => {
           <TextField
             error={error.dni}
             label="DNI*"
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="dni"
             value={form.dni}
           />
+
+
+          <TextField
+            error={error.birthday}
+            label="Birthday"
+            style={{ width: "40vh", marginBottom: "1vh" }}
+            onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+            name="birthday"
+            value={form.birthday}
+          />
+
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               name="birthday"
@@ -226,10 +258,11 @@ const Register = () => {
               )}
             />
           </LocalizationProvider>
+
           <TextField
             error={error.weight}
             label="Weight*"
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="weight"
             value={form.weight}
@@ -237,7 +270,7 @@ const Register = () => {
 
           <TextField
             label="Height*"
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="height"
             value={form.height}
@@ -246,7 +279,7 @@ const Register = () => {
           <TextField
             error={error.allergies}
             label="Allergies"
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="allergies"
             value={form.allergies}
@@ -255,10 +288,33 @@ const Register = () => {
           <TextField
             error={error.location}
             label="Location*"
-            style={{ width: "40vh" }}
+            style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="location"
             value={form.location}
+          />
+
+          <TextField
+            error={error.image}
+            label="Image"
+            style={form.image ? {width: "40vh", marginBottom: "1vh"} : { width: "40vh", "label": {paddingLeft: "5vw"} }}
+            onChange={handleImage}
+            name="image"
+            value={imageInputValue ? imageInputValue : ""}
+            type="file"
+            InputProps={
+              !form.image ? {inputProps: {style: {paddingLeft: "4vw"}}} :
+              {
+              endAdornment: (
+                <InputAdornment position="end">
+                  {form.image && (
+                    <IconButton onClick={() => {setForm({ ...form, image: null }, setImageInputValue(""));}}>
+                      X
+                    </IconButton>
+                  )}
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Button

@@ -1,4 +1,5 @@
 const { Doctor } = require("../db.js");
+const {cloudinary} = require("../utils/cloudinary");
 
 const getDoctors = async (name) => {
     const response = await Doctor.findAll();
@@ -17,7 +18,8 @@ const getDoctor = async (id) => {
 }
 
 const postDoctor = async (name, lastName, mail, password, birthdate, image, location, dni, phone, speciality, lisence, cv, clinicMail) => {
-    const response = await Doctor.create({name, lastName, mail, password, birthdate, image, location, dni, phone, speciality, lisence, cv, clinicMail});
+    const uploadedResponse = await cloudinary.uploader.upload(image, {upload_preset: "iCare_Henry"});
+    const response = await Doctor.create({name, lastName, mail, password, birthdate, image: uploadedResponse.url, location, dni, phone, speciality, lisence, cv, clinicMail});
     return response;
 }
 

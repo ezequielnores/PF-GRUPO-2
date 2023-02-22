@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
             unique: true
         },
         image: {
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
