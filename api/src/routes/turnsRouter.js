@@ -25,7 +25,7 @@ turnsRouter.get("/", async (req, res) => {
     }
 });
 
-turnsRouter.get("/turnByDateAndHourAndDoctor", async (req, res) => {
+turnsRouter.post("/turnByDateAndHourAndDoctor", async (req, res) => {
     const { date, hour, doctorId } = req.body;
 
     try {
@@ -34,10 +34,12 @@ turnsRouter.get("/turnByDateAndHourAndDoctor", async (req, res) => {
 
         const turn = await getTurnByDateAndHourAndDoctor(date, hour, doctorId);
         if (!turn) {
-            res.status(200).send(`Turno disponible para la fecha ${date} y hora ${hour}.`);
+            res.status(200).send(true);
             return;
+            // `Turno disponible para la fecha ${date} y hora ${hour}.`
         }
-        res.status(200).send(`Turno no disponible para la fecha ${date} y hora ${hour}.`);
+        res.status(200).send(false);
+        // `Turno no disponible para la fecha ${date} y hora ${hour}.`
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
