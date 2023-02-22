@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { appointmentGetAllByDoctorId } from "../../../redux/reducers/appointmentReducer";
-import {idTurnoPatient} from "../../../redux/reducers/attendReducer";
 import dayjs from "dayjs";
-import {Link} from "react-router-dom"
+
 import SeePatients from "../SeePatients/SeePatients";
 //material
 import TextField from "@mui/material/TextField";
@@ -21,7 +20,6 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-import swal from "sweetalert";
 //style
 const container = {
   width: "100%",
@@ -72,6 +70,7 @@ const Agenda = () => {
   };
 
   const [date , setDate] = useState(new Date(Date.now()))
+  // const [refresh, setRefresh] = useState(false)
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -87,7 +86,6 @@ const Agenda = () => {
     setIdTurn(e.target.value)
     setAttend(true) 
   }
-
   return (
     <div>
       {!attend ? 
@@ -234,7 +232,9 @@ const Agenda = () => {
         </div>
         :
         
-      <SeePatients attend={attend} setAttend={setAttend} idTurn={idTurn}/>
+      <SeePatients 
+        idTurn={idTurn} 
+      />
       }
       
     </div>

@@ -1,8 +1,9 @@
 import { useState,useEffect } from "react"
-import { TextField,Stack  } from "@mui/material"
+import { TextField,Stack, setRef  } from "@mui/material"
 import { useSelector } from "react-redux"
-import {attendPatientTurns,attendedPatientTurns} from "../../../redux/reducers/attendReducer"
+import {attendPatientTurns,attendedPatientTurns,createMedicalHistory} from "../../../redux/reducers/attendReducer"
 import { useDispatch } from "react-redux"
+import { appointmentGetAllByDoctorId } from "../../../redux/reducers/appointmentReducer";
 import style from "./SeePatients.module.css"
 import swal from "sweetalert"
 // patientId, doctorId, date, diagnosis
@@ -19,28 +20,8 @@ const validate = (input) => {
     }
     return errors;
 };
-const SeePatients = ({attend,setAttend,idTurn}) => {
-    const dispatch = useDispatch()
-    // const appointment ={
-    //     id:1,
-    //     availability:true,
-    //     date:"2023-02-21",
-    //     hour:"17:00:00",
-    //     type:"sadad",
-    //     ubication:"avellaneda",
-    //     doctorSpecialty:"Cardiology",
-    //     Patient:{
-    //         id:1,
-    //         name:"Juan",
-    //         lastName:"Perez"
-    //     },
-    //     doctor:{
-    //         id:"b41fa1ef-1939-4281-93cb-914a180e5fe2",
-    //         name:"Roberto",
-    //         lastName:"Martinez",
-    //     }
-    // } 
-   
+const SeePatients = ({idTurn}) => {
+    const dispatch = useDispatch()   
     useEffect(() => {
         dispatch(attendPatientTurns(idTurn))
     }, [])
@@ -85,9 +66,16 @@ const SeePatients = ({attend,setAttend,idTurn}) => {
         setOpenModal(!openModal)
     }
     const handleSubmit = async() => {
+        try {
+            dispatch(createMedicalHistory(newHistorial))
+        } catch (error) {
+            alert(error)
+        }
         await swal("The medical record has been saved!", {
             icon: "success",
           });
+        dispatch(attendedPatientTurns(idTurn))
+        dispatch(appointmentGetAllByDoctorId(appointment.doctor.id))
         setNewHistorial({
             patientId: appointment.Patient.id,
             doctorId: appointment.doctor.id,
@@ -97,10 +85,8 @@ const SeePatients = ({attend,setAttend,idTurn}) => {
             reason: "",
             prescription: "",
         });
-        setAttend(!attend)
-        dispatch(attendedPatientTurns({id:idTurn,attended:true}))
         
-
+        window.location.reload()
     }
     
 

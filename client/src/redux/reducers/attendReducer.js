@@ -13,9 +13,18 @@ export const attendPatientTurns = createAsyncThunk(
 export const attendedPatientTurns = createAsyncThunk(
     "attend/attendedPatient",
     async (data) => {
-        const {id, ...rest} = data;
+        const id = data;
+        // console.log(id, attended)
         const response = await axios.put(
-            `${process.env.REACT_APP_BACKEND_URL}/turns/${id}`,rest)
+            `${process.env.REACT_APP_BACKEND_URL}/turns/update/${id}`,{attended:true})
+        return response.data;
+    }
+);
+export const createMedicalHistory = createAsyncThunk(
+    "attend/createMedicalHistory",
+    async (data) => {
+        const response = await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/medicalHistory`,data)
         return response.data;
     }
 );
@@ -40,15 +49,6 @@ export const attendedPatientUrgency = createAsyncThunk(
     }
 );
 
-export const idTurnoPatient =  createAsyncThunk(
-    "attend/idTurno",
-    
-    (id) => {
-        console.log(id)
-        return id
-    }
-)
-
 const attendSlice = createSlice({
     name: "attend",
     initialState: {
@@ -70,10 +70,6 @@ const attendSlice = createSlice({
             .addCase(attendPatientTurns.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.error.message;
-            })
-            .addCase(idTurnoPatient.fulfilled, (state, action) => {
-                console.log(action.payload)
-                state.idTurno = action.payload;
             })
     }
 });
