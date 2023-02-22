@@ -66,11 +66,14 @@ const getComments =  async () => {
 
 const allCommentsByDoc = async (doctorId) => {
     const commentsDoc = await Comments.findAll({
-        attributes: ['id', 'rating', 'title', 'message', 'doctorId'],
+        attributes: ['id', 'rating', 'title', 'message', 'doctorId', 'PatientId' ],
         include: [
             {
                 model: Doctor,
                 attributes: ['name', 'lastName']
+            },{
+                model: Patient,
+                attributes: ['name', 'surname']
             } ] , where: { doctorId: doctorId }
        
     });
@@ -79,11 +82,14 @@ const allCommentsByDoc = async (doctorId) => {
 
 const allCommentsByPatient = async (patientId) => {
     const commentsPat = await Comments.findAll({
-        attributes: ['id', 'message', 'PatientId'],
+        attributes: ['id', 'rating', 'title', 'message', 'doctorId', 'PatientId'],
         include: [
             {
                 model: Patient,
                 attributes: ['name', 'surname']  
+            }, {
+                model: Doctor,
+                attributes: ['name', 'lastName']
             } ] , where: { PatientId: patientId }
     });
     return commentsPat;
