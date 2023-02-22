@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import { useSelector, useDispatch} from "react-redux";
+import { historyGetAllbyPatient} from "../../../redux/reducers/historyReducer";
 import DetalleConsulta from "./MedicalHistoryDetail";
 import MedicalHistoryRecipes from "./MedicalHistoryRecipes";
 import Typography from "@mui/material/Typography";
@@ -7,24 +9,25 @@ import Select from "@mui/material/Select";
 import { Button } from "@mui/material";
 
 // Datos ejemplo
-const consultas = [
-  { fecha: "2022-01-01", medico: "Julian Pérez", diagnostico: "Gripe" },
-  {
-    fecha: "2022-02-15",
-    hora: "14:00",
-    paciente: "Kevin",
-    tratamiento: "PARACETAMOL.1 gr VO cada 8hs",
-    motivoConsulta:
-      "Sospecha de covid.Tos.Fiebre.Dolor de garganta.Dolor de cabeza.Dolor de espalda.Congestión Nasal.Nauseas.Tos.Fiebre o escalofríos.odinofagia.cefalea.nauseas/vómitos.lumbalgia.disnea.contacto estrecho.mialgias.",
-    medico: "Jose josesito",
-    diagnostico: "INESP Confirmado COVID19 x epidemiol",
-  },
-  {
-    fecha: "2022-03-20",
-    medico: "Juansito Garcia",
-    diagnostico: "Presión alta",
-  },
-];
+// const consultas = [
+//   { fecha: "2022-01-01", medico: "Julian Pérez", diagnostico: "Gripe" },
+//   {
+//     fecha: "2022-02-15",
+//     hora: "14:00",
+//     paciente: "Kevin",
+//     tratamiento: "PARACETAMOL.1 gr VO cada 8hs",
+//     motivoConsulta:
+//       "Sospecha de covid.Tos.Fiebre.Dolor de garganta.Dolor de cabeza.Dolor de espalda.Congestión Nasal.Nauseas.Tos.Fiebre o escalofríos.odinofagia.cefalea.nauseas/vómitos.lumbalgia.disnea.contacto estrecho.mialgias.",
+//     medico: "Jose josesito",
+//     diagnostico: "INESP Confirmado COVID19 x epidemiol",
+//   },
+//   {
+//     fecha: "2022-03-20",
+//     medico: "Juansito Garcia",
+//     diagnostico: "Presión alta",
+//   },
+// ];
+
 //style
 const divPadre = {
   display: "flex",
@@ -34,8 +37,16 @@ const divPadre = {
 
 //componente
 const Historial = ({ consulta }) => {
+    const dispatch = useDispatch();
+    const id = localStorage.getItem("id");
+    console.log(id)
+    useEffect(() => {
+    dispatch(historyGetAllbyPatient(id));
+    }, []);
+
   const [selectedConsulta, setSelectedConsulta] = useState(null);
   const [adjuntos, setAdjuntos] = useState(false);
+  const consultas = useSelector((state) => state.history.list);
 
   function handlerAdjuntos() {
     setAdjuntos(true);
@@ -80,9 +91,9 @@ const Historial = ({ consulta }) => {
           <MenuItem value="" disabled disableGutters>
             Select a query to view its details
           </MenuItem>
-          {consultas.map((consulta, index) => (
+          {consultas?.map((consulta, index) => (
             <MenuItem key={index} value={index} disableGutters>
-              Query {index + 1} - {consulta.fecha}
+              Query {index + 1} - {consulta.date}
             </MenuItem>
           ))}
         </Select>
