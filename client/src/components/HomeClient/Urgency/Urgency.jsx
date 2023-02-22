@@ -61,10 +61,11 @@ const Urgency = () => {
       else if (addSymptom[symptom] === true) symptoms += symptom + ", ";
     }
     if (symptoms === " ") symptoms = "No symptoms reported";
-    if (observations) symptoms += "Observations: " + observations;
+    if (observations) symptoms += "Other symptoms: " + observations;
     setBody({
       ...body,
       symptomatology: `Symptoms: ${symptoms} `,
+      patientId: patientId,
     });
     setOpenModal(!openModal);
   };
