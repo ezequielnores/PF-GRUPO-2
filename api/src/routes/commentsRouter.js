@@ -40,7 +40,7 @@ router.get('/doctor/:id', async (req, res) => {
   } catch (error) {
     res.status(404).json({ error: error.message }, 'Error get doctor/:id')
   }
-});
+}); 
 
 //-------------------------- trae los comentario por Paciente
 router.get('/patient/:id', async (req, res) => {

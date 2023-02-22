@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import emailjs from "@emailjs/browser";
+/* import emailjs from "@emailjs/browser"; */
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -12,6 +12,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 //validaciones
 import { isEmail, isNumeric, isAlpha } from "validator";
+import { IconButton, InputAdornment } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { doctorAdd } from "../../redux/reducers/doctorReducer";
 
 //style
 const divPadre = {
@@ -56,17 +59,24 @@ const finalinput = {
 };
 
 const MedicForm = () => {
+  const dispatch = useDispatch();
+
   const [successForm, setSuccessForm] = useState(null);
+  const [imageInputValue, setImageInputValue] = useState("");
+  const [cvInputValue, setCvInputValue] = useState("");
   //validacion state
   const [errors, setErrors] = useState({
     user_name: "",
     user_lastName: "",
     user_mail: "",
+    user_password: "",
     user_clinicMail: "",
     user_phone: "",
     user_dni: "",
     user_license: "",
+    user_cv: "",
     user_birthdate: "",
+    user_image: "",
     user_speciality: "",
     user_location: "",
   });
@@ -74,11 +84,14 @@ const MedicForm = () => {
     name: "",
     lastName: "",
     mail: "",
+    password: "",
     clinicMail: "",
     phone: "",
     dni: "",
     license: "",
+    cv: "",
     birthdate: "02-03-1999",
+    image: "",
     speciality: "",
     location: "",
   });
@@ -103,6 +116,21 @@ const MedicForm = () => {
     //Para el submiteo
     setHasChanged(true);
   };
+
+  const handleImage = (e) => {
+    const name = e.target.name;
+    if (name === "image") setImageInputValue(e.target.value);
+    if (name === "cv") setCvInputValue(e.target.value);
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setValue({ ...value, [name]: reader.result });
+
+      validateFields({ ...value, [name]: reader.result }, name);
+    };
+  };
+
   const handleFechaNacimientoChange = (date) => {
     const errorsForField = validateFields();
 
@@ -137,6 +165,10 @@ const MedicForm = () => {
       errors.clinicMail = "Please enter valid email";
     }
 
+    if (!value.password) {
+      errors.password = "Please enter a password"
+    }
+
     if (new Date(value.birthdate) > new Date() || value.birthdate === null) {
       errors.birthdate = "Please enter a valid birthdate";
     }
@@ -151,33 +183,37 @@ const MedicForm = () => {
     if (!isNumeric(value.dni)) {
       errors.dni = "Please enter valid d.n.i";
     }
+    if (!value.cv) {
+      errors.cv = "Please upload a cv";
+    }
     return errors;
   };
   console.log(value);
   //Logic form
   const form = useRef();
-  const sendEmail = (e) => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validateFields();
     console.log(errors);
-    if (Object.keys(errors).length === 0) {
-      emailjs
-        .sendForm(
-          "service_smqws2i",
-          "template_br2o0og",
-          form.current,
-          "Lx1ljNbkdCzYTpZTP"
-        )
-        .then(
-          (result) => {
-            setSuccessForm("success");
-          },
-          (error) => {
-            setSuccessForm("error");
-          }
-        );
+    if (Object.values(errors).every((item) => item === "")) {
+      try {
+        dispatch(doctorAdd({ ...value }))
+          .then((res) => {
+            if (res.type === "doctor/addById/fulfilled") {
+              alert("Account sent! Pending to activate..");
+            } else {
+              alert("Error sending account!");
+            }
+            console.log(res.type);
+          })
+          .catch((err) => alert("Error"));
+      } catch (error) {
+        console.log(error);
+        alert("Error");
+      }
     } else {
-      setErrors(errors);
+      alert("Please complete all fields");
     }
   };
   return (
@@ -191,7 +227,7 @@ const MedicForm = () => {
         noValidate
         autoComplete="off"
         ref={form}
-        onSubmit={sendEmail}
+        onSubmit={handleSubmit}
       >
         {successForm === "success" && (
           <Alert severity="success">Will be in contact soon !</Alert>
@@ -238,21 +274,21 @@ const MedicForm = () => {
               error={Boolean(errors.mail)}
               helperText={errors.mail}
             />
+            <TextField
+              error={errors.password}
+              label="Password"
+              onChange={handleChange}
+              name="password"
+              value={value.password}
+              type="password"
+            />
           </div>
           <div style={divHijo}>
-            {/* <TextField
-              name="birthdate"
-              label="Birthdate"
-              onChange={handleChange}
-              error={Boolean(errors.birthdate)}
-              helperText={errors.birthdate}
-            /> */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 name="birthdate"
                 label="Birthdate"
                 value={value.birthdate}
-                format="dd/MM/yyyy"
                 maxDate={new Date()}
                 inputVariant="outlined"
                 onChange={handleFechaNacimientoChange}
@@ -308,11 +344,83 @@ const MedicForm = () => {
           </div>
           <div style={finalinput}>
             <TextField
+              error={errors.image}
+              label="Image"
+              style={
+                value.image
+                  ? { width: "40vh", marginBottom: "1vh" }
+                  : { width: "40vh", label: { paddingLeft: "5vw" } }
+              }
+              onChange={handleImage}
+              name="image"
+              value={imageInputValue ? imageInputValue : ""}
+              type="file"
+              InputProps={
+                !value.image
+                  ? { inputProps: { style: { paddingLeft: "4vw" } } }
+                  : {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          {value.image && (
+                            <IconButton
+                              onClick={() => {
+                                setValue(
+                                  { ...value, image: null },
+                                  setImageInputValue("")
+                                );
+                              }}
+                            >
+                              X
+                            </IconButton>
+                          )}
+                        </InputAdornment>
+                      ),
+                    }
+              }
+            />
+
+            <TextField
               name="speciality"
               label="Especialty"
               onChange={handleChange}
               error={Boolean(errors.speciality)}
               helperText={errors.speciality}
+            />
+
+            <TextField
+              error={errors.cv}
+              label="CV"
+              style={
+                value.image
+                  ? { width: "40vh", marginBottom: "1vh" }
+                  : { width: "40vh", label: { paddingLeft: "5vw" } }
+              }
+              onChange={handleImage}
+              name="cv"
+              value={cvInputValue ? cvInputValue : ""}
+              type="file"
+              InputProps={
+                !value.cv
+                  ? { inputProps: { style: { paddingLeft: "4vw" } } }
+                  : {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          {value.cv && (
+                            <IconButton
+                              onClick={() => {
+                                setValue(
+                                  { ...value, cv: null },
+                                  setCvInputValue("")
+                                );
+                              }}
+                            >
+                              X
+                            </IconButton>
+                          )}
+                        </InputAdornment>
+                      ),
+                    }
+              }
             />
           </div>
           <div style={{ marginTop: "2rem" }}>

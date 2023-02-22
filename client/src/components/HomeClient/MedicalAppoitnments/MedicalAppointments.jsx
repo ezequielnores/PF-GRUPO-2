@@ -13,15 +13,16 @@ import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import { useDispatch, useSelector } from "react-redux";
 import {docrtorGetAll} from "../../../redux/reducers/doctorReducer";
-import {appointmentCreate} from "../../../redux/reducers/appointmentReducer"
+import {appointmentCreate,appointmentGetByDateTime} from "../../../redux/reducers/appointmentReducer"
 import { Box, Container, Paper, Typography } from '@mui/material';
 import { Grid } from '@mui/material';
+import axios from 'axios';
 
 
 const MedicalAppointments = () => {
   const dispatch = useDispatch();
   const doctors = useSelector(state => state.doctor.list);
-
+  const turnos= useSelector(state=>state.appointment.detail)
   const [date, setSelectedDate] = useState(new Date());
   const [hour, setSelectedTime] = useState("");
   const [speciality, setDoctorSpecialty] = useState("");
@@ -29,16 +30,25 @@ const MedicalAppointments = () => {
   const patientIdLocal = localStorage.getItem("id");
   const [patientId, setDoctorId] = useState(patientIdLocal.toString());
   const [name, setDoctor] = useState({ doctorId: '', name: '' });
+  const [type, setSelectedType] = useState("");
+
 
   const ubication = "avellaneda";
   const availability = true;
-  const type = "sadad";
+  const attended=false;
+
 
   const dateModify = date.toLocaleDateString('ja-JP', {year: 'numeric', month: '2-digit', day: '2-digit'}).split('/').join('-');
 
   useEffect(() => {
-    dispatch(docrtorGetAll());
+    dispatch(docrtorGetAll())    
   }, []);
+  console.log(turnos)
+
+  const handleSelectType = (e) => {
+    setSelectedType(e.target.value);
+  }
+
 
   const handleSelectDoctor = (e) => {
     setDoctorSpecialty(e.target.value);
@@ -58,39 +68,58 @@ const MedicalAppointments = () => {
     setSelectedTime(time.format("HH:mm"))
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
 
-    dispatch(appointmentCreate({
-      date: dateModify,
-      hour: hour,
-      doctorSpecialty: speciality,
-      doctorId: name.doctorId,
-      type,
-      ubication,
-      availability,
-      patientId: patientId
-    }))
-      // setSelectedTime("")
-      // setDoctorSpecialty("");
-      // setDoctor({ doctorId: '', name: '' })
-    
-    setModalAbierto(true)
-    
+ const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/turns/turnByDateAndHourAndDoctor`, {
+    date: dateModify,
+    hour: hour,
+    doctorId: name.doctorId,
+  });
+
+  if (response.data === true) {
+    dispatch(
+      appointmentCreate({
+        date: dateModify,
+        hour: hour,
+        doctorSpecialty: speciality,
+        doctorId: name.doctorId,
+        type: type,
+        ubication,
+        availability,
+        patientId: patientId,
+        attended,
+      })
+    );
+    setModalAbierto(true);
+  } else {
+    alert("Sorry, the appointment is already reserved");
   }
+};
+
+
+
+
 
   const closeModal = () => {
     setModalAbierto(false)
         setSelectedTime("")
        setDoctorSpecialty("")
        setDoctor({ doctorId: '', name: '' })
-       window.location.reload()
 
   }
 
-  const filteredDoctors = speciality ? doctors.filter((doctor) => doctor.speciality === speciality) : doctors;
-  const filterSpeciality=doctors.map(doctor => doctor.speciality)
+  const filterClinicMail = type === "Face-to-face"
+  ? doctors.filter((doctor) => doctor.clinicMail === "")
+  : doctors.filter((doctor) => doctor.clinicMail !== "");
+
+  const filterSpeciality = filterClinicMail
+  .map((doctor) => doctor.speciality)
   .filter((speciality, index, self) => self.indexOf(speciality) === index);
+  const filteredDoctors = speciality ? doctors.filter((doctor) => doctor.speciality === speciality) : doctors;
+
+
   return (
     <Container maxWidth="sm">
       <Box my={4}>
@@ -103,7 +132,53 @@ const MedicalAppointments = () => {
             <InputLabel id="demo-simple-select-required">Date </InputLabel>
             <DatePicker selected={date} onChange={handleSelectDate} value={date} name="selectedDate" />
 
-            <br />
+            <br/>  
+                <div>
+                  <br/>
+            <label style={{marginRight:10}}>
+              <input
+                type="radio"
+                name="option"
+                value="Face-to-face"
+
+                onChange={handleSelectType}
+              />
+              Face to face
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="option"
+                value="Virtual"
+                onChange={handleSelectType}
+              />
+              Virtual
+            </label>
+          </div>
+
+
+
+
+
+
+
+
+
+
+            {/* <Box sx={{ mt: 2 }}>
+            <InputLabel id="demo-simple-select-required">Tipo</InputLabel>
+            <Select
+             labelId="demo-simple-select-required"
+             id="demo-simple-select-required"
+             onChange={handleSelectType}
+             fullWidth
+           >
+              <MenuItem value="">None</MenuItem>
+             <MenuItem value="Virtual">Virtual</MenuItem>
+              <MenuItem value="Face-to-face">Face-to-face</MenuItem>
+            
+            </Select>
+            </Box>  */}
 
             <Box sx={{ mt: 2 }}>
             <InputLabel id="demo-simple-select-required">Doctor Specialty</InputLabel>
@@ -123,7 +198,9 @@ const MedicalAppointments = () => {
             ))}
             
             </Select>
-            </Box>        <Box sx={{ mt: 2 }}>
+            </Box>        
+            
+            <Box sx={{ mt: 2 }}>
           <InputLabel id="demo-simple-select-required">Doctor Name</InputLabel>
           <Select
             labelId="demo-simple-select-required"
@@ -213,3 +290,4 @@ const MedicalAppointments = () => {
 };
 
 export default MedicalAppointments;
+

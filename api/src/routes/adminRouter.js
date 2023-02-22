@@ -128,4 +128,19 @@ router.delete('/delete/:id', async(req, res) => {
     }
 });
 
+router.post("/login", async (req, res) => {
+    const { mail, password } = req.body;
+    await Admin.findOne({ where: { mail: mail } })
+      .then((response) => {
+        if (response.password == password) {
+          delete response.password;
+          res.status(200).json(response);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(404).send("Incorrect login information");
+      });
+  });
+
 module.exports = router;

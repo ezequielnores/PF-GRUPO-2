@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const axios = require("axios");
 const { Op } = require("sequelize");
+const {cloudinary} = require("../utils/cloudinary")
 
 const { getPatient, getPatientActive, getPatientInactive } = require("../controllers/patientController.js");
 
@@ -113,7 +114,7 @@ router.post("/", async (req, res) => {
     bmi,
     allergies,
     chronicDiseases,
-    photo,
+    image,
     location,
     dni,
     phone,
@@ -133,6 +134,8 @@ router.post("/", async (req, res) => {
     ) {
       res.status(400).send("faltan datos");
     } else {
+      if (image) var uploadedResponse = await cloudinary.uploader.upload(image, {upload_preset: "iCare_Henry"});
+
       const newPatient = await Patient.create({
         name: name,
         surname: surname,
@@ -144,7 +147,7 @@ router.post("/", async (req, res) => {
         bmi: bmi,
         allergies: allergies,
         chronicDiseases: chronicDiseases,
-        photo: photo,
+        photo: uploadedResponse ? uploadedResponse.url : null,
         location: location,
         dni: dni,
         phone: phone,
