@@ -134,7 +134,7 @@ router.post("/", async (req, res) => {
     ) {
       res.status(400).send("faltan datos");
     } else {
-      const uploadedResponse = await cloudinary.uploader.upload(image, {upload_preset: "iCare_Henry"});
+      if (image) var uploadedResponse = await cloudinary.uploader.upload(image, {upload_preset: "iCare_Henry"});
 
       const newPatient = await Patient.create({
         name: name,
@@ -147,7 +147,7 @@ router.post("/", async (req, res) => {
         bmi: bmi,
         allergies: allergies,
         chronicDiseases: chronicDiseases,
-        photo: uploadedResponse.url,
+        photo: uploadedResponse ? uploadedResponse.url : null,
         location: location,
         dni: dni,
         phone: phone,

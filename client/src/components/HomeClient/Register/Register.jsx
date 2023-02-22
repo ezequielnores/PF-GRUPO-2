@@ -233,16 +233,6 @@ const Register = () => {
           />
 
 
-          <TextField
-            error={error.birthday}
-            label="Birthday"
-            style={{ width: "40vh", marginBottom: "1vh" }}
-            onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
-            name="birthday"
-            value={form.birthday}
-          />
-
-
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               name="birthday"
