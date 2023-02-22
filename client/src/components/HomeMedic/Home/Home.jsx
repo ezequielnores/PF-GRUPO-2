@@ -14,6 +14,7 @@ import {
   MedicalEmergency,
   ProfileEdit,
   Agenda,
+  SeePatients,
 } from "../index";
 import { useSelector, useDispatch } from "react-redux";
 const Home = () => {
@@ -110,6 +111,7 @@ const Home = () => {
           <MedicalEmergency />
         )}
         {location.pathname.endsWith("/HomeMedic/Reviews") && <ReviewsMedic />}
+        {location.pathname.endsWith("/HomeMedic/SeePatients") && <SeePatients/>}
       </div>
     </div>
   );
