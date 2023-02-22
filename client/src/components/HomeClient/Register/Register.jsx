@@ -6,7 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { patientRegister } from "../../../redux/reducers/patientReducer";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //style
 const cardDiv = {
   display: "flex",
@@ -48,7 +50,7 @@ const Register = () => {
     weight: "",
     height: "",
     allergies: "",
-    birthday: "",
+    birthday: "03/02/1999",
     dni: "",
     location: "",
     image: "",
@@ -90,6 +92,11 @@ const Register = () => {
     validateForm({ ...form, [name]: value }, name);
   };
 
+
+  const handleFechaNacimientoChange = (date, name) => {
+    setForm({ ...form, birthday: date });
+    validateForm({ ...form, [name]: form }, name);
+  };
 
   const validateForm = (form, name) => {
     if (name === "name" || name === "surname") {
@@ -225,6 +232,7 @@ const Register = () => {
             value={form.dni}
           />
 
+
           <TextField
             error={error.birthday}
             label="Birthday"
@@ -233,6 +241,23 @@ const Register = () => {
             name="birthday"
             value={form.birthday}
           />
+
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              name="birthday"
+              label="Birthdate"
+              value={form.birthday}
+              maxDate={new Date()}
+              inputVariant="outlined"
+              error={error.birthday}
+              helperText={error.birthday}
+              onChange={(e) => handleFechaNacimientoChange(e)}
+              renderInput={(params) => (
+                <TextField {...params} style={{ width: "40vh" }} />
+              )}
+            />
+          </LocalizationProvider>
 
           <TextField
             error={error.weight}

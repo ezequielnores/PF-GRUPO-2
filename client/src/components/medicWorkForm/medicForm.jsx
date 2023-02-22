@@ -257,19 +257,11 @@ const MedicForm = () => {
             />
           </div>
           <div style={divHijo}>
-            {/* <TextField
-              name="birthdate"
-              label="Birthdate"
-              onChange={handleChange}
-              error={Boolean(errors.birthdate)}
-              helperText={errors.birthdate}
-            /> */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 name="birthdate"
                 label="Birthdate"
                 value={value.birthdate}
-                format="dd/MM/yyyy"
                 maxDate={new Date()}
                 inputVariant="outlined"
                 onChange={handleFechaNacimientoChange}
