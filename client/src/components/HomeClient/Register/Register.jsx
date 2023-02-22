@@ -101,21 +101,6 @@ const Register = () => {
         setError({ ...error, [name]: "Input allows only characters" });
       } else setError({ ...error, [name]: "" });
     }
-    if (name === "password") {
-      if (
-        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-          form[name]
-        )
-      ) {
-        setError({
-          ...error,
-          [name]:
-            "● 8 characters minimum ● 1 lowercase character ● 1 uppercase character ● 1 number ● 1 special character",
-        });
-      } else {
-        setError({ ...error, [name]: "" });
-      }
-    }
 
     /**
         if (name === "phone") {
