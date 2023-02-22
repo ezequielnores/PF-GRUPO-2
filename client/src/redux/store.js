@@ -5,6 +5,7 @@ import historyReducer from "./reducers/historyReducer.js";
 import patientReducer from "./reducers/patientReducer.js";
 import commentsReducer from "./reducers/commentsReducer";
 import urgencyReducer from "./reducers/urgencyReducer";
+import adminReducer from "./reducers/adminReducer";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     doctor: doctorReducer,
     comments: commentsReducer,
     urgency: urgencyReducer,
+    admin: adminReducer
   },
 });
 
