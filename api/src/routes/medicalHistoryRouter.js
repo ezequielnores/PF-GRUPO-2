@@ -89,7 +89,7 @@ medicalHistoryRouter.put("/update/:id", async (req, res) => {
 
 medicalHistoryRouter.put("/addRegister/:id", async (req, res) => {
     const { id } = req.params;
-    const { doctorId, date, diagnosis } = req.body;
+    const { doctorId, date, hour, reason, treatment, diagnosis } = req.body;
 
     try {
         if (!id) throw new Error("El id del historial clinico esta indefinido.");
@@ -98,7 +98,9 @@ medicalHistoryRouter.put("/addRegister/:id", async (req, res) => {
         const medicalHistory = await getMedicalHistoryById(id);
         if (!medicalHistory) throw new Error(`El historial clinico con el id ${id} no est en la BDD.`);
         
-        const medicalHistoryNewRegister = await addRegisterMedicalHistory(medicalHistory.register, { doctorId, date, diagnosis }, medicalHistory.id);
+        const medicalHistoryNewRegister = await addRegisterMedicalHistory(
+            medicalHistory.register, { doctorId, date, hour, reason, treatment, diagnosis }, medicalHistory.id
+            );
         if (!medicalHistoryNewRegister) throw new Error("Error al agregar un nuevo registro.");
 
         res.status(200).json(medicalHistoryNewRegister);
