@@ -48,7 +48,7 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
       photo: {
-        type: DataTypes.BLOB,
+        type: DataTypes.STRING,
       },
       location: {
         //pendiente revisar tipo de dato

@@ -12,6 +12,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 //validaciones
 import { isEmail, isNumeric, isAlpha } from "validator";
+import { IconButton, InputAdornment } from "@mui/material";
 
 //style
 const divPadre = {
@@ -57,6 +58,7 @@ const finalinput = {
 
 const MedicForm = () => {
   const [successForm, setSuccessForm] = useState(null);
+  const [imageInputValue, setImageInputValue] = useState("");
   //validacion state
   const [errors, setErrors] = useState({
     user_name: "",
@@ -67,6 +69,7 @@ const MedicForm = () => {
     user_dni: "",
     user_license: "",
     user_birthdate: "",
+    user_image: "",
     user_speciality: "",
     user_location: "",
   });
@@ -79,6 +82,7 @@ const MedicForm = () => {
     dni: "",
     license: "",
     birthdate: "02-03-1999",
+    image: "",
     speciality: "",
     location: "",
   });
@@ -103,6 +107,19 @@ const MedicForm = () => {
     //Para el submiteo
     setHasChanged(true);
   };
+
+  const handleImage = (e) => {
+    setImageInputValue(e.target.value)
+    const file = e.target.files[0];
+    const reader = new FileReader()
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setValue({ ...value, image: reader.result });
+    
+      validateFields({ ...value, image: reader.result }, "image");
+    }
+  }
+
   const handleFechaNacimientoChange = (date) => {
     const errorsForField = validateFields();
 
@@ -307,6 +324,28 @@ const MedicForm = () => {
             />
           </div>
           <div style={finalinput}>
+          <TextField
+            error={errors.image}
+            label="Image"
+            style={value.image ? {width: "40vh", marginBottom: "1vh"} : { width: "40vh", "label": {paddingLeft: "5vw"} }}
+            onChange={handleImage}
+            name="image"
+            value={imageInputValue ? imageInputValue : ""}
+            type="file"
+            InputProps={
+              !value.image ? {inputProps: {style: {paddingLeft: "4vw"}}} :
+              {
+              endAdornment: (
+                <InputAdornment position="end">
+                  {value.image && (
+                    <IconButton onClick={() => {setValue({ ...value, image: null }, setImageInputValue(""));}}>
+                      X
+                    </IconButton>
+                  )}
+                </InputAdornment>
+              ),
+            }}
+          />
             <TextField
               name="speciality"
               label="Especialty"
