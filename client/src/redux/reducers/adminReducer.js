@@ -51,7 +51,7 @@ export const adminUpdate = createAsyncThunk(
 
 const adminSlice = createSlice({
     name: "admin",
-    state: {
+    initialState: {
         detail: {},
         list: [],
         status: "idle",
