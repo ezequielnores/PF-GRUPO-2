@@ -1,8 +1,8 @@
 const { MedicalHistory, Patient } = require("../db");
 
-const createMedicalHistory = async (patientId, doctorId, date, hour, reason, treatment, diagnosis) => {
+const createMedicalHistory = async (patientId, doctorId, date, hour, diagnosis,reason,prescription ) => {
     const medicalHistory = await MedicalHistory.create({
-        register: [{ doctorId, date, hour, reason, treatment, diagnosis }],
+        register: [{ doctorId, date, hour, diagnosis,reason,prescription }],
     });
     await medicalHistory.setPatient(patientId);
     return medicalHistory;
@@ -21,14 +21,24 @@ const findAllMedicalHistory = async () => {
     return medicalHistories;
 };
 
+// const getMedicalHistoryByPatient = async patientId => {
+//     const medicalHistoryByPatient = await MedicalHistory.findOne({
+//         attributes: ["id", "register"],
+//         include: { model: Patient },
+//         where: { PatientId: patientId }
+//     });
+//     return medicalHistoryByPatient;
+// };
+
 const getMedicalHistoryByPatient = async patientId => {
-    const medicalHistoryByPatient = await MedicalHistory.findOne({
+    const medicalHistoryByPatient = await MedicalHistory.findAll({
         attributes: ["id", "register"],
         include: { model: Patient },
         where: { PatientId: patientId }
     });
     return medicalHistoryByPatient;
 };
+
 
 const deleteMedicalHistoryById = async id => {
     const medicalHistoryDeleted = await MedicalHistory.destroy({ where: { id: id } });

@@ -111,7 +111,7 @@ const Home = () => {
           <MedicalEmergency />
         )}
         {location.pathname.endsWith("/HomeMedic/Reviews") && <ReviewsMedic />}
-        {location.pathname.endsWith("/HomeMedic/SeePatients") && <SeePatients/>}
+        {location.pathname.includes(`/HomeMedic/SeePatients`) && <SeePatients/>}
       </div>
     </div>
   );
