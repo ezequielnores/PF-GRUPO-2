@@ -2,7 +2,7 @@ const { Urgency, Patient } = require("../db.js");
 
 const getUrgencies = async (patientId) => {
     const response = await Urgency.findAll({
-        attributes: ['id', 'symptomatology', 'attended'],
+        attributes: ['id', 'symptomatology', 'attended', 'PatientId'],
         include: {
             model: Patient,
             attributes: ['name', 'surname']
@@ -11,9 +11,9 @@ const getUrgencies = async (patientId) => {
     return response;
 };
 
-const getNotAttendedUrgencies = async () => {
+const getNotAttendedUrgencies = async (patientId) => {
     const response = await Urgency.findAll({
-        attributes: ['id', 'symptomatology', 'attended'],
+        attributes: ['id', 'symptomatology', 'attended', 'PatientId'],
         include: {
             model: Patient,
             attributes: ['name', 'surname']
