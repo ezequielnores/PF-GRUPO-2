@@ -41,16 +41,15 @@ const header = {
 //COMPONENTE
 const Agenda = () => {
   const [openRow, setOpenRow] = useState(null);
-  //bucle si no
   const [isUrgencyUpdated, setIsUrgencyUpdated] = useState(false);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.urgency.listAll);
-  ///// ORDENAMIENTO POR MAS PROXIMO, NO PUEDO USAR EL OTRO DATATURNOS, NO DEJA MODIFICAR!! ! ! !
+
   const sortedUrgencias = data.slice().sort((a, b) => {
-    if (a.date < b.date) return -1;
-    if (a.date > b.date) return 1;
-    if (a.hour < b.hour) return -1;
-    if (a.hour > b.hour) return 1;
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+    if (dateA < dateB) return -1;
+    if (dateA > dateB) return 1;
     return 0;
   });
   const handleRowClick = (index) => {
@@ -67,6 +66,28 @@ const Agenda = () => {
     dispatch(urgencyGetAll());
   };
   console.log(sortedUrgencias);
+  const formatDate = (dateStr) => {
+    //creo date
+    const date = new Date(dateStr);
+    const timeZone = "America/Argentina/Buenos_Aires";
+    //mis parametros
+    const options = {
+      timeZone,
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+    //modifico
+    const formattedDate = date.toLocaleString("es-AR", options);
+    //separo en 2 , date y horario
+    const dateParts = formattedDate.split(", ");
+    const fecha = dateParts[0];
+    const hora = dateParts[1];
+    return [fecha, hora];
+  };
   //TEMINOOOO
   useEffect(() => {
     //se va hacer getall cada vez que cambie el isUrgencyUpdated , osea cada vez que acepte
@@ -107,10 +128,18 @@ const Agenda = () => {
                     <React.Fragment key={urgencia.id}>
                       <TableRow>
                         <TableCell style={{ fontSize: "17px" }}>
-                          {urgencia.id}
+                          {urgencia.Patient
+                            ? `${urgencia.Patient.name ?? ""} ${
+                                urgencia.Patient.surname ?? ""
+                              }`
+                            : "cargando"}
                         </TableCell>
-                        <TableCell style={{ fontSize: "17px" }}></TableCell>
-                        <TableCell style={{ fontSize: "17px" }}></TableCell>
+                        <TableCell style={{ fontSize: "17px" }}>
+                          {formatDate(urgencia.createdAt)[0]}
+                        </TableCell>
+                        <TableCell style={{ fontSize: "17px" }}>
+                          {formatDate(urgencia.createdAt)[1]}
+                        </TableCell>
                         <TableCell onClick={() => handleRowClick(index)}>
                           <IconButton size="small">
                             {openRow === index ? (
@@ -165,7 +194,7 @@ const Agenda = () => {
                                       Allergies:
                                     </TableCell>
                                     <TableCell style={{ fontSize: "14px" }}>
-                                      {/* {urgencia.Patient.allergies} */}
+                                      {urgencia.Patient?.allergies}
                                     </TableCell>
                                   </TableRow>
                                   <TableRow>
@@ -173,7 +202,7 @@ const Agenda = () => {
                                       BMI:
                                     </TableCell>
                                     <TableCell style={{ fontSize: "15px" }}>
-                                      {/* {urgencia.Patient.bmi} */}
+                                      {urgencia.Patient?.bmi}
                                     </TableCell>
                                   </TableRow>
                                   <TableRow>
@@ -181,7 +210,7 @@ const Agenda = () => {
                                       Weight:
                                     </TableCell>
                                     <TableCell style={{ fontSize: "15px" }}>
-                                      {/* {urgencia.Patient.weight} */}
+                                      {urgencia.Patient?.weight}
                                     </TableCell>
                                   </TableRow>
                                   <TableRow>
@@ -189,7 +218,7 @@ const Agenda = () => {
                                       Height:
                                     </TableCell>
                                     <TableCell style={{ fontSize: "15px" }}>
-                                      {/* {urgencia.Patient.height} */}
+                                      {urgencia.Patient?.height}
                                     </TableCell>
                                   </TableRow>
                                   <TableRow>
@@ -197,7 +226,7 @@ const Agenda = () => {
                                       Choronic Diseases:
                                     </TableCell>
                                     <TableCell style={{ fontSize: "15px" }}>
-                                      {/* {urgencia.Patient.chronicDiseases} */}
+                                      {urgencia.Patient?.chronicDiseases}
                                     </TableCell>
                                   </TableRow>
                                 </TableBody>
