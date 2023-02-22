@@ -32,7 +32,6 @@ module.exports = (sequelize) => {
         },
         image: {
             type: DataTypes.STRING,
-            allowNull: false,
             unique: true
         },
         location: {
@@ -53,13 +52,13 @@ module.exports = (sequelize) => {
             allowNull: false,
             values: ["Cardiology", "Gynecology", "Neurology", "Oncology", "Psychiatry", "Dermatology", "Ophthalmology", "Urology", "Endocrinology", "Gastroenterology", "General", "Deportologist"]    
         },
-        lisence: {
+        license: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
         },
         cv: {
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
@@ -68,7 +67,7 @@ module.exports = (sequelize) => {
         },
         active: {
             type: DataTypes.BOOLEAN,
-            defaultValue: true
+            defaultValue: false
         }
 
     }, {timestamps: true}, {createdAt: true}, {updatedAt: false})
