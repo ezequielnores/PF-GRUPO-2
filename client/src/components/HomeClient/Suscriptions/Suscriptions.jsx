@@ -1,32 +1,45 @@
-import React, { useState } from 'react';
-const Suscriptions = () => {
+import React, { useEffect, useState } from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import axios from "axios";
+import {plansGetAll} from "../../../redux/reducers/plansReducer";
 
-    const plans = [
-        {
-            id: 1,
-            name: "Plan 1",
-            price: 2000,
-            durationMonths: 1,
-            state:true,
-            detail:"el detalle del plan 1"
-        },
-        {
-            id: 2,
-            name: "Plan 2",
-            price: 3000,
-            durationMonths: 1,
-            state:true,
-            detail:"el detalle del plan 2"
-        },
-        {
-            id: 3,
-            name: "Plan 3",
-            price: 4000,
-            durationMonths: 1,
-            state:true,
-            detail:"el detalle del plan 3"
-        }
-    ]
+
+const Suscriptions = () => {
+    const dispatch=useDispatch();
+    const plans = useSelector(state => state.plans.listAll);
+    const patientIdLocal = localStorage.getItem("id");
+
+    useEffect(() => {
+        dispatch(plansGetAll());
+    }, [])
+    console.log(plans)
+
+    // const plans = [
+    //     {
+    //         id: 1,
+    //         name: "Plan 1",
+    //         price: 2000,
+    //         durationMonths: 1,
+    //         state:true,
+    //         detail:"el detalle del plan 1"
+    //     },
+    //     {
+    //         id: 2,
+    //         name: "Plan 2",
+    //         price: 3000,
+    //         durationMonths: 1,
+    //         state:true,
+    //         detail:"el detalle del plan 2"
+    //     },
+    //     {
+    //         id: 3,
+    //         name: "Plan 3",
+    //         price: 4000,
+    //         durationMonths: 1,
+    //         state:true,
+    //         detail:"el detalle del plan 3"
+    //     }
+    // ]
     const pages = Math.ceil(plans.length/3)
     const [page , setPage] = useState(1)
 
@@ -49,7 +62,10 @@ return(
                         <p>{plan.price}</p>
                         <p>{plan.durationMonths}</p>
                         <p>{plan.detail}</p>
-                        <button>Comprar</button>
+                        <button onClick={()=>{
+                        axios.post("http://localhost:3001/producto",{title:plan.name,price:plan.price,description:plan.detail,patientIdLocal})
+                        .then((res)=>window.location.href=res.data.response.body.init_point) //ruta que me lleva al pago del producto
+                             }}>Comprar</button>
                     </div>
                 )
             })}
