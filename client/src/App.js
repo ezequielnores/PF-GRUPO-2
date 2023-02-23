@@ -28,6 +28,7 @@ import {
   HomeView,
 } from "./components/HomeClient/index";
 import { HomeMedic } from "./components/HomeMedic/index";
+import HomeAdmin from "./components/DashboardAdmin/Home";
 
 function App() {
   const location = useLocation();
@@ -38,6 +39,8 @@ function App() {
         <HomeClient />
       ) : location.pathname.startsWith("/HomeMedic") ? (
         <HomeMedic />
+      ) : location.pathname.startsWith("/HomeAdmin") ? (
+        <HomeAdmin />
       ) : (
         <>
           <Navbar />
@@ -54,7 +57,7 @@ function App() {
             <Route path="/loginClient" element={<LoginClient />} />
             <Route path="/work/registerForm" element={<MedicForm />} />
             <Route path="/loginMedic" element={<LoginMedic />} />
-            <Route path="/register" element={<Register />}/>
+            <Route path="/register" element={<Register />} />
           </Routes>
           <Footer />
         </>
