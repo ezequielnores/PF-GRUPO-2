@@ -97,9 +97,9 @@ const Home = () => {
           </div>
 
           <Avatar sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}>
-            {/* cambiar cuando tenga la imagen del usuario */}
-            {patient?.name?.charAt(0)}
-            {patient?.surname?.charAt(0)}
+            <img src={patient?.photo} alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
+            /> 
+            
           </Avatar>
         </Stack>
       </div>
