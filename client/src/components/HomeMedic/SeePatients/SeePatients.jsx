@@ -1,11 +1,11 @@
 import { useState,useEffect } from "react"
-import { TextField,Stack, setRef  } from "@mui/material"
-import { useSelector } from "react-redux"
+import { TextField,Stack } from "@mui/material"
+import { useDispatch ,useSelector } from "react-redux"
 import {attendPatientTurns,attendedPatientTurns,createMedicalHistory} from "../../../redux/reducers/attendReducer"
-import { useDispatch } from "react-redux"
 import { appointmentGetAllByDoctorId } from "../../../redux/reducers/appointmentReducer";
 import style from "./SeePatients.module.css"
 import swal from "sweetalert"
+
 // patientId, doctorId, date, diagnosis
 const validate = (input) => {
     let errors = {};
@@ -24,9 +24,10 @@ const SeePatients = ({idTurn}) => {
     const dispatch = useDispatch()   
     useEffect(() => {
         dispatch(attendPatientTurns(idTurn))
+
     }, [])
     const appointment = useSelector((state) => state.attend.details);
-    console.log(appointment)
+
     const [newHistorial, setNewHistorial] = useState({
         patientId: "",
         doctorId: "",
@@ -88,9 +89,6 @@ const SeePatients = ({idTurn}) => {
         
         window.location.reload()
     }
-    
-
-        
     return (
         <div style={{width:"95vw",display:"flex",justifyContent:"center",height:"100vh"}} >
             <div onClick={handleOpenModal} className={style.generalModalDiv} style={{display:openModal? "flex":"none"}}>
