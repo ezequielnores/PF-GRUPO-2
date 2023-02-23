@@ -15,7 +15,7 @@ export const adminLogin = createAsyncThunk(
   "admin/login",
   async (data, thunkAPI) => {
     const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/admin/login`,
+      `${process.env.REACT_APP_BACKEND_URL}/admins/login`,
       data
     );
     return response.data;
@@ -62,7 +62,7 @@ const adminSlice = createSlice({
     detail: {},
     list: [],
     status: "idle",
-    error: {},
+    error: null,
     loggedIn: {},
   },
   reducers: {},
@@ -92,10 +92,10 @@ const adminSlice = createSlice({
         state.status = "failed";
         state.list = action.payload;
       })
-      // .addCase(
-      //   adminLogin.pending,
-      //   (state, action) => (state.status = "loading")
-      // )
+      .addCase(
+        adminLogin.pending,
+        (state, action) => (state.status = "loading")
+      )
       .addCase(adminLogin.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.loggedIn = action.payload;

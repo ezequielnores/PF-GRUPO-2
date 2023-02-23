@@ -14,11 +14,12 @@ import {
   Reviews,
   Urgency,
   HomeView,
-  ProfileUpdate
+  ProfileUpdate,
+  Suscriptions,
 } from "../index";
 import { useEffect } from "react";
-import { useDispatch,useSelector} from "react-redux";
-import {patientGetDetail} from "../../../redux/reducers/patientReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { patientGetDetail } from "../../../redux/reducers/patientReducer";
 
 import Register from "../Register/Register.jsx";
 
@@ -29,7 +30,7 @@ const Home = () => {
     if (patientId) {
       dispatch(patientGetDetail(patientId));
     }
-  }, []) 
+  }, []);
   const patient = useSelector((state) => state.patient.detail);
   const location = useLocation();
   const [open, setOpen] = useState(false);
@@ -80,11 +81,9 @@ const Home = () => {
             }}
           >
             <p
-              style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem"}}
+              style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem" }}
             >
-
-              {patient?.name+" "+patient?.surname}
-              
+              {patient?.name + " " + patient?.surname}
             </p>
             <p
               style={{
@@ -94,16 +93,14 @@ const Home = () => {
                 color: "gray",
               }}
             >
-              {patient.plan? patient.plan : "Without plan"}
-              
+              {patient.plan ? patient.plan : "Without plan"}
             </p>
           </div>
 
           <Avatar sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}>
-            {/* cambiar cuando tenga la imagen del usuario */}
-            {patient?.name?.charAt(0)}
-            {patient?.surname?.charAt(0)}
-
+            <img src={patient?.photo} alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
+            /> 
+            
           </Avatar>
         </Stack>
       </div>
@@ -134,6 +131,7 @@ const Home = () => {
         {location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />}
         {location.pathname.endsWith("/HomeClient/Faq") && <Faq />}
         {location.pathname.endsWith("/HomeClient/Register") && <Register />}
+        {location.pathname.endsWith("/HomeClient/Suscriptions") && <Suscriptions />}
       </div>
     </div>
   );

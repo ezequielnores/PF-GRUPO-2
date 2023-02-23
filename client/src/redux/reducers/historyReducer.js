@@ -21,6 +21,16 @@ export const historyGetAll = createAsyncThunk(
   }
 );
 
+export const historyGetAllbyPatient = createAsyncThunk(
+  "medicalHistory/getAllByPatient",
+  async (id) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/medicalHistory/medicalHistoryByPatient/${id}`
+    );
+    return response.data;
+  }
+);
+
 export const historyAddById = createAsyncThunk(
   "medicalHistory/addById",
   async (id, data) => {
@@ -74,7 +84,19 @@ const medicalHistorySlice = createSlice({
       .addCase(historyAddById.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+      .addCase(historyGetAllbyPatient.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(historyGetAllbyPatient.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(historyGetAllbyPatient.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       });
+
   },
 });
 

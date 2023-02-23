@@ -73,6 +73,9 @@ Patient.belongsToMany(Incomes, { through: "IncomesPatient" });
 Patient.hasOne(Plans);
 Plans.belongsToMany(Patient, { through: "PlansPatient" });
 
+Patient.hasMany(Urgency, { as: "urgency" });
+Urgency.belongsTo(Patient);
+
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize, // para importart la conexión { conn } = require('./db.js');

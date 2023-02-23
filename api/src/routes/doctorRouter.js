@@ -43,11 +43,12 @@ router.post("/", async (req, res) => {
     dni,
     phone,
     speciality,
-    lisence,
+    license,
     cv,
     clinicMail,
   } = req.body;
   try {
+    console.log(req.body);
     const doctor = await postDoctor(
       name,
       lastName,
@@ -59,7 +60,7 @@ router.post("/", async (req, res) => {
       dni,
       phone,
       speciality,
-      lisence,
+      license,
       cv,
       clinicMail
     );
