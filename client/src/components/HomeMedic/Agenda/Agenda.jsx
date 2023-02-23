@@ -19,6 +19,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Button } from "@mui/material";
 
 //style
 const container = {
@@ -69,26 +70,26 @@ const Agenda = () => {
     setOpenRow(openRow === index ? null : index);
   };
 
-  const [date , setDate] = useState(new Date(Date.now()))
+  const [date, setDate] = useState(new Date(Date.now()));
   // const [refresh, setRefresh] = useState(false)
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setDate(new Date(Date.now()))
+      setDate(new Date(Date.now()));
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const [attend, setAttend] = useState(false)
-  const [idTurn, setIdTurn] = useState("")
+  const [attend, setAttend] = useState(false);
+  const [idTurn, setIdTurn] = useState("");
 
   const handleAttend = (e) => {
-    setIdTurn(e.target.value)
-    setAttend(true) 
-  }
+    setIdTurn(e.target.value);
+    setAttend(true);
+  };
   return (
     <div>
-      {!attend ? 
+      {!attend ? (
         <div style={container}>
           <div style={hijoContainer}>
             <TextField
@@ -115,6 +116,7 @@ const Agenda = () => {
                     <TableCell style={header}>Hour</TableCell>
                     <TableCell style={header}>Type</TableCell>
                     <TableCell style={header}></TableCell>
+                    <TableCell style={header}></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -132,7 +134,7 @@ const Agenda = () => {
                         </TableCell>
                         <TableCell style={{ fontSize: "17px" }}>
                           {turno.type}
-                        </TableCell>                    
+                        </TableCell>
                         <TableCell>
                           <IconButton size="small">
                             {openRow === index ? (
@@ -142,14 +144,16 @@ const Agenda = () => {
                             )}
                           </IconButton>
                         </TableCell>
-                        {dayjs(date).format("DD/MM/YYYY HH:mm:ss")>=dayjs(""+turno.date+turno.hour).format("DD/MM/YYYY HH:mm:ss")?
-                        <TableCell>
-                            <button value={turno.id} onClick={handleAttend}>
-                                  attend
-                            </button>
-                        </TableCell>:
-                        null
-                        }
+                        {dayjs(date).format("DD/MM/YYYY HH:mm:ss") >=
+                        dayjs("" + turno.date + turno.hour).format(
+                          "DD/MM/YYYY HH:mm:ss"
+                        ) ? (
+                          <TableCell>
+                            <Button value={turno.id} onClick={handleAttend}>
+                              Attend
+                            </Button>
+                          </TableCell>
+                        ) : null}
                       </TableRow>
                       <TableRow>
                         <TableCell
@@ -230,15 +234,10 @@ const Agenda = () => {
             </TableContainer>
           </div>
         </div>
-        :
-        
-      <SeePatients 
-        idTurn={idTurn} 
-      />
-      }
-      
+      ) : (
+        <SeePatients idTurn={idTurn} />
+      )}
     </div>
-
   );
 };
 

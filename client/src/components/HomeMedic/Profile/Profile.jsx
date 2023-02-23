@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Card from "@mui/material/Card";
+import { Avatar } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
@@ -64,7 +65,7 @@ const Profile = () => {
           color: "#307196",
           fontWeight: "bold",
           fontSize: "2.5rem",
-          marginBottom: "2rem",
+          marginBottom: "1rem",
         }}
       >
         Personal information
@@ -72,6 +73,15 @@ const Profile = () => {
       {/* PREGUNTO SI EXISTE ALGO EN DATADOC , OSEAS SI REALMENTE TENGO UN DOCTOR ! SI NO NADA ! */}
       {Object.keys(dataDoc).length > 0 ? (
         <Card style={carde}>
+          <Avatar
+            sx={{
+              width: 110,
+              height: 100,
+              marginLeft: "40%",
+            }}
+            alt="DocImg "
+            src={dataDoc.image}
+          />
           <Typography style={typoTitle}>Name :</Typography>
           <Typography variant="body1">{dataDoc.name}</Typography>
           <Divider />
