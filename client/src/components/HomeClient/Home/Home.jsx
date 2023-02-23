@@ -15,6 +15,7 @@ import {
   Urgency,
   HomeView,
   ProfileUpdate,
+  Suscriptions,
 } from "../index";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -130,6 +131,7 @@ const Home = () => {
         {location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />}
         {location.pathname.endsWith("/HomeClient/Faq") && <Faq />}
         {location.pathname.endsWith("/HomeClient/Register") && <Register />}
+        {location.pathname.endsWith("/HomeClient/Suscriptions") && <Suscriptions />}
       </div>
     </div>
   );
