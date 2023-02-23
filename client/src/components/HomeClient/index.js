@@ -8,4 +8,5 @@ import Reviews from "./Reviews/Reviews";
 import Urgency from "./Urgency/Urgency";
 import HomeView from "./HomeView/HomeView";
 import ProfileUpdate from "./Profile/ProfileUpdate"
-export { Faq, HomeClient, MedicalHistory, MedicalAppointments, MyAppointments, Profile, Reviews, Urgency, HomeView,ProfileUpdate };
+import Suscriptions from "./Suscriptions/Suscriptions";
+export { Faq, HomeClient, MedicalHistory, MedicalAppointments, MyAppointments, Profile, Reviews, Urgency, HomeView,ProfileUpdate, Suscriptions};
