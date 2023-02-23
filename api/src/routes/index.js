@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const {mercadopago} =require ("../utils/mercadoPago");
-const {Plans, Patient} = require("../models/Plans");
+const { Patient, Plans } = require("../db");
+
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -25,7 +26,7 @@ const adminRouter = require("./adminRouter");
 const blogRouter = require("./blogRouter");
 
 const urgencyRouter = require("./urgencyRouter");
-const Patient = require("../models/Patient");
+
 
 
 const router = Router();
@@ -56,78 +57,86 @@ router.use("/blog", blogRouter);
 
 ////////////////////RUTA PARA PAGO UNICO/////////////////////////
 
-router.get("/producto", (req,res)=>{
+router.post("/producto", async (req,res)=>{
     const prod=req.body;
+    const patient= await Patient.findByPk(prod.patientIdLocal);
     let preference = {
 
         back_urls:{ //serán las URLS a las cuales puede redirigirnos luego de la compra
-            success: "http://localhost:3000",
+            success: "http://localhost:3000/HomeClient/Profile",
             failure: "", 
             pending: "", //si tengo que hacer un pago en efectivo, queda pendiente
         },
         binary_mode:true, //que solo se ´pueda hacer pago con tarjeta, no en efectivo
         items: [  //será toda la info del producto o servicio a vender
           {
-            id:123,
+            id:prod.id,
             title: prod.title,
-            unit_price: prod.price,
+            unit_price: parseInt(prod.price),
             quantity: 1,
             currency_id: "ARS",
             picture_url:prod.image,
             description:prod.description,
             category_id:"art",
-
           },
         ],
-        // notification_url: `https://5606-152-170-158-127.sa.ngrok.io/notificate`   //url a la que mercado pago nos va a notificar la compra
-      };
-
-      mercadopago.preferences.create(preference)
-      .then((response)=>res.status(200).send({response}))
-      .catch((error)=>res.status(400).send({error:error.message}))
-
-      //////////////////////////PRUEBA IMPLEMENTANDO ID DE CADA PRODUCTO///////////////
-
-});
-router.get("/producto:id", async (req,res)=>{
-    const idPatient=req.body;
-    const {id}=req.params;
-    const producto= await Plans.findById(id);
-    const payer= await Patient.findById(idPatient);
-    let preference = {
-
-        back_urls:{ //serán las URLS a las cuales puede redirigirnos luego de la compra
-            success: "http://localhost:3000",
-            failure: "", 
-            pending: "", //si tengo que hacer un pago en efectivo, queda pendiente
-        },
-        binary_mode:true, //que solo se ´pueda hacer pago con tarjeta, no en efectivo
         payer:{
-            name:payer.name,
-            surname:payer.surname,
-            email:payer.mail
-            
-        },
-        items: [  //será toda la info del producto o servicio a vender
-          {
-            id:producto.id,
-            title: producto.name,
-            unit_price: producto.price,
-            quantity: 1,
-            currency_id: "ARS",
-            description:producto.detail,
-            category_id:"art",
-
-          },
-        ],
+                name:patient.name,
+                surname:patient.surname,
+                email:patient.mail
+                        
+                    }
         // notification_url: `https://5606-152-170-158-127.sa.ngrok.io/notificate`   //url a la que mercado pago nos va a notificar la compra
       };
 
       mercadopago.preferences.create(preference)
       .then((response)=>res.status(200).send({response}))
       .catch((error)=>res.status(400).send({error:error.message}))
-
+     
 });
+
+
+//////////////////////////PRUEBA IMPLEMENTANDO ID DE CADA PRODUCTO///////////////
+
+// router.get("/producto:id", async (req,res)=>{
+//     const idPatient=req.body;
+//     const {id}=req.params;
+//     const producto= await Plans.findById(id);
+//     const payer= await Patient.findById(idPatient);
+//     let preference = {
+
+//         back_urls:{ //serán las URLS a las cuales puede redirigirnos luego de la compra
+//             success: "http://localhost:3000",
+//             failure: "", 
+//             pending: "", //si tengo que hacer un pago en efectivo, queda pendiente
+//         },
+//         binary_mode:true, //que solo se ´pueda hacer pago con tarjeta, no en efectivo
+//         payer:{
+//             name:payer.name,
+//             surname:payer.surname,
+//             email:payer.mail
+            
+//         },
+//         items: [  //será toda la info del producto o servicio a vender
+//           {
+//             id:producto.id,
+//             title: producto.name,
+//             unit_price: producto.price,
+//             quantity: 1,
+//             currency_id: "ARS",
+//             description:producto.detail,
+//             category_id:"art",
+
+//           },
+//         ],
+//         // notification_url: `https://5606-152-170-158-127.sa.ngrok.io/notificate`   //url a la que mercado pago nos va a notificar la compra
+//       };
+
+//       mercadopago.preferences.create(preference)
+//       .then((response)=>res.status(200).send({response}))
+//       .catch((error)=>res.status(400).send({error:error.message}))
+
+// });
 
 
 
