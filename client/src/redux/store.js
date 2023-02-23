@@ -12,7 +12,7 @@ const store = configureStore({
     appointment: appointmentReducer,
     doctor: doctorReducer,
     comments: commentsReducer,
-    admin: adminReducer
+    admin: adminReducer,
   },
 });
 
