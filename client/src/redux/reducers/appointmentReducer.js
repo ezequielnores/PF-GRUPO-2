@@ -20,6 +20,24 @@ export const appointmentGetAll = createAsyncThunk(
     return response.data;
   }
 );
+export const appointmentsAttended = createAsyncThunk(
+  "appointment/getAttended",
+  async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/turns/turnsAttended`
+    );
+    return response.data;
+  }
+);
+export const appointsNoAttended = createAsyncThunk(
+  "appointment/getNoAttended",
+  async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/turns/turnsNoAttended`
+    );
+    return response.data;
+  }
+);
 
 export const appointmentGetAllByPatientId = createAsyncThunk(
   "appointment/getByPatientId",
@@ -36,6 +54,26 @@ export const appointmentGetAllByDoctorId = createAsyncThunk(
   async (id) => {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/turns/turnsByDoctor/${id}`
+    );
+    return response.data;
+  }
+);
+
+
+export const appointmentGetByDateTime = createAsyncThunk(
+  "appointment/getByDateTime",
+  async (data) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/turns/turnByDateAndHourAndDoctor`,data
+    );
+    return response.data;
+  }
+);
+export const appointmentByDate = createAsyncThunk(
+  "appointment/getByDate",
+  async (data) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/turns/turnsByDate`,data
     );
     return response.data;
   }
@@ -116,6 +154,50 @@ const appointmentSlice = createSlice({
         state.list = action.payload;
       })
       .addCase(appointmentGetAllByPatientId.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(appointmentGetByDateTime.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(appointmentGetByDateTime.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.detail = action.payload;
+      })
+      .addCase(appointmentGetByDateTime.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(appointmentsAttended.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(appointmentsAttended.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(appointmentsAttended.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(appointsNoAttended.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(appointsNoAttended.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(appointsNoAttended.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(appointmentByDate.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(appointmentByDate.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(appointmentByDate.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

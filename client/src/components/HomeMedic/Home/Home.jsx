@@ -14,6 +14,7 @@ import {
   MedicalEmergency,
   ProfileEdit,
   Agenda,
+  SeePatients,
 } from "../index";
 import { useSelector, useDispatch } from "react-redux";
 const Home = () => {
@@ -37,7 +38,7 @@ const Home = () => {
     <div style={{ position: "relative" }}>
       <img
         style={{
-          width: "4rem",
+          width: "4.3vw",
           position: "absolute",
           top: "0.5rem",
           left: "4.3rem",
@@ -53,7 +54,7 @@ const Home = () => {
             right: "0",
             height: "5rem",
             width: "85vw",
-            background: "rgba(64, 184,200,0.5)",
+            background: "#43B8C8",
             display: "flex",
             justifyContent: "flex-end",
             padding: "1rem 2rem",
@@ -79,7 +80,7 @@ const Home = () => {
                 margin: "0",
                 fontSize: "0.9rem",
                 fontWeight: "500",
-                color: "gray",
+                color: "#63696f",
               }}
             >
               {dataDoc.speciality}
@@ -87,12 +88,16 @@ const Home = () => {
           </div>
           <Avatar
             sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}
-            src="https://uploads-ssl.webflow.com/5968aae9098b3406e8f8ce64/5a2a8ba1ddae7e00015bcee4_male.png"
+            src={
+              dataDoc.image
+                ? dataDoc.image
+                : "https://uploads-ssl.webflow.com/5968aae9098b3406e8f8ce64/5a2a8ba1ddae7e00015bcee4_male.png"
+            }
           />
         </Stack>
       ) : null}
 
-      <SideBar open={open} handleOpen={handleOpen} />
+      <SideBar open={open} handleOpen={handleOpen} path={location.pathname} />
       <div
         style={{
           position: "absolute",
@@ -110,6 +115,9 @@ const Home = () => {
           <MedicalEmergency />
         )}
         {location.pathname.endsWith("/HomeMedic/Reviews") && <ReviewsMedic />}
+        {location.pathname.includes(`/HomeMedic/SeePatients`) && (
+          <SeePatients />
+        )}
       </div>
     </div>
   );

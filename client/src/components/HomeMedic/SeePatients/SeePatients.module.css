@@ -1,0 +1,70 @@
+.generalModalDiv{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(50,50,50,0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 20;
+
+}
+.modalDiv{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 45vw;
+    height: fit-content;
+    background: white;
+    border: 1px solid black;
+    border-radius: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 40;
+    
+}
+.saveButton{
+    width: 9vw;
+    height: 4vh;
+    background: transparent;
+    border-radius: 9999px;
+    border: solid 2px #307196;
+    color: #307196;
+    font-weight: bold;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    cursor: pointer;
+
+    
+}
+.saveButton:hover{
+    background: #307196;
+    color: white;
+}
+.saveButton:disabled{
+    border: solid 2px #aaaaaa;
+    color: #aaaaaa;
+    
+}
+.saveButton:disabled:hover{
+    background: transparent;
+    color: #aaaaaa;
+    cursor: not-allowed;
+}
+.info{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    align-items: flex-start;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
