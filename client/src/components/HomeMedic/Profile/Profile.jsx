@@ -118,7 +118,7 @@ const Profile = () => {
           <Typography variant="body1">{dataDoc.speciality}</Typography>
           <Divider />
           <Typography style={typoTitle}>License :</Typography>
-          <Typography variant="body1">{dataDoc.lisence}</Typography>
+          <Typography variant="body1">{dataDoc.license}</Typography>
           <Divider />
           <Typography style={typoTitle}>Clinic email :</Typography>
           <Typography variant="body1">{dataDoc.clinicMail}</Typography>
