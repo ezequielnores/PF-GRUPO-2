@@ -11,6 +11,16 @@ export const patientGetDetail = createAsyncThunk(
   }
 );
 
+export const getPatientByMail = createAsyncThunk(
+  "patient/getPatientByMail",
+  async (data, thunkAPI) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/patient/patientByMail`, data
+    );
+    return response.data;
+  }
+);
+
 export const patientLogin = createAsyncThunk(
   "patient/login",
   async (data, thunkAPI) => {
@@ -59,7 +69,9 @@ export const patientUpdate = createAsyncThunk(
 export const patientSetActive = createAsyncThunk(
   "patient/setActive",
   async (id) => {
-    const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/patient/setActive/${id}`);
+    const response = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/patient/setActive/${id}`
+    );
     return response.data;
   }
 );
@@ -118,7 +130,18 @@ const patientSlice = createSlice({
       .addCase(patientSetActive.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
-      });
+      })
+      .addCase(getPatientByMail.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getPatientByMail.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.detail = action.payload;
+      })
+      .addCase(getPatientByMail.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
   },
 });
 
