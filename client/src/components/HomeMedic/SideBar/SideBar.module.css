@@ -5,3 +5,13 @@
   align-items: center;
   text-align: end;
 }
+.icon {
+  color: #000000;
+  box-sizing: border-box;
+  border-radius: 0 1rem 1rem 0;
+  height: 4vh;
+  width: 9vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
