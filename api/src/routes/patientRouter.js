@@ -7,6 +7,7 @@ const {
   getPatient,
   getPatientActive,
   getPatientInactive,
+  getPatientByMail
 } = require("../controllers/patientController.js");
 
 const { Patient } = require("../db");
@@ -23,6 +24,21 @@ router.get("/", async (req, res) => {
     }
   } catch (error) {
     res.status(404).json({ error: error.message });
+  }
+});
+
+router.get("/patientByMail", async (req, res) => {
+  const { mail } = req.body;
+
+  try {
+    if (!mail) throw new Error("El mail esta indefinido.");
+
+    const patientByMail = await getPatientByMail(mail);
+    if (!patientByMail) throw new Error(`No se encontro ningun paciente con el mail ${mail} en la BDD.`);
+
+    res.status(200).json(patientByMail);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 });
 
