@@ -12,6 +12,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ForumIcon from "@mui/icons-material/Forum";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import LogoutIcon from "@mui/icons-material/Logout";
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import swal from "sweetalert";
 const SideBar = ({ open, handleOpen, path }) => {
   const handleLogout = () => {
@@ -256,6 +257,34 @@ const SideBar = ({ open, handleOpen, path }) => {
                   <RateReviewIcon />
                 ) : (
                   <RateReviewIcon style={{ color: "grey" }} />
+                )}
+              </Link>
+            </button>
+            <button className={style.buttonBar}>
+              <Link to="/HomeClient/Suscriptions">
+                {open ? (
+                  <div className={style.divbutton}>
+                    {path.endsWith("HomeClient/Suscriptions") ? (
+                      <div
+                        className={style.icon}
+                        style={{ background: "#307196" }}
+                      >
+                        <RequestQuoteIcon style={{ color: "white" }} />
+                      </div>
+                    ) : (
+                      <div
+                        className={style.icon}
+                        style={{ background: "#c2c1c1" }}
+                      >
+                        <RequestQuoteIcon />
+                      </div>
+                    )}
+                    Suscriptions
+                  </div>
+                ) : path.endsWith("HomeClient/Suscriptions") ? (
+                  <RequestQuoteIcon />
+                ) : (
+                  <RequestQuoteIcon style={{ color: "grey" }} />
                 )}
               </Link>
             </button>

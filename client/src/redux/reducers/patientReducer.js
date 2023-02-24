@@ -56,6 +56,14 @@ export const patientUpdate = createAsyncThunk(
   }
 );
 
+export const patientSetActive = createAsyncThunk(
+  "patient/setActive",
+  async (id) => {
+    const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/patient/setActive/${id}`);
+    return response.data;
+  }
+);
+
 const patientSlice = createSlice({
   name: "patient",
   initialState: {
@@ -98,6 +106,16 @@ const patientSlice = createSlice({
         state.loggedIn = action.payload;
       })
       .addCase(patientLogin.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(patientSetActive.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(patientSetActive.fulfilled, (state, action) => {
+        state.status = "succeeded";
+      })
+      .addCase(patientSetActive.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
