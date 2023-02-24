@@ -1,0 +1,41 @@
+.divSearch{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    margin-left: 2%;
+    position: relative;
+}
+.inputSearch{
+    border: none;
+    height: 90%;
+    width: 90%;
+    resize: none;
+    outline: none;
+    
+
+}
+.labelSearch{
+    width: fit-content;
+    color: rgba(131, 130, 130);
+    position: absolute;
+    top: -0.85em;
+    background: white;
+    left: 0.5em;
+    padding: 0 0.2em;
+}
+
+.buttonSearch{
+    width: 20%;
+    border-radius: 9999px;
+    background: transparent;
+    color: black;
+    border: none;
+    font-weight: 700;
+}
+.buttonSearch:hover{
+    color: #1a74b5;
+    cursor: pointer;
+    font-weight: 900;
+}
