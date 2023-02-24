@@ -27,9 +27,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/patientByMail", async (req, res) => {
-  console.log(req.body)
-  const { mail } = req.body;
+router.get("/patientByMail", async (req, res) => {
+  const { mail } = req.query;
 
   try {
     if (!mail) throw new Error("El mail esta indefinido.");
@@ -39,7 +38,6 @@ router.post("/patientByMail", async (req, res) => {
 
     res.status(200).json(patientByMail);
   } catch (error) {
-    console.log(error)
     res.status(400).json({ error: error.message });
   }
 });
