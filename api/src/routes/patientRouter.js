@@ -27,7 +27,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/patientByMail", async (req, res) => {
+router.post("/patientByMail", async (req, res) => {
+  console.log(req.body)
   const { mail } = req.body;
 
   try {
@@ -38,6 +39,7 @@ router.get("/patientByMail", async (req, res) => {
 
     res.status(200).json(patientByMail);
   } catch (error) {
+    console.log(error)
     res.status(400).json({ error: error.message });
   }
 });
