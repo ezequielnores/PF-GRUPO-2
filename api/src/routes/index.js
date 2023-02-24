@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const {mercadopago} =require ("../utils/mercadoPago");
+const { mercadopago } = require("../utils/mercadoPago");
 const { Patient, Plans } = require("../db");
 
 // Importar todos los routers;
@@ -13,7 +13,7 @@ const patientRouter = require("./patientRouter");
 
 const medicalHistoryRouter = require("./medicalHistoryRouter");
 
-const doctorRouter = require("./doctorRouter"); 
+const doctorRouter = require("./doctorRouter");
 
 const frequentQuestionsRouter = require("./frequentQuestionsRouter");
 
@@ -27,7 +27,7 @@ const blogRouter = require("./blogRouter");
 
 const urgencyRouter = require("./urgencyRouter");
 
-
+const paymentRouter = require("./paymentRouter");
 
 const router = Router();
 
@@ -55,100 +55,11 @@ router.use("/urgency", urgencyRouter);
 
 router.use("/blog", blogRouter);
 
+router.use("/payments", paymentRouter);
+
 ////////////////////RUTA PARA PAGO UNICO/////////////////////////
 
-router.post("/producto", async (req,res)=>{
-    const prod=req.body;
-    const patient= await Patient.findByPk(parseInt(prod.patientIdLocal));
-    let preference = {
-
-        back_urls:{ //serán las URLS a las cuales puede redirigirnos luego de la compra
-            success: "http://localhost:3000/HomeClient/Profile",
-            failure: "", 
-            pending: "", //si tengo que hacer un pago en efectivo, queda pendiente
-        },
-        binary_mode:true, //que solo se ´pueda hacer pago con tarjeta, no en efectivo
-        items: [  //será toda la info del producto o servicio a vender
-          {
-            id:prod.id,
-            title: prod.title,
-            unit_price: parseInt(prod.price),
-            quantity: 1,
-            currency_id: "ARS",
-            picture_url:prod.image,
-            description:prod.description,
-            category_id:"art",
-          },
-        ],
-        payer:{
-                name:patient.name,
-                surname:patient.surname,
-                email:patient.mail     
-                    },
-        external_reference: prod.patientIdLocal,
-         notification_url: `https://96cd-152-170-158-127.sa.ngrok.io/notificate`   //url a la que mercado pago nos va a notificar la compra
-      };
-
-      mercadopago.preferences.create(preference)
-      .then((response)=>res.status(200).send({response}))
-      .catch((error)=>res.status(400).send({error:error.message}))
-     
-});
-
-
-
 //En la merchant_order tenemos el status (closed si se completó), array de payments allí se encuentra los pagos asociados a esa orden, payments.status diria approved, la fecha en la que se aprobó..tambien hay otra propiedad order_status: approved
-
-
-router.post('/notificate', async (req, res) => {
-
-    // if (payment.status === 'approved') {
-    //   console.log(payment.external_reference)
-    //   const id= payment.body.external_reference;
-    //   const patient = await Patient.findByPk(id); // external_reference should contain the patient ID
-    //   console.log(payment.external_reference)
-    //   if (patient) {
-    //     patient.name = 'Martin'; // Modify the desired property of the patient model here
-
-    //       await patient.save();
-      
-    // }
-
-    const {query}=req;
-
-    const topic= query.topic;
-
-   
-    // switch(topic){
-    //     case "payment":
-    //       const paymentId=query.id;
-    //        const payment=await mercadopago.payment.findById(paymentId);
-    //        console.log(payment.body.external_reference)
-    //        merchantOrder=await mercadopago.merchant_orders.findById(payment.body.order.id); //tendrá toda la info de todos los pagos actualizados
-           
-    //         break;
-    //     case "merchant_order":
-    //         const orderId=query.id;
-    //         merchantOrder = await mercadopago.merchant_orders.findById(orderId);
-    //         break;
-    // }
- if(topic==="payment"){
-  const paymentId=query.id;
-  const payment=await mercadopago.payment.findById(paymentId);
-  const id=payment.body.external_reference
-  const patient = await Patient.findByPk(id)
-  console.log(payment)
-  if(patient){
-    patient.plan=payment.body.description
-    await patient.save();
-  }
-
- }
-    
-    res.sendStatus(200)
-    // res.sendStatus(200); // Always respond with 200 status code to MercadoPago
-  });
-
 
 //////////////////////////PRUEBA IMPLEMENTANDO ID DE CADA PRODUCTO///////////////
 
@@ -161,7 +72,7 @@ router.post('/notificate', async (req, res) => {
 
 //         back_urls:{ //serán las URLS a las cuales puede redirigirnos luego de la compra
 //             success: "http://localhost:3000",
-//             failure: "", 
+//             failure: "",
 //             pending: "", //si tengo que hacer un pago en efectivo, queda pendiente
 //         },
 //         binary_mode:true, //que solo se ´pueda hacer pago con tarjeta, no en efectivo
@@ -169,7 +80,7 @@ router.post('/notificate', async (req, res) => {
 //             name:payer.name,
 //             surname:payer.surname,
 //             email:payer.mail
-            
+
 //         },
 //         items: [  //será toda la info del producto o servicio a vender
 //           {
@@ -191,18 +102,6 @@ router.post('/notificate', async (req, res) => {
 //       .catch((error)=>res.status(400).send({error:error.message}))
 
 // });
-
-
-
-
-
-
-
-
-
-
-
-
 
 // router.get('/preapproval', (req, res) => {
 //     const url = 'https://api.mercadopago.com/preapproval?access_token=APP_USR-1603926138292006-022312-1bca62292458e611b39c481d80a84dbf-1315962785';
@@ -228,7 +127,7 @@ router.post('/notificate', async (req, res) => {
 //         status: 'authorized'
 //       })
 //     };
-  
+
 //     fetch(url, options)
 //       .then(response => {
 //         // handle the response
@@ -242,25 +141,6 @@ router.post('/notificate', async (req, res) => {
 //       });
 //   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // const producto={
 //     id:123456,
 //     title:"zapatilla",
@@ -270,26 +150,26 @@ router.post('/notificate', async (req, res) => {
 // router.use("/generate", (req,res)=>{
 //     // Crea un objeto de preferencia
 //     const usuarioId=req.query.usuarioId
-    // let preference = {
+// let preference = {
 
-    //     back_urls:{
-    //         success: "http://localhost:3001/success",
-    //         // failure: "http://localhost:3001/success",
-    //         // pending: "http://localhost:3001/success",
+//     back_urls:{
+//         success: "http://localhost:3001/success",
+//         // failure: "http://localhost:3001/success",
+//         // pending: "http://localhost:3001/success",
 
-    //     },
-    //     items: [
-    //       {
-    //         id:producto.id,
-    //         title: producto.id,
-    //         unit_price: producto.unit_price,
-    //         quantity: 1,
-    //         currency_id: "ARS",
-    //       },
-    //     ],
-    //     notification_url: `https://5606-152-170-158-127.sa.ngrok.io/notificate/${usuarioId}/${producto.id}`   //url a la que mercado pago nos va a notificar la compra
-    //   };
-      
+//     },
+//     items: [
+//       {
+//         id:producto.id,
+//         title: producto.id,
+//         unit_price: producto.unit_price,
+//         quantity: 1,
+//         currency_id: "ARS",
+//       },
+//     ],
+//     notification_url: `https://5606-152-170-158-127.sa.ngrok.io/notificate/${usuarioId}/${producto.id}`   //url a la que mercado pago nos va a notificar la compra
+//   };
+
 //       mercadopago.preferences
 //         .create(preference)
 //         .then(function (response) {
@@ -301,7 +181,6 @@ router.post('/notificate', async (req, res) => {
 //           console.log(error);
 //         });
 // });
-
 
 // router.use("/success", (req,res)=>{
 //     res.send("TODO SALIO BIEN")
