@@ -15,6 +15,8 @@ import { useEffect } from "react";
 
 
 const root = {
+  float: "right",
+  width: "83.4vw",
   padding: "1rem",
   marginLeft: "3rem",
   backgroundColor: "#f7f7f7",
