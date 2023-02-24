@@ -83,8 +83,7 @@ router.post("/producto", async (req,res)=>{
         payer:{
                 name:patient.name,
                 surname:patient.surname,
-                email:patient.mail
-                        
+                email:patient.mail     
                     },
         external_reference: prod.patientIdLocal,
          notification_url: `https://96cd-152-170-158-127.sa.ngrok.io/notificate`   //url a la que mercado pago nos va a notificar la compra
@@ -138,9 +137,9 @@ router.post('/notificate', async (req, res) => {
   const payment=await mercadopago.payment.findById(paymentId);
   const id=payment.body.external_reference
   const patient = await Patient.findByPk(id)
-  console.log(patient)
+  console.log(payment)
   if(patient){
-    patient.name="Agustin"
+    patient.plan=payment.body.description
     await patient.save();
   }
 

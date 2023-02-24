@@ -70,6 +70,9 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
+      plan:{
+        type:DataTypes.STRING,
+      }
     },
     {
       timestamps: false,
