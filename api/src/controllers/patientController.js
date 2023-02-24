@@ -8,6 +8,11 @@ const getPatient = async () => {
     return patientInfo;
 };
 
+const getPatientByMail = async (mail) => {
+    const patientByMail = await Patient.findOne({ where: { mail: mail } });
+    return patientByMail;
+};
+
 const getPatientActive = async () => {
     const allPatients = await getPatient();
     console.log('all' + allPatients);
@@ -28,5 +33,6 @@ const getPatientInactive = async () => {
 module.exports = {
     getPatient,
     getPatientActive,
-    getPatientInactive
+    getPatientInactive,
+    getPatientByMail
 }

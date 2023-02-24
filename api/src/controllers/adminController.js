@@ -6,6 +6,12 @@ const getAdmins = async () => {
   return infoAdmins;
 };
 
+const findByMail = async (mail) => {
+  const foundAdmin = await Admin.findOne({ where: { mail: mail } });
+  return foundAdmin;
+};
+
 module.exports = {
   getAdmins,
+  findByMail,
 };

@@ -48,7 +48,9 @@ router.get("/:id", async (req, res) => {
     const { id } = req.params;
     const allAdmin = getAdmins();
     if (id) {
-      const adminById = await Admin.findByPk(id);
+      const adminById = allAdmin.filter((e) => {
+        e.id === id;
+      });
       if (adminById) {
         res.status(200).send(adminById);
       } else {
