@@ -59,7 +59,7 @@ router.use("/blog", blogRouter);
 
 router.post("/producto", async (req,res)=>{
     const prod=req.body;
-    const patient= await Patient.findByPk(prod.patientIdLocal);
+    const patient= await Patient.findByPk(parseInt(prod.patientIdLocal));
     let preference = {
 
         back_urls:{ //serán las URLS a las cuales puede redirigirnos luego de la compra
@@ -87,7 +87,7 @@ router.post("/producto", async (req,res)=>{
                         
                     },
         external_reference: prod.patientIdLocal,
-         notification_url: `https://5606-152-170-158-127.sa.ngrok.io/notificate`   //url a la que mercado pago nos va a notificar la compra
+         notification_url: `https://96cd-152-170-158-127.sa.ngrok.io/notificate`   //url a la que mercado pago nos va a notificar la compra
       };
 
       mercadopago.preferences.create(preference)
@@ -97,16 +97,57 @@ router.post("/producto", async (req,res)=>{
 });
 
 
+
+//En la merchant_order tenemos el status (closed si se completó), array de payments allí se encuentra los pagos asociados a esa orden, payments.status diria approved, la fecha en la que se aprobó..tambien hay otra propiedad order_status: approved
+
+
 router.post('/notificate', async (req, res) => {
-    const payment = req.body;
-    if (payment.status === 'approved') {
-      const patient = await Patient.findByPk(payment.external_reference); // external_reference should contain the patient ID
-      if (patient) {
-        patient.someProperty = 'someValue'; // Modify the desired property of the patient model here
-        await patient.save();
-      }
-    }
-    res.sendStatus(200); // Always respond with 200 status code to MercadoPago
+
+    // if (payment.status === 'approved') {
+    //   console.log(payment.external_reference)
+    //   const id= payment.body.external_reference;
+    //   const patient = await Patient.findByPk(id); // external_reference should contain the patient ID
+    //   console.log(payment.external_reference)
+    //   if (patient) {
+    //     patient.name = 'Martin'; // Modify the desired property of the patient model here
+
+    //       await patient.save();
+      
+    // }
+
+    const {query}=req;
+
+    const topic= query.topic;
+
+   
+    // switch(topic){
+    //     case "payment":
+    //       const paymentId=query.id;
+    //        const payment=await mercadopago.payment.findById(paymentId);
+    //        console.log(payment.body.external_reference)
+    //        merchantOrder=await mercadopago.merchant_orders.findById(payment.body.order.id); //tendrá toda la info de todos los pagos actualizados
+           
+    //         break;
+    //     case "merchant_order":
+    //         const orderId=query.id;
+    //         merchantOrder = await mercadopago.merchant_orders.findById(orderId);
+    //         break;
+    // }
+ if(topic==="payment"){
+  const paymentId=query.id;
+  const payment=await mercadopago.payment.findById(paymentId);
+  const id=payment.body.external_reference
+  const patient = await Patient.findByPk(id)
+  console.log(patient)
+  if(patient){
+    patient.name="Agustin"
+    await patient.save();
+  }
+
+ }
+    
+    res.sendStatus(200)
+    // res.sendStatus(200); // Always respond with 200 status code to MercadoPago
   });
 
 
@@ -286,8 +327,8 @@ router.post('/notificate', async (req, res) => {
 
 //     var paidAmount=0;
 //     merchantOrder.body.payments.forEach(payment=>{
-//         if(payment.status==="aproved"){
-//             paidAmount+=payment.total_amount;
+//         if(payment.status==="approved"){
+//             paidAmount+=payment.transaction_amount;
 //         }
 //     });
 
