@@ -17,6 +17,11 @@ const getDoctor = async (id) => {
     return response;
 }
 
+const getDoctortByMail = async mail => {
+    const doctorByMail = await Doctor.findOne({ where: { mail: mail } });
+    return doctorByMail;
+};
+
 const postDoctor = async (name, lastName, mail, password, birthdate, image, location, dni, phone, speciality, license, cv, clinicMail) => {
     console.log("In the controlller post");
     try {
@@ -46,6 +51,7 @@ module.exports = {
     getDoctor,
     postDoctor,
     putDoctor,
-    findByMail
+    findByMail,
+    getDoctortByMail
     }
 
