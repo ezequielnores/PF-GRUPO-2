@@ -41,6 +41,12 @@ const putDoctor = async (id, values) => {
     return doctor;
 }
 
+const setDoctorActive = async (id) => {
+    const doctorToSetActive = await Doctor.findByPk(id);
+    await Doctor.update({ active: !doctorToSetActive.active }, { where: { id: id } });
+    return doctorToSetActive;
+};
+
 const findByMail = async (mail) => {
     const doctor = await Doctor.findOne({where: {mail: mail}})
     return doctor
@@ -52,6 +58,7 @@ module.exports = {
     postDoctor,
     putDoctor,
     findByMail,
-    getDoctortByMail
+    getDoctortByMail,
+    setDoctorActive
     }
 
