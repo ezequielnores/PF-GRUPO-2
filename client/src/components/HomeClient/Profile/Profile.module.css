@@ -1,0 +1,40 @@
+.container{
+    border: 4px solid #307196;
+    border-radius: 5%;
+    display: flex;
+    margin-left: 20%;
+    width: fit-content;
+    padding: 15px;
+    
+}
+
+.container1{
+
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: flex-start;
+    width: fit-content;
+    margin-right: 55px;
+}
+
+
+.image{
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
+
+.nombre{
+    color: #307196;
+    height: fit-content;
+
+}
+
+
+.grafica{
+   height: fit-content;
+    width: fit-content;
+    margin-top: 50px;
+    margin-left: 50px;
+}
