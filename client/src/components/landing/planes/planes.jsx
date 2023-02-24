@@ -3,6 +3,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 import { padreTarjeta } from "./planess";
+import axios from "axios";
 const hijoTarjeta = {
   display: "flex",
   flexDirection: "row",
@@ -21,6 +22,14 @@ const Planes = () => {
       <div style={hijoTarjeta}>
         <Card style={tarjetitas}>
           <div style={{ width: "100%" }}>
+
+            <button onClick={()=>{
+              axios.post("http://localhost:3001/payment",{title:"iCare360",price:3000,description:"4 Consultations with specialists"})
+              .then((res)=>window.location.href=res.data.response.body.init_point) //ruta que me lleva al pago del producto
+            }}>
+              Comprar
+            </button>
+
             <Typography
               style={{
                 backgroundColor: "#307196",
