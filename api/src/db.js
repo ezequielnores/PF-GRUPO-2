@@ -5,7 +5,7 @@ const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 
 const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/icare`,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/iCare`,
   {
     logging: false, // set to console.log to see the raw SQL queries
     native: false, // lets Sequelize know we can use pg-native for ~30% more speed
@@ -47,7 +47,8 @@ const {
   Incomes,
   Comments,
   Admin,
-  Urgency
+  Urgency,
+  PatientPlan,
 } = sequelize.models;
 
 // Aca vendrian las relaciones
@@ -76,8 +77,10 @@ Plans.belongsToMany(Patient, { through: "PlansPatient" });
 Patient.hasMany(Urgency, { as: "urgency" });
 Urgency.belongsTo(Patient);
 
+Patient.hasOne(PatientPlan);
+PatientPlan.belongsTo(Patient);
+
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize, // para importart la conexión { conn } = require('./db.js');
 };
-
