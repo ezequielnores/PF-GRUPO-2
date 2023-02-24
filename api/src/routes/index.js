@@ -85,8 +85,9 @@ router.post("/producto", async (req,res)=>{
                 surname:patient.surname,
                 email:patient.mail
                         
-                    }
-        // notification_url: `https://5606-152-170-158-127.sa.ngrok.io/notificate`   //url a la que mercado pago nos va a notificar la compra
+                    },
+        external_reference: prod.patientIdLocal,
+         notification_url: `https://5606-152-170-158-127.sa.ngrok.io/notificate`   //url a la que mercado pago nos va a notificar la compra
       };
 
       mercadopago.preferences.create(preference)
@@ -94,6 +95,19 @@ router.post("/producto", async (req,res)=>{
       .catch((error)=>res.status(400).send({error:error.message}))
      
 });
+
+
+router.post('/notificate', async (req, res) => {
+    const payment = req.body;
+    if (payment.status === 'approved') {
+      const patient = await Patient.findByPk(payment.external_reference); // external_reference should contain the patient ID
+      if (patient) {
+        patient.someProperty = 'someValue'; // Modify the desired property of the patient model here
+        await patient.save();
+      }
+    }
+    res.sendStatus(200); // Always respond with 200 status code to MercadoPago
+  });
 
 
 //////////////////////////PRUEBA IMPLEMENTANDO ID DE CADA PRODUCTO///////////////
