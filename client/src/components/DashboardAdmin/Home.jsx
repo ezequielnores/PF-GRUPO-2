@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { adminGetDetail } from "../../redux/reducers/adminReducer";
 import swal from "sweetalert";
 import logo from "../../assets/logoiCare.png";
+import ManagePlans from "./ManagePlans/ManagePlans";
 import {
   patientGetAll,
   patientSetActive,
@@ -13,6 +14,7 @@ import {
   doctorUpdate,
 } from "../../redux/reducers/doctorReducer";
 import { commentsGetAll } from "../../redux/reducers/commentsReducer";
+import { plansGetAll } from "../../redux/reducers/plansReducer.js";
 import ToManage from "./ToManage";
 import { Button, Typography } from "@mui/material";
 //styles
@@ -36,9 +38,7 @@ const casiContainer = {
   display: "flex",
   flexDirection: "row",
 };
-const belowNav = {
-  marginTop: "2rem",
-};
+const belowNav = {};
 const Home = (props) => {
   const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin.detail);
@@ -52,6 +52,7 @@ const Home = (props) => {
     doctors: false,
     comments: false,
     frequentQuestions: false,
+    plans: false,
   });
 
   const handleClickPatients = () => {
@@ -91,6 +92,16 @@ const Home = (props) => {
       doctors: false,
       comments: false,
       frequentQuestions: true,
+    });
+  };
+  const handleClickPlans = () => {
+    dispatch(plansGetAll());
+    setSelected({
+      patients: false,
+      doctors: false,
+      comments: false,
+      frequentQuestions: false,
+      plans: true,
     });
   };
   const handleLogout = (e) => {
@@ -139,7 +150,7 @@ const Home = (props) => {
           }}
         />
         <div style={navBar}>
-          <div style={{ marginLeft: "29rem", display: "flex", gap: "1rem" }}>
+          <div style={{ marginLeft: "25rem", display: "flex", gap: "1rem" }}>
             <Button
               variant="contained"
               onClick={handleClickPatients}
@@ -167,6 +178,13 @@ const Home = (props) => {
               style={{ backgroundColor: "#307196" }}
             >
               Manage Frequent Questions
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleClickPlans}
+              style={{ backgroundColor: "#307196" }}
+            >
+              Manage Plans
             </Button>
           </div>
           <div style={{ paddingRight: "2rem" }}>
@@ -210,6 +228,15 @@ const Home = (props) => {
             toRenderComments={selected.comments}
           />
         )}
+        {selected.frequentQuestions && (
+          <ToManage
+            // entities={frequentQuestions}
+            // update={frequentQuestions}
+            toRenderFrequentQuestions={selected.frequentQuestions}
+          />
+        )}
+
+        {selected.plans && <ManagePlans />}
       </div>
     </div>
   );
