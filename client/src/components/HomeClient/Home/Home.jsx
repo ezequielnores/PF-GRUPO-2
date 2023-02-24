@@ -1,4 +1,4 @@
-import SideBar from "../SideBar/SideBar";
+import SideBar from "../sideBar/sideBar";
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
@@ -98,9 +98,10 @@ const Home = () => {
           </div>
 
           <Avatar sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}>
-            <img src={patient?.photo} alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
-            /> 
-            
+            <img
+              src={patient?.photo}
+              alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
+            />
           </Avatar>
         </Stack>
       </div>
@@ -131,7 +132,9 @@ const Home = () => {
         {location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />}
         {location.pathname.endsWith("/HomeClient/Faq") && <Faq />}
         {location.pathname.endsWith("/HomeClient/Register") && <Register />}
-        {location.pathname.endsWith("/HomeClient/Suscriptions") && <Suscriptions />}
+        {location.pathname.endsWith("/HomeClient/Suscriptions") && (
+          <Suscriptions />
+        )}
       </div>
     </div>
   );
