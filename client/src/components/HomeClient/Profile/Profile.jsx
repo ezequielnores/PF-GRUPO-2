@@ -287,7 +287,7 @@ const Profile = () => {
                 Plan:
               </Item>
               <Item sx={{ marginLeft: 3, color: "black" }}>
-                {patientDetail?.plan}{" "}
+                {patientDetail?.PatientPlan?.name}{" "}
               </Item>
             </div>
           </Stack>

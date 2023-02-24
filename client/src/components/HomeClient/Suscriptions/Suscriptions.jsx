@@ -120,14 +120,15 @@ const Subscriptions = () => {
 
   const handleBuyPlan = (plan) => {
     axios
-      .post('http://localhost:3001/producto', { title: plan.name, price: plan.price, description: plan.detail, patientIdLocal })
+      .post('http://localhost:3001/payments/producto', { title: plan.name, price: plan.price, description: plan.detail, patientIdLocal, planId: plan.id })
       .then((res) => (window.location.href = res.data.response.body.init_point)); //ruta que me lleva al pago del producto
   };
 
   const renderPlanCard = (plan) => {
     return (
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
-        <Card className={`${classes.card} ${plan.name === 'iCare full' ? classes.cardGold : plan.name === 'iCare simple' ? classes.cardSimple : classes.cardBlue}`}>
+     <Card className={`${classes.card} ${plan.name == 'iCare full' ? classes.cardGold : plan.name == 'iCare simple' ? '' : classes.cardBlue}`}>
+
 
           <CardContent className={classes.cardContent}>
             <Typography variant="h5" component="h2" className={classes.planTitle}>

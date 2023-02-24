@@ -95,7 +95,7 @@ const Home = () => {
                 color: "gray",
               }}
             >
-              {patient.plan ? patient.plan : "Without plan"}
+              {patient?.PatientPlan?.name ? patient?.PatientPlan?.name : "Without plan"}
             </p>
           </div>
 
