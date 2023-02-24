@@ -1,36 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Search from "./Search";
 
 const ToManage = (props) => {
   const dispatch = useDispatch();
-  const [patient, setPatient] = useState({});
-  const [doctor, setDoctor] = useState({});
+  const doctor = useSelector(state => state.doctor.detail);
   // const [active, setActive] = useState(false);
-  const [input, setInput] = useState({
-    patientMail: "",
-    doctorMail: "",
-    comment: "",
-    ask: "",
-    answer: "",
-  });
 
-  const handleInputChange = (event) => {
-    event.preventDefault();
-    setInput({
-      input,
-      [event.name]: event.value,
-    });
-  };
-
-  const handleSubmitPatient = (event) => {
-    event.preventDefault();
-    setPatient(props.entities.find((p) => p.mail === input.patientMail));
-  };
-
-  const handleSubmitDoctor = (event) => {
-    event.preventDefault();
-    setDoctor(props.entities.find((d) => d.mail === input.doctorMail));
-  };
+  const handleSearchDoctor = () => {};
 
   // const handlerActiveTrue = (id) => {
   //   setActive(true);
@@ -63,42 +40,7 @@ const ToManage = (props) => {
                 </div>
               );
             })}
-
-          <form action="">
-            <label htmlFor="">Find patient by mail</label>
-            <input
-              type="text"
-              name="patientMail"
-              value={input.patientMail}
-              onChange={handleInputChange}
-            />
-            <button onSubmit={handleSubmitPatient}>Find patient</button>
-          </form>
-
-          {patient && (
-            <div>
-              <p>Patient founded by mail:</p>
-              <img src={patient.image} alt="patient image" />
-              <p>Name: {patient.name}</p>
-              <p>Surname: {patient.surname}</p>
-              <p>Mail: {patient.mail}</p>
-              <p>State Active: {patient.active ? "Alta" : "Baja"}</p>
-              {patient.active && (
-                <button
-                  onClick={() => dispatch(props.updateActive(patient.id))}
-                >
-                  Unsuscribe
-                </button>
-              )}
-              {!patient.active && (
-                <button
-                  onClick={() => dispatch(props.updateActive(patient.id))}
-                >
-                  Discharge
-                </button>
-              )}
-            </div>
-          )}
+            <Search title={"Patient"} updateActive={props.updateActive}/>
         </div>
       )}
 
@@ -127,16 +69,14 @@ const ToManage = (props) => {
               );
             })}
 
-          <form action="">
             <label htmlFor="">Find doctor by mail</label>
             <input
               type="text"
               name="doctorMail"
-              value={input.doctorMail}
-              onChange={handleInputChange}
+              value={null}
+              onChange={null}
             />
-            <button onSubmit={handleSubmitDoctor}>Find doctor</button>
-          </form>
+            <button onClick={handleSearchDoctor}>Find doctor</button>
 
           {doctor && (
             <div>

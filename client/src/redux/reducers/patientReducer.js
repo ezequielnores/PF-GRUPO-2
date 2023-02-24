@@ -15,7 +15,7 @@ export const getPatientByMail = createAsyncThunk(
   "patient/getPatientByMail",
   async (data, thunkAPI) => {
     const response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/patient/patientByMail`, data
+      `${process.env.REACT_APP_BACKEND_URL}/patient/patientByMail?mail=${data.mail}`
     );
     return response.data;
   }

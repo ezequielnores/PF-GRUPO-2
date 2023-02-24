@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/patientByMail", async (req, res) => {
-  const { mail } = req.body;
+  const { mail } = req.query;
 
   try {
     if (!mail) throw new Error("El mail esta indefinido.");
