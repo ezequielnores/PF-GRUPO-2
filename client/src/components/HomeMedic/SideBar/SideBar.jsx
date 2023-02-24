@@ -51,7 +51,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                     ) : (
                       <AccountCircleIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Profile
+                    <p>Profile</p>
                   </div>
                 ) : path.endsWith("/HomeMedic/Profile") ? (
                   <AccountCircleIcon />
@@ -69,7 +69,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                     ) : (
                       <CalendarMonthIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    My Appointments
+                    <p>My Appointments</p>
                   </div>
                 ) : path.endsWith("/HomeMedic/Agenda") ? (
                   <CalendarMonthIcon />
@@ -87,7 +87,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                     ) : (
                       <MedicalServicesIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Urgency
+                    <p>Urgency</p>
                   </div>
                 ) : path.endsWith("/HomeMedic/MedicalEmergency") ? (
                   <MedicalServicesIcon />
@@ -105,7 +105,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                     ) : (
                       <RateReviewIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Reviews
+                    <p>Reviews</p>
                   </div>
                 ) : path.endsWith("/HomeMedic/Reviews") ? (
                   <RateReviewIcon />
@@ -125,12 +125,12 @@ const SideBar = ({ open, handleOpen, path }) => {
           >
             <Link>
               {open ? (
-                <div className={style.divbutton} style={{ color: "white" }}>
+                <div className={style.divbutton} style={{ color: "white", height: "3vh" }}>
                   <LogoutIcon />
                   Logout
                 </div>
               ) : (
-                <LogoutIcon style={{ color: "white" }} />
+                <LogoutIcon style={{ color: "white", alignContent: "center" }} />
               )}
             </Link>
           </button>
