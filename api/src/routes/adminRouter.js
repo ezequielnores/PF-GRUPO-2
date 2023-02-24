@@ -2,6 +2,7 @@ const { Router } = require("express");
 const axios = require("axios");
 const { getAdmins } = require("../controllers/adminController");
 const { Admin } = require("../db.js");
+const { findByMail } = require("../controllers/adminController");
 
 const router = Router();
 
@@ -139,6 +140,23 @@ router.post("/login", async (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(404).send("Incorrect login information");
+    });
+});
+
+router.post("/login", async (req, res) => {
+  const { mail, password } = req.body;
+  await findByMail(mail)
+    .then((response) => {
+      if (response.password == password) {
+        delete response.password;
+        res.status(200).json(response);
+      } else {
+        res.status(200).send("Incorrect password");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(200).send("Incorrect login information");
     });
 });
 
