@@ -73,7 +73,7 @@ const MedicForm = () => {
     user_lastName: "",
     user_mail: "",
     user_password: "",
-    user_clinicMail: "",
+    // user_clinicMail: "",
     user_phone: "",
     user_dni: "",
     user_license: "",
@@ -164,9 +164,9 @@ const MedicForm = () => {
       errors.mail = "Please enter valid email";
     }
 
-    if (!isEmail(value.clinicMail)) {
-      errors.clinicMail = "Please enter valid email";
-    }
+    // if (!isEmail(value.clinicMail)) {
+    //   errors.clinicMail = "Please enter valid email";
+    // }
 
     if (!value.password) {
       errors.password = "Please enter a password"

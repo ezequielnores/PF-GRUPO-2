@@ -29,7 +29,7 @@ const SideBar = ({ open, handleOpen, path }) => {
         if (willDelete) {
           signOut(auth).then(()=>{
           localStorage.clear();
-          window.location.href = "http://localhost:3000/";
+          window.location.href = "https://pf-grupo-2.vercel.app/";
           }).catch((error) => {
             console.log({Error: error.message});
           })
