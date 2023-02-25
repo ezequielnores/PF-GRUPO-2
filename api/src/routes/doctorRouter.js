@@ -5,6 +5,8 @@ const {
   postDoctor,
   putDoctor,
   findByMail,
+  getDoctortByMail,
+  setDoctorActive
 } = require("../controllers/doctorController");
 
 const router = Router();
@@ -28,6 +30,21 @@ router.get("/:id", async (req, res) => {
     res.status(200).send(doctor);
   } catch (error) {
     res.status(404).send("This doctor is not in Data Base");
+  }
+});
+
+router.get("/doctorByMail", async (req, res) => {
+  const { mail } = req.query;
+
+  try {
+    if (!mail) throw new Error("The mail is undefined.");
+
+    const doctorByMail = await getDoctortByMail(mail);
+    if (!doctorByMail) throw new Error(`Not found a doctor with mail ${mail} in the BDD.`);
+
+    res.status(200).json(doctorByMail);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 });
 
@@ -79,6 +96,21 @@ router.put("/update/:id", async (req, res) => {
     res.status(200).send(doctor);
   } catch (error) {
     res.status(400).send("The doctor was not updated");
+  }
+});
+
+router.put("/setActive/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!id) throw new Error("The id is undefined.");
+
+    const doctorActiveUpdated = await setDoctorActive(id);
+    if (!doctorActiveUpdated) throw new Error(`Not found a doctor with id ${id} in the BDD.`);
+
+    res.status(200).json(doctorActiveUpdated);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 });
 

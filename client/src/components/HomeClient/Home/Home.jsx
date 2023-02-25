@@ -1,5 +1,4 @@
-
-import SideBar from "../SideBar/sideBar"
+import SideBar from "../sideBar/sideBar";
 
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
@@ -101,9 +100,10 @@ const Home = () => {
           </div>
 
           <Avatar sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}>
-            <img src={patient?.photo} alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
-            /> 
-            
+            <img
+              src={patient?.photo}
+              alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
+            />
           </Avatar>
         </Stack>
       </div>
