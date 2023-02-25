@@ -93,7 +93,6 @@ const FormLoginClient = () => {
       }
     } catch (error) {
       console.log({Error: error.message});
-      alert('Error: ' + error)
     }
   }
   //primera carga
