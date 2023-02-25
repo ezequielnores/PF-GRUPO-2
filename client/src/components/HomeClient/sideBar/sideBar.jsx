@@ -13,20 +13,29 @@ import ForumIcon from "@mui/icons-material/Forum";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import LogoutIcon from "@mui/icons-material/Logout";
 import swal from "sweetalert";
+//Firebase
+import { signOut } from "firebase/auth";
+import { auth } from '../../../index';
+
 const SideBar = ({ open, handleOpen, path }) => {
-  const handleLogout = () => {
-    swal({
-      title: "Are you sure you want to log out?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        localStorage.clear();
-        window.location.href = "http://localhost:3000/";
-      }
-    });
+    const handleLogout = async () => {
+      swal({
+        title: "Are you sure you want to log out?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          signOut(auth).then(()=>{
+          localStorage.clear();
+          window.location.href = "http://localhost:3000/";
+          }).catch((error) => {
+            console.log({Error: error.message});
+          })
+        }
+      });
   };
+
   return (
     <div>
       <div style={{ position: "fixed", left: "0", top: "9rem" }}>
