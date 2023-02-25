@@ -9,6 +9,9 @@ import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import LogoutIcon from "@mui/icons-material/Logout";
 import swal from "sweetalert";
+//Firebase
+import { signOut } from "firebase/auth";
+import { auth } from '../../../index';
 
 const SideBar = ({ open, handleOpen, path }) => {
   //delete id de localstorage, deslogeo
@@ -21,8 +24,10 @@ const SideBar = ({ open, handleOpen, path }) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        localStorage.removeItem("idMedic");
-        window.location.href = "http://localhost:3000/";
+        signOut(auth).then(() =>{
+          localStorage.removeItem("idMedic");
+          window.location.href = "https://pf-grupo-2.vercel.app/";
+        })
       }
     });
   };

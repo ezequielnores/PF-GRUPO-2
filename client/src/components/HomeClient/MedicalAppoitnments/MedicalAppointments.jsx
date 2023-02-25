@@ -32,7 +32,7 @@ const MedicalAppointments = () => {
   const [modalAbierto, setModalAbierto] = useState(false);
   const patientIdLocal = localStorage.getItem("id");
   const [patientId, setDoctorId] = useState(patientIdLocal.toString());
-  const [name, setDoctor] = useState({ doctorId: "", name: "" });
+  const [name, setDoctor] = useState({ doctorId: "", name: "" , lastName:""});
   const [type, setSelectedType] = useState("");
 
   const ubication = "avellaneda";
@@ -64,7 +64,7 @@ const MedicalAppointments = () => {
   const handleSelectName = (event) => {
     const id = event.target.value;
     const doctor = doctors.find((e) => e.id === id);
-    setDoctor({ doctorId: id, name: doctor.name });
+    setDoctor({ doctorId: id, name: doctor.name, lastName:doctor.lastName });
   };
 
   const handleSelectDate = (e) => {
@@ -224,7 +224,7 @@ const MedicalAppointments = () => {
               >
                 {filteredDoctors.map((doctor) => (
                   <MenuItem key={doctor.id} value={doctor.id} name="name">
-                    {doctor.name}
+                    {doctor.name} {doctor.lastName}
                   </MenuItem>
                 ))}
               </Select>
@@ -308,7 +308,7 @@ const MedicalAppointments = () => {
                     Doctor's name:
                   </Typography>
                   <Typography variant="body1" sx={{ mb: 2 }}>
-                    {name.name}
+                    {name.name} {name.lastName}
                   </Typography>
                 </Grid>
               </Grid>

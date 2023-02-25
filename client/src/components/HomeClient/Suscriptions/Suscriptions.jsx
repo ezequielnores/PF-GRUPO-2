@@ -127,7 +127,7 @@ const Subscriptions = () => {
 
   const handleBuyPlan = (plan) => {
     axios
-      .post("http://localhost:3001/payments/producto", {
+      .post("https://pf-grupo-2-production.up.railway.app/payments/producto", {
         title: plan.name,
         price: plan.price,
         description: plan.detail,
