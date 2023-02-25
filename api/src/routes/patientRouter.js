@@ -2,6 +2,7 @@ const { Router } = require("express");
 const axios = require("axios");
 const { Op } = require("sequelize");
 const { cloudinary } = require("../utils/cloudinary");
+const {PatientPlan} = require("../db");
 
 const {
   getPatient,
@@ -107,7 +108,7 @@ router.get("/:id", async (req, res) => {
     const getById = await getPatient();
 
     if (id) {
-      const patientById = await Patient.findByPk(id);
+      const patientById = await Patient.findByPk(id, {include: [{ model: PatientPlan }]});
       if (patientById) {
         res.status(200).json(patientById);
       } else {

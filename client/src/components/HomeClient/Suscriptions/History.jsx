@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   card: {
-    width: "100%",
-    height: "100%",
+    width: "400px", // Se establece un ancho fijo para la card
+    height: 400,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 8,
     overflow: "hidden",
     backgroundColor: "#ffffff",
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
   },
   cardContent: {
     display: "flex",
@@ -67,26 +67,30 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   planTitle: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(7),
     fontWeight: "bold",
     color: "#333333",
     textAlign: "center",
+    fontSize: 35,
   },
   planPrice: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(5),
     fontWeight: "bold",
     color: "#1976d2",
     textAlign: "center",
+    fontSize: 30,
   },
   planDuration: {
     marginBottom: theme.spacing(2),
     color: "#333333",
     textAlign: "center",
+    fontSize: 20,
   },
   planDescription: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(5),
     color: "#333333",
     textAlign: "center",
+    fontSize: 20,
   },
   cardGold: {
     border: "1px solid #ffd700",
@@ -112,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Subscriptions = () => {
+const History = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const plans = useSelector((state) => state.plans.listAll);
@@ -125,22 +129,8 @@ const Subscriptions = () => {
   }, []);
 
   const filteredPlans = plans.filter(
-    (plan) => plan.name !== patientDetail.PatientPlan?.name
+    (plan) => plan.name === patientDetail.PatientPlan?.name
   );
-
-  const handleBuyPlan = (plan) => {
-    axios
-      .post("http://localhost:3001/payments/producto", {
-        title: plan.name,
-        price: plan.price,
-        description: plan.detail,
-        patientIdLocal,
-        planId: plan.id,
-      })
-      .then(
-        (res) => (window.location.href = res.data.response.body.init_point)
-      ); //ruta que me lleva al pago del producto
-  };
 
   const renderPlanCard = (plan) => {
     return (
@@ -156,8 +146,9 @@ const Subscriptions = () => {
           <CardContent className={classes.cardContent}>
             <Typography
               variant='h5'
-              component='h2'
-              className={classes.planTitle}>
+              component='h1'
+              className={classes.planTitle}
+              sx={{ fontSize: 67 }}>
               {plan.name}
             </Typography>
             <Typography variant='h6' className={classes.planPrice}>
@@ -170,43 +161,53 @@ const Subscriptions = () => {
               {plan.detail}
             </Typography>
           </CardContent>
-          <CardActions className={classes.cardActions}>
-            <Button
-              variant='contained'
-              size='large'
-              className={classes.buyButton}
-              onClick={() => handleBuyPlan(plan)}>
-              Obtain
-            </Button>
-          </CardActions>
         </Card>
+        <Button
+          variant='contained'
+          color='primary'
+          component={Link}
+          to='/HomeClient/Suscriptions'
+          sx={{ marginLeft: 60 }}>
+          Back
+        </Button>
       </Grid>
     );
   };
 
   return (
     <div className={classes.root}>
-      <Typography variant='h4' component='h1' className={classes.title}>
-        Subscription plans
+      <Typography
+        variant='h4'
+        component='h1'
+        className={classes.title}
+        sx={{ fontSize: 50 }}>
+        Current plan
       </Typography>
       <div className={classes.cardContainer}>
         <Grid container spacing={3}>
-          {patientDetail.PatientPlan
-            ? filteredPlans.map(renderPlanCard)
-            : plans.map(renderPlanCard)}
+          {patientDetail.PatientPlan ? (
+            filteredPlans.map(renderPlanCard)
+          ) : (
+            <div>
+              <h3>
+                You do not have a plan associated with your account, please go
+                back and associate with one
+              </h3>
+              <Button
+                variant='contained'
+                color='primary'
+                component={Link}
+                to='/HomeClient/Suscriptions'
+                sx={{ marginLeft: 60 }}>
+                Back
+              </Button>
+            </div>
+          )}
         </Grid>
       </div>
-      <div className={classes.cardActions} style={{ marginTop: "10%" }}>
-        <Button
-          variant='contained'
-          color='primary'
-          component={Link}
-          to='/HomeClient/Suscriptions/history'>
-          Cuurent plan
-        </Button>
-      </div>
+      <div className={classes.cardActions} style={{ marginTop: "10%" }}></div>
     </div>
   );
 };
 
-export default Subscriptions;
+export default History;
