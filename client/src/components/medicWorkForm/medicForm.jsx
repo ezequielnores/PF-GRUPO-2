@@ -16,6 +16,9 @@ import { IconButton, InputAdornment } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { doctorAdd } from "../../redux/reducers/doctorReducer";
 
+//Auth0
+
+
 //style
 const divPadre = {
   display: "flex",
@@ -60,7 +63,7 @@ const finalinput = {
 
 const MedicForm = () => {
   const dispatch = useDispatch();
-
+/*   const {createUser} = new ManagementClient() */
   const [successForm, setSuccessForm] = useState(null);
   const [imageInputValue, setImageInputValue] = useState("");
   const [cvInputValue, setCvInputValue] = useState("");
@@ -198,6 +201,8 @@ const MedicForm = () => {
     console.log(errors);
     if (Object.values(errors).every((item) => item === "")) {
       try {
+
+
         dispatch(doctorAdd({ ...value }))
           .then((res) => {
             if (res.type === "doctor/addById/fulfilled") {
