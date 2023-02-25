@@ -14,24 +14,16 @@ import store from "./redux/store";
 //firebase
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-const { 
-  FIREBASE_APIKEY, 
-  FIREBASE_AUTH_DOMAIN, 
-  FIREBASE_PROJECT_ID, 
-  FIREBASE_STORAGE_BUCKET, 
-  FIREBASE_MESSAGING_SENDER_ID, 
-  FIREBASE_APP_ID, 
-  FIREBASE_MEASUREMENT_ID
- } = process.env
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCu4buN2Go_VtQpl57-mFU1NVl_eAFzWAY",
-  authDomain: `${FIREBASE_AUTH_DOMAIN}`,
-  projectId: `${FIREBASE_PROJECT_ID}`,
-  storageBucket: `${FIREBASE_STORAGE_BUCKET}`,
-  messagingSenderId: `${FIREBASE_MESSAGING_SENDER_ID}`,
-  appId: `${FIREBASE_APP_ID}`,
-  measurementId: `${FIREBASE_MEASUREMENT_ID}`
+  authDomain: "icare-d118d.firebaseapp.com",
+  projectId: "icare-d118d",
+  storageBucket: "icare-d118d.appspot.com",
+  messagingSenderId: "803208479245",
+  appId: "1:803208479245:web:699aeea266fb1a5c364b44",
+  measurementId: "G-MGW2GBYERH"
 };
 
 const app = initializeApp(firebaseConfig);
