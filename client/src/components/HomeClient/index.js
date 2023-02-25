@@ -9,4 +9,5 @@ import Urgency from "./Urgency/Urgency";
 import HomeView from "./HomeView/HomeView";
 import ProfileUpdate from "./Profile/ProfileUpdate"
 import Suscriptions from "./Suscriptions/Suscriptions";
-export { Faq, HomeClient, MedicalHistory, MedicalAppointments, MyAppointments, Profile, Reviews, Urgency, HomeView,ProfileUpdate, Suscriptions};
+import History from "./Suscriptions/History"
+export { Faq, HomeClient, MedicalHistory, MedicalAppointments, MyAppointments, Profile, Reviews, Urgency, HomeView,ProfileUpdate, Suscriptions,History};
