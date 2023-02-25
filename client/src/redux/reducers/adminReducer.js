@@ -68,10 +68,9 @@ const adminSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(
-        adminGetDetail.pending,
-        (state, action) => (state.status = "loading")
-      )
+      .addCase(adminGetDetail.pending, (state, action) => {
+        state.status = "loading";
+      })
       .addCase(adminGetDetail.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.detail = action.payload;

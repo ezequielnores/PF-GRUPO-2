@@ -58,7 +58,7 @@ module.exports = (sequelize) => {
       dni: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       phone: {
         type: DataTypes.INTEGER,
@@ -69,6 +69,9 @@ module.exports = (sequelize) => {
       active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
+      },
+      plan:{
+        type:DataTypes.STRING,
       }
     },
     {

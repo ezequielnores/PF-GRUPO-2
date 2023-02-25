@@ -1,5 +1,4 @@
-
-import SideBar from "../sideBar/sideBar"
+import SideBar from "../sideBar/sideBar";
 
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
@@ -18,6 +17,7 @@ import {
   HomeView,
   ProfileUpdate,
   Suscriptions,
+  History
 } from "../index";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -95,14 +95,15 @@ const Home = () => {
                 color: "gray",
               }}
             >
-              {patient.plan ? patient.plan : "Without plan"}
+              {patient?.PatientPlan?.name ? patient?.PatientPlan?.name : "Without plan"}
             </p>
           </div>
 
           <Avatar sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}>
-            <img src={patient?.photo} alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
-            /> 
-            
+            <img
+              src={patient?.photo}
+              alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
+            />
           </Avatar>
         </Stack>
       </div>
@@ -134,6 +135,7 @@ const Home = () => {
         {location.pathname.endsWith("/HomeClient/Faq") && <Faq />}
         {location.pathname.endsWith("/HomeClient/Register") && <Register />}
         {location.pathname.endsWith("/HomeClient/Suscriptions") && <Suscriptions />}
+        {location.pathname.endsWith("/HomeClient/Suscriptions/history") && <History/>}
       </div>
     </div>
   );
