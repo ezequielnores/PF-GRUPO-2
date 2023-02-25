@@ -11,7 +11,7 @@ router.post("/producto", async (req, res) => {
   let preference = {
     back_urls: {
       //serán las URLS a las cuales puede redirigirnos luego de la compra
-      success: "http://localhost:3000/HomeClient/Profile",
+      success: "https://pf-grupo-2.vercel.app/HomeClient/Profile",
       failure: "",
       pending: "", //si tengo que hacer un pago en efectivo, queda pendiente
     },
@@ -37,8 +37,9 @@ router.post("/producto", async (req, res) => {
     metadata: { planId: prod.id },
     external_reference: prod.patientIdLocal,
 
-    notification_url: `https://96cd-152-170-158-127.sa.ngrok.io/payments/notificate`, //url a la que mercado pago nos va a notificar la compra
+    notification_url: `https://pf-grupo-2-production.up.railway.app/payments/notificate`, //url a la que mercado pago nos va a notificar la compra
   };
+  //`https://e738-152-170-158-127.sa.ngrok.io/payments/notificate`
 
   mercadopago.preferences
     .create(preference)

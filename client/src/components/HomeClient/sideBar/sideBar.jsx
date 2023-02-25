@@ -24,7 +24,7 @@ const SideBar = ({ open, handleOpen, path }) => {
     }).then((willDelete) => {
       if (willDelete) {
         localStorage.clear();
-        window.location.href = "http://localhost:3000/";
+        window.location.href = "https://pf-grupo-2.vercel.app/";
       }
     });
   };
