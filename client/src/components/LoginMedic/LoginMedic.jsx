@@ -8,6 +8,9 @@ import { Alert } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { docrtorGetAll } from "../../redux/reducers/doctorReducer";
+//Firebase
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../index';
 //styles
 const divPadre = {
   display: "flex",
@@ -67,18 +70,29 @@ const FormLoginMedic = () => {
   console.log(doctores);
 
   //SUBMIT
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const authenticatedDoctor = doctores.find((doctor) => {
-      return doctor.mail === info.mail && doctor.password === info.password;
-    });
-    if (authenticatedDoctor) {
-      const id = authenticatedDoctor.id;
-      localStorage.setItem("idMedic", id);
-      navigate("/HomeMedic/Profile");
-    } else {
-      setSuccessLogin("error");
-    }
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        info.mail,
+        info.password
+      );
+      const user = userCredential.user;
+      console.log('medico logeado: ' + user.email);
+      const authenticatedDoctor = doctores.find((doctor) => {
+        return doctor.mail === info.mail && doctor.password === info.password;
+      });
+      if (authenticatedDoctor) {
+        const id = authenticatedDoctor.id;
+        localStorage.setItem("idMedic", id);
+        navigate("/HomeMedic/Profile");
+      } else {
+        setSuccessLogin("error");
+      }
+  } catch(error){
+    console.log({ Error: error.message });
+  }
   };
   //primera carga
   useEffect(() => {
