@@ -2,6 +2,25 @@ const { Plans } = require("../db.js");
 
 const Controller = {
   getPlans: async (req, res) => {
+    await Plans.findAll()
+      .then((response) => {
+        res.status(200).json(response);
+      })
+      .catch((err) => {
+        res.status(400).send(err.message);
+      });
+  },
+  getPlanId: async (req, res) => {
+    const { id } = req.params;
+    await Plans.findByPk(id)
+      .then((response) => {
+        res.status(200).json(response);
+      })
+      .catch((err) => {
+        res.status(400).send(err.message);
+      });
+  },
+  getPlansActive: async (req, res) => {
     await Plans.findAll({
       where: {
         state: true,
@@ -42,6 +61,15 @@ const Controller = {
       });
   },
   deletePlan: async (req, res) => {
+    const { id } = req.params;
+    await Plans.destroy({ where: { id: id } })
+      .then((response) => res.status(200).json(response))
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
+  },
+  LogicDeletePlan: async (req, res) => {
     const { id } = req.params;
     await Plans.update({ state: false }, { where: { id: id } })
       .then((response) => res.status(200).json(response))

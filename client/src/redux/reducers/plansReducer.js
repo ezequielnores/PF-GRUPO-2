@@ -1,57 +1,59 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const postPlans = createAsyncThunk("plans/create", async (data) => {
+  const response = await axios.post(
+    `${process.env.REACT_APP_BACKEND_URL}/plans`,
+    data
+  );
+  return response.data;
+});
 
-export const postPlans = createAsyncThunk(
-  "plans/create",
-  async (data) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/plans`,
+export const plansGetAll = createAsyncThunk("plans/getAll", async () => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_BACKEND_URL}/plans`
+  );
+  return response.data;
+});
+
+export const plansGetById = createAsyncThunk("plans/getById", async (id) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_BACKEND_URL}/plans/${id}`
+  );
+  return response.data;
+});
+
+export const plansEditById = createAsyncThunk(
+  "plans/editById",
+  async ({ id, data }) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/plans/${id}`,
       data
     );
     return response.data;
   }
 );
 
-export const plansGetAll = createAsyncThunk(
-  "plans/getAll",
-  async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/plans`
-    );
-    return response.data;
-  }
-);
-
-
-export const plansEditById = createAsyncThunk(
-  "plans/editById",
-  async (id) => {
-    const response = await axios.put(
-      `${process.env.REACT_APP_BACKEND_URL}/plans/${id}`
-    );
-    return response.data;
-  }
-);
-
-
-export const deletePlan = createAsyncThunk(
+export const deletePlan = createAsyncThunk("plans/deleteById", async (id) => {
+  const response = await axios.delete(
+    `${process.env.REACT_APP_BACKEND_URL}/plans/${id}`
+  );
+  return response.data;
+});
+export const logicDeletePlan = createAsyncThunk(
   "plans/deleteById",
   async (id) => {
-    const response = await axios.delete(
-      `${process.env.REACT_APP_BACKEND_URL}/plans/${id}`
+    const response = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/plans/disable/${id}`
     );
     return response.data;
   }
 );
-
-
-
 const plansSlice = createSlice({
   name: "plans",
   initialState: {
     detail: {},
-    listAll:[],
+    listAll: [],
     list: [],
     status: "idle",
     error: null,
@@ -70,14 +72,14 @@ const plansSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
-      .addCase(plansEditById.pending, (state, action) => {
+      .addCase(plansGetById.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(plansEditById.fulfilled, (state, action) => {
+      .addCase(plansGetById.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.detail = action.payload;
       })
-      .addCase(plansEditById.rejected, (state, action) => {
+      .addCase(plansGetById.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })
@@ -102,7 +104,7 @@ const plansSlice = createSlice({
       .addCase(deletePlan.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
-      })
+      });
   },
 });
 
