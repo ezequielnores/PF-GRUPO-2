@@ -159,14 +159,13 @@ const Register = () => {
           })
           .catch((err) => alert("error"));
       } catch (error) {
-        console.log({Error: error.message});
+        console.log({ Error: error.message });
         alert("Error: " + error);
       }
     } else {
       alert("Please complete all fields");
     }
   };
-
 
   return (
     <div
