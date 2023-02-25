@@ -9,6 +9,9 @@ import Typography from "@mui/material/Typography";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+//Firebase
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../index';
 //style
 const cardDiv = {
   display: "flex",
@@ -90,6 +93,18 @@ const Register = () => {
     validateForm({ ...form, [name]: value }, name);
   };
 
+  const onChangeEmail = (name, value) => {
+    setForm({ ...form, [name]: value });
+
+    validateForm({ ...form, [name]: value }, name);
+  };
+
+  const onChangePassword = (name, value) => {
+    setForm({ ...form, [name]: value });
+
+    validateForm({ ...form, [name]: value }, name);
+  };
+
   const handleFechaNacimientoChange = (date, name) => {
     setForm({ ...form, birthday: date });
     validateForm({ ...form, [name]: form }, name);
@@ -123,9 +138,16 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = () => {
-    if (Object.values(error).every((item) => item === "")) {
+  const handleRegister = async () =>{
+    if (Object.values(error).every((item) => item === "")){
       try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          form.mail,
+          form.password
+        );
+        const user = userCredential.user;
+        console.log('usuario creado: ' + user.email);
         dispatch(patientRegister({ ...form, phone: 12345 }))
           .then((res) => {
             if (res.type === "patient/register/fulfilled") {
@@ -137,13 +159,15 @@ const Register = () => {
           })
           .catch((err) => alert("error"));
       } catch (error) {
-        console.log(error);
-        alert("error");
+        console.log({Error: error.message});
+        alert("Error: " + error);
       }
     } else {
       alert("Please complete all fields");
     }
   };
+
+
   return (
     <div
       // style={{
@@ -206,7 +230,7 @@ const Register = () => {
             error={error.mail}
             label="Email*"
             style={{ width: "40vh", marginBottom: "1vh" }}
-            onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+            onChange={(e) => onChangeEmail(e.target.name, e.target.value)}
             name="mail"
             value={form.mail}
             helperText={error.mail}
@@ -215,7 +239,7 @@ const Register = () => {
             error={error.password}
             label="Password*"
             style={{ width: "40vh", marginBottom: "1vh" }}
-            onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+            onChange={(e) => onChangePassword(e.target.name, e.target.value)}
             name="password"
             value={form.password}
             type="password"
@@ -319,7 +343,7 @@ const Register = () => {
           />
 
           <Button
-            onClick={handleSubmit}
+            onClick={handleRegister}
             style={{
               border: "1px solid",
               marginTop: "1.2rem",

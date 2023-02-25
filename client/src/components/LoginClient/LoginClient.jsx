@@ -9,6 +9,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { patientGetAll } from "../../redux/reducers/patientReducer";
 import { Alert } from "@mui/material";
+//Firebase
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../index';
 //styles
 const divPadre = {
   display: "flex",
@@ -67,20 +70,32 @@ const FormLoginClient = () => {
   const pacientes = useSelector((state) => state.patient.list);
 
   //SUBMIT
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) =>{
     e.preventDefault();
-    const authenticatedPatient = pacientes.find((paciente) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        info.mail,
+        info.password,
+      );
+      const user = userCredential.user;
+      console.log('usuario logeado: ' + user.email);
+      const authenticatedPatient = pacientes.find((paciente) => {
       return paciente.mail === info.mail && paciente.password === info.password;
-    });
-
-    if (authenticatedPatient) {
-      const id = authenticatedPatient.id;
-      localStorage.setItem("id", id);
-      navigate("/HomeClient/Profile", { state: { id } });
-    } else {
-      setSuccessLogin("error");
+      });
+  
+      if (authenticatedPatient) {
+        const id = authenticatedPatient.id;
+        localStorage.setItem("id", id);
+        navigate("/HomeClient/Profile", { state: { id } });
+      } else {
+        setSuccessLogin("error");
+      }
+    } catch (error) {
+      console.log({Error: error.message});
+      alert('Error: ' + error)
     }
-  };
+  }
   //primera carga
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -138,7 +153,7 @@ const FormLoginClient = () => {
             type="submit"
             value="Send"
             style={buton}
-            onClick={(e) => handleSubmit(e)}
+            onClick={(e) => handleLogin(e)}
           >
             Submit
           </Button>
