@@ -52,14 +52,14 @@ medicalHistoryRouter.get("/:id", async (req, res) => {
 });
 
 medicalHistoryRouter.post("/", async (req, res) => {
-    const { patientId, doctorId, date, hour, reason, treatment, diagnosis  } = req.body;
+    const { patientId, doctorId, date, hour, diagnosis,reason,prescription } = req.body;
 
     try {
         if (![patientId, doctorId, date, diagnosis].every(Boolean)) {
             throw new Error("Datos incompletos.");
         }
 
-        const medicalHistory = await createMedicalHistory(patientId, doctorId, date, hour, reason, treatment, diagnosis);
+        const medicalHistory = await createMedicalHistory(patientId, doctorId, date, hour, diagnosis,reason,prescription );
 
         if (!medicalHistory) throw new Error("Error al crear el historial clinico.");
 

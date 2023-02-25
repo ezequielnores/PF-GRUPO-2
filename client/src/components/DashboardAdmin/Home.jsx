@@ -1,0 +1,245 @@
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { adminGetDetail } from "../../redux/reducers/adminReducer";
+import swal from "sweetalert";
+import logo from "../../assets/logoiCare.png";
+import ManagePlans from "./ManagePlans/ManagePlans";
+import {
+  patientGetAll,
+  patientSetActive,
+} from "../../redux/reducers/patientReducer";
+import {
+  docrtorGetAll,
+  doctorUpdate,
+} from "../../redux/reducers/doctorReducer";
+import { commentsGetAll } from "../../redux/reducers/commentsReducer";
+import { plansGetAll } from "../../redux/reducers/plansReducer.js";
+import ToManage from "./ToManage";
+import { Button, Typography } from "@mui/material";
+//styles
+const container = {
+  width: "100%",
+  height: "100vh",
+  backgroundColor: "#f2f2f2",
+};
+const navBar = {
+  backgroundColor: "#43B8C8",
+  display: "flex",
+  justifyContent: "space-between",
+  textAlign: "center",
+  alignItems: "center",
+  flexDirection: "row",
+  height: "8rem",
+  width: "100%",
+};
+const casiContainer = {
+  width: "100%",
+  display: "flex",
+  flexDirection: "row",
+};
+const belowNav = {};
+const Home = (props) => {
+  const dispatch = useDispatch();
+  const admin = useSelector((state) => state.admin.detail);
+  console.log(admin);
+  const patients = useSelector((state) => state.patient.list);
+  const doctors = useSelector((state) => state.doctor.list);
+  const comments = useSelector((state) => state.comments.list);
+  const location = useLocation();
+  const [selected, setSelected] = useState({
+    patients: false,
+    doctors: false,
+    comments: false,
+    frequentQuestions: false,
+    plans: false,
+  });
+
+  const handleClickPatients = () => {
+    dispatch(patientGetAll());
+    setSelected({
+      patients: true,
+      doctors: false,
+      comments: false,
+      frequentQuestions: false,
+    });
+  };
+
+  const handleClickDoctors = () => {
+    dispatch(docrtorGetAll());
+    setSelected({
+      patients: false,
+      doctors: true,
+      comments: false,
+      frequentQuestions: false,
+    });
+  };
+
+  const handleClickComments = () => {
+    dispatch(commentsGetAll());
+    setSelected({
+      patients: false,
+      doctors: false,
+      comments: true,
+      frequentQuestions: false,
+    });
+  };
+
+  const handleClickFrequentQuestions = () => {
+    dispatch(commentsGetAll());
+    setSelected({
+      patients: false,
+      doctors: false,
+      comments: false,
+      frequentQuestions: true,
+    });
+  };
+  const handleClickPlans = () => {
+    dispatch(plansGetAll());
+    setSelected({
+      patients: false,
+      doctors: false,
+      comments: false,
+      frequentQuestions: false,
+      plans: true,
+    });
+  };
+  const handleLogout = (e) => {
+    e.preventDefault();
+    swal({
+      title: "Are you sure you want to log out?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        localStorage.removeItem("idAdmin");
+        window.location.href = "http://localhost:3000/";
+      }
+    });
+  };
+  // const handleLogout = () => {
+  //   props.setAdmin(null);
+  //   window.localStorage.removeItem("idAdmin");
+  // };
+
+  useEffect(() => {
+    const adminId = window.localStorage.getItem("idAdmin");
+
+    if (adminId) {
+      dispatch(adminGetDetail(adminId));
+      console.log("despachado");
+    }
+  }, []);
+
+  console.log(patients);
+
+  return (
+    <div style={container}>
+      <div style={casiContainer}>
+        <img
+          src={logo}
+          alt="img"
+          style={{
+            width: "4.3vw",
+            top: "0.5rem",
+            left: "4.3rem",
+            marginLeft: "3rem",
+            paddingTop: "7px",
+            marginRight: "2rem",
+          }}
+        />
+        <div style={navBar}>
+          <div style={{ marginLeft: "25rem", display: "flex", gap: "1rem" }}>
+            <Button
+              variant="contained"
+              onClick={handleClickPatients}
+              style={{ backgroundColor: "#307196" }}
+            >
+              Manage Patients
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleClickDoctors}
+              style={{ backgroundColor: "#307196" }}
+            >
+              Manage Doctors
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleClickComments}
+              style={{ backgroundColor: "#307196" }}
+            >
+              Manage Comments
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleClickFrequentQuestions}
+              style={{ backgroundColor: "#307196" }}
+            >
+              Manage Frequent Questions
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleClickPlans}
+              style={{ backgroundColor: "#307196" }}
+            >
+              Manage Plans
+            </Button>
+          </div>
+          <div style={{ paddingRight: "2rem" }}>
+            <Typography
+              variant="body1"
+              style={{ paddingBottom: "5px", fontWeight: "bold" }}
+            >
+              {admin?.name} {admin?.surname}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </div>
+        </div>
+      </div>
+      {/* DEBAJO DEL NAV */}
+      <div style={belowNav}>
+        {selected.patients && (
+          <ToManage
+            entities={patients}
+            updateActive={patientSetActive}
+            toRenderPatients={selected.patients}
+          />
+        )}
+        {selected.doctors && (
+          <ToManage
+            entities={doctors}
+            updateActive={doctorUpdate}
+            toRenderDoctors={selected.doctors}
+          />
+        )}
+        {selected.comments && (
+          <ToManage
+            entities={comments}
+            update={comments}
+            toRenderComments={selected.comments}
+          />
+        )}
+        {selected.frequentQuestions && (
+          <ToManage
+            // entities={frequentQuestions}
+            // update={frequentQuestions}
+            toRenderFrequentQuestions={selected.frequentQuestions}
+          />
+        )}
+
+        {selected.plans && <ManagePlans />}
+      </div>
+    </div>
+  );
+};
+
+export default Home;

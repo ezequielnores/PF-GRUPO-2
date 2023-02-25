@@ -7,6 +7,7 @@ const {
   getPatient,
   getPatientActive,
   getPatientInactive,
+  getPatientByMail
 } = require("../controllers/patientController.js");
 
 const { Patient } = require("../db");
@@ -23,6 +24,21 @@ router.get("/", async (req, res) => {
     }
   } catch (error) {
     res.status(404).json({ error: error.message });
+  }
+});
+
+router.get("/patientByMail", async (req, res) => {
+  const { mail } = req.query;
+
+  try {
+    if (!mail) throw new Error("El mail esta indefinido.");
+
+    const patientByMail = await getPatientByMail(mail);
+    if (!patientByMail) throw new Error(`No se encontro ningun paciente con el mail ${mail} en la BDD.`);
+
+    res.status(200).json(patientByMail);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 });
 
@@ -222,6 +238,42 @@ router.put("/edit/:id", async (req, res) => {
     }
   } catch (error) {
     console.log("Error del put", error);
+  }
+});
+
+// router.put("/edit/:id", async (req, res) => {
+//   const { id } = req.params;
+//   const attributes = req.body;
+
+//   try {
+//     if (!id || !Object.values(attributes).length) {
+//       console.log("datos incompletos");
+//       throw new Error("Datos incompletos.");
+//     }
+//     console.log(attributes);
+//     await Patient.update(attributes, { where: { id: id } });
+//     const patientUpdated = await Patient.findByPk(id);
+//     if (!patientUpdated) throw new Error(`El paciente con el id ${id} no se encuentra en la BDD.`);
+
+//     res.status(200).json(patientUpdated);
+//   } catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// });
+
+router.put("/setActive/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!id) throw new Error(`El id esta indefinido.`);
+
+    const patieToSetActive = await Patient.findByPk(id);
+    if (!patieToSetActive) throw new Error(`El paciente con el id ${id} no se encuentra en la BDD.`);
+    await Patient.update({ active: !patieToSetActive.active }, { where: { id: id } });
+
+    res.status(200).json(patieToSetActive);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 });
 

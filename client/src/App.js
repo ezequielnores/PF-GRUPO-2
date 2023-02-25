@@ -14,6 +14,7 @@ import LoginClient from "./components/LoginClient/LoginClient";
 import MedicForm from "./components/medicWorkForm/medicForm";
 import Register from "./components/HomeClient/Register/Register";
 import LoginMedic from "./components/LoginMedic/LoginMedic";
+import LoginAdmin from './components/LoginAdmin/LoginAdmin';
 import { Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import {
@@ -28,6 +29,7 @@ import {
   HomeView,
 } from "./components/HomeClient/index";
 import { HomeMedic } from "./components/HomeMedic/index";
+import HomeAdmin from "./components/DashboardAdmin/Home";
 
 function App() {
   const location = useLocation();
@@ -38,6 +40,8 @@ function App() {
         <HomeClient />
       ) : location.pathname.startsWith("/HomeMedic") ? (
         <HomeMedic />
+      ) : location.pathname.startsWith("/HomeAdmin") ? (
+        <HomeAdmin />
       ) : (
         <>
           <Navbar />
@@ -54,7 +58,10 @@ function App() {
             <Route path="/loginClient" element={<LoginClient />} />
             <Route path="/work/registerForm" element={<MedicForm />} />
             <Route path="/loginMedic" element={<LoginMedic />} />
+
             <Route path="/register" element={<Register />}/>
+            <Route path="/loginAdmin" element={<LoginAdmin />}/>
+
           </Routes>
           <Footer />
         </>

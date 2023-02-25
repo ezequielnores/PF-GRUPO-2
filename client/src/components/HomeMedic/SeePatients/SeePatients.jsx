@@ -1,7 +1,11 @@
 import { useState,useEffect } from "react"
-import { TextField,Stack  } from "@mui/material"
+import { TextField,Stack } from "@mui/material"
+import { useDispatch ,useSelector } from "react-redux"
+import {attendPatientTurns,attendedPatientTurns,createMedicalHistory} from "../../../redux/reducers/attendReducer"
+import { appointmentGetAllByDoctorId } from "../../../redux/reducers/appointmentReducer";
 import style from "./SeePatients.module.css"
 import swal from "sweetalert"
+
 // patientId, doctorId, date, diagnosis
 const validate = (input) => {
     let errors = {};
@@ -16,31 +20,19 @@ const validate = (input) => {
     }
     return errors;
 };
-const SeePatients = () => {
-    const appointment ={
-        id:1,
-        availability:true,
-        date:"2023-02-21",
-        hour:"17:00:00",
-        type:"sadad",
-        ubication:"avellaneda",
-        doctorSpecialty:"Cardiology",
-        Patient:{
-            id:1,
-            name:"Juan",
-            lastName:"Perez"
-        },
-        Doctor:{
-            id:"b41fa1ef-1939-4281-93cb-914a180e5fe2",
-            name:"Roberto",
-            lastName:"Martinez",
-        }
-    } 
+const SeePatients = ({idTurn}) => {
+    const dispatch = useDispatch()   
+    useEffect(() => {
+        dispatch(attendPatientTurns(idTurn))
+
+    }, [])
+    const appointment = useSelector((state) => state.attend.details);
 
     const [newHistorial, setNewHistorial] = useState({
-        patientId: appointment.Patient.id,
-        doctorId: appointment.Doctor.id,
-        date: appointment.date,
+        patientId: "",
+        doctorId: "",
+        date: "",
+        hour: "",
         diagnosis: "",
         reason: "",
         prescription: "",
@@ -52,6 +44,18 @@ const SeePatients = () => {
         prescription: "",
     })
     
+    useEffect(() => {
+        setNewHistorial({
+            patientId: appointment?.Patient?.id,
+            doctorId: appointment?.doctor?.id,
+            date: appointment?.date,
+            hour: appointment?.hour,
+            diagnosis: "",
+            reason: "",
+            prescription: "",
+        })
+    }, [appointment])
+
     const handleChanges = (e) => {
         setNewHistorial({ ...newHistorial, [e.target.name]: e.target.value })
         setError(validate({
@@ -63,22 +67,28 @@ const SeePatients = () => {
         setOpenModal(!openModal)
     }
     const handleSubmit = async() => {
+        try {
+            dispatch(createMedicalHistory(newHistorial))
+        } catch (error) {
+            alert(error)
+        }
         await swal("The medical record has been saved!", {
             icon: "success",
           });
+        dispatch(attendedPatientTurns(idTurn))
+        dispatch(appointmentGetAllByDoctorId(appointment.doctor.id))
         setNewHistorial({
             patientId: appointment.Patient.id,
-            doctorId: appointment.Doctor.id,
+            doctorId: appointment.doctor.id,
             date: appointment.date,
+            hour: appointment.hour,
             diagnosis: "",
             reason: "",
             prescription: "",
         });
-        window.location.href = "http://localhost:3000/HomeMedic/Agenda";
-    }
-    
-
         
+        window.location.reload()
+    }
     return (
         <div style={{width:"95vw",display:"flex",justifyContent:"center",height:"100vh"}} >
             <div onClick={handleOpenModal} className={style.generalModalDiv} style={{display:openModal? "flex":"none"}}>
@@ -87,19 +97,19 @@ const SeePatients = () => {
                     <div className={style.info}>
                         <div style={{display:"flex",gap:"0.5vw"}}>
                             <p style={{fontWeight:"bold"}}>Patient: </p>
-                            <p>{appointment.Patient.name} {appointment.Patient.lastName} </p> 
+                            <p>{appointment?.Patient?.name} {appointment?.Patient?.surname} </p> 
                         </div>
                         <div style={{display:"flex",gap:"0.5vw"}}>
                             <p style={{fontWeight:"bold"}}>Doctor:</p>
-                            <p>{appointment.Doctor.name} {appointment.Doctor.lastName}</p>
+                            <p>{appointment?.doctor?.name} {appointment?.doctor?.lastName}</p>
                         </div>
                         <div style={{display:"flex",gap:"0.5vw"}}>
                             <p style={{fontWeight:"bold"}}>Date:</p>
-                            <p>{appointment.date}</p>
+                            <p>{newHistorial.date}</p>
                         </div>
                         <div style={{display:"flex",gap:"0.5vw"}}>
                             <p style={{fontWeight:"bold"}}>Hour:</p>
-                            <p>{appointment.hour}</p>
+                            <p>{newHistorial.hour}</p>
                         </div>
                         <div style={{display:"flex",gap:"0.5vw"}}>
                             <p style={{fontWeight:"bold"}}>Diagnosis: </p>
@@ -124,7 +134,7 @@ const SeePatients = () => {
             </div>
             <div style={{width:"80%",display:"flex",flexDirection:"column",justifyContent:"flex-start",gap:"2vh",height:"95%"}}>
                 <div style={{width:"90%",display:"flex",flexDirection:"column",justifyContent:"flex-start",gap:"2vh",border:" solid 3px #307196",borderRadius:"20px",padding:"0 1vw 2vh"}}>
-                    <h2 style={{textAlign:"start"}}>You are attending to: {appointment.Patient.name} {appointment.Patient.lastName}</h2>
+                    <h2 style={{textAlign:"start"}}>You are attending to: {appointment?.Patient?.name} {appointment?.Patient?.surname}</h2>
                     <h4 style={{textAlign:"start"}}>Appoinment Details</h4>
                     <Stack spacing={2}>
                         <Stack direction="row" spacing={2}>
@@ -132,7 +142,7 @@ const SeePatients = () => {
 
                                 id="outlined-multiline-static"
                                 label="Date"
-                                defaultValue={appointment.date}
+                                value={appointment?.date}
                                 InputProps={{
                                     readOnly: true,
                                     }}
@@ -141,7 +151,7 @@ const SeePatients = () => {
                             <TextField
                                 id="outlined-multiline-static"
                                 label="Hour"
-                                defaultValue={appointment.hour}
+                                value={appointment?.hour}
                                 InputProps={{
                                     readOnly: true,
                                     }}

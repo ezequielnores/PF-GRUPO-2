@@ -1,4 +1,5 @@
 import SideBar from "../sideBar/sideBar";
+
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
@@ -15,6 +16,7 @@ import {
   Urgency,
   HomeView,
   ProfileUpdate,
+  Suscriptions,
 } from "../index";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -97,9 +99,10 @@ const Home = () => {
           </div>
 
           <Avatar sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}>
-            {/* cambiar cuando tenga la imagen del usuario */}
-            {patient?.name?.charAt(0)}
-            {patient?.surname?.charAt(0)}
+            <img
+              src={patient?.photo}
+              alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
+            />
           </Avatar>
         </Stack>
       </div>
@@ -130,6 +133,9 @@ const Home = () => {
         {location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />}
         {location.pathname.endsWith("/HomeClient/Faq") && <Faq />}
         {location.pathname.endsWith("/HomeClient/Register") && <Register />}
+        {location.pathname.endsWith("/HomeClient/Suscriptions") && (
+          <Suscriptions />
+        )}
       </div>
     </div>
   );
