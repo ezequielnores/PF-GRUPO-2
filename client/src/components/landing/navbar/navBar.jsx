@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -35,7 +35,6 @@ const butonLogin = {
 
 //component
 const Navbar = () => {  
-const { isAuthenticated } = useAuth0()
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -60,7 +59,6 @@ const { isAuthenticated } = useAuth0()
               Blog
             </Link>
             <ButtonGroup style={butonLogin}>
-              {/* { isAuthenticated ? <LogoutButton/> : <LoginClientButton/>} */}
               <Button color="primary">
                 <Link to="/loginClient">Client Login</Link>
               </Button>
