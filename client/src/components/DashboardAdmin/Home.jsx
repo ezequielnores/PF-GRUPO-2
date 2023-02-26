@@ -11,7 +11,7 @@ import {
 } from "../../redux/reducers/patientReducer";
 import {
   docrtorGetAll,
-  doctorUpdate,
+  doctorSetActive,
 } from "../../redux/reducers/doctorReducer";
 import { deleteComment } from "../../redux/reducers/commentsReducer";
 import { plansGetAll } from "../../redux/reducers/plansReducer.js";
@@ -214,7 +214,7 @@ const Home = (props) => {
         {selected.doctors && (
           <ToManage
             entities={doctors}
-            updateActive={doctorUpdate}
+            updateActive={doctorSetActive}
             toRenderDoctors={selected.doctors}
           />
         )}
