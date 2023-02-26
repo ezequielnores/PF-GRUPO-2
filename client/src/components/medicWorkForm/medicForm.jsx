@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { doctorAdd } from "../../redux/reducers/doctorReducer";
 //Firebase
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../index';
+import { auth } from '../../authentication/firebase';
 
 //style
 const divPadre = {
@@ -63,7 +63,7 @@ const finalinput = {
 
 const MedicForm = () => {
   const dispatch = useDispatch();
-
+/*   const {createUser} = new ManagementClient() */
   const [successForm, setSuccessForm] = useState(null);
   const [imageInputValue, setImageInputValue] = useState("");
   const [cvInputValue, setCvInputValue] = useState("");
@@ -213,6 +213,7 @@ const MedicForm = () => {
             if (res.type === "doctor/addById/fulfilled") {
               alert("Account sent! Pending to activate..");
             } else {
+              auth.currentUser.delete()
               alert("Error sending account!");
             }
             console.log(res.type);
