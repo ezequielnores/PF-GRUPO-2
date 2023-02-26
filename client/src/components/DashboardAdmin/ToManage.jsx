@@ -1,20 +1,33 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import Search from "./Search";
+import { patientGetAll } from "../../redux/reducers/patientReducer";
+import { docrtorGetAll } from "../../redux/reducers/doctorReducer";
+import {
+  commentsGetAll,
+  deleteComment,
+  commentsByDoctor,
+  commentsByPatient,
+} from "../../redux/reducers/commentsReducer";
+
+import {
+  createFrequentAsk,
+  deleteFrequentAskById,
+  updateFrequentAskById,
+  getAllFrequentQuestions,
+  getFrequentAskById,
+  getFrequentAskByAsk
+} from "../../redux/reducers/frequentQuestionsReducer";
 
 const ToManage = (props) => {
   const dispatch = useDispatch();
-  const doctor = useSelector(state => state.doctor.detail);
-  // const [active, setActive] = useState(false);
+  const [change, setChange] = useState(false);
 
-  const handleSearchDoctor = () => {};
-
-  // const handlerActiveTrue = (id) => {
-  //   setActive(true);
-  //   const objToUpdate = { id: id, active: active };
-  //   console.log(objToUpdate);
-  //   dispatch(props.update(objToUpdate));
-  // };
+  useEffect(() => {
+    if (props.toRenderPatients) dispatch(patientGetAll());
+    if (props.toRenderDoctors) dispatch(docrtorGetAll());
+    if (props.toRenderComments) dispatch(commentsGetAll());
+  }, [dispatch, change]);
 
   return (
     <div>
@@ -33,21 +46,32 @@ const ToManage = (props) => {
                   <p>Mail: {p?.mail}</p>
                   <p>State Active: {p?.active ? "Alta" : "Baja"}</p>
                   {p?.id && (
-                    <button onClick={() => dispatch(props.updateActive(p.id))}>
+                    <button
+                      onClick={() => {
+                        dispatch(props.updateActive(p.id));
+                        setChange(!change);
+                      }}
+                    >
                       Discharge
                     </button>
                   )}
                 </div>
               );
             })}
-            <Search title={"Patient"} updateActive={props.updateActive}/>
+          <Search
+            title={"Patient"}
+            updateActive={props.updateActive}
+            findPatient={props.toRenderPatients}
+            change={change}
+            setChange={setChange}
+          />
         </div>
       )}
 
       {props.toRenderDoctors && (
         <div>
           <h3>Doctors</h3>
-          {props.entities
+          {props?.entities
             .filter((e) => e.active === false)
             .map((d) => {
               return (
@@ -58,57 +82,59 @@ const ToManage = (props) => {
                   <p>Last Name: {d?.lastName}</p>
                   <p>Speciality: {d?.speciality}</p>
                   <p>Mail: {d?.mail}</p>
-                  <button
-                    onClick={() =>
-                      dispatch(props.updateActive({ id: d.id, active: true }))
-                    }
-                  >
-                    Discharge
-                  </button>
+                  {d?.id && (
+                    <button
+                      onClick={() => {
+                        dispatch(props.updateActive(d.id));
+                        setChange(!change);
+                      }}
+                    >
+                      Discharge
+                    </button>
+                  )}
                 </div>
               );
             })}
+          <Search
+            title={"Doctor"}
+            updateActive={props.updateActive}
+            findDoctor={props.toRenderDoctors}
+            change={change}
+            setChange={setChange}
+          />
+        </div>
+      )}
 
-            <label htmlFor="">Find doctor by mail</label>
-            <input
-              type="text"
-              name="doctorMail"
-              value={null}
-              onChange={null}
-            />
-            <button onClick={handleSearchDoctor}>Find doctor</button>
+      {props.toRenderComments && (
+        <div>
+          <h3>Comments</h3>
 
-          {doctor && (
-            <div>
-              <p>Patiend founded by mail:</p>
-              <img src={doctor.image} alt="doctor image" />
-              <p>Name: {doctor.name}</p>
-              <p>Surname: {doctor.lastName}</p>
-              <p>Mail: {doctor.mail}</p>
-              {doctor.active && (
-                <button
-                  onClick={() =>
-                    dispatch(
-                      props.updateActive({ id: doctor.id, active: false })
-                    )
-                  }
-                >
-                  Unsuscribe
-                </button>
-              )}
-              {!doctor.active && (
-                <button
-                  onClick={() =>
-                    dispatch(
-                      props.updateActive({ id: doctor.id, active: true })
-                    )
-                  }
-                >
-                  Discharge
-                </button>
-              )}
-            </div>
-          )}
+          <Search
+            title={"Comment"}
+            deleteComment={deleteComment}
+            commentsByPatient={commentsByPatient}
+            commentsByDoctor={commentsByDoctor}
+            findComment={props.toRenderComments}
+            change={change}
+            setChange={setChange}
+          />
+        </div>
+      )}
+
+      {props.toRenderFrequentQuestions && (
+        <div>
+          <h3>Frequent Questions</h3>
+
+          <Search
+            title={"Frequent Questions"}
+            findFrequentQuestions={props.toRenderFrequentQuestions}
+            getAllFrequentQuestions={getAllFrequentQuestions}
+            getFrequentAskByAsk={getFrequentAskByAsk}
+            getFrequentAskById={getFrequentAskById}
+            createFrequentAsk={createFrequentAsk}
+            updateFrequentAskById={updateFrequentAskById}
+            deleteFrequentAskById={deleteFrequentAskById}
+          />
         </div>
       )}
     </div>
