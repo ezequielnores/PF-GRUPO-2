@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { docrtorGetAll } from "../../redux/reducers/doctorReducer";
 //Firebase
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../index';
+import { auth } from '../../authentication/firebase';
 //styles
 const divPadre = {
   display: "flex",

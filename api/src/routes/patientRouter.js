@@ -146,7 +146,6 @@ router.post("/", async (req, res) => {
       !name ||
       !surname ||
       !mail ||
-      !password ||
       !weight ||
       !height ||
       !location ||
