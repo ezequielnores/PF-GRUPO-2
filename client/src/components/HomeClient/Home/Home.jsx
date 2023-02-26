@@ -1,4 +1,4 @@
-import SideBar from "../SideBar/SideBar";
+import SideBar from "../sideBar/SideBar";
 
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
@@ -17,7 +17,7 @@ import {
   HomeView,
   ProfileUpdate,
   Suscriptions,
-  History
+  History,
 } from "../index";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -95,7 +95,9 @@ const Home = () => {
                 color: "gray",
               }}
             >
-              {patient?.PatientPlan?.name ? patient?.PatientPlan?.name : "Without plan"}
+              {patient?.PatientPlan?.name
+                ? patient?.PatientPlan?.name
+                : "Without plan"}
             </p>
           </div>
 
@@ -134,8 +136,12 @@ const Home = () => {
         {location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />}
         {location.pathname.endsWith("/HomeClient/Faq") && <Faq />}
         {location.pathname.endsWith("/HomeClient/Register") && <Register />}
-        {location.pathname.endsWith("/HomeClient/Suscriptions") && <Suscriptions />}
-        {location.pathname.endsWith("/HomeClient/Suscriptions/history") && <History/>}
+        {location.pathname.endsWith("/HomeClient/Suscriptions") && (
+          <Suscriptions />
+        )}
+        {location.pathname.endsWith("/HomeClient/Suscriptions/history") && (
+          <History />
+        )}
       </div>
     </div>
   );
