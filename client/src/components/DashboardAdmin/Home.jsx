@@ -13,7 +13,7 @@ import {
   docrtorGetAll,
   doctorUpdate,
 } from "../../redux/reducers/doctorReducer";
-import { commentsGetAll } from "../../redux/reducers/commentsReducer";
+import { deleteComment } from "../../redux/reducers/commentsReducer";
 import { plansGetAll } from "../../redux/reducers/plansReducer.js";
 import ToManage from "./ToManage";
 import { Button, Typography } from "@mui/material";
@@ -45,7 +45,6 @@ const Home = (props) => {
   console.log(admin);
   const patients = useSelector((state) => state.patient.list);
   const doctors = useSelector((state) => state.doctor.list);
-  const comments = useSelector((state) => state.comments.list);
   const location = useLocation();
   const [selected, setSelected] = useState({
     patients: false,
@@ -76,7 +75,6 @@ const Home = (props) => {
   };
 
   const handleClickComments = () => {
-    dispatch(commentsGetAll());
     setSelected({
       patients: false,
       doctors: false,
@@ -86,7 +84,6 @@ const Home = (props) => {
   };
 
   const handleClickFrequentQuestions = () => {
-    dispatch(commentsGetAll());
     setSelected({
       patients: false,
       doctors: false,
@@ -223,15 +220,11 @@ const Home = (props) => {
         )}
         {selected.comments && (
           <ToManage
-            entities={comments}
-            update={comments}
             toRenderComments={selected.comments}
           />
         )}
         {selected.frequentQuestions && (
           <ToManage
-            // entities={frequentQuestions}
-            // update={frequentQuestions}
             toRenderFrequentQuestions={selected.frequentQuestions}
           />
         )}
