@@ -15,6 +15,9 @@ import { isEmail, isNumeric, isAlpha } from "validator";
 import { IconButton, InputAdornment } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { doctorAdd } from "../../redux/reducers/doctorReducer";
+//Firebase
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../index';
 
 //style
 const divPadre = {
@@ -70,7 +73,7 @@ const MedicForm = () => {
     user_lastName: "",
     user_mail: "",
     user_password: "",
-    user_clinicMail: "",
+    // user_clinicMail: "",
     user_phone: "",
     user_dni: "",
     user_license: "",
@@ -161,9 +164,9 @@ const MedicForm = () => {
       errors.mail = "Please enter valid email";
     }
 
-    if (!isEmail(value.clinicMail)) {
-      errors.clinicMail = "Please enter valid email";
-    }
+    // if (!isEmail(value.clinicMail)) {
+    //   errors.clinicMail = "Please enter valid email";
+    // }
 
     if (!value.password) {
       errors.password = "Please enter a password"
@@ -192,12 +195,19 @@ const MedicForm = () => {
   //Logic form
   const form = useRef();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateFields();
     console.log(errors);
     if (Object.values(errors).every((item) => item === "")) {
       try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          value.mail,
+          value.password
+        );
+        const user = userCredential.user;
+        console.log('medico creado: ' + user.email);
         dispatch(doctorAdd({ ...value }))
           .then((res) => {
             if (res.type === "doctor/addById/fulfilled") {
@@ -209,13 +219,14 @@ const MedicForm = () => {
           })
           .catch((err) => alert("Error"));
       } catch (error) {
-        console.log(error);
+        console.log({ Error: error.message });
         alert("Error");
       }
     } else {
       alert("Please complete all fields");
     }
   };
+  
   return (
     <div style={divPadre}>
       <form

@@ -1,17 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import Input from "@mui/material/Input";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import { Alert } from "@mui/material";
-//logic
+import { Alert, Button, Card, Input, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { docrtorGetAll } from "../../redux/reducers/doctorReducer";
-//Firebase
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../index';
-//styles
+import { useNavigate } from "react-router-dom";
+import { adminLogin } from "../../redux/reducers/adminReducer";
+
 const divPadre = {
   display: "flex",
   justifyContent: "center",
@@ -35,9 +27,9 @@ const cardDiv = {
   width: "30rem",
   height: "25rem",
   justifyContent: "space-around",
-  padding: "2rem",
   boxShadow:
     "-10px 10px 0px #307196,-20px 20px 0px rgba(48, 113, 150, 0.7),-30px 30px 0px rgba(48, 113, 150, 0.4),-40px 40px 0px rgba(48, 113, 150, 0.1)",
+  padding: "2rem",
 };
 const inputs = {
   fontSize: "1rem",
@@ -48,17 +40,17 @@ const buton = {
   borderRadius: "15px",
 };
 
-const FormLoginMedic = () => {
-  //Estado error para alert
-  const [successLogin, setSuccessLogin] = useState(null);
+export default function LoginAdmin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  //me creo estado para guardar lo que toma de inptus
+  const state = useSelector((state) => state.admin);
+  const [successLogin, setSuccessLogin] = useState(null);
   const [info, setInfo] = useState({
     mail: "",
     password: "",
+    id: "",
   });
-  //seteo la info con los inputs
+
   const handleChange = (evento) => {
     evento.preventDefault();
     setInfo({
@@ -66,46 +58,26 @@ const FormLoginMedic = () => {
       [evento.target.name]: evento.target.value,
     });
   };
-  const doctores = useSelector((state) => state.doctor.list);
-  console.log(doctores);
 
-  //SUBMIT
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        info.mail,
-        info.password
-      );
-      const user = userCredential.user;
-      console.log('medico logeado: ' + user.email);
-      const authenticatedDoctor = doctores.find((doctor) => {
-        return doctor.mail === info.mail && doctor.password === info.password;
-      });
-      if (authenticatedDoctor) {
-        const id = authenticatedDoctor.id;
-        localStorage.setItem("idMedic", id);
-        navigate("/HomeMedic/Profile");
-      } else {
-        setSuccessLogin("error");
+    dispatch(adminLogin({ mail: info.mail, password: info.password })).then(
+      (res) => {
+        console.log(res);
+        if (state.loggedIn) {
+          alert("logged In");
+        } else {
+          alert("not logged in");
+        }
       }
-  } catch(error){
-    console.log({ Error: error.message });
-  }
+    );
   };
-  //primera carga
+
   useEffect(() => {
-    const id = localStorage.getItem("idMedic");
-    if (id) {
-      navigate("/HomeMedic/Profile");
-    } else {
-      dispatch(docrtorGetAll());
-    }
+    const admin = localStorage.getItem("admin");
+    if (admin) alert("Admin ya logueado");
   }, []);
 
-  console.log(info);
-  //RENDER
   return (
     <div style={divPadre}>
       <form
@@ -161,5 +133,4 @@ const FormLoginMedic = () => {
       </form>
     </div>
   );
-};
-export default FormLoginMedic;
+}

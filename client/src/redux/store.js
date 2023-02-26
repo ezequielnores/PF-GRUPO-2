@@ -7,6 +7,7 @@ import commentsReducer from "./reducers/commentsReducer";
 import attendReducer from "./reducers/attendReducer";
 import urgencyReducer from "./reducers/urgencyReducer";
 import adminReducer from "./reducers/adminReducer";
+import plansSlice from "./reducers/plansReducer"
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     attend: attendReducer,
     urgency: urgencyReducer,
     admin: adminReducer,
+    plans:plansSlice,
   },
 });
 

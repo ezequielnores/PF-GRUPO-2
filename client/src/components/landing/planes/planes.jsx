@@ -3,6 +3,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 import { padreTarjeta } from "./planess";
+import axios from "axios";
 const hijoTarjeta = {
   display: "flex",
   flexDirection: "row",

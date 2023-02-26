@@ -1,4 +1,5 @@
 import React from "react";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -6,6 +7,9 @@ import Button from "@mui/material/Button";
 import { ButtonGroup } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import LinkM from "@mui/material/Link";
+
+// import { LoginClientButton }  from './LoginClientButton'
+// import { LogoutButton } from "../../HomeClient/sideBar/LogoutButton";
 
 //router
 import { Link } from "react-router-dom";
@@ -28,8 +32,9 @@ const link = {
 const butonLogin = {
   marginLeft: "3rem",
 };
+
 //component
-const Navbar = () => {
+const Navbar = () => {  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

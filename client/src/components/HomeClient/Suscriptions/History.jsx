@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { plansGetAll } from "../../../redux/reducers/plansReducer";
 import { Link } from "react-router-dom";
 
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Typography,
-  Grid,
-} from "@mui/material";
+import { Card, CardContent, Button, Typography, Grid } from "@mui/material";
 //styles
 const root = {
   display: "flex",
@@ -34,8 +26,8 @@ const cardContainer = {
   justifyContent: "center",
 };
 const card = {
-  width: "100%",
-  height: "100%",
+  width: "400px", // Se establece un ancho fijo para la card
+  height: 400,
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -43,7 +35,7 @@ const card = {
   borderRadius: 8,
   overflow: "hidden",
   backgroundColor: "#ffffff",
-  margin: "1px",
+  margin: "2px",
 };
 const cardContent = {
   display: "flex",
@@ -66,26 +58,30 @@ const buyButton = {
   },
 };
 const planTitle = {
-  marginBottom: "2px",
+  marginBottom: "7px",
   fontWeight: "bold",
   color: "#333333",
   textAlign: "center",
+  fontSize: 35,
 };
 const planPrice = {
-  marginBottom: "2px",
+  marginBottom: "5px",
   fontWeight: "bold",
   color: "#1976d2",
   textAlign: "center",
+  fontSize: 30,
 };
 const planDuration = {
   marginBottom: "2px",
   color: "#333333",
   textAlign: "center",
+  fontSize: 20,
 };
 const planDescription = {
-  marginBottom: "2px",
+  marginBottom: "5px",
   color: "#333333",
   textAlign: "center",
+  fontSize: 20,
 };
 const cardGold = {
   border: "1px solid #ffd700",
@@ -110,7 +106,7 @@ const cardSimple = {
   },
 };
 
-const Subscriptions = () => {
+const History = () => {
   const dispatch = useDispatch();
   const plans = useSelector((state) => state.plans.listAll);
   const patientDetail = useSelector((state) => state.patient.detail);
@@ -122,37 +118,28 @@ const Subscriptions = () => {
   }, []);
 
   const filteredPlans = plans.filter(
-    (plan) => plan.name !== patientDetail.PatientPlan?.name
+    (plan) => plan.name === patientDetail.PatientPlan?.name
   );
-
-  const handleBuyPlan = (plan) => {
-    axios
-      .post("https://pf-grupo-2-production.up.railway.app/payments/producto", {
-        title: plan.name,
-        price: plan.price,
-        description: plan.detail,
-        patientIdLocal,
-        planId: plan.id,
-      })
-      .then(
-        (res) => (window.location.href = res.data.response.body.init_point)
-      ); //ruta que me lleva al pago del producto
-  };
 
   const renderPlanCard = (plan) => {
     return (
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
         <Card
-        // className={`${card} ${
+        // className={`${classes.card} ${
         //   plan.name == "iCare full"
-        //     ? cardGold
+        //     ? classes.cardGold
         //     : plan.name == "iCare simple"
         //     ? ""
-        //     : cardBlue
+        //     : classes.cardBlue
         // }`}
         >
           <CardContent style={cardContent}>
-            <Typography variant="h5" component="h2" style={planTitle}>
+            <Typography
+              variant="h5"
+              component="h1"
+              style={planTitle}
+              sx={{ fontSize: 67 }}
+            >
               {plan.name}
             </Typography>
             <Typography variant="h6" style={planPrice}>
@@ -165,45 +152,56 @@ const Subscriptions = () => {
               {plan.detail}
             </Typography>
           </CardContent>
-          <CardActions style={cardActions}>
-            <Button
-              variant="contained"
-              size="large"
-              style={buyButton}
-              onClick={() => handleBuyPlan(plan)}
-            >
-              Obtain
-            </Button>
-          </CardActions>
         </Card>
+        <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          to="/HomeClient/Suscriptions"
+          sx={{ marginLeft: 60 }}
+        >
+          Back
+        </Button>
       </Grid>
     );
   };
 
   return (
     <div style={root}>
-      <Typography variant="h4" component="h1" style={title}>
-        Subscription plans
+      <Typography
+        variant="h4"
+        component="h1"
+        style={title}
+        sx={{ fontSize: 50 }}
+      >
+        Current plan
       </Typography>
       <div style={cardContainer}>
         <Grid container spacing={3}>
-          {patientDetail.PatientPlan
-            ? filteredPlans.map(renderPlanCard)
-            : plans.map(renderPlanCard)}
+          {patientDetail.PatientPlan ? (
+            filteredPlans.map(renderPlanCard)
+          ) : (
+            <div>
+              <h3>
+                You do not have a plan associated with your account, please go
+                back and associate with one
+              </h3>
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to="/HomeClient/Suscriptions"
+                sx={{ marginLeft: 60 }}
+              >
+                Back
+              </Button>
+            </div>
+          )}
         </Grid>
       </div>
-      <div style={cardActions}>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to="/HomeClient/Suscriptions/history"
-        >
-          Current plan
-        </Button>
-      </div>
+      <div style={cardActions}></div>
     </div>
   );
 };
 
-export default Subscriptions;
+export default History;

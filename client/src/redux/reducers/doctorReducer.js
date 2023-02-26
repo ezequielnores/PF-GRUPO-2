@@ -13,6 +13,16 @@ export const doctorLogin = createAsyncThunk(
   }
 );
 
+export const doctorGetByMail = createAsyncThunk(
+  "doctor/getByMail",
+  async (data, thunkAPI) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/doctor/doctorByMail?mail=${data.mail}`
+    );
+    return response.data;
+  }
+);
+
 export const doctorGetDetail = createAsyncThunk(
   "doctor/get",
   async (id, thunkAPI) => {
@@ -44,6 +54,16 @@ export const doctorUpdate = createAsyncThunk(
     const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/doctor/update/${id}`,
       data
+    );
+    return response.data;
+  }
+);
+
+export const doctorSetActive = createAsyncThunk(
+  "doctor/setActive",
+  async (id) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/doctor/setActive/${id}`
     );
     return response.data;
   }
@@ -101,6 +121,27 @@ const doctorSlice = createSlice({
         state.loggedIn = action.payload;
       })
       .addCase(doctorLogin.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(doctorGetByMail.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(doctorGetByMail.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.detail = action.payload;
+      })
+      .addCase(doctorGetByMail.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(doctorSetActive.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(doctorSetActive.fulfilled, (state, action) => {
+        state.status = "succeeded";
+      })
+      .addCase(doctorSetActive.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

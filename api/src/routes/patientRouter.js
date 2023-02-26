@@ -2,11 +2,13 @@ const { Router } = require("express");
 const axios = require("axios");
 const { Op } = require("sequelize");
 const { cloudinary } = require("../utils/cloudinary");
+const {PatientPlan} = require("../db");
 
 const {
   getPatient,
   getPatientActive,
   getPatientInactive,
+  getPatientByMail
 } = require("../controllers/patientController.js");
 
 const { Patient } = require("../db");
@@ -23,6 +25,21 @@ router.get("/", async (req, res) => {
     }
   } catch (error) {
     res.status(404).json({ error: error.message });
+  }
+});
+
+router.get("/patientByMail", async (req, res) => {
+  const { mail } = req.query;
+
+  try {
+    if (!mail) throw new Error("El mail esta indefinido.");
+
+    const patientByMail = await getPatientByMail(mail);
+    if (!patientByMail) throw new Error(`No se encontro ningun paciente con el mail ${mail} en la BDD.`);
+
+    res.status(200).json(patientByMail);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 });
 
@@ -91,7 +108,7 @@ router.get("/:id", async (req, res) => {
     const getById = await getPatient();
 
     if (id) {
-      const patientById = await Patient.findByPk(id);
+      const patientById = await Patient.findByPk(id, {include: [{ model: PatientPlan }]});
       if (patientById) {
         res.status(200).json(patientById);
       } else {
