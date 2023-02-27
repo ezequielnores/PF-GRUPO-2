@@ -161,7 +161,7 @@ const Register = () => {
           form[name] || form[name] !== ""
         )
       ) {
-        setError({ ...error, [name]: "•Must be a valid email" });
+        setError({ ...error, [name]: "•Musst be a valid email" });
       } else setError({ ...error, [name]: "" });
     }
   };
