@@ -17,7 +17,7 @@ const cardDiv = {
   display: "flex",
   flexDirection: "column",
   width: "30rem",
-  height: "75rem",
+  height: "82rem",
   justifyContent: "space-around",
   padding: "2rem",
   boxShadow:
@@ -29,16 +29,17 @@ const box = {
   textAlign: "center",
   alignItems: "center",
   width: "40rem",
-  height: "70rem",
+  height: "85rem",
   justifyContent: "space-evenly",
   marginBottom: "7rem",
+  marginTop: "5rem",
 };
 const divPadre = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "135vh",
+  height: "140vh",
   backgroundColor: "#43B8C8",
 };
 const Register = () => {
@@ -112,28 +113,62 @@ const Register = () => {
 
   const validateForm = (form, name) => {
     if (name === "name" || name === "surname") {
-      if (/\d/.test(form[name]) /* || /\W/.test(form[name]) */) {
-        setError({ ...error, [name]: "Input allows only characters" });
+      if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
+        setError({ ...error, [name]: "•Only characters" });
       } else setError({ ...error, [name]: "" });
     }
+    if (name === "location" || name === "allergies") {
+      if (!/^[a-zA-Z,\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
+        setError({ ...error, [name]: "•Only characters and commas" });
+      } else setError({ ...error, [name]: "" });
+    }
+    if (name === "weight" || name === "height") {
+      if (!/^[0-9]{2,3}$/.test(form[name])) {
+        setError({ ...error, [name]: "•Only numbers •Min 2 digits" });
+      } else {
+        setError({ ...error, [name]: "" });
+      }
+    }
+    if (name === "dni") {
+      if (!/^\d{4,8}$/.test(form[name])) {
+        setError({ ...error, [name]: "•Only numbers •Min 4 digits" });
+      } else {
+        setError({ ...error, [name]: "" });
+      }
+    }
+    if (
+      !/^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{4}$/.test(form[name])
+    ) {
+      setError({ ...error, [name]: "•Invalid date format" });
+    } else {
+      setError({ ...error, [name]: "" });
+    }
 
-    /**
-        if (name === "phone") {
-          if (/\D/.test(form[name])) {
-            setError({ ...error, [name]: "Invalid Phone" });
-          } else {
-            setError({ ...error, [name]: "" });
-          }
-        }
-    */
-
+    if (name === "password") {
+      if (
+        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+          form[name] || form[name] !== ""
+        )
+      ) {
+        setError({
+          ...error,
+          [name]:
+            "•Minimum 8 characters •One upper case letter •One lower case letter •One number •One special character",
+        });
+      } else {
+        setError({
+          ...error,
+          [name]: "",
+        });
+      }
+    }
     if (name === "mail") {
       if (
         !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
           form[name] || form[name] !== ""
         )
       ) {
-        setError({ ...error, [name]: "Must be a valid email" });
+        setError({ ...error, [name]: "•Must be a valid email" });
       } else setError({ ...error, [name]: "" });
     }
   };
@@ -189,20 +224,9 @@ const Register = () => {
       alert("Please complete all fields");
     }
   };
-
+  console.log(form);
   return (
-    <div
-      // style={{
-      //   display: "flex",
-      //   flexDirection: "column",
-      //   width: "100%",
-      //   justifyContent: "space-between",
-      //   alignItems: "center",
-      //   gap: "10px",
-      //   marginBottom: "15px",
-      // }}
-      style={divPadre}
-    >
+    <div style={divPadre}>
       <div style={box}>
         <Card style={cardDiv}>
           <Typography
@@ -226,6 +250,8 @@ const Register = () => {
             defaultCountry={"AR"}
             style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(value) => onChangeHandler("phone", value)}
+            error={error.phone}
+            helperText={error.phone}
           />
 
           <TextField
@@ -250,6 +276,7 @@ const Register = () => {
 
           <TextField
             error={error.dni}
+            helperText={error.dni}
             label="DNI*"
             style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
@@ -259,27 +286,36 @@ const Register = () => {
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              name="birthday"
               label="Birthdate"
               value={form.birthday}
+              name="birthday"
               maxDate={new Date()}
-              inputVariant="outlined"
               error={error.birthday}
               helperText={error.birthday}
+              inputVariant="outlined"
               onChange={(e) => handleFechaNacimientoChange(e)}
               renderInput={(params) => (
-                <TextField {...params} style={{ width: "40vh" }} />
+                <TextField
+                  {...params}
+                  style={{ width: "40vh", marginBottom: "0.9rem" }}
+                />
               )}
             />
           </LocalizationProvider>
 
           <TextField
             error={error.weight}
+            helperText={error.weight}
             label="Weight*"
             style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="weight"
             value={form.weight}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">kg</InputAdornment>
+              ),
+            }}
           />
 
           <TextField
@@ -288,10 +324,18 @@ const Register = () => {
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="height"
             value={form.height}
+            helperText={error.height}
+            error={error.height}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">cm</InputAdornment>
+              ),
+            }}
           />
 
           <TextField
             error={error.allergies}
+            helperText={error.allergies}
             label="Allergies"
             style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
@@ -301,6 +345,7 @@ const Register = () => {
 
           <TextField
             error={error.location}
+            helperText={error.location}
             label="Location*"
             style={{ width: "40vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
@@ -343,13 +388,16 @@ const Register = () => {
                   }
             }
           />
-          <Typography variant="h6" style={{marginTop: "3vh", alignSelf: "start"}}>
+          <Typography
+            variant="h6"
+            style={{ marginTop: "3vh", alignSelf: "start" }}
+          >
             User Account
           </Typography>
           <TextField
             error={error.mail}
             label="Email*"
-            style={{ width: "40vh", marginBottom: "1vh", marginTop: "1vh"}}
+            style={{ width: "40vh", marginBottom: "1vh", marginTop: "1vh" }}
             onChange={(e) => onChangeEmail(e.target.name, e.target.value)}
             name="mail"
             value={form.mail}
@@ -370,17 +418,17 @@ const Register = () => {
             onClick={handleRegister}
             style={{
               border: "1px solid",
-              marginTop: "1.2rem",
+              marginTop: "0.5rem",
             }}
           >
             Register
           </Button>
-          <Typography style={{marginTop: "2vh"}}>or</Typography>  
+          <Typography style={{ marginTop: "2vh" }}>or</Typography>
           <Button
             onClick={handleRegisterwithGoogle}
             style={{
               border: "1px solid",
-              marginTop: "1.2rem",
+              marginTop: "0.5rem",
             }}
           >
             Register with Google
