@@ -2,7 +2,7 @@ import { Alert, Button, Card, Input, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { adminLogin } from "../../redux/reducers/adminReducer";
+import { adminGetAll, adminLogin } from "../../redux/reducers/adminReducer";
 
 const divPadre = {
   display: "flex",

@@ -16,7 +16,7 @@ import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import swal from "sweetalert";
 //Firebase
 import { signOut } from "firebase/auth";
-import { auth } from '../../../index';
+import { auth } from '../../../authentication/firebase';
 
 const SideBar = ({ open, handleOpen, path }) => {
     const handleLogout = async () => {
