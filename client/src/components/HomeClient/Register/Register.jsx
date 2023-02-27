@@ -146,7 +146,7 @@ const Register = () => {
         setError({
           ...error,
           [name]:
-            "•Minimum 8 characters •One upper case letter •One lower case letter •One number •One special character",
+            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
         });
       } else {
         setError({
