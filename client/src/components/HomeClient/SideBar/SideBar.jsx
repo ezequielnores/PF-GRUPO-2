@@ -16,7 +16,7 @@ import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import swal from "sweetalert";
 //Firebase
 import { signOut } from "firebase/auth";
-import { auth } from '../../../index';
+import { auth } from '../../../authentication/firebase';
 
 const SideBar = ({ open, handleOpen, path }) => {
     const handleLogout = async () => {
@@ -29,7 +29,7 @@ const SideBar = ({ open, handleOpen, path }) => {
         if (willDelete) {
           signOut(auth).then(()=>{
           localStorage.clear();
-          window.location.href = "http://localhost:3000/";
+          window.location.href = "https://pf-grupo-2.vercel.app/";
           }).catch((error) => {
             console.log({Error: error.message});
           })

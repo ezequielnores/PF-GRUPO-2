@@ -6,7 +6,7 @@ const {
   putDoctor,
   findByMail,
   getDoctortByMail,
-  setDoctorActive
+  setDoctorActive,
 } = require("../controllers/doctorController");
 
 const router = Router();
@@ -39,8 +39,9 @@ router.get("/doctorByMail", async (req, res) => {
   try {
     if (!mail) throw new Error("The mail is undefined.");
 
-    const doctorByMail = await getDoctortByMail(mail);
-    if (!doctorByMail) throw new Error(`Not found a doctor with mail ${mail} in the BDD.`);
+    const doctorByMail = await findByMail(mail);
+    if (!doctorByMail)
+      throw new Error(`Not found a doctor with mail ${mail} in the BDD.`);
 
     res.status(200).json(doctorByMail);
   } catch (error) {
@@ -106,7 +107,8 @@ router.put("/setActive/:id", async (req, res) => {
     if (!id) throw new Error("The id is undefined.");
 
     const doctorActiveUpdated = await setDoctorActive(id);
-    if (!doctorActiveUpdated) throw new Error(`Not found a doctor with id ${id} in the BDD.`);
+    if (!doctorActiveUpdated)
+      throw new Error(`Not found a doctor with id ${id} in the BDD.`);
 
     res.status(200).json(doctorActiveUpdated);
   } catch (error) {

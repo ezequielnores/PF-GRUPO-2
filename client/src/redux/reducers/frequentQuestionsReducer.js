@@ -92,7 +92,7 @@ const frequentQuestionsSlice = createSlice({
             state.status = "succeeded";
             state.list = action.payload;
         })
-        addCase(getAllFrequentQuestions.rejected, (state, action) => {
+        .addCase(getAllFrequentQuestions.rejected, (state, action) => {
             state.state = "failed";
             state.error = action.payload;
         })

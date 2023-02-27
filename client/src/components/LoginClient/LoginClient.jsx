@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { patientGetAll } from "../../redux/reducers/patientReducer";
 import { Alert } from "@mui/material";
 //Firebase
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../index';
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../../authentication/firebase";
 //styles
 const divPadre = {
   display: "flex",
@@ -70,20 +70,22 @@ const FormLoginClient = () => {
   const pacientes = useSelector((state) => state.patient.list);
 
   //SUBMIT
-  const handleLogin = async (e) =>{
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         info.mail,
-        info.password,
+        info.password
       );
       const user = userCredential.user;
-      console.log('usuario logeado: ' + user.email);
+      console.log("usuario logeado: " + user.email);
       const authenticatedPatient = pacientes.find((paciente) => {
-      return paciente.mail === info.mail && paciente.password === info.password;
+        return (
+          paciente.mail === info.mail && paciente.password === info.password
+        );
       });
-  
+
       if (authenticatedPatient) {
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);
@@ -92,10 +94,31 @@ const FormLoginClient = () => {
         setSuccessLogin("error");
       }
     } catch (error) {
-      console.log({Error: error.message});
-      alert('Error: ' + error)
+      console.log({ Error: error.message });
     }
-  }
+  };
+
+  const handleLoginWithGoogle = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithPopup(auth, googleProvider);
+      const found = pacientes.find((paciente) => {
+        return paciente.mail === auth.currentUser.email;
+      });
+      console.log(found);
+      console.log(auth.currentUser);
+      if (!found) {
+        await auth.currentUser.delete();
+        alert("The user doesnt exists in the app");
+      } else {
+        const id = found.id;
+        localStorage.setItem("id", id);
+        navigate("/HomeClient/Profile", {state: {id}});
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   //primera carga
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -155,7 +178,17 @@ const FormLoginClient = () => {
             style={buton}
             onClick={(e) => handleLogin(e)}
           >
-            Submit
+            Login
+          </Button>
+
+          <Button
+            variant="contained"
+            type="submit"
+            value="Send"
+            style={buton}
+            onClick={handleLoginWithGoogle}
+          >
+            Login with Google
           </Button>
         </Card>
       </form>

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { plansGetAll } from "../../../redux/reducers/plansReducer";
+import { Link } from "react-router-dom";
+
 import {
   Card,
   CardContent,
@@ -9,111 +11,106 @@ import {
   Button,
   Typography,
   Grid,
-  makeStyles,
-} from "@material-ui/core";
-import { Link } from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-    backgroundColor: "#f5f5f5",
+} from "@mui/material";
+//styles
+const root = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  paddingTop: "4px",
+  paddingBottom: "4px",
+  backgroundColor: "#f5f5f5",
+};
+const title = {
+  marginBottom: "2px",
+  fontWeight: "bold",
+  color: "#333333",
+  textAlign: "center",
+};
+const cardContainer = {
+  marginTop: "4px",
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center",
+};
+const card = {
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+  borderRadius: 8,
+  overflow: "hidden",
+  backgroundColor: "#ffffff",
+  margin: "1px",
+};
+const cardContent = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  flexGrow: 1,
+  padding: "2px",
+};
+const cardActions = {
+  display: "flex",
+  justifyContent: "center",
+  marginBottom: "2px",
+};
+const buyButton = {
+  backgroundColor: "#1976d2",
+  color: "#ffffff",
+  "&:hover": {
+    backgroundColor: "#115293",
   },
-  title: {
-    marginBottom: theme.spacing(2),
-    fontWeight: "bold",
-    color: "#333333",
-    textAlign: "center",
+};
+const planTitle = {
+  marginBottom: "2px",
+  fontWeight: "bold",
+  color: "#333333",
+  textAlign: "center",
+};
+const planPrice = {
+  marginBottom: "2px",
+  fontWeight: "bold",
+  color: "#1976d2",
+  textAlign: "center",
+};
+const planDuration = {
+  marginBottom: "2px",
+  color: "#333333",
+  textAlign: "center",
+};
+const planDescription = {
+  marginBottom: "2px",
+  color: "#333333",
+  textAlign: "center",
+};
+const cardGold = {
+  border: "1px solid #ffd700",
+  backgroundColor: "#fffacd",
+  "&:hover": {
+    transform: "translateY(-5px)",
+    boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
   },
-  cardContainer: {
-    marginTop: theme.spacing(4),
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
+};
+const cardBlue = {
+  border: "1px solid #1976d2",
+  backgroundColor: "#f0f8ff",
+  "&:hover": {
+    transform: "translateY(-5px)",
+    boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
   },
-  card: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-    borderRadius: 8,
-    overflow: "hidden",
-    backgroundColor: "#ffffff",
-    margin: theme.spacing(1),
+};
+const cardSimple = {
+  "&:hover": {
+    transform: "translateY(-5px)",
+    boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
   },
-  cardContent: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    flexGrow: 1,
-    padding: theme.spacing(2),
-  },
-  cardActions: {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: theme.spacing(2),
-  },
-  buyButton: {
-    backgroundColor: "#1976d2",
-    color: "#ffffff",
-    "&:hover": {
-      backgroundColor: "#115293",
-    },
-  },
-  planTitle: {
-    marginBottom: theme.spacing(2),
-    fontWeight: "bold",
-    color: "#333333",
-    textAlign: "center",
-  },
-  planPrice: {
-    marginBottom: theme.spacing(2),
-    fontWeight: "bold",
-    color: "#1976d2",
-    textAlign: "center",
-  },
-  planDuration: {
-    marginBottom: theme.spacing(2),
-    color: "#333333",
-    textAlign: "center",
-  },
-  planDescription: {
-    marginBottom: theme.spacing(2),
-    color: "#333333",
-    textAlign: "center",
-  },
-  cardGold: {
-    border: "1px solid #ffd700",
-    backgroundColor: "#fffacd",
-    "&:hover": {
-      transform: "translateY(-5px)",
-      boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-    },
-  },
-  cardBlue: {
-    border: "1px solid #1976d2",
-    backgroundColor: "#f0f8ff",
-    "&:hover": {
-      transform: "translateY(-5px)",
-      boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-    },
-  },
-  cardSimple: {
-    "&:hover": {
-      transform: "translateY(-5px)",
-      boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-    },
-  },
-}));
+};
 
 const Subscriptions = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const plans = useSelector((state) => state.plans.listAll);
   const patientDetail = useSelector((state) => state.patient.detail);
@@ -130,7 +127,7 @@ const Subscriptions = () => {
 
   const handleBuyPlan = (plan) => {
     axios
-      .post("http://localhost:3001/payments/producto", {
+      .post("https://pf-grupo-2-production.up.railway.app/payments/producto", {
         title: plan.name,
         price: plan.price,
         description: plan.detail,
@@ -146,36 +143,35 @@ const Subscriptions = () => {
     return (
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
         <Card
-          className={`${classes.card} ${
-            plan.name == "iCare full"
-              ? classes.cardGold
-              : plan.name == "iCare simple"
-              ? ""
-              : classes.cardBlue
-          }`}>
-          <CardContent className={classes.cardContent}>
-            <Typography
-              variant='h5'
-              component='h2'
-              className={classes.planTitle}>
+        // className={`${card} ${
+        //   plan.name == "iCare full"
+        //     ? cardGold
+        //     : plan.name == "iCare simple"
+        //     ? ""
+        //     : cardBlue
+        // }`}
+        >
+          <CardContent style={cardContent}>
+            <Typography variant="h5" component="h2" style={planTitle}>
               {plan.name}
             </Typography>
-            <Typography variant='h6' className={classes.planPrice}>
+            <Typography variant="h6" style={planPrice}>
               ${plan.price}
             </Typography>
-            <Typography variant='body1' className={classes.planDuration}>
+            <Typography variant="body1" style={planDuration}>
               Plan duration: {plan.durationMonths} months
             </Typography>
-            <Typography variant='body2' className={classes.planDescription}>
+            <Typography variant="body2" style={planDescription}>
               {plan.detail}
             </Typography>
           </CardContent>
-          <CardActions className={classes.cardActions}>
+          <CardActions style={cardActions}>
             <Button
-              variant='contained'
-              size='large'
-              className={classes.buyButton}
-              onClick={() => handleBuyPlan(plan)}>
+              variant="contained"
+              size="large"
+              style={buyButton}
+              onClick={() => handleBuyPlan(plan)}
+            >
               Obtain
             </Button>
           </CardActions>
@@ -185,24 +181,25 @@ const Subscriptions = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <Typography variant='h4' component='h1' className={classes.title}>
+    <div style={root}>
+      <Typography variant="h4" component="h1" style={title}>
         Subscription plans
       </Typography>
-      <div className={classes.cardContainer}>
+      <div style={cardContainer}>
         <Grid container spacing={3}>
           {patientDetail.PatientPlan
             ? filteredPlans.map(renderPlanCard)
             : plans.map(renderPlanCard)}
         </Grid>
       </div>
-      <div className={classes.cardActions} style={{ marginTop: "10%" }}>
+      <div style={cardActions}>
         <Button
-          variant='contained'
-          color='primary'
+          variant="contained"
+          color="primary"
           component={Link}
-          to='/HomeClient/Suscriptions/history'>
-          Cuurent plan
+          to="/HomeClient/Suscriptions/history"
+        >
+          Current plan
         </Button>
       </div>
     </div>

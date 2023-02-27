@@ -10,8 +10,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //Firebase
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../index';
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../../../authentication/firebase";
 //style
 const cardDiv = {
   display: "flex",
@@ -138,8 +138,26 @@ const Register = () => {
     }
   };
 
-  const handleRegister = async () =>{
-    if (Object.values(error).every((item) => item === "")){
+  const dispatchRegister = () => {
+    console.log(form);
+    dispatch(
+      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
+    )
+      .then((res) => {
+        if (res.type === "patient/register/fulfilled") {
+          alert("Account Created");
+        } else {
+          console.log({ ...form, phone: 12345, mail: auth.currentUser.email });
+          alert("Error creating account!");
+          auth.currentUser.delete();
+        }
+        console.log(res.type);
+      })
+      .catch((err) => alert("error"));
+  };
+
+  const handleRegister = async () => {
+    if (Object.values(error).every((item) => item === "")) {
       try {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
@@ -147,26 +165,30 @@ const Register = () => {
           form.password
         );
         const user = userCredential.user;
-        console.log('usuario creado: ' + user.email);
-        dispatch(patientRegister({ ...form, phone: 12345 }))
-          .then((res) => {
-            if (res.type === "patient/register/fulfilled") {
-              alert("Account Created");
-            } else {
-              alert("Error creating account!");
-            }
-            console.log(res.type);
-          })
-          .catch((err) => alert("error"));
+        console.log("usuario creado: " + user.email);
+        dispatchRegister();
       } catch (error) {
-        console.log({Error: error.message});
-        alert("Error: " + error);
+        console.log({ Error: error.message });
       }
     } else {
       alert("Please complete all fields");
     }
   };
 
+  const handleRegisterwithGoogle = async () => {
+    if (Object.values(error).every((item) => item === "")) {
+      try {
+        const userCredential = await signInWithPopup(auth, googleProvider);
+        const user = userCredential.user;
+        console.log("usuario creado: " + user.email);
+        dispatchRegister();
+      } catch (error) {
+        console.log({ Error: error.message });
+      }
+    } else {
+      alert("Please complete all fields");
+    }
+  };
 
   return (
     <div
@@ -224,26 +246,6 @@ const Register = () => {
             name="surname"
             value={form.surname}
             helperText={error.surname}
-          />
-
-          <TextField
-            error={error.mail}
-            label="Email*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
-            onChange={(e) => onChangeEmail(e.target.name, e.target.value)}
-            name="mail"
-            value={form.mail}
-            helperText={error.mail}
-          />
-          <TextField
-            error={error.password}
-            label="Password*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
-            onChange={(e) => onChangePassword(e.target.name, e.target.value)}
-            name="password"
-            value={form.password}
-            type="password"
-            helperText={error.password}
           />
 
           <TextField
@@ -341,6 +343,28 @@ const Register = () => {
                   }
             }
           />
+          <Typography variant="h6" style={{marginTop: "3vh", alignSelf: "start"}}>
+            User Account
+          </Typography>
+          <TextField
+            error={error.mail}
+            label="Email*"
+            style={{ width: "40vh", marginBottom: "1vh", marginTop: "1vh"}}
+            onChange={(e) => onChangeEmail(e.target.name, e.target.value)}
+            name="mail"
+            value={form.mail}
+            helperText={error.mail}
+          />
+          <TextField
+            error={error.password}
+            label="Password*"
+            style={{ width: "40vh", marginBottom: "1vh" }}
+            onChange={(e) => onChangePassword(e.target.name, e.target.value)}
+            name="password"
+            value={form.password}
+            type="password"
+            helperText={error.password}
+          />
 
           <Button
             onClick={handleRegister}
@@ -349,7 +373,17 @@ const Register = () => {
               marginTop: "1.2rem",
             }}
           >
-            Save
+            Register
+          </Button>
+          <Typography style={{marginTop: "2vh"}}>or</Typography>  
+          <Button
+            onClick={handleRegisterwithGoogle}
+            style={{
+              border: "1px solid",
+              marginTop: "1.2rem",
+            }}
+          >
+            Register with Google
           </Button>
         </Card>
       </div>
