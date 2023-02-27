@@ -136,13 +136,6 @@ const Register = () => {
         setError({ ...error, [name]: "" });
       }
     }
-    if (
-      !/^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{4}$/.test(form[name])
-    ) {
-      setError({ ...error, [name]: "•Invalid date format" });
-    } else {
-      setError({ ...error, [name]: "" });
-    }
 
     if (name === "password") {
       if (
