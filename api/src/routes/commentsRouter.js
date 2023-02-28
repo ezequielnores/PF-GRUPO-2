@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { findByMail } = require("../controllers/doctorController");
+const { getPatientByMail } = require("../controllers/patientController");
 const { getComments, allCommentsByDoc, allCommentsByPatient, containOffensiveWords } = require("../controllers/commentsController");
 const { Comments } = require("../db.js");
 // const BadWords = require('bad-words');
@@ -33,6 +34,24 @@ router.get("/commentsByMailDoctor", async (req, res) => {
     if (!doctor) throw new Error(`No se encuentra un medico con el mail ${mail} en la BDD.`);
 
     const comments = await allCommentsByDoc(doctor.id);
+    if (!comments.length) comments = [];
+
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.get("/commentsByMailPatient", async (req, res) => {
+  const { mail } = req.query;
+
+  try {
+    if (!mail) throw new Error("El mail esta indefinido.");
+    
+    const patient = await getPatientByMail(mail);
+    if (!patient) throw new Error(`No se encuentra un paciente con el mail ${mail} en la BDD.`);
+
+    const comments = await allCommentsByPatient(patient.id);
     if (!comments.length) comments = [];
 
     res.status(200).json(comments);
