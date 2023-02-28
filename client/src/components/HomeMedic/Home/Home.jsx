@@ -136,10 +136,8 @@ const Home = ({ isLogged }) => {
     );
   }
   if(isLogged === false){
-    alert("Sorry, but you must Log in first")
     return <Navigate to="/"/>
   }
- 
  
 };
 export default Home;

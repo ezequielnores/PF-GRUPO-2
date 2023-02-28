@@ -59,7 +59,7 @@ function App() {
       ) : location.pathname.startsWith("/HomeMedic") ? (
         <HomeMedic isLogged={isLogged}/>
       ) : location.pathname.startsWith("/HomeAdmin") ? (
-        <HomeAdmin />
+        <HomeAdmin isLogged={isLogged}  />
       ) : (
         <>
           <Navbar />
