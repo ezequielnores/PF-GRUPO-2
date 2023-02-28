@@ -117,10 +117,6 @@ const ProfileEdit = () => {
       errors.birthdate = "Please enter a valid birthdate";
     }
 
-    if (!isNumeric(infoNueva.phone)) {
-      errors.phone = "Please enter a valid phone number";
-    }
-
     return errors;
   };
   //cambie el id del localstorage, genera errores por el id del cliente con el mismo nombre (id)
@@ -191,8 +187,8 @@ const ProfileEdit = () => {
           label="Phone"
           style={typoTitle}
           onChange={handleChange}
-          error={Boolean(errors.phone)}
-          helperText={errors.phone}
+          // error={Boolean(errors.phone)}
+          // helperText={errors.phone}
         />
         <TextField
           name="clinicMail"

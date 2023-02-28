@@ -17,6 +17,7 @@ import {
   SeePatients,
 } from "../index";
 import { useSelector, useDispatch } from "react-redux";
+import ErrorPage from "../../ErrorPage/ErrorPage";
 const Home = () => {
   const dispatch = useDispatch();
   //logic para mostrar render el doc actual logeado
@@ -106,18 +107,22 @@ const Home = () => {
           right: "0",
         }}
       >
-        {location.pathname.endsWith("/HomeMedic/Profile") && <ProfileMedic />}
-        {location.pathname.endsWith("/HomeMedic/Profile/Edit") && (
-          <ProfileEdit />
-        )}
-        {location.pathname.endsWith("/HomeMedic/Agenda") && <Agenda />}
-        {location.pathname.endsWith("/HomeMedic/MedicalEmergency") && (
-          <MedicalEmergency />
-        )}
-        {location.pathname.endsWith("/HomeMedic/Reviews") && <ReviewsMedic />}
-        {location.pathname.includes(`/HomeMedic/SeePatients`) && (
-          <SeePatients />
-        )}
+        {(
+            location.pathname.endsWith("/HomeMedic/Profile") && <ProfileMedic />
+            ||
+            location.pathname.endsWith("/HomeMedic/Profile/Edit") && <ProfileEdit />
+            ||
+            location.pathname.endsWith("/HomeMedic/Agenda") && <Agenda />
+            ||
+            location.pathname.endsWith("/HomeMedic/MedicalEmergency") &&  <MedicalEmergency />
+            ||
+            location.pathname.endsWith("/HomeMedic/Reviews") && <ReviewsMedic />
+            ||
+            location.pathname.endsWith(`/HomeMedic/SeePatients`) && <SeePatients />
+
+        ) || <ErrorPage /> 
+        }
+
       </div>
     </div>
   );
