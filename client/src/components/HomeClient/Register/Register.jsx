@@ -1,6 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Register.module.css";
-import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
+import {
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { MuiTelInput } from "mui-tel-input";
 import { useDispatch } from "react-redux";
 import { patientRegister } from "../../../redux/reducers/patientReducer";
@@ -29,7 +37,7 @@ const box = {
   textAlign: "center",
   alignItems: "center",
   width: "40rem",
-  height: "85rem",
+  height: "90rem",
   justifyContent: "space-evenly",
   marginBottom: "7rem",
   marginTop: "5rem",
@@ -39,12 +47,17 @@ const divPadre = {
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "140vh",
+  height: "150vh",
   backgroundColor: "#43B8C8",
 };
 const Register = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  //alert state
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
   const [imageInputValue, setImageInputValue] = useState("");
   const [form, setForm] = React.useState({
     name: "",
@@ -165,7 +178,7 @@ const Register = () => {
       } else setError({ ...error, [name]: "" });
     }
   };
-
+  console.log(form);
   const dispatchRegister = () => {
     console.log(form);
     dispatch(
@@ -173,10 +186,19 @@ const Register = () => {
     )
       .then((res) => {
         if (res.type === "patient/register/fulfilled") {
-          alert("Account Created");
+          // alert("Account Created");
+          setAlertSeverity("success");
+          setAlertMessage("Account Created. Wait to be redirected");
+          setShowAlert(true);
+          setTimeout(() => {
+            navigate("/loginClient");
+          }, 2500);
         } else {
           console.log({ ...form, phone: 12345, mail: auth.currentUser.email });
-          alert("Error creating account!");
+          // alert("Error creating account!");
+          setAlertSeverity("error");
+          setAlertMessage("Error creating account!");
+          setShowAlert(true);
           auth.currentUser.delete();
         }
         console.log(res.type);
@@ -199,7 +221,10 @@ const Register = () => {
         console.log({ Error: error.message });
       }
     } else {
-      alert("Please complete all fields");
+      // alert("Please complete all fields");
+      setAlertSeverity("error");
+      setAlertMessage("Please complete all fields   ");
+      setShowAlert(true);
     }
   };
 
@@ -214,12 +239,29 @@ const Register = () => {
         console.log({ Error: error.message });
       }
     } else {
-      alert("Please complete all fields");
+      // alert("Please complete all fields");
+      setAlertSeverity("error");
+      setAlertMessage("Please complete all fields    ");
+      setShowAlert(true);
     }
   };
   console.log(form);
   return (
     <div style={divPadre}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showAlert}
+        autoHideDuration={6000}
+        onClose={() => setShowAlert(false)}
+      >
+        <Alert
+          variant="filled"
+          severity={alertSeverity}
+          onClose={() => setShowAlert(false)}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <div style={box}>
         <Card style={cardDiv}>
           <Typography
