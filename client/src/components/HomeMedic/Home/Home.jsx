@@ -136,7 +136,7 @@ const Home = ({ isLogged }) => {
     );
   }
   if(isLogged === false){
-    return <Navigate to="/"/>
+    return <Navigate to="/loginMedic"/>
   }
  
 };

@@ -154,7 +154,7 @@ const Home = ({ isLogged }) => {
     );
   }
   if(isLogged === false){
-    return <Navigate to="/"/>
+    return <Navigate to="/loginClient"/>
   }
 };
 export default Home;
