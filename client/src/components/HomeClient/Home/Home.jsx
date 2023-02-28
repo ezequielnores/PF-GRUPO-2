@@ -143,7 +143,7 @@ const Home = () => {
             ||
             location.pathname.endsWith("/HomeClient/Suscriptions") && ( <Suscriptions /> )
             ||
-            location.pathname.endsWith("/HomeClient/Suscriptions/Suscriptions") && (<History />)
+            location.pathname.endsWith("/HomeClient/Suscriptions/history") && (<History />)
         )   || <ErrorPage />
         }
 
