@@ -30,7 +30,6 @@ import {
 } from "./components/HomeClient/index";
 import { HomeMedic } from "./components/HomeMedic/index";
 import HomeAdmin from "./components/DashboardAdmin/Home";
-import Contenido from "./components/Contenido/Contenido"
 import ErrorPage from "./components/ErrorPage/ErrorPage";
 
 function App() {
