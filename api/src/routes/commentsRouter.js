@@ -26,6 +26,7 @@ router.get("/", async (req, res) => {
 //-------------------------- trae los comentario por Doctor
 router.get('/doctor/:id', async (req, res) => {
   const { id } = req.params;
+  console.log('id ruta: ' + id)
   try {
     if(id){
       const commentsDoctor = await allCommentsByDoc(id);

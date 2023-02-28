@@ -85,7 +85,6 @@ const FormLoginClient = () => {
           paciente.mail === info.mail && paciente.password === info.password
         );
       });
-
       if (authenticatedPatient) {
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);
