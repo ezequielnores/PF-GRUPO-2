@@ -23,7 +23,7 @@ export const getFrequentAskById = createAsyncThunk(
 );
 
 export const getFrequentAskByAsk = createAsyncThunk(
-  "frequentQuestions/getDetail",
+  "frequentQuestions/getDetailByAsk",
   async (data) => {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/frequentQuestions?ask=${data}`
@@ -112,7 +112,7 @@ const frequentQuestionsSlice = createSlice({
         })
         .addCase(getFrequentAskByAsk.fulfilled, (state, action) => {
             state.status = "succeeded";
-            state.detail = action.payload;
+            state.list = action.payload;
         })
         .addCase(getFrequentAskByAsk.rejected, (state, action) => {
             state.status = "failed";
