@@ -31,10 +31,11 @@ import {
 import { HomeMedic } from "./components/HomeMedic/index";
 import HomeAdmin from "./components/DashboardAdmin/Home";
 import Contenido from "./components/Contenido/Contenido"
+import ErrorPage from "./components/ErrorPage/ErrorPage";
 
 function App() {
-const location = useLocation(); 
-
+  const location = useLocation();
+  console.log('render app');
   return (
     <div className="App">
       {location.pathname.startsWith("/HomeClient") ? (
@@ -62,8 +63,7 @@ const location = useLocation();
 
             <Route path="/register" element={<Register />}/>
             <Route path="/loginAdmin" element={<LoginAdmin />}/>
-
-
+            <Route path='*' element={<ErrorPage/>} />
           </Routes>
           <Footer />
         </>

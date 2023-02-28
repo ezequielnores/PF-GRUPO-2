@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { appointmentGetAllByDoctorId } from "../../../redux/reducers/appointmentReducer";
+import {attendedPatientTurns} from "../../../redux/reducers/attendReducer"
 import dayjs from "dayjs";
+import axios from "axios";
 
 import SeePatients from "../SeePatients/SeePatients";
 //material
@@ -82,13 +84,39 @@ const Agenda = () => {
 
   const [attend, setAttend] = useState(false);
   const [idTurn, setIdTurn] = useState("");
+  const [appointment, setAppointment] = useState({});
 
-  const handleAttend = (e) => {
+  const handleAttend = async(e) => {
     setIdTurn(e.target.value);
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/turns/${e.target.value}`
+    )
+    const data = {
+      idTurn: e.target.value,
+      date: response.data.date,
+      hour: response.data.hour,
+      Patient:{
+        id: response.data.Patient.id,
+        name: response.data.Patient.name,
+        surname: response.data.Patient.surname,
+      },
+      doctor:{
+        id: response.data.doctor.id,
+        name: response.data.doctor.name,
+        lastName: response.data.doctor.lastName,
+      }
+    }
+    setAppointment(data);
+    attendedPatientTurns(e.target.value)
     setAttend(true);
   };
+  useEffect(() => {
+    dispatch(appointmentGetAllByDoctorId(localStorage.getItem("idMedic")));
+  }, [attend]);
+
   return (
     <div>
+      {/* {console.log(localStorage.getItem("idMedic"))} */}
       {!attend ? (
         <div style={container}>
           <div style={hijoContainer}>
@@ -235,7 +263,7 @@ const Agenda = () => {
           </div>
         </div>
       ) : (
-        <SeePatients idTurn={idTurn} />
+        <SeePatients idTurn={idTurn} appointment = {appointment} />
       )}
     </div>
   );
