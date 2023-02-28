@@ -30,9 +30,10 @@ import {
 } from "./components/HomeClient/index";
 import { HomeMedic } from "./components/HomeMedic/index";
 import HomeAdmin from "./components/DashboardAdmin/Home";
+import Contenido from "./components/Contenido/Contenido"
 
 function App() {
-  const location = useLocation();
+const location = useLocation(); 
 
   return (
     <div className="App">
@@ -61,6 +62,7 @@ function App() {
 
             <Route path="/register" element={<Register />}/>
             <Route path="/loginAdmin" element={<LoginAdmin />}/>
+
 
           </Routes>
           <Footer />
