@@ -136,13 +136,6 @@ const Register = () => {
         setError({ ...error, [name]: "" });
       }
     }
-    if (
-      !/^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{4}$/.test(form[name])
-    ) {
-      setError({ ...error, [name]: "•Invalid date format" });
-    } else {
-      setError({ ...error, [name]: "" });
-    }
 
     if (name === "password") {
       if (
@@ -153,7 +146,7 @@ const Register = () => {
         setError({
           ...error,
           [name]:
-            "•Minimum 8 characters •One upper case letter •One lower case letter •One number •One special character",
+            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
         });
       } else {
         setError({
@@ -168,7 +161,7 @@ const Register = () => {
           form[name] || form[name] !== ""
         )
       ) {
-        setError({ ...error, [name]: "•Must be a valid email" });
+        setError({ ...error, [name]: "•Musst be a valid email" });
       } else setError({ ...error, [name]: "" });
     }
   };
