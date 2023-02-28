@@ -67,7 +67,7 @@ const FormLoginMedic = () => {
     });
   };
   const doctores = useSelector((state) => state.doctor.list);
-  console.log(doctores);
+  // console.log(doctores);
 
   //SUBMIT
   const handleSubmit = async (e) => {
@@ -79,7 +79,7 @@ const FormLoginMedic = () => {
         info.password
       );
       const user = userCredential.user;
-      console.log('medico logeado: ' + user.email);
+      // console.log('medico logeado: ' + user.email);
       const authenticatedDoctor = doctores.find((doctor) => {
         return doctor.mail === info.mail && doctor.password === info.password;
       });
@@ -104,7 +104,7 @@ const FormLoginMedic = () => {
     }
   }, []);
 
-  console.log(info);
+  // console.log(info);
   //RENDER
   return (
     <div style={divPadre}>

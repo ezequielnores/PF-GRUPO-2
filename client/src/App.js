@@ -1,4 +1,5 @@
 import "./App.css";
+import React from "react";
 //components
 import Navbar from "./components/landing/navbar/navBar";
 import Footer from "./components/landing/footer/footer";
@@ -32,15 +33,31 @@ import { HomeMedic } from "./components/HomeMedic/index";
 import HomeAdmin from "./components/DashboardAdmin/Home";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
 
+import { auth } from "./authentication/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+
 function App() {
   const location = useLocation();
-  console.log('render app');
+
+
+
+  const[isLogged, setIsLogged] = React.useState(false);
+    
+  onAuthStateChanged(auth, (user) => {
+    if(user){       
+      if( isLogged === false ) setIsLogged(prev => true);
+    }else{
+      if(isLogged === true) setIsLogged(prev => false);
+    }
+  })
+
+
   return (
     <div className="App">
       {location.pathname.startsWith("/HomeClient") ? (
-        <HomeClient />
+        <HomeClient  isLogged={isLogged}/>
       ) : location.pathname.startsWith("/HomeMedic") ? (
-        <HomeMedic />
+        <HomeMedic isLogged={isLogged}/>
       ) : location.pathname.startsWith("/HomeAdmin") ? (
         <HomeAdmin />
       ) : (
