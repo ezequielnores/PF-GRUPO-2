@@ -68,6 +68,16 @@ export const commentsByDoctor = createAsyncThunk(
   }
 );
 
+export const commentsByDoctor2 = createAsyncThunk(
+  "comments/getByMailDoctor",
+  async (mail) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/comments/commentsByMailDoctor?mail=${mail}`
+    );
+    return response.data;
+  }
+);
+
 export const commentsByPatient = createAsyncThunk(
   "comments/getByIdPatient",
   async (id) => {
@@ -139,9 +149,20 @@ const commentsSlice = createSlice({
       })
       .addCase(commentsByPatient.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.list = action.payload;
+        state.listAll = action.payload;
       })
       .addCase(commentsByPatient.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(commentsByDoctor2.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(commentsByDoctor2.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(commentsByDoctor2.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
