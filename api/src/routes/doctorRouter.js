@@ -22,17 +22,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const doctor = await getDoctor(id);
-    if (!doctor) throw new Error();
-    res.status(200).send(doctor);
-  } catch (error) {
-    res.status(404).send("This doctor is not in Data Base");
-  }
-});
-
 router.get("/doctorByMail", async (req, res) => {
   const { mail } = req.query;
 
@@ -46,6 +35,17 @@ router.get("/doctorByMail", async (req, res) => {
     res.status(200).json(doctorByMail);
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const doctor = await getDoctor(id);
+    if (!doctor) throw new Error();
+    res.status(200).send(doctor);
+  } catch (error) {
+    res.status(404).send("This doctor is not in Data Base");
   }
 });
 

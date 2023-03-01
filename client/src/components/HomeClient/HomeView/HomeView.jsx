@@ -22,7 +22,7 @@ const HomeView = () => {
                     <p>Our online platform is user-friendly and secure, ensuring that your personal information is protected at all times. Whether you need medical advice, a prescription refill, or ongoing care for a chronic condition, our team is here to support you every step of the way.</p>
                     <p>We understand the importance of accessible, affordable healthcare, and strive to make our services as affordable and convenient as possible. Browse our website to learn more about our online health services and schedule your first appointment today. We look forward to helping you achieve your health and wellness goals!</p>
                 </div>
-                <img style={{height:"11rem"}} src={homePhoto2} alt="homePhoto2"/>
+                <img style={{height:"11rem"}} src={homePhoto2} alt="homePhotos"/>
             </div>
         </div>
     )

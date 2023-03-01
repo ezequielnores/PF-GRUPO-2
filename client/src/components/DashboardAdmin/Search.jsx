@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPatientByMail } from "../../redux/reducers/patientReducer";
 import { Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
+import Comments from "./Comments";
+import InputFinder from "./InputFinder";
 //style
-import { doctorGetByMail } from "../../redux/reducers/doctorReducer";
+import {
+  doctorGetByMail,
+  docrtorGetAll,
+} from "../../redux/reducers/doctorReducer";
+import {
+  commentsByDoctor2,
+  commentsByPatient2,
+} from "../../redux/reducers/commentsReducer";
+import ManageFQ from "./ManageFQ";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -32,8 +42,21 @@ const Search = (props) => {
   const dispatch = useDispatch();
   const patient = useSelector((state) => state.patient.detail);
   const doctor = useSelector((state) => state.doctor.detail);
+  const [doctor2, setDoctor2] = useState({});
+  const [patient2, setPatient2] = useState({});
+  const doctors = useSelector((state) => state.doctor.list);
+  const patients = useSelector((state) => state.patient.list);
+  const commentsByDoctor = useSelector((state) => state.comments.list);
+  const commentsByPatient = useSelector((state) => state.comments.listAll);
+  const frequentQuestions = useSelector(
+    (state) => state.frequentQuestions.list
+  );
+  const frequentAsk = useSelector((state) => state.frequentQuestions.detail);
+  // const allComments = useSelector((state) => state.comments.listAll);
+  // const [commentsDoctor, setCommentsDoctor] = useState([]);
+  // const [commentsPatient, setCommentsPatient] = useState([]);
   //agregue para el render on o false
-  // const [render, setRender] = useState(false);
+  const [render, setRender] = useState(false);
   const [input, setInput] = useState({
     patientMail: "",
     doctorMail: "",
@@ -55,6 +78,24 @@ const Search = (props) => {
     dispatch(getPatientByMail(mail));
     // setRender(true);
   };
+
+  const handleSearchCommentsByDoctorMail = () => {
+    const mail = input.doctorMail;
+    // dispatch(doctorGetByMail(mail));
+    setDoctor2(doctors.find((d) => d.mail === mail));
+    dispatch(commentsByDoctor2(mail));
+  };
+
+  const handleSearchCommentsByPatientMail = () => {
+    const mail = input.patientMail;
+    setPatient2(patients.find((p) => p.mail === mail));
+    dispatch(commentsByPatient2(mail));
+  };
+
+  useEffect(() => {
+    // dispatch(commentsGetAll());
+    dispatch(docrtorGetAll());
+  }, [render]);
 
   return (
     <>
@@ -181,7 +222,7 @@ const Search = (props) => {
           <Grid style={{ position: "relative" }}>
             <Item>
               <Typography variant="h6">Doctor founded by mail:</Typography>
-              <img src={doctor.image} alt="doctor" style={photo} />
+              <img src={doctor?.image} alt="doctor" style={photo} />
 
               <div
                 style={{
@@ -223,10 +264,10 @@ const Search = (props) => {
                   Mail: <Typography>{doctor?.mail}</Typography>
                 </Typography>
               </div>
-              {doctor.active && (
+              {doctor?.active && (
                 <Button
                   onClick={async () => {
-                    await dispatch(props.updateActive(patient.id));
+                    await dispatch(props.updateActive(doctor?.id));
                     props.setChange(!props.change);
                   }}
                 >
@@ -243,7 +284,7 @@ const Search = (props) => {
                     right: "0",
                   }}
                   onClick={async () => {
-                    await dispatch(props.updateActive(patient.id));
+                    await dispatch(props.updateActive(doctor?.id));
                     props.setChange(!props.change);
                   }}
                 >
@@ -254,6 +295,71 @@ const Search = (props) => {
           </Grid>
         )}
       </Grid>
+
+      {props.findComment && (
+        <div>
+          <InputFinder
+            findBy="mail"
+            inputTitle={props.title}
+            inputType="text"
+            inputName="doctorMail"
+            inputValue={input.doctorMail}
+            inputOnChange={handleInputChange}
+            inputOnClick={handleSearchCommentsByDoctorMail}
+          />
+          <div>
+            {doctor2 && (
+              <h5>
+                Doctor comments {doctor2?.name} {doctor2?.lastName}:
+              </h5>
+            )}
+            {commentsByDoctor?.length && (
+              <Comments
+                comments={commentsByDoctor}
+                authorName={doctor2.name}
+                authorLastName={doctor2.lastName}
+                deleteComment={props.deleteComment}
+                setChange={props.setChange}
+                change={props.change}
+                renderSearch={render}
+                setRenderSearch={setRender}
+              />
+            )}
+          </div>
+
+          <InputFinder
+            findBy="mail"
+            inputTitle={props.title}
+            inputType="text"
+            inputName="patientMail"
+            inputValue={input.patientMail}
+            inputOnChange={handleInputChange}
+            inputOnClick={handleSearchCommentsByPatientMail}
+          />
+
+          <div>
+            {patient2 && (
+              <h5>
+                Patient comments {patient2?.name} {patient2?.lastName}:
+              </h5>
+            )}
+            {commentsByPatient?.length && (
+              <Comments
+                comments={commentsByPatient}
+                authorName={patient2?.name}
+                authorLastName={patient2?.lastName}
+                deleteComment={props.deleteComment}
+              />
+            )}
+          </div>
+        </div>
+      )}
+
+      {props.findFrequentQuestions && (
+        <div>
+          <ManageFQ />
+        </div>
+      )}
     </>
   );
 };

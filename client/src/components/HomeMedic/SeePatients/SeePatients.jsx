@@ -20,13 +20,13 @@ const validate = (input) => {
     }
     return errors;
 };
-const SeePatients = ({idTurn}) => {
+const SeePatients = ({idTurn,appointment}) => {
     const dispatch = useDispatch()   
-    useEffect(() => {
-        dispatch(attendPatientTurns(idTurn))
+    // useEffect(() => {
+    //     dispatch(attendPatientTurns(idTurn))
 
-    }, [])
-    const appointment = useSelector((state) => state.attend.details);
+    // }, [])
+    // const appointment = useSelector((state) => state.attend.details);
 
     const [newHistorial, setNewHistorial] = useState({
         patientId: "",
@@ -75,8 +75,8 @@ const SeePatients = ({idTurn}) => {
         await swal("The medical record has been saved!", {
             icon: "success",
           });
-        dispatch(attendedPatientTurns(idTurn))
-        dispatch(appointmentGetAllByDoctorId(appointment.doctor.id))
+        // dispatch(attendedPatientTurns(idTurn))
+        // dispatch(appointmentGetAllByDoctorId(appointment.doctor.id))
         setNewHistorial({
             patientId: appointment.Patient.id,
             doctorId: appointment.doctor.id,

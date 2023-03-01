@@ -12,6 +12,7 @@ import { Alert } from "@mui/material";
 //Firebase
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../authentication/firebase";
+import MailSender from "../ResetPassword/MailSender";
 //styles
 const divPadre = {
   display: "flex",
@@ -53,12 +54,19 @@ const FormLoginClient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [successLogin, setSuccessLogin] = useState(null);
+  const [open, setOpen] = useState(false);
   //me creo estado para guardar lo que toma de inptus
   const [info, setInfo] = useState({
     mail: "",
     password: "",
     id: "",
   });
+
+  const handleOpenResetPassword = () => {
+    setOpen(true);
+  }
+
+
   //seteo la info con los inputs
   const handleChange = (evento) => {
     evento.preventDefault();
@@ -98,6 +106,7 @@ const FormLoginClient = () => {
     }
   };
 
+  //SUBMIT WITH GOOGLE
   const handleLoginWithGoogle = async (e) => {
     e.preventDefault();
     try {
@@ -119,7 +128,8 @@ const FormLoginClient = () => {
       console.log(error.message);
     }
   };
-  //primera carga
+
+  //FIRST RENDER
   useEffect(() => {
     const id = localStorage.getItem("id");
     if (id) {
@@ -190,6 +200,15 @@ const FormLoginClient = () => {
           >
             Login with Google
           </Button>
+
+          <Button
+            variant="contained"
+            style={buton}
+            onClick={handleOpenResetPassword}
+          >
+          Forgot my password
+          </Button>
+          <MailSender open={open} setOpen={setOpen} />
         </Card>
       </form>
     </div>

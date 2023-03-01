@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import SeePatients from "../SeePatients/SeePatients";
+import axios from "axios";
 //reducer
 import {
   urgencyGetAll,
   urgencyEdit,
+  urgencyGetDetail,
 } from "../../../redux/reducers/urgencyReducer";
 //material
 import Table from "@mui/material/Table";
@@ -45,6 +48,10 @@ const Agenda = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.urgency.listAll);
 
+  const doctor = useSelector((state) => state.doctor.detail);
+  const [idTurn, setIdTurn] = useState("");
+  const [appointment, setAppointment] = useState({});
+
   const sortedUrgencias = data.slice().sort((a, b) => {
     const dateA = new Date(a.createdAt);
     const dateB = new Date(b.createdAt);
@@ -56,16 +63,38 @@ const Agenda = () => {
     setOpenRow(openRow === index ? null : index);
   };
   //HANDLER de ATENCION
-  const handlerAttended = (id) => {
+  const handlerAttended = async (id) => {
     const data = { attended: true };
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/urgency/${id}`
+    );
+    const dateParts = response.data.createdAt.split("T");
+    const dataAppointmen ={
+      idTurn: id,
+      date: dateParts[0],
+      hour: dateParts[1].split(".")[0],
+      Patient:{
+        id: response.data.Patient.id,
+        name: response.data.Patient.name,
+        surname: response.data.Patient.surname,
+      },
+      doctor:{
+        id: doctor.id,
+        name: doctor.name,
+        lastName: doctor.lastName,
+      }
+    }
+    setAppointment(dataAppointmen);
+    setIdTurn(id);
+    console.log(response.data);
     dispatch(urgencyEdit({ id, data }));
-    setIsUrgencyUpdated(!isUrgencyUpdated);
+    setIsUrgencyUpdated(true);
   };
   //HANDLER de refresh
   const handlerRefresh = () => {
     dispatch(urgencyGetAll());
   };
-  console.log(sortedUrgencias);
+  // console.log(sortedUrgencias);
   const formatDate = (dateStr) => {
     //creo date
     const date = new Date(dateStr);
@@ -96,153 +125,162 @@ const Agenda = () => {
   //otro
 
   return (
-    <div style={container}>
-      <div style={hijoContainer}>
-        <Typography
-          variant="h2"
-          style={{
-            color: "#307196",
-            fontWeight: "bold",
-            fontSize: "2.5rem",
-            marginBottom: "2rem",
-          }}
-        >
-          Emergencies
-        </Typography>
-        <Button onClick={handlerRefresh}>Refresh</Button>
-        <TableContainer component={Paper}>
-          <Table aria-label="turnera" style={{ marginTop: "2rem" }}>
-            <TableHead style={{ backgroundColor: "#307196" }}>
-              <TableRow>
-                <TableCell style={header}>Patient</TableCell>
-                <TableCell style={header}>Date</TableCell>
-                <TableCell style={header}>Hour</TableCell>
-                <TableCell style={header}></TableCell>
-                <TableCell style={header}></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {sortedUrgencias?.map((urgencia, index) => (
-                <>
-                  {urgencia.attended === false ? (
-                    <React.Fragment key={urgencia.id}>
-                      <TableRow>
-                        <TableCell style={{ fontSize: "17px" }}>
-                          {urgencia.Patient
-                            ? `${urgencia.Patient.name ?? ""} ${
-                                urgencia.Patient.surname ?? ""
-                              }`
-                            : "cargando"}
-                        </TableCell>
-                        <TableCell style={{ fontSize: "17px" }}>
-                          {formatDate(urgencia.createdAt)[0]}
-                        </TableCell>
-                        <TableCell style={{ fontSize: "17px" }}>
-                          {formatDate(urgencia.createdAt)[1]}
-                        </TableCell>
-                        <TableCell onClick={() => handleRowClick(index)}>
-                          <IconButton size="small">
-                            {openRow === index ? (
-                              <KeyboardArrowUpIcon />
-                            ) : (
-                              <KeyboardArrowDownIcon />
-                            )}
-                          </IconButton>
-                        </TableCell>
-                        <TableCell style={{ fontSize: "17px", width: "100px" }}>
-                          <Button onClick={() => handlerAttended(urgencia.id)}>
-                            Attend
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell
-                          style={{ paddingBottom: 0, paddingTop: 0 }}
-                          colSpan={6}
-                        >
-                          <Collapse
-                            in={openRow === index}
-                            timeout="auto"
-                            unmountOnExit
-                          >
-                            <Box sx={{ margin: 1 }}>
-                              <Typography
-                                component="div"
-                                style={{
-                                  backgroundColor: "#307196",
-                                  color: "white",
-                                  fontSize: "19px",
-                                  fontWeight: "bold",
-                                  borderRadius: "4px",
-                                  paddingLeft: "4px",
-                                }}
+    <div>
+      {
+        !isUrgencyUpdated? (
+
+        <div style={container}>
+          <div style={hijoContainer}>
+            <Typography
+              variant="h2"
+              style={{
+                color: "#307196",
+                fontWeight: "bold",
+                fontSize: "2.5rem",
+                marginBottom: "2rem",
+              }}
+            >
+              Emergencies
+            </Typography>
+            <Button onClick={handlerRefresh}>Refresh</Button>
+            <TableContainer component={Paper}>
+              <Table aria-label="turnera" style={{ marginTop: "2rem" }}>
+                <TableHead style={{ backgroundColor: "#307196" }}>
+                  <TableRow>
+                    <TableCell style={header}>Patient</TableCell>
+                    <TableCell style={header}>Date</TableCell>
+                    <TableCell style={header}>Hour</TableCell>
+                    <TableCell style={header}></TableCell>
+                    <TableCell style={header}></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {sortedUrgencias?.map((urgencia, index) => (
+                    <>
+                      {urgencia.attended === false ? (
+                        <React.Fragment key={urgencia.id}>
+                          <TableRow>
+                            <TableCell style={{ fontSize: "17px" }}>
+                              {urgencia.Patient
+                                ? `${urgencia.Patient.name ?? ""} ${
+                                    urgencia.Patient.surname ?? ""
+                                  }`
+                                : "cargando"}
+                            </TableCell>
+                            <TableCell style={{ fontSize: "17px" }}>
+                              {formatDate(urgencia.createdAt)[0]}
+                            </TableCell>
+                            <TableCell style={{ fontSize: "17px" }}>
+                              {formatDate(urgencia.createdAt)[1]}
+                            </TableCell>
+                            <TableCell onClick={() => handleRowClick(index)}>
+                              <IconButton size="small">
+                                {openRow === index ? (
+                                  <KeyboardArrowUpIcon />
+                                ) : (
+                                  <KeyboardArrowDownIcon />
+                                )}
+                              </IconButton>
+                            </TableCell>
+                            <TableCell style={{ fontSize: "17px", width: "100px" }}>
+                              <Button onClick={() => handlerAttended(urgencia.id)}>
+                                Attend
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell
+                              style={{ paddingBottom: 0, paddingTop: 0 }}
+                              colSpan={6}
+                            >
+                              <Collapse
+                                in={openRow === index}
+                                timeout="auto"
+                                unmountOnExit
                               >
-                                Details
-                              </Typography>
-                              <Table size="small">
-                                <TableBody>
-                                  <TableRow>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      Symptomatology:
-                                    </TableCell>
-                                    <TableCell style={{ fontSize: "14px" }}>
-                                      {urgencia.symptomatology}
-                                    </TableCell>
-                                  </TableRow>
-                                  <TableRow>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      Allergies:
-                                    </TableCell>
-                                    <TableCell style={{ fontSize: "14px" }}>
-                                      {urgencia.Patient?.allergies}
-                                    </TableCell>
-                                  </TableRow>
-                                  <TableRow>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      BMI:
-                                    </TableCell>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      {urgencia.Patient?.bmi}
-                                    </TableCell>
-                                  </TableRow>
-                                  <TableRow>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      Weight:
-                                    </TableCell>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      {urgencia.Patient?.weight}
-                                    </TableCell>
-                                  </TableRow>
-                                  <TableRow>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      Height:
-                                    </TableCell>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      {urgencia.Patient?.height}
-                                    </TableCell>
-                                  </TableRow>
-                                  <TableRow>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      Choronic Diseases:
-                                    </TableCell>
-                                    <TableCell style={{ fontSize: "15px" }}>
-                                      {urgencia.Patient?.chronicDiseases}
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
-                            </Box>
-                          </Collapse>
-                        </TableCell>
-                      </TableRow>
-                    </React.Fragment>
-                  ) : null}
-                </>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+                                <Box sx={{ margin: 1 }}>
+                                  <Typography
+                                    component="div"
+                                    style={{
+                                      backgroundColor: "#307196",
+                                      color: "white",
+                                      fontSize: "19px",
+                                      fontWeight: "bold",
+                                      borderRadius: "4px",
+                                      paddingLeft: "4px",
+                                    }}
+                                  >
+                                    Details
+                                  </Typography>
+                                  <Table size="small">
+                                    <TableBody>
+                                      <TableRow>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          Symptomatology:
+                                        </TableCell>
+                                        <TableCell style={{ fontSize: "14px" }}>
+                                          {urgencia.symptomatology}
+                                        </TableCell>
+                                      </TableRow>
+                                      <TableRow>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          Allergies:
+                                        </TableCell>
+                                        <TableCell style={{ fontSize: "14px" }}>
+                                          {urgencia.Patient?.allergies}
+                                        </TableCell>
+                                      </TableRow>
+                                      <TableRow>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          BMI:
+                                        </TableCell>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          {urgencia.Patient?.bmi}
+                                        </TableCell>
+                                      </TableRow>
+                                      <TableRow>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          Weight:
+                                        </TableCell>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          {urgencia.Patient?.weight}
+                                        </TableCell>
+                                      </TableRow>
+                                      <TableRow>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          Height:
+                                        </TableCell>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          {urgencia.Patient?.height}
+                                        </TableCell>
+                                      </TableRow>
+                                      <TableRow>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          Choronic Diseases:
+                                        </TableCell>
+                                        <TableCell style={{ fontSize: "15px" }}>
+                                          {urgencia.Patient?.chronicDiseases}
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableBody>
+                                  </Table>
+                                </Box>
+                              </Collapse>
+                            </TableCell>
+                          </TableRow>
+                        </React.Fragment>
+                      ) : null}
+                    </>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </div>
+        ):(
+          <SeePatients idTurn={idTurn} appointment = {appointment} />
+        )
+      }    
     </div>
   );
 };
