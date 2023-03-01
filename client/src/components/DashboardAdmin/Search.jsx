@@ -16,7 +16,6 @@ import {
   commentsByDoctor2,
   commentsByPatient2,
 } from "../../redux/reducers/commentsReducer";
-import ManageFQ from "./ManageFQ";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -48,10 +47,6 @@ const Search = (props) => {
   const patients = useSelector((state) => state.patient.list);
   const commentsByDoctor = useSelector((state) => state.comments.list);
   const commentsByPatient = useSelector((state) => state.comments.listAll);
-  const frequentQuestions = useSelector(
-    (state) => state.frequentQuestions.list
-  );
-  const frequentAsk = useSelector((state) => state.frequentQuestions.detail);
   // const allComments = useSelector((state) => state.comments.listAll);
   // const [commentsDoctor, setCommentsDoctor] = useState([]);
   // const [commentsPatient, setCommentsPatient] = useState([]);
@@ -95,6 +90,11 @@ const Search = (props) => {
   useEffect(() => {
     // dispatch(commentsGetAll());
     dispatch(docrtorGetAll());
+    if (input.doctorMail.length) {
+      setDoctor2(doctors.find((d) => d.mail === input.doctorMail));
+      dispatch(commentsByDoctor2(input.doctorMail));
+    }
+    // dispatch(docrtorGetAll());
   }, [render]);
 
   return (
@@ -319,10 +319,8 @@ const Search = (props) => {
                 authorName={doctor2.name}
                 authorLastName={doctor2.lastName}
                 deleteComment={props.deleteComment}
-                setChange={props.setChange}
-                change={props.change}
-                renderSearch={render}
                 setRenderSearch={setRender}
+                renderSearch={render}
               />
             )}
           </div>
@@ -352,12 +350,6 @@ const Search = (props) => {
               />
             )}
           </div>
-        </div>
-      )}
-
-      {props.findFrequentQuestions && (
-        <div>
-          <ManageFQ />
         </div>
       )}
     </>

@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import {
+  createFrequentAsk,
+  updateFrequentAskById,
+  getAllFrequentQuestions
+} from "../../redux/reducers/frequentQuestionsReducer";
 
 const FormFQ = ({
-  sendInfo,
   id,
   askToUpdate,
   answerToUpdate,
-  crudFQ,
-  setCrudFQ,
+  updateFQ,
+  createFQ,
+  render,
 }) => {
   const dispatch = useDispatch();
   const [ask, setAsk] = useState("");
@@ -16,17 +21,26 @@ const FormFQ = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (id) {
-      dispatch(sendInfo(id, { ask: ask, answer: answer })).then(() => alert("FQ UPDATED."));
-    //   alert("FQ UPDATED.");
+      dispatch(updateFrequentAskById({ id: id, ask: ask, answer: answer })).then(() =>
+        alert("FQ UPDATED.")
+      );
+      dispatch(getAllFrequentQuestions());
+      //   alert("FQ UPDATED.");
     } else {
-      dispatch(sendInfo({ ask: ask, answer: answer })).then(() => alert("FQ CREATED."));
-    //   alert("FQ CREATED.");
+      dispatch(createFrequentAsk({ ask: ask, answer: answer })).then(() =>
+        alert("FQ CREATED.")
+      );
+      dispatch(getAllFrequentQuestions());
+      createFQ()
+      //   alert("FQ CREATED.");
     }
 
     setAsk("");
     setAnswer("");
 
-    setTimeout(setCrudFQ, 6000, { crudFQ, create: false, update: false });
+    if (id && render) setTimeout(updateFQ, 6000, !render);
+    if (id) setTimeout(updateFQ, 6000);
+    if (!id && !render) setTimeout(createFQ, 6000);
   };
 
   return (
