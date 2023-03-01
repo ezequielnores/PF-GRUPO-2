@@ -15,7 +15,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 //validaciones
 import { IconButton, InputAdornment, Snackbar } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doctorAdd } from "../../redux/reducers/doctorReducer";
 //Firebase
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -66,6 +66,7 @@ const finalinput = {
 };
 
 const MedicForm = () => {
+  const doctors = useSelector((state) => state.doctor.list);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   /*   const {createUser} = new ManagementClient() */
@@ -227,9 +228,14 @@ const MedicForm = () => {
                 "Account sent! Pending to activate.. Wait to be redirected"
               );
               setShowAlert(true);
-              setTimeout(() => {
+              const authenticatedDoctor = doctors.find((doctor) => {
+                return doctor.mail === auth.currentUser.email;
+              });
+              localStorage.setItem("idMedic", authenticatedDoctor.id);
+              navigate("/HomeMedic/Profile")
+/*               setTimeout(() => {
                 navigate("/loginMedic");
-              }, 2500);
+              }, 2500); */
             } else {
               auth.currentUser.delete();
               // alert("Error sending account!");
