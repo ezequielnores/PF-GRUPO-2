@@ -3,6 +3,9 @@ const { Router } = require("express");
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
+
+const emailVerification = require('./emailVerification')
+
 const turnsRouter = require("../routes/turnsRouter");
 
 const planRouter = require("./plans.js");
@@ -55,5 +58,6 @@ router.use("/blog", blogRouter);
 
 router.use("/payments", paymentRouter);
 
+router.use('/emailVerification', emailVerification)
 
 module.exports = router;

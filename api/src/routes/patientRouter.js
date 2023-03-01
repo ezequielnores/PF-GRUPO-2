@@ -210,6 +210,10 @@ router.put("/edit/:id", async (req, res) => {
     if (id) {
       if (name) {
         const findPatient = await Patient.findByPk(id);
+        if (photo)
+        var uploadedResponse = await cloudinary.uploader.upload(photo, {
+          upload_preset: "iCare_Henry",
+        });
         await findPatient.update(
           {
             name,
@@ -222,7 +226,7 @@ router.put("/edit/:id", async (req, res) => {
             bmi,
             allergies,
             chronicDiseases,
-            photo,
+            photo: uploadedResponse ? uploadedResponse.url : null,
             location,
             dni,
             phone,

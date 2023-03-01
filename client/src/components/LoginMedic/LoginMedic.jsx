@@ -50,6 +50,7 @@ const buton = {
 
 const FormLoginMedic = () => {
   //Estado error para alert
+  const doctores = useSelector((state) => state.doctor.list);
   const [successLogin, setSuccessLogin] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -66,7 +67,6 @@ const FormLoginMedic = () => {
       [evento.target.name]: evento.target.value,
     });
   };
-  const doctores = useSelector((state) => state.doctor.list);
   // console.log(doctores);
 
   //SUBMIT

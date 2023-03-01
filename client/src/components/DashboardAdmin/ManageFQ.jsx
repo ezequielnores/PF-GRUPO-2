@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getFrequentAskByAsk,
-  createFrequentAsk,
-  updateFrequentAskById,
   getAllFrequentQuestions,
   deleteFrequentAskById,
 } from "../../redux/reducers/frequentQuestionsReducer";
@@ -31,7 +28,7 @@ const ManageFQ = (props) => {
 
   const createFQ = () => {
     setCrudFQ({
-      create: true,
+      create: !crudFQ.create,
       read: false,
       update: false,
       delete: false,
@@ -41,7 +38,7 @@ const ManageFQ = (props) => {
   const readFQ = () => {
     setCrudFQ({
       create: false,
-      read: true,
+      read: !crudFQ.read,
       update: false,
       delete: false,
     });
@@ -51,14 +48,23 @@ const ManageFQ = (props) => {
     setCrudFQ({
       create: false,
       read: false,
-      update: true,
+      update: !crudFQ.update,
       delete: false,
+    });
+  };
+
+  const deleteFQ = () => {
+    setCrudFQ({
+      create: false,
+      read: false,
+      update: false,
+      delete: !crudFQ.delete,
     });
   };
 
   useEffect(() => {
     dispatch(getAllFrequentQuestions());
-  }, []);
+  }, [crudFQ.create, crudFQ.update]);
 
   return (
     <div>
@@ -77,7 +83,12 @@ const ManageFQ = (props) => {
           <p>Ask: {frequentAsk?.ask}</p>
           <p>Answer: {frequentAsk?.answer}</p>
           {frequentAsk?.id && (
-            <button onClick={() => dispatch(deleteFrequentAskById(frequentAsk?.id))}>
+            <button
+              onClick={() => {
+                dispatch(deleteFrequentAskById(frequentAsk?.id));
+                setFrequentAsk(false);
+              }}
+            >
               DELETE
             </button>
           )}
@@ -85,25 +96,29 @@ const ManageFQ = (props) => {
           {crudFQ.update && (
             <FormFQ
               id={frequentAsk?.id}
-              sendInfo={updateFrequentAskById}
               askToUpdate={frequentAsk?.ask}
               answerToUpdate={frequentAsk?.answer}
-              crudFQ={crudFQ}
-              setCrudFQ={setCrudFQ}
+              updateFQ={updateFQ}
             />
           )}
         </div>
       )}
 
-      <ButtonsFQ createFQ={createFQ} readFQ={readFQ} />
+      <ButtonsFQ
+        createFQ={createFQ}
+        readFQ={readFQ}
+        read={crudFQ.read}
+        create={crudFQ.create}
+      />
 
-      {crudFQ.create && <FormFQ sendInfo={createFrequentAsk} />}
+      {crudFQ.create && <FormFQ createFQ={createFQ} />}
 
       {crudFQ.read && allFQ.length && (
         <ListFQ
           list={allFQ}
           updateFQ={updateFQ}
           crudFQ={crudFQ}
+          deleteFQ={deleteFQ}
           setCrudFQ={setCrudFQ}
         />
       )}

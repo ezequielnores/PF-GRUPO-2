@@ -1,10 +1,10 @@
 import React from "react";
 
-const ButtonsFQ = ({ createFQ, readFQ }) => {
+const ButtonsFQ = ({ createFQ, readFQ, read, create}) => {
     return (
         <div>
-            <button onClick={createFQ}>CREATE FQ</button>
-            <button onClick={readFQ}>READ FQ</button>
+            <button onClick={createFQ}>{create ? "Hide create" : "Create"} FQ</button>
+            <button onClick={readFQ}>{read ? "Hide" : "Read"} FQ</button>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { /* useRef, */ useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 /* import emailjs from "@emailjs/browser"; */
@@ -15,11 +15,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 //validaciones
 import { IconButton, InputAdornment, Snackbar } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doctorAdd } from "../../redux/reducers/doctorReducer";
 //Firebase
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../authentication/firebase";
+import axios from "axios";
+const { REACT_APP_BACKEND_URL } = process.env;
 
 //style
 const divPadre = {
@@ -64,6 +66,7 @@ const finalinput = {
 };
 
 const MedicForm = () => {
+  const doctors = useSelector((state) => state.doctor.list);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   /*   const {createUser} = new ManagementClient() */
@@ -106,6 +109,20 @@ const MedicForm = () => {
     location: "",
   });
 
+  const DisableButton = () => {
+    if(error.mail !== "" || error.password !== "" || error.name !== "" || error.lastName !== "" 
+    || error.dni !== "" || error.license){
+      return true;
+    }
+    if(form.name === "" || form.lastName === "" || form.mail === "" || form.password === "" 
+    || form.phone === "" || form.dni === "" || form.license === "" 
+    || form.birthdate === "" || form.speciality === "" || form.location === "" || form.cv === "" 
+    || form.cv === null || form.image === "" || form.image === null ){
+      return true;
+    }
+    return false;
+  }
+
   const handleImage = (e) => {
     const name = e.target.name;
     if (name === "image") setImageInputValue(e.target.value);
@@ -142,7 +159,7 @@ const MedicForm = () => {
     validateForm({ ...form, [name]: form }, name);
   };
 
-  const validateForm = (form, name) => {
+  const validateForm = async (form, name) => {
     if (name === "name" || name === "lastName" || name === "speciality") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -179,17 +196,16 @@ const MedicForm = () => {
         });
       }
     }
-    if (name === "mail") {
-      if (
-        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
-          form[name] || form[name] !== ""
-        )
-      ) {
-        setError({ ...error, [name]: "•Musst be a valid email" });
-      } else setError({ ...error, [name]: "" });
-    }
+    if (name === "mail" ) {
+    const isValid = await axios.get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`).then(r => r.data)
+    
+    if(isValid){
+      setError({...error, [name]:""})
+    }else{
+      setError({...error, [name]:"Must enter a valid email"})
+    }}
   };
-  console.log(form);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const error = validateFields();
@@ -202,7 +218,7 @@ const MedicForm = () => {
           form.password
         );
         const user = userCredential.user;
-        console.log("medico creado: " + user.email);
+        // console.log("medico creado: " + user.email);
         dispatch(doctorAdd({ ...form }))
           .then((res) => {
             if (res.type === "doctor/addById/fulfilled") {
@@ -212,9 +228,14 @@ const MedicForm = () => {
                 "Account sent! Pending to activate.. Wait to be redirected"
               );
               setShowAlert(true);
-              setTimeout(() => {
+              const authenticatedDoctor = doctors.find((doctor) => {
+                return doctor.mail === auth.currentUser.email;
+              });
+              localStorage.setItem("idMedic", authenticatedDoctor.id);
+              navigate("/HomeMedic/Profile")
+/*               setTimeout(() => {
                 navigate("/loginMedic");
-              }, 2500);
+              }, 2500); */
             } else {
               auth.currentUser.delete();
               // alert("Error sending account!");
@@ -237,9 +258,9 @@ const MedicForm = () => {
       setAlertMessage("Existing errors     ");
       setShowAlert(true);
     }
-    console.log(form);
+   
   };
-  console.log(form);
+  
   return (
     <div style={divPadre}>
       <Snackbar
@@ -484,10 +505,10 @@ const MedicForm = () => {
           </div>
           <div style={{ marginTop: "2rem" }}>
             <Button
-              variant='contained'
-              type='submit'
-              value='Send'
-              // disabled={!hasChanged}
+              variant="contained"
+              type="submit"
+              value="Send"
+              disabled={DisableButton()}
               style={{
                 backgroundColor: "#307196",
                 width: "50%",

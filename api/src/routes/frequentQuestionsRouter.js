@@ -76,7 +76,7 @@ frequentQuestionsRouter.post("/", async (req, res) => {
 
 frequentQuestionsRouter.put("/update/:id", async (req, res) => {
     const { id }  = req.params;
-    const attributes = req.body;
+    const attributes = req.query;
 
     try {
         if (![id, attributes].every(Boolean)) throw new Error("Datos incompletos para acualizar.");
