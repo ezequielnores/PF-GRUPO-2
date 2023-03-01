@@ -114,40 +114,40 @@ const Home = ({ isLogged }) => {
         </div>
         <SideBar open={open} handleOpen={handleOpen} path={location.pathname} />
 
-        <div style={{
-            position: "absolute",
-            top: "6rem",
-            width: open ? "85vw" : "95vw",
-            right: "0",
-          }}>
-          
-          
-          {(
-              location.pathname.endsWith("/HomeClient") && <HomeView /> 
-              ||
-              location.pathname.endsWith("/HomeClient/Profile") && <Profile />
-              ||
-              location.pathname.endsWith("/HomeClient/Profile/Edit") && (<ProfileUpdate /> )
-              ||
-              location.pathname.endsWith("/HomeClient/MyAppointments") && ( <MyAppointments /> )
-              ||
-              location.pathname.endsWith("/HomeClient/Urgency") && <Urgency />
-              ||
-              location.pathname.endsWith("/HomeClient/MedicalAppointments") && ( <MedicalAppointments /> )
-              ||
-              location.pathname.endsWith("/HomeClient/MedicalHistory") && (  <MedicalHistory /> )
-              ||
-              location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />
-              ||
-              location.pathname.endsWith("/HomeClient/Faq") && <Faq />
-              ||
-              location.pathname.endsWith("/HomeClient/Register") && <Register />
-              ||
-              location.pathname.endsWith("/HomeClient/Suscriptions") && ( <Suscriptions /> )
-              ||
-              location.pathname.endsWith("/HomeClient/Suscriptions/Suscriptions") && (<History />)
-          )   || <ErrorPage />
-          }
+      <div style={{
+          position: "absolute",
+          top: "6rem",
+          width: open ? "85vw" : "95vw",
+          right: "0",
+        }}>
+        
+        
+        {(
+            location.pathname.endsWith("/HomeClient") && <HomeView /> 
+            ||
+            location.pathname.endsWith("/HomeClient/Profile") && <Profile />
+            ||
+            location.pathname.endsWith("/HomeClient/Profile/Edit") && (<ProfileUpdate /> )
+            ||
+            location.pathname.endsWith("/HomeClient/MyAppointments") && ( <MyAppointments /> )
+            ||
+            location.pathname.endsWith("/HomeClient/Urgency") && <Urgency />
+            ||
+            location.pathname.endsWith("/HomeClient/MedicalAppointments") && ( <MedicalAppointments /> )
+            ||
+            location.pathname.endsWith("/HomeClient/MedicalHistory") && (  <MedicalHistory /> )
+            ||
+            location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />
+            ||
+            location.pathname.endsWith("/HomeClient/Faq") && <Faq />
+            ||
+            location.pathname.endsWith("/HomeClient/Register") && <Register />
+            ||
+            location.pathname.endsWith("/HomeClient/Suscriptions") && ( <Suscriptions /> )
+            ||
+            location.pathname.endsWith("/HomeClient/Suscriptions/history") && (<History />)
+        )   || <ErrorPage />
+        }
 
         </div>
       </div>

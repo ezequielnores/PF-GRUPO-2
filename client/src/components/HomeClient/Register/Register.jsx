@@ -182,7 +182,7 @@ const Register = () => {
   const dispatchRegister = () => {
     console.log(form);
     dispatch(
-      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
+      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email, uid: auth.currentUser.uid })
     )
       .then((res) => {
         if (res.type === "patient/register/fulfilled") {

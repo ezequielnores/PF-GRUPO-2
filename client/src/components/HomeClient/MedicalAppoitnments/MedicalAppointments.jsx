@@ -21,6 +21,8 @@ import { Box, Container, Paper, Typography } from "@mui/material";
 import { Grid } from "@mui/material";
 import axios from "axios";
 
+
+
 const MedicalAppointments = () => {
   const dispatch = useDispatch();
   const doctors = useSelector((state) => state.doctor.list);
@@ -75,6 +77,9 @@ const MedicalAppointments = () => {
   const handleSelectHour = (time) => {
     setSelectedTime(time.format("HH:mm"));
   };
+
+  
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -229,8 +234,17 @@ const MedicalAppointments = () => {
                 ))}
               </Select>
             </Box>
-
             <Box sx={{ mt: 2 }}>
+              <InputLabel id="demo-simple-select-required">Hour</InputLabel>
+              <Datetime
+                dateFormat={false}
+                timeConstraints={{ minutes: { step: 60 }, seconds: { step: 60 } }}
+                onChange={handleSelectHour}
+                name="hour"
+              />
+            </Box>
+
+            {/* <Box sx={{ mt: 2 }}>
               <InputLabel id="demo-simple-select-required">Hour</InputLabel>
               <Datetime
                 dateFormat={false}
@@ -238,7 +252,7 @@ const MedicalAppointments = () => {
                 onChange={handleSelectHour}
                 name="hour"
               />
-            </Box>
+            </Box> */}
             <br />
             <Stack
               sx={{ mt: 2 }}

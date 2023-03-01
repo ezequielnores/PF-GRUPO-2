@@ -12,6 +12,7 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID, */
   apiKey: "AIzaSyCu4buN2Go_VtQpl57-mFU1NVl_eAFzWAY",
   authDomain: "icare-d118d.firebaseapp.com",
+  databaseURL: "https://icare-d118d-default-rtdb.firebaseio.com",
   projectId: "icare-d118d",
   storageBucket: "icare-d118d.appspot.com",
   messagingSenderId: "803208479245",
