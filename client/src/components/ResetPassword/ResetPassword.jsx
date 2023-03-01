@@ -1,4 +1,4 @@
-/* import admin from "firebase-admin" */
+import firebase from "firebase/app"
 
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -42,7 +42,7 @@ function ResetPassword() {
     } else {
       const user = await dispatch(getPatientByMail(mail));
       const uid = user.uid;
-/*       admin.auth().updateUser(uid, {password: password}); */
+      
     }
   }
 
