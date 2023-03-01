@@ -12,7 +12,10 @@ import {
   doctorGetByMail,
   docrtorGetAll,
 } from "../../redux/reducers/doctorReducer";
-import { commentsByDoctor2 } from "../../redux/reducers/commentsReducer";
+import {
+  commentsByDoctor2,
+  commentsByPatient2,
+} from "../../redux/reducers/commentsReducer";
 import ManageFQ from "./ManageFQ";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -38,9 +41,11 @@ const photo = {
 const Search = (props) => {
   const dispatch = useDispatch();
   const patient = useSelector((state) => state.patient.detail);
-  //const doctor = useSelector((state) => state.doctor.detail);
-  const [doctor, setDoctor] = useState({});
+  const doctor = useSelector((state) => state.doctor.detail);
+  const [doctor2, setDoctor2] = useState({});
+  const [patient2, setPatient2] = useState({});
   const doctors = useSelector((state) => state.doctor.list);
+  const patients = useSelector((state) => state.patient.list);
   const commentsByDoctor = useSelector((state) => state.comments.list);
   const commentsByPatient = useSelector((state) => state.comments.listAll);
   const frequentQuestions = useSelector(
@@ -77,19 +82,18 @@ const Search = (props) => {
   const handleSearchCommentsByDoctorMail = () => {
     const mail = input.doctorMail;
     // dispatch(doctorGetByMail(mail));
-    setDoctor(doctors.find((d) => d.mail === mail));
+    setDoctor2(doctors.find((d) => d.mail === mail));
     dispatch(commentsByDoctor2(mail));
   };
 
   const handleSearchCommentsByPatientMail = () => {
-    const mail = { mail: input.patientMail };
-    dispatch(getPatientByMail(mail));
-    dispatch(props.commentsByPatient(patient.id));
+    const mail = input.patientMail;
+    setPatient2(patients.find((p) => p.mail === mail));
+    dispatch(commentsByPatient2(mail));
   };
 
   useEffect(() => {
     // dispatch(commentsGetAll());
-    if (input.doctorMail) dispatch(commentsByDoctor2(input.doctorMail));
     dispatch(docrtorGetAll());
   }, [render]);
 
@@ -218,7 +222,7 @@ const Search = (props) => {
           <Grid style={{ position: "relative" }}>
             <Item>
               <Typography variant="h6">Doctor founded by mail:</Typography>
-              <img src={doctor.image} alt="doctor" style={photo} />
+              <img src={doctor?.image} alt="doctor" style={photo} />
 
               <div
                 style={{
@@ -260,10 +264,10 @@ const Search = (props) => {
                   Mail: <Typography>{doctor?.mail}</Typography>
                 </Typography>
               </div>
-              {doctor.active && (
+              {doctor?.active && (
                 <Button
                   onClick={async () => {
-                    await dispatch(props.updateActive(doctor.id));
+                    await dispatch(props.updateActive(doctor?.id));
                     props.setChange(!props.change);
                   }}
                 >
@@ -280,7 +284,7 @@ const Search = (props) => {
                     right: "0",
                   }}
                   onClick={async () => {
-                    await dispatch(props.updateActive(doctor.id));
+                    await dispatch(props.updateActive(doctor?.id));
                     props.setChange(!props.change);
                   }}
                 >
@@ -304,16 +308,16 @@ const Search = (props) => {
             inputOnClick={handleSearchCommentsByDoctorMail}
           />
           <div>
-            {doctor && (
+            {doctor2 && (
               <h5>
-                Doctor comments {doctor?.name} {doctor?.lastName}:
+                Doctor comments {doctor2?.name} {doctor2?.lastName}:
               </h5>
             )}
             {commentsByDoctor?.length && (
               <Comments
                 comments={commentsByDoctor}
-                authorName={doctor.name}
-                authorLastName={doctor.lastName}
+                authorName={doctor2.name}
+                authorLastName={doctor2.lastName}
                 deleteComment={props.deleteComment}
                 setChange={props.setChange}
                 change={props.change}
@@ -334,16 +338,16 @@ const Search = (props) => {
           />
 
           <div>
-            {patient && (
+            {patient2 && (
               <h5>
-                Patient comments {patient?.name} {patient?.lastName}:
+                Patient comments {patient2?.name} {patient2?.lastName}:
               </h5>
             )}
             {commentsByPatient?.length && (
               <Comments
                 comments={commentsByPatient}
-                authorName={patient?.name}
-                authorLastName={patient?.lastName}
+                authorName={patient2?.name}
+                authorLastName={patient2?.lastName}
                 deleteComment={props.deleteComment}
               />
             )}
@@ -353,12 +357,7 @@ const Search = (props) => {
 
       {props.findFrequentQuestions && (
         <div>
-          <ManageFQ
-            frequentAsk={frequentAsk}
-            frequentQuestionsByAsk={frequentQuestions}
-            ask={input.ask}
-            answer={input.answer}
-          />
+          <ManageFQ />
         </div>
       )}
     </>
