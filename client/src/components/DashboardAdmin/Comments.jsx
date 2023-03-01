@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { commentsGetAll } from "../../redux/reducers/commentsReducer";
 
 const Comments = ({
   comments,
   authorName,
   authorLastName,
   deleteComment,
-  setChange,
-  change,
+  setRenderSearch,
   renderSearch,
-  setRenderSearch
 }) => {
   const dispatch = useDispatch();
-  const [render, setRender] = useState(false);
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>
@@ -31,8 +27,8 @@ const Comments = ({
           <button
             onClick={async () => {
               await dispatch(deleteComment(comment.id));
-              setRenderSearch(!renderSearch);
-              setRender(!render);
+              dispatch(commentsGetAll());
+              setTimeout(setRenderSearch, 3000, !renderSearch);
             }}
           >
             DELETE COMMENT

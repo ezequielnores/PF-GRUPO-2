@@ -11,15 +11,17 @@ const InputFinder = ({
 }) => {
   return (
     <div>
-          <label htmlFor="">Find {inputTitle} by {findBy}</label>
-          <input
-            type={inputType}
-            name={inputName}
-            value={inputValue}
-            onChange={inputOnChange}
-          />
-          <button onClick={inputOnClick}>Find {inputTitle}</button>
-        </div>
+      <label htmlFor="">
+        Find {inputTitle} by {findBy}:{" "}
+        <input
+          type={inputType}
+          name={inputName}
+          value={inputValue}
+          onChange={inputOnChange}
+        />
+      </label>
+      <button onClick={inputOnClick}>Find {inputTitle}</button>
+    </div>
   );
 };
 
