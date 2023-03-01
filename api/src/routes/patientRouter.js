@@ -140,6 +140,7 @@ router.post("/", async (req, res) => {
     phone,
     socialSecurity,
     active,
+    uid
   } = req.body;
   try {
     if (
@@ -175,6 +176,7 @@ router.post("/", async (req, res) => {
         phone: phone,
         socialSecurity: socialSecurity,
         active: active,
+        uid: uid
       });
       res.status(200).send(newPatient);
     }

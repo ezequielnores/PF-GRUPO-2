@@ -71,6 +71,9 @@ module.exports = (sequelize) => {
       },
       plan:{
         type:DataTypes.STRING,
+      },
+      uid: {
+        type: DataTypes.STRING
       }
     },
     {

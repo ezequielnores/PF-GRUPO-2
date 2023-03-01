@@ -15,6 +15,7 @@ import MedicForm from "./components/medicWorkForm/medicForm";
 import Register from "./components/HomeClient/Register/Register";
 import LoginMedic from "./components/LoginMedic/LoginMedic";
 import LoginAdmin from './components/LoginAdmin/LoginAdmin';
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 import { Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import {
@@ -61,6 +62,8 @@ function App() {
 
             <Route path="/register" element={<Register />}/>
             <Route path="/loginAdmin" element={<LoginAdmin />}/>
+
+            <Route path="/resetPassword/:mail" element={<ResetPassword/>}/>
 
           </Routes>
           <Footer />

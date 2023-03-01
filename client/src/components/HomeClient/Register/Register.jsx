@@ -141,13 +141,13 @@ const Register = () => {
   const dispatchRegister = () => {
     console.log(form);
     dispatch(
-      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
+      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email, uid: auth.currentUser.uid })
     )
       .then((res) => {
         if (res.type === "patient/register/fulfilled") {
           alert("Account Created");
         } else {
-          console.log({ ...form, phone: 12345, mail: auth.currentUser.email });
+          console.log({ ...form, phone: 12345, mail: auth.currentUser.email, uid: auth.currentUser.uid });
           alert("Error creating account!");
           auth.currentUser.delete();
         }
