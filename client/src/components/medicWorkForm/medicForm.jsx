@@ -137,7 +137,6 @@ const MedicForm = () => {
   };
 
   const onChangeHandler = (name, value) => {
-    console.log(form);
     setForm({ ...form, [name]: value });
     validateForm({ ...form, [name]: value }, name);
   };
@@ -196,13 +195,15 @@ const MedicForm = () => {
         });
       }
     }
-    if (name === "mail") {
-    const isValid = await axios.get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form.mail}`).then(r => r.data)
+    if (name === "mail" || name === 'clinicMail') {
+      console.log(form[name]);
+      console.log(name);
+    const isValid = await axios.get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`).then(r => r.data)
     
     if(isValid){
-      setError({...error, mail:""})
+      setError({...error, [name]:""})
     }else{
-      setError({...error, mail:"Must enter a valid email"})
+      setError({...error, [name]:"Must enter a valid email"})
     }}
   };
   
@@ -486,7 +487,6 @@ const MedicForm = () => {
               type="submit"
               value="Send"
               disabled={DisableButton()}
-              // disabled={!hasChanged}
               style={{
                 backgroundColor: "#307196",
                 width: "50%",
