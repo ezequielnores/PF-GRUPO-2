@@ -6,6 +6,7 @@ const getUrgencies = async () => {
     include: {
       model: Patient,
       attributes: [
+        "id",
         "name",
         "surname",
         "weight",
