@@ -53,6 +53,7 @@ const buton = {
 const FormLoginClient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const pacientes = useSelector((state) => state.patient.list);
   const [successLogin, setSuccessLogin] = useState(null);
   const [open, setOpen] = useState(false);
   //me creo estado para guardar lo que toma de inptus
@@ -75,7 +76,6 @@ const FormLoginClient = () => {
       [evento.target.name]: evento.target.value,
     });
   };
-  const pacientes = useSelector((state) => state.patient.list);
 
   //SUBMIT
   const handleLogin = async (e) => {
