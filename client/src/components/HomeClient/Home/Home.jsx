@@ -1,4 +1,4 @@
-import SideBar from "../sideBar/SideBar";
+import SideBar from "../SideBar/SideBar";
 
 import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
