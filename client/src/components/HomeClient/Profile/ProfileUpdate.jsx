@@ -61,6 +61,7 @@ const ProfileEdit = () => {
   const [hasChanged, setHasChanged] = useState(false);
 
   const [errors, setErrors] = useState({
+    photo: "",
     name: "",
     mail: "",
     phone: "",
@@ -85,6 +86,16 @@ const ProfileEdit = () => {
   const handleFechaNacimientoChange = (date) => {
     setInfoNueva({ ...infoNueva, birthdate: date });
   };
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setInfoNueva({...infoNueva, photo: reader.result});
+    };
+    validateFields();
+  }
 
 
   const handleSubmit = (e) => {
@@ -219,8 +230,9 @@ const ProfileEdit = () => {
           name="photo"
           label="Photo"
           style={typoTitle}
+          type="file"
           gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={handleImage}
         />
         <TextField
           name="weight"
