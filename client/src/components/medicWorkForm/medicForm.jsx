@@ -237,6 +237,7 @@ const MedicForm = () => {
       setAlertMessage("Existing errors     ");
       setShowAlert(true);
     }
+    console.log(form);
   };
   console.log(form);
   return (
