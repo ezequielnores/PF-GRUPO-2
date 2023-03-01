@@ -1,5 +1,6 @@
 const { Router } = require("express");
-const axios = require("axios");
+const { findByMail } = require("../controllers/doctorController");
+const { getPatientByMail } = require("../controllers/patientController");
 const { getComments, allCommentsByDoc, allCommentsByPatient, containOffensiveWords } = require("../controllers/commentsController");
 const { Comments } = require("../db.js");
 // const BadWords = require('bad-words');
@@ -23,6 +24,42 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/commentsByMailDoctor", async (req, res) => {
+  const { mail } = req.query;
+
+  try {
+    if (!mail) throw new Error("El mail esta indefinido.");
+    
+    const doctor = await findByMail(mail);
+    if (!doctor) throw new Error(`No se encuentra un medico con el mail ${mail} en la BDD.`);
+
+    const comments = await allCommentsByDoc(doctor.id);
+    if (!comments.length) comments = [];
+
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.get("/commentsByMailPatient", async (req, res) => {
+  const { mail } = req.query;
+
+  try {
+    if (!mail) throw new Error("El mail esta indefinido.");
+    
+    const patient = await getPatientByMail(mail);
+    if (!patient) throw new Error(`No se encuentra un paciente con el mail ${mail} en la BDD.`);
+
+    const comments = await allCommentsByPatient(patient.id);
+    if (!comments.length) comments = [];
+
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 //-------------------------- trae los comentario por Doctor
 router.get('/doctor/:id', async (req, res) => {
   const { id } = req.params;
@@ -38,7 +75,7 @@ router.get('/doctor/:id', async (req, res) => {
       res.status(404).send("Id not found")
     }
   } catch (error) {
-    res.status(404).json({ error: error.message }, 'Error get doctor/:id')
+    res.status(404).json({ error: error.message })
   }
 }); 
 
@@ -57,7 +94,7 @@ router.get('/patient/:id', async (req, res) => {
       res.status(404).send("Id not found")
     }
   } catch (error) {
-    res.status(404).json({ error: error.message }, 'Error get patient/:id')
+    res.status(404).json({ error: error.message })
   }
 });
 
