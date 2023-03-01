@@ -114,7 +114,7 @@ const MedicForm = () => {
       return true;
     }
     if(form.name === "" || form.lastName === "" || form.mail === "" || form.password === "" 
-    || form.clinicMail === "" || form.phone === "" || form.dni === "" || form.license === "" 
+    || form.phone === "" || form.dni === "" || form.license === "" 
     || form.birthdate === "" || form.speciality === "" || form.location === "" || form.cv === "" 
     || form.cv === null || form.image === "" || form.image === null ){
       return true;
@@ -195,9 +195,7 @@ const MedicForm = () => {
         });
       }
     }
-    if (name === "mail" || name === 'clinicMail') {
-      console.log(form[name]);
-      console.log(name);
+    if (name === "mail" ) {
     const isValid = await axios.get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`).then(r => r.data)
     
     if(isValid){
