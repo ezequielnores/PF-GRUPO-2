@@ -15,7 +15,8 @@ router.get("/", async (req, res) => {
     const commentsInfo = await getComments();
     console.log(commentsInfo);
     if (!commentsInfo.length) {
-      res.status(404).send("No comments in data base");
+      //res.status(404).send("No comments in data base");
+      res.status(200).json(commentsInfo)
     } else {
       res.status(200).send(commentsInfo);
     }
@@ -25,15 +26,16 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/commentsByMailDoctor", async (req, res) => {
-  const { mail } = req.query;
+  let { mail } = req.query;
 
   try {
     if (!mail) throw new Error("El mail esta indefinido.");
     
-    const doctor = await findByMail(mail);
+    let doctor = await findByMail(mail);
     if (!doctor) throw new Error(`No se encuentra un medico con el mail ${mail} en la BDD.`);
 
-    const comments = await allCommentsByDoc(doctor.id);
+    let comments = await allCommentsByDoc(doctor.id);
+    console.log(comments)
     if (!comments.length) comments = [];
 
     res.status(200).json(comments);
