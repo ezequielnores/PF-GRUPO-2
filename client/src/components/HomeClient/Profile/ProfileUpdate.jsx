@@ -97,6 +97,7 @@ const ProfileEdit = () => {
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setInfoNueva({...infoNueva, photo: reader.result});
+      setHasChanged(true);
     };
     validateFields();
   }
