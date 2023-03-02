@@ -1,13 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   deleteFrequentAskById,
+  getAllFrequentQuestions,
 } from "../../redux/reducers/frequentQuestionsReducer";
 import FormFQ from "./FormFQ";
+// import styled from "styled-components";
 
-const ListFQ = ({ list, updateFQ, crudFQ, deleteFQ, setCrudFQ }) => {
+// const StyledListFQ = styled.div`
+//   h4 {
+//     color: #333;
+//     font-size: 24px;
+//     font-weight: bold;
+//   }
+  
+//   ul {
+//     list-style-type: none;
+//     padding: 0;
+//   }
+  
+//   li {
+//     margin-bottom: 16px;
+//     border: 1px solid #ccc;
+//     border-radius: 4px;
+//     padding: 16px;
+//   }
+  
+//   p {
+//     margin: 0;
+//     font-size: 16px;
+//   }
+  
+//   button {
+//     margin-right: 8px;
+//     padding: 8px 16px;
+//     background-color: #333;
+//     color: #fff;
+//     border: none;
+//     border-radius: 4px;
+//     cursor: pointer;
+//   }
+  
+//   button:hover {
+//     background-color: #444;
+//   }
+// `;
+
+const ListFQ = ({ list, crudFQ, setCrudFQ }) => {
   const dispatch = useDispatch();
   const [renderForm, setRenderForm] = useState(false);
+  const [renderList, setRenderList] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
 
   const handleClick = (id) => {
@@ -28,8 +70,7 @@ const ListFQ = ({ list, updateFQ, crudFQ, deleteFQ, setCrudFQ }) => {
                 <button
                   onClick={() => {
                     dispatch(deleteFrequentAskById(i?.id));
-                    deleteFQ();
-                    setCrudFQ({ crudFQ, read: true });
+                    dispatch(getAllFrequentQuestions());
                   }}
                 >
                   DELETE
@@ -42,10 +83,6 @@ const ListFQ = ({ list, updateFQ, crudFQ, deleteFQ, setCrudFQ }) => {
                     id={i?.id}
                     askToUpdate={i?.ask}
                     answerToUpdate={i?.answer}
-                    updateFQ={setRenderForm}
-                    render={renderForm}
-                    setCrudFQ={setCrudFQ}
-                    crudFQ={crudFQ}
                   />
                 )}
               </div>

@@ -21,7 +21,7 @@ frequentQuestionsRouter.get("/", async (req, res) => {
         }
 
         const frequentQuestions = await findAllFrequentQuestions();
-        if (!frequentQuestions.length) throw new Error("No se encuentran preguntas frecuentes en la BDD.");
+       // if (!frequentQuestions.length) throw new Error("No se encuentran preguntas frecuentes en la BDD.");
 
         res.status(200).json(frequentQuestions);
     } catch (error) {

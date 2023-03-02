@@ -7,6 +7,51 @@ import {
 import ButtonsFQ from "./ButtonsFQ";
 import FormFQ from "./FormFQ";
 import ListFQ from "./ListFQ";
+// import styled from "styled-components";
+
+// const StyledManageFQ = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+
+//   label {
+//     font-size: 1.2rem;
+//     margin-bottom: 1rem;
+//   }
+
+//   input {
+//     padding: 0.5rem;
+//     margin-right: 0.5rem;
+//     border: none;
+//     border-bottom: 2px solid gray;
+//     font-size: 1.2rem;
+//     outline: none;
+//   }
+
+//   button {
+//     padding: 0.5rem 1rem;
+//     margin-right: 1rem;
+//     border: none;
+//     border-radius: 0.25rem;
+//     background-color: #0077b6;
+//     color: white;
+//     font-size: 1.2rem;
+//     cursor: pointer;
+//   }
+
+//   p {
+//     margin: 0.5rem 0;
+//     font-size: 1.2rem;
+//   }
+
+//   div {
+//     margin-top: 1rem;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//   }
+// `;
 
 const ManageFQ = (props) => {
   const dispatch = useDispatch();
@@ -62,9 +107,9 @@ const ManageFQ = (props) => {
     });
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     dispatch(getAllFrequentQuestions());
-  }, [crudFQ.create, crudFQ.update]);
+  }, []);
 
   return (
     <div>
@@ -98,7 +143,6 @@ const ManageFQ = (props) => {
               id={frequentAsk?.id}
               askToUpdate={frequentAsk?.ask}
               answerToUpdate={frequentAsk?.answer}
-              updateFQ={updateFQ}
             />
           )}
         </div>
