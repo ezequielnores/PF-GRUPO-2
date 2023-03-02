@@ -108,11 +108,13 @@ const Agenda = () => {
         id: response.data.Patient.id,
         name: response.data.Patient.name,
         surname: response.data.Patient.surname,
+        mail: response.data.Patient.mail,
       },
       doctor: {
         id: doctor.id,
         name: doctor.name,
         lastName: doctor.lastName,
+        mail: doctor.mail,
       },
     };
     setAppointment(dataAppointmen);

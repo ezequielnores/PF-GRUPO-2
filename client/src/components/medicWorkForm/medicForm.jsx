@@ -155,7 +155,7 @@ const MedicForm = () => {
   };
 
   const handleFechaNacimientoChange = (date, name) => {
-    setForm({ ...form, birthday: date });
+    setForm({ ...form, birthdate: date });
     validateForm({ ...form, [name]: form }, name);
   };
 
@@ -270,7 +270,7 @@ const MedicForm = () => {
         onClose={() => setShowAlert(false)}
       >
         <Alert
-          variant="filled"
+          variant='filled'
           severity={alertSeverity}
           onClose={() => setShowAlert(false)}
         >
@@ -278,27 +278,27 @@ const MedicForm = () => {
         </Alert>
       </Snackbar>
       <form
-        component="form"
+        component='form'
         sx={{
           "& .MuiTextField-root": { m: 1, width: "25ch" },
         }}
         style={box}
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
       >
         {successForm === "success" && (
-          <Alert severity="success">Will be in contact soon !</Alert>
+          <Alert severity='success'>Will be in contact soon !</Alert>
         )}
         {successForm === "error" && (
-          <Alert severity="error">Server error !</Alert>
+          <Alert severity='error'>Server error !</Alert>
         )}
 
         <Card style={cardDiv}>
           <div style={finalinput}>
             <Typography
-              variant="h2"
-              align="justify"
+              variant='h2'
+              align='justify'
               style={{
                 color: "#307196",
                 fontWeight: "bold",
@@ -311,23 +311,23 @@ const MedicForm = () => {
           </div>
           <div style={divHijo}>
             <TextField
-              name="name"
-              label=" First Name"
+              name='name'
+              label=' First Name'
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.name}
               helperText={error.name}
             />
             <TextField
-              name="lastName"
-              label="Last Name"
-              size="large"
+              name='lastName'
+              label='Last Name'
+              size='large'
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.lastName}
               helperText={error.lastName}
             />
             <TextField
-              name="mail"
-              label="Email"
+              name='mail'
+              label='Email'
               onChange={(e) => onChangeEmail(e.target.name, e.target.value)}
               error={error.mail}
               helperText={error.mail}
@@ -335,20 +335,20 @@ const MedicForm = () => {
             <TextField
               error={error.password}
               helperText={error.password}
-              label="Password"
+              label='Password'
               onChange={(e) => onChangePassword(e.target.name, e.target.value)}
-              name="password"
-              type="text"
+              name='password'
+              type='text'
             />
           </div>
           <div style={divHijo}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                name="birthdate"
-                label="Birthdate"
+                name='birthdate'
+                label='Birthdate'
                 value={form.birthdate}
                 maxDate={new Date()}
-                inputVariant="outlined"
+                inputVariant='outlined'
                 onChange={handleFechaNacimientoChange}
                 helperText={error.birthdate}
                 renderInput={(params) => (
@@ -362,8 +362,8 @@ const MedicForm = () => {
             </LocalizationProvider>
 
             <MuiTelInput
-              label="Phone"
-              name="phone"
+              label='Phone'
+              name='phone'
               value={form.phone}
               defaultCountry={"AR"}
               style={{ width: "30vh" }}
@@ -372,8 +372,8 @@ const MedicForm = () => {
               helperText={error.phone}
             />
             <TextField
-              name="location"
-              label="Location"
+              name='location'
+              label='Location'
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.location}
               helperText={error.location}
@@ -382,23 +382,23 @@ const MedicForm = () => {
           <Divider />
           <div style={divHijo}>
             <TextField
-              name="dni"
-              label="D.N.I"
+              name='dni'
+              label='D.N.I'
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.dni}
               helperText={error.dni}
             />
             <TextField
-              name="license"
-              label="License"
+              name='license'
+              label='License'
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.license}
               helperText={error.license}
             />
             <TextField
-              type="email"
-              name="clinicMail"
-              label="Clinic mail"
+              type='email'
+              name='clinicMail'
+              label='Clinic mail'
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.clinicMail}
               helperText={error.clinicMail}
@@ -407,22 +407,22 @@ const MedicForm = () => {
           <div style={finalinput}>
             <TextField
               error={error.image}
-              label="Image"
+              label='Image'
               style={
                 form.image
                   ? { width: "40vh", marginBottom: "1vh" }
                   : { width: "40vh", label: { paddingLeft: "5vw" } }
               }
               onChange={handleImage}
-              name="image"
+              name='image'
               value={imageInputValue ? imageInputValue : ""}
-              type="file"
+              type='file'
               InputProps={
                 !form.image
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }
                   : {
                       endAdornment: (
-                        <InputAdornment position="end">
+                        <InputAdornment position='end'>
                           {form.image && (
                             <IconButton
                               onClick={() => {
@@ -441,32 +441,50 @@ const MedicForm = () => {
               }
             />
 
-            <TextField
+            {/* <TextField
               name="speciality"
               label="Especialty"
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={Boolean(error.speciality)}
               helperText={error.speciality}
-            />
+            /> */}
+            <select
+              name='speciality'
+              onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+            >
+              <option value=''>--Speciality--</option>
+              <option value='Cardiology'>Cardiology</option>
+              <option value='Gynecology'>Gynecology</option>
+              <option value='Neurology'>Neurology</option>
+              <option value='Oncology'>Oncology</option>
+              <option value='Psychiatry'>Psychiatry</option>
+              <option value='Dermatology'>Dermatology</option>
+              <option value='Ophthalmology'>Ophthalmology</option>
+              <option value='Urology'>Urology</option>
+              <option value='Endocrinology'>Endocrinology</option>
+              <option value='Gastroenterology'>Gastroenterology</option>
+              <option value='General'>General</option>
+              <option value='Deportologist'>Deportologist</option>
+            </select>
 
             <TextField
               error={error.cv}
-              label="CV"
+              label='CV'
               style={
                 form.image
                   ? { width: "40vh", marginBottom: "1vh" }
                   : { width: "40vh", label: { paddingLeft: "5vw" } }
               }
               onChange={handleImage}
-              name="cv"
+              name='cv'
               value={cvInputValue ? cvInputValue : ""}
-              type="file"
+              type='file'
               InputProps={
                 !form.cv
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }
                   : {
                       endAdornment: (
-                        <InputAdornment position="end">
+                        <InputAdornment position='end'>
                           {form.cv && (
                             <IconButton
                               onClick={() => {
