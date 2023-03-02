@@ -43,7 +43,6 @@ export const patientRegister = createAsyncThunk(
       .catch((err) => {
         throw new Error("Failed");
       });
-    console.log(response);
     return response.data;
   }
 );
@@ -65,6 +64,11 @@ export const patientUpdate = createAsyncThunk(
     return response.data;
   }
 );
+
+export const patientUpdatePassword = createAsyncThunk("patient/changePassword", async (id, password) => {
+  const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/patient/changePassword/${id}`, password);
+  return response.data;
+})
 
 export const setMakeDisableAdmin = createAsyncThunk(
   "patient/editById",

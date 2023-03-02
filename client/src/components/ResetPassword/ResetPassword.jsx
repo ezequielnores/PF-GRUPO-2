@@ -30,7 +30,7 @@ function ResetPassword() {
     const currentErrors = {};
     if (password.length < 8) currentErrors.password = "Must have a minimum of 8 characters";
     if (confirmPassword !== password) currentErrors.confirmPassword = "The passwords are different";
-    setErrors(...errors, currentErrors);
+    setErrors(currentErrors);
   }
 
   const handleSubmit = async (event) => {

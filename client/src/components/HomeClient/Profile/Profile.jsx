@@ -47,9 +47,11 @@ const Profile = () => {
   const patientDetail = useSelector((state) => state.patient.detail);
   useEffect(() => {
     const patientId = localStorage.getItem("id");
+    console.log("Id " + patientId);
     if (patientId) {
       dispatch(patientGetDetail(patientId));
     }
+    console.log(patientDetail);
   }, []);
 
   return (

@@ -197,7 +197,7 @@ const MedicForm = () => {
       }
     }
     if (name === "mail" ) {
-    const isValid = await axios.get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`).then(r => r.data)
+    const isValid = await axios.get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}&model=Patient`).then(r => r.data)
     
     if(isValid){
       setError({...error, [name]:""})
@@ -338,7 +338,7 @@ const MedicForm = () => {
               label='Password'
               onChange={(e) => onChangePassword(e.target.name, e.target.value)}
               name='password'
-              type='text'
+              type='password'
             />
           </div>
           <div style={divHijo}>
