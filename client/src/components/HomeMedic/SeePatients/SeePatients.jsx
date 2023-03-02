@@ -27,7 +27,8 @@ const SeePatients = ({idTurn,appointment}) => {
 
     // }, [])
     // const appointment = useSelector((state) => state.attend.details);
-
+    const [meetLink, setMeetLink] = useState("")
+    const [linkSent, setLinkSent] = useState(false)
     const [newHistorial, setNewHistorial] = useState({
         patientId: "",
         doctorId: "",
@@ -89,6 +90,25 @@ const SeePatients = ({idTurn,appointment}) => {
         
         window.location.reload()
     }
+    const handleSendLink = (e) => {
+        e.preventDefault()
+        swal({
+            title: "Are you sure?",
+            text: `You will send the meet link: ${meetLink} to the patient`,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((willSend) => {
+            if (willSend) {
+                swal(`The meet link has been sent to ${appointment.Patient.mail}`, {
+                icon: "success",
+                });
+                setLinkSent(true)
+                // aca va el dispatch para enviar el link
+            } 
+            })
+    }
     return (
         <div style={{width:"95vw",display:"flex",justifyContent:"center",height:"100vh"}} >
             <div onClick={handleOpenModal} className={style.generalModalDiv} style={{display:openModal? "flex":"none"}}>
@@ -135,6 +155,26 @@ const SeePatients = ({idTurn,appointment}) => {
             <div style={{width:"80%",display:"flex",flexDirection:"column",justifyContent:"flex-start",gap:"2vh",height:"95%"}}>
                 <div style={{width:"90%",display:"flex",flexDirection:"column",justifyContent:"flex-start",gap:"2vh",border:" solid 3px #307196",borderRadius:"20px",padding:"0 1vw 2vh"}}>
                     <h2 style={{textAlign:"start"}}>You are attending to: {appointment?.Patient?.name} {appointment?.Patient?.surname}</h2>
+                    <div style={{display:"flex",justifyContent:"flex-start", alignItems:"center",gap:"2vw"}}>
+                        <TextField
+                            id="send-meet-link"
+                            label="Meet Link"
+                            value={meetLink}
+                            onChange={(e) => setMeetLink(e.target.value)}
+                            placeholder="Paste de meet link here"
+                            sx={{width:"40%"}}
+                            InputProps={{
+                                readOnly: linkSent
+                            }}
+                        >    
+                        </TextField>
+                        <button
+                            className={style.saveButton}
+                            onClick={handleSendLink}
+                        >
+                            send link
+                        </button>
+                    </div>
                     <h4 style={{textAlign:"start"}}>Appoinment Details</h4>
                     <Stack spacing={2}>
                         <Stack direction="row" spacing={2}>
