@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import style from "./Urgency.module.css";
 import axios from "axios";
+import swal from "sweetalert"
 //redux
 import { urgencyCreate } from "../../../redux/reducers/urgencyReducer";
 import { useDispatch } from "react-redux";
@@ -116,7 +117,10 @@ const Urgency = () => {
       });
       setOpenModal(false);
       dispatch(urgencyCreate(body));
-      alert("Your information has been sent");
+      await swal("The urgency has been sent.", {
+        icon: "success",
+      });
+      // alert("Your information has been sent");
       //   await axios.post(`${process.env.REACT_APP_BACKEND_URL}/urgency`, body);
       //   alert("Your information has been sent");
     } catch (error) {

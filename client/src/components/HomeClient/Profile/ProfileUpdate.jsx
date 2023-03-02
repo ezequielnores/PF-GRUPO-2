@@ -12,7 +12,7 @@ import { isEmail, isNumeric, isStrongPassword, isAlpha, isInt } from "validator"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
+import swal from "sweetalert"
 
 
 
@@ -102,12 +102,15 @@ const ProfileEdit = () => {
   }
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // const errors = validateFields();
     if (Object.values(error).every((item) => item === "")) {
       dispatch(patientUpdate({ id: detailPatient.id, data: infoNueva }));
-      alert("Information updated");
+      await swal("Information updated", {
+        icon: "success",
+      });
+      // alert("Information updated");
       navigate("/HomeClient/Profile");
     } else {
       alert("Error")
