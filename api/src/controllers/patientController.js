@@ -41,10 +41,15 @@ const setMakeDisableAdmin = async id => {
   return patient;
 };
 
+const changePassword = async (id, password) => {
+  return await Patient.update({password: password}, {where: {id: id}});
+}
+
 module.exports = {
   getPatient,
   getPatientActive,
   getPatientInactive,
   getPatientByMail,
-  setMakeDisableAdmin
+  setMakeDisableAdmin,
+  changePassword
 };

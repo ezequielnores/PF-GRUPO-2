@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.module.css";
 import {
@@ -11,7 +11,10 @@ import {
 } from "@mui/material";
 import { MuiTelInput } from "mui-tel-input";
 import { useDispatch, useSelector } from "react-redux";
-import { patientGetAll, patientRegister } from "../../../redux/reducers/patientReducer";
+import {
+  patientGetAll,
+  patientRegister,
+} from "../../../redux/reducers/patientReducer";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -54,6 +57,7 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const patients = useSelector((state) => state.patient.list);
+  const [patient, setPatient] = useState(null);
 
   //alert state
   const [showAlert, setShowAlert] = useState(false);
@@ -179,11 +183,10 @@ const Register = () => {
       } else setError({ ...error, [name]: "" });
     }
   };
-  
-  const dispatchRegister = () => {
-    console.log(form);
-    dispatch(
-      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email, uid: auth.currentUser.uid })
+
+  const dispatchRegister = async () => {
+    await dispatch(
+      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
     )
       .then((res) => {
         if (res.type === "patient/register/fulfilled") {
@@ -191,7 +194,7 @@ const Register = () => {
           setAlertSeverity("success");
           setAlertMessage("Account Created. Wait to be redirected");
           setShowAlert(true);
-/*           setTimeout(() => {
+          /*           setTimeout(() => {
             navigate("/loginClient");
           }, 2500); */
         } else {
@@ -202,7 +205,7 @@ const Register = () => {
           setShowAlert(true);
           auth.currentUser.delete();
         }
-        console.log(res.type);
+        console.log("Register " + res.type);
       })
       .catch((err) => alert("error"));
   };
@@ -215,15 +218,8 @@ const Register = () => {
           form.mail,
           form.password
         );
-        const user = userCredential.user;
-        console.log("usuario creado: " + user.email);
-        dispatchRegister();
-        const authenticatedPatient = patients.find((patient) => {
-          return patient.mail === auth.currentUser.email;
-        })
-        const id = authenticatedPatient.id;
-        localStorage.setItem("id", id);
-        navigate("HomeClient/Profile", {state: {id}});
+        await dispatchRegister();
+        await dispatch(patientGetAll());
       } catch (error) {
         console.log({ Error: error.message });
       }
@@ -253,11 +249,31 @@ const Register = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(patientGetAll());
-  })
+  const fillPatient = () => {
+    const patientfound = patients.find((patient) => {
+      return patient.mail === auth.currentUser.email;
+    });
+    if (patientfound) {
+      localStorage.setItem("id", patientfound.id);
+      setPatient(patientfound);
+    } else {
+      console.log("Patient not found");
+    }
+  };
 
-  console.log(form);
+  const redirectToHome = () => {
+    navigate("/HomeClient/Profile", { state: { id: patient.id } });
+  };
+
+  useEffect(() => {
+    console.log("Dispatch");
+    fillPatient();
+  }, [dispatch, patients]);
+
+  if (patient) {
+    redirectToHome();
+  }
+
   return (
     <div style={divPadre}>
       <Snackbar
