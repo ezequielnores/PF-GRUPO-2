@@ -3,7 +3,7 @@ import Carrusel from "./carruselDep/carusel";
 import Planes from "./planes/planes";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ContenidoChat from '../Contenido/Contenido.jsx';
+import ContenidoChat from '../ChatBot/ChatBot.jsx';
 
 //mui
 const container = {

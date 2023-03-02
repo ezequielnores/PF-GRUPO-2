@@ -60,7 +60,7 @@ const ProfileEdit = () => {
 
   const [hasChanged, setHasChanged] = useState(false);
 
-  const [errors, setErrors] = useState({
+  const [error, setError] = useState({
     photo: "",
     name: "",
     mail: "",
@@ -70,21 +70,25 @@ const ProfileEdit = () => {
     birthday: "",
     surname: "",
     weight:"",
-    height:""
+    height:"",
+    location:""
   });
 
 
-  const handleChange = (evento) => {
-    evento.preventDefault();
+  
+
+  const handleChange = (name, value) => {
     setInfoNueva({
       ...infoNueva,
-      [evento.target.name]: evento.target.value,
+      [name]:value,
     });
+    validateFields({ ...infoNueva, [name]: value }, name);
     setHasChanged(true);
   };
 
   const handleFechaNacimientoChange = (date) => {
-    setInfoNueva({ ...infoNueva, birthdate: date });
+    setInfoNueva({ ...infoNueva, birthday: date });
+    setHasChanged(true);
   };
 
   const handleImage = (e) => {
@@ -100,51 +104,91 @@ const ProfileEdit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const errors = validateFields();
-    if (Object.keys(errors).length === 0) {
+    // const errors = validateFields();
+    if (Object.values(error).every((item) => item === "")) {
       dispatch(patientUpdate({ id: detailPatient.id, data: infoNueva }));
       alert("Information updated");
       navigate("/HomeClient/Profile");
     } else {
-      setErrors(errors);
+      alert("Error")
     }
   };
 
 
-  const validateFields = () => {
-    const errors = {};
+  // const validateFields = () => {
+  //   const errors = {};
 
-    if (!isAlpha(infoNueva.name)) {
-      errors.name = "Please enter valid name";
-    }
+  //   if (!isAlpha(infoNueva.name)) {
+  //     errors.name = "Please enter valid name";
+  //   }
 
-    if (!isAlpha(infoNueva.surname)) {
-      errors.surname = "Please enter valid last name";
-    }
+  //   if (!isAlpha(infoNueva.surname)) {
+  //     errors.surname = "Please enter valid last name";
+  //   }
 
-    if (!isEmail(infoNueva.mail)) {
-      errors.mail = "Please enter a valid email address";
-    }
+  //   if (!isEmail(infoNueva.mail)) {
+  //     errors.mail = "Please enter a valid email address";
+  //   }
 
-    if (!isStrongPassword(infoNueva.password)) {
-      errors.password = "Please enter a valid password";
-    }
+  //   if (!isStrongPassword(infoNueva.password)) {
+  //     errors.password = "Please enter a valid password";
+  //   }
 
-    if (new Date(infoNueva.birthday) > new Date()) {
-      errors.birthday = "Please enter a valid birthdate";
-    }
+  //   if (new Date(infoNueva.birthday) > new Date()) {
+  //     errors.birthday = "Please enter a valid birthdate";
+  //   }
 
-    if (!isNumeric(infoNueva.phone)) {
-      errors.phone = "Please enter a valid phone number";
-    }
-    if (!isInt(infoNueva.weight)) {
-      errors.weight = "Please enter a valid weight";
-    }
-    if (!isInt(infoNueva.height)) {
-      errors.height = "Please enter a valid height";
-    }
+  //   if (!isNumeric(infoNueva.phone)) {
+  //     errors.phone = "Please enter a valid phone number";
+  //   }
+  //   if (!isInt(infoNueva.weight)) {
+  //     errors.weight = "Please enter a valid weight";
+  //   }
+  //   if (!isInt(infoNueva.height)) {
+  //     errors.height = "Please enter a valid height";
+  //   }
 
-    return errors;
+  //   return errors;
+  // };
+
+  const validateFields = (form, name) => {
+    if (name === "name" || name === "lastName") {
+      if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
+        setError({ ...error, [name]: "•Only characters" });
+      } else setError({ ...error, [name]: "" });
+    }
+    if (name === "location") {
+      if (!/^[a-zA-Z,\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
+        setError({ ...error, [name]: "•Only characters and commas" });
+      } else setError({ ...error, [name]: "" });
+    }
+    if (name === "password") {
+      if (
+        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+          form[name] || form[name] !== ""
+        )
+      ) {
+        setError({
+          ...error,
+          [name]:
+            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
+        });
+      } else {
+        setError({
+          ...error,
+          [name]: "",
+        });
+      }
+    }
+    if (name === "mail") {
+      if (
+        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+          form[name] || form[name] !== ""
+        )
+      ) {
+        setError({ ...error, [name]: "•Musst be a valid email" });
+      } else setError({ ...error, [name]: "" });
+    }
   };
 
 
@@ -180,18 +224,18 @@ const ProfileEdit = () => {
           label="Name"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.name)}
-          helperText={errors.name}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={Boolean(error.name)}
+          helperText={error.name}
         />
         <TextField
           name="surname"
           label="Last name"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.surname)}
-          helperText={errors.surname}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={Boolean(error.surname)}
+          helperText={error.surname}
         />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -199,8 +243,8 @@ const ProfileEdit = () => {
             label="Birthdate"
             value={infoNueva.birthday}
             onChange={handleFechaNacimientoChange}
-            error={Boolean(errors.birthday)}
-            helperText={errors.birthday}
+            error={Boolean(error.birthday)}
+            helperText={error.birthday}
             format="dd/MM/yyyy"
             maxDate={new Date()}
             inputVariant="outlined"
@@ -213,18 +257,18 @@ const ProfileEdit = () => {
           label="Mail"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.mail)}
-          helperText={errors.mail}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={Boolean(error.mail)}
+          helperText={error.mail}
         />
         <TextField
           name="password"
           label="Password"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.password)}
-          helperText={errors.password}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={Boolean(error.password)}
+          helperText={error.password}
         />
         <TextField
           name="photo"
@@ -239,55 +283,55 @@ const ProfileEdit = () => {
           label="Weight"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.weight)}
-          helperText={errors.weight}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={Boolean(error.weight)}
+          helperText={error.weight}
         />
         <TextField
           name="height"
           label="Height"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.height)}
-          helperText={errors.height}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={Boolean(error.height)}
+          helperText={error.height}
         />
         <TextField
           name="allergies"
           label="Allergies"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
         />
         <TextField
           name="chronicDiseases"
           label="Chronic diseases"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
         />
         <TextField
           name="location"
           label="Location"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
         />
         <TextField
           name="phone"
           label="Phone"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.phone)}
-          helperText={errors.phone}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={Boolean(error.phone)}
+          helperText={error.phone}
         />
         <TextField
           name="bmi"
           label="BMI"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
         />
       </Card>
       <Button variant="contained" onClick={(e) => handleSubmit(e)} disabled={!hasChanged}>

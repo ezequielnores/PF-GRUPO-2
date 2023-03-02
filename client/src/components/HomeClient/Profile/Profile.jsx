@@ -37,13 +37,14 @@ const Item = styled(Paper)(({ theme }) => ({
 const Profile = () => {
   const dispatch = useDispatch();
   const patientDetail = useSelector((state) => state.patient.detail);
-
   useEffect(() => {
     const patientId = localStorage.getItem("id");
     if (patientId) {
       dispatch(patientGetDetail(patientId));
     }
   }, []);
+
+
   return (
     <Grid container spacing={2} style={{ marginLeft: "4px" }}>
       <Grid item xs={12} md={6}>
@@ -171,10 +172,10 @@ const Profile = () => {
                 }}>
                 Plan:
               </Item>
-              <Item sx={{ marginLeft: 3, color: "black" }}>
+              <Item sx={{ marginLeft: 3, color: "black" , fontWeight:"bold"}}>
                 {patientDetail?.PatientPlan?.name}{" "}
               </Item>
-            </div>
+            </div><br/>
           </Stack>
         </Paper>
       </Grid>

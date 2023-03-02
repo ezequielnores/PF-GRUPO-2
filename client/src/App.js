@@ -33,7 +33,7 @@ import {
 import { HomeMedic } from "./components/HomeMedic/index";
 import HomeAdmin from "./components/DashboardAdmin/Home";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
-
+import Review from "./components/ChatBot/Review";
 import { auth } from "./authentication/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -82,6 +82,8 @@ function App() {
             <Route path="/loginAdmin" element={<LoginAdmin />}/>
             <Route path="/resetPassword" element={<ResetPassword/>}/>
             <Route path='*' element={<ErrorPage/>} />
+
+            <Route path="/totalReviews" element={<Review/>} />
 
           </Routes>
           <Footer />
