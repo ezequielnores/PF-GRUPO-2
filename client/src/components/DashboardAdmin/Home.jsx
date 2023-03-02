@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { adminGetDetail } from "../../redux/reducers/adminReducer";
 import swal from "sweetalert";
 import logo from "../../assets/logoiCare.png";
 import ManagePlans from "./ManagePlans/ManagePlans";
+import ManageAdmins from "./ManageAdmin/ManageAdmins";
 import {
   patientGetAll,
   patientSetActive,
@@ -52,6 +53,7 @@ const Home = (props) => {
     comments: false,
     frequentQuestions: false,
     plans: false,
+    admin: false,
   });
 
   const handleClickPatients = () => {
@@ -99,6 +101,17 @@ const Home = (props) => {
       comments: false,
       frequentQuestions: false,
       plans: true,
+    });
+  };
+  const handleClickAdmins = () => {
+    dispatch(plansGetAll());
+    setSelected({
+      patients: false,
+      doctors: false,
+      comments: false,
+      frequentQuestions: false,
+      plans: false,
+      admin: true,
     });
   };
   const handleLogout = (e) => {
@@ -183,6 +196,13 @@ const Home = (props) => {
             >
               Manage Plans
             </Button>
+            <Button
+              variant="contained"
+              onClick={handleClickAdmins}
+              style={{ backgroundColor: "#307196" }}
+            >
+              Manage Admins
+            </Button>
           </div>
           <div style={{ paddingRight: "2rem" }}>
             <Typography
@@ -230,6 +250,7 @@ const Home = (props) => {
         )}
 
         {selected.plans && <ManagePlans />}
+        {selected.admin && <ManageAdmins />}
       </div>
     </div>
   );

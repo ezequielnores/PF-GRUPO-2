@@ -77,7 +77,8 @@ router.post("/", async (req, res) => {
         mail,
         password,
       });
-      res.status(200).send("Admin create successfully");
+      res.status(200).send("Admin create successfully" + newAndmin);
+      return newAndmin;
     }
   } catch (error) {
     res.status(404).send({ error: error.message });

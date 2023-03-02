@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { adminGetAll, adminLogin } from "../../redux/reducers/adminReducer";
+//Firebase
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../../authentication/firebase";
 
 const divPadre = {
   display: "flex",
@@ -44,6 +47,7 @@ export default function LoginAdmin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const state = useSelector((state) => state.admin);
+  const admins = useSelector((state) => state.admin.list);
   const [successLogin, setSuccessLogin] = useState(null);
   const [info, setInfo] = useState({
     mail: "",
@@ -58,19 +62,32 @@ export default function LoginAdmin() {
       [evento.target.name]: evento.target.value,
     });
   };
-
-  const handleSubmit = (e) => {
+  //SUBMIT
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(adminLogin({ mail: info.mail, password: info.password })).then(
-      (res) => {
-        console.log(res);
-        if (state.loggedIn) {
-          alert("logged In");
-        } else {
-          alert("not logged in");
-        }
+    try{
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        info.mail,
+        info.password
+      );
+      const user = userCredential.mail
+      console.log("admin logeado: " + user.email);
+      const authenticatedAdmin = admins.find((admin) => {
+        return (
+          admin.mail = info.mail && admin.password === info.password
+        );
+      });
+      if(authenticatedAdmin && user){
+        const id = authenticatedAdmin.id;
+        localStorage.setItem("id", id);
+        navigate("/HomeAdmin", { state: { id } });
+      } else {
+        setSuccessLogin("error");
       }
-    );
+    }catch (error) {
+      console.log({ Error: error.message });
+    }
   };
 
   useEffect(() => {
