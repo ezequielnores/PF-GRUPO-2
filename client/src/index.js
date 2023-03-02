@@ -14,7 +14,7 @@ import store from "./redux/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
       <Provider store={store}>
         <BrowserRouter>
           <GeistProvider>
@@ -23,7 +23,7 @@ root.render(
           </GeistProvider>
         </BrowserRouter>
       </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

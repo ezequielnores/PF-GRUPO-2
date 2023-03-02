@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SeePatients from "../SeePatients/SeePatients";
+import { historyGetAllbyPatient } from "../../../redux/reducers/historyReducer";
 import axios from "axios";
 //reducer
 import {
@@ -41,14 +42,44 @@ const header = {
   fontWeight: "bold",
   color: "white",
 };
+const modalContainer = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
+};
+const modal = {
+  backgroundColor: "#fff",
+  borderRadius: "5px",
+  maxWidth: "100rem",
+  width: "100%",
+  padding: "2rem",
+  boxShadow: "0 0 10px rgba(0,0,0,0.25)",
+  maxHeight: "400px",
+  overflow: "auto",
+};
+const overlay = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: "rgba(0, 0, 0, 0.3)",
+};
 //COMPONENTE
 const Agenda = () => {
+  const [openModal, setOpenModal] = useState(false);
   const [openRow, setOpenRow] = useState(null);
   const [isUrgencyUpdated, setIsUrgencyUpdated] = useState(false);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.urgency.listAll);
-
   const doctor = useSelector((state) => state.doctor.detail);
+  const dataHistoria = useSelector((state) => state.history.list);
   const [idTurn, setIdTurn] = useState("");
   const [appointment, setAppointment] = useState({});
 
@@ -69,32 +100,39 @@ const Agenda = () => {
       `${process.env.REACT_APP_BACKEND_URL}/urgency/${id}`
     );
     const dateParts = response.data.createdAt.split("T");
-    const dataAppointmen ={
+    const dataAppointmen = {
       idTurn: id,
       date: dateParts[0],
       hour: dateParts[1].split(".")[0],
-      Patient:{
+      Patient: {
         id: response.data.Patient.id,
         name: response.data.Patient.name,
         surname: response.data.Patient.surname,
+        mail: response.data.Patient.mail,
       },
-      doctor:{
+      doctor: {
         id: doctor.id,
         name: doctor.name,
         lastName: doctor.lastName,
-      }
-    }
+        mail: doctor.mail,
+      },
+    };
     setAppointment(dataAppointmen);
     setIdTurn(id);
     console.log(response.data);
     dispatch(urgencyEdit({ id, data }));
     setIsUrgencyUpdated(true);
   };
+  //ver historia
+  const handleViewHistory = (id) => {
+    dispatch(historyGetAllbyPatient(id));
+    setOpenModal(true);
+  };
   //HANDLER de refresh
   const handlerRefresh = () => {
     dispatch(urgencyGetAll());
   };
-  // console.log(sortedUrgencias);
+  console.log(sortedUrgencias);
   const formatDate = (dateStr) => {
     //creo date
     const date = new Date(dateStr);
@@ -126,9 +164,7 @@ const Agenda = () => {
 
   return (
     <div>
-      {
-        !isUrgencyUpdated? (
-
+      {!isUrgencyUpdated ? (
         <div style={container}>
           <div style={hijoContainer}>
             <Typography
@@ -150,6 +186,7 @@ const Agenda = () => {
                     <TableCell style={header}>Patient</TableCell>
                     <TableCell style={header}>Date</TableCell>
                     <TableCell style={header}>Hour</TableCell>
+                    <TableCell style={header}></TableCell>
                     <TableCell style={header}></TableCell>
                     <TableCell style={header}></TableCell>
                   </TableRow>
@@ -182,12 +219,102 @@ const Agenda = () => {
                                 )}
                               </IconButton>
                             </TableCell>
-                            <TableCell style={{ fontSize: "17px", width: "100px" }}>
-                              <Button onClick={() => handlerAttended(urgencia.id)}>
+                            <TableCell
+                              style={{ fontSize: "17px", width: "100px" }}
+                            >
+                              <Button
+                                onClick={() => handlerAttended(urgencia.id)}
+                              >
                                 Attend
                               </Button>
                             </TableCell>
+                            <TableCell style={{ width: "10rem" }}>
+                              <Button
+                                variant="outlined"
+                                onClick={() =>
+                                  handleViewHistory(urgencia.Patient.id)
+                                }
+                              >
+                                VIEW HISTORY
+                              </Button>
+                            </TableCell>
                           </TableRow>
+                          {openModal && (
+                            <>
+                              {dataHistoria && (
+                                <>
+                                  <div
+                                    style={overlay}
+                                    onClick={() => setOpenModal(false)}
+                                  >
+                                    <div style={modalContainer}>
+                                      <TableContainer style={modal}>
+                                        <Table>
+                                          <TableHead
+                                            style={{
+                                              backgroundColor: "#307196",
+                                            }}
+                                          >
+                                            <TableRow>
+                                              <TableCell
+                                                style={header}
+                                                sx={{ width: "10rem" }}
+                                              >
+                                                Fecha
+                                              </TableCell>
+                                              <TableCell
+                                                style={header}
+                                                sx={{ width: "20rem" }}
+                                              >
+                                                Diagnostico
+                                              </TableCell>
+                                              <TableCell
+                                                style={header}
+                                                sx={{ width: "20rem" }}
+                                              >
+                                                Reason
+                                              </TableCell>
+                                              <TableCell
+                                                style={header}
+                                                sx={{ width: "20rem" }}
+                                              >
+                                                Prescription
+                                              </TableCell>
+                                            </TableRow>
+                                          </TableHead>
+                                          <TableBody>
+                                            {dataHistoria.map((historia) => (
+                                              <TableRow key={historia.id}>
+                                                <TableCell>
+                                                  {historia.register[0].date}
+                                                </TableCell>
+                                                <TableCell>
+                                                  {
+                                                    historia.register[0]
+                                                      .diagnosis
+                                                  }
+                                                </TableCell>
+                                                <TableCell>
+                                                  {historia.register[0].reason}H
+                                                </TableCell>
+                                                <TableCell>
+                                                  {
+                                                    historia.register[0]
+                                                      .prescription
+                                                  }
+                                                  H
+                                                </TableCell>
+                                              </TableRow>
+                                            ))}
+                                          </TableBody>
+                                        </Table>
+                                      </TableContainer>
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+                            </>
+                          )}
                           <TableRow>
                             <TableCell
                               style={{ paddingBottom: 0, paddingTop: 0 }}
@@ -277,10 +404,9 @@ const Agenda = () => {
             </TableContainer>
           </div>
         </div>
-        ):(
-          <SeePatients idTurn={idTurn} appointment = {appointment} />
-        )
-      }    
+      ) : (
+        <SeePatients idTurn={idTurn} appointment={appointment} />
+      )}
     </div>
   );
 };

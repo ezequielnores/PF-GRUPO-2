@@ -3,6 +3,8 @@ import Carrusel from "./carruselDep/carusel";
 import Planes from "./planes/planes";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ContenidoChat from '../ChatBot/ChatBot.jsx';
+
 //mui
 const container = {
   width: "100%",
@@ -59,6 +61,9 @@ const navigate = useNavigate()
         </div>
       </div>
       <Planes />
+      <div>
+      <ContenidoChat/>
+    </div>
     </div>
   );
 };
