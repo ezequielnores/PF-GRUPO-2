@@ -53,24 +53,22 @@ import {
 //   margin-bottom: 20px;
 // `;
 
-const FormFQ = ({
-  id,
-  askToUpdate,
-  answerToUpdate,
-}) => {
+const FormFQ = ({ id, askToUpdate, answerToUpdate }) => {
   const dispatch = useDispatch();
   const [ask, setAsk] = useState("");
   const [answer, setAnswer] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (id) {
-      dispatch(updateFrequentAskById({ id: id, ask: ask, answer: answer }));
-      dispatch(getAllFrequentQuestions());
+      await dispatch(
+        updateFrequentAskById({ id: id, ask: ask, answer: answer })
+      );
+      await dispatch(getAllFrequentQuestions());
       alert("FQ UPDATED.");
     } else {
-      dispatch(createFrequentAsk({ ask: ask, answer: answer }));
-      dispatch(getAllFrequentQuestions());
+      await dispatch(createFrequentAsk({ ask: ask, answer: answer }));
+      await dispatch(getAllFrequentQuestions());
       alert("FQ CREATED.");
     }
 

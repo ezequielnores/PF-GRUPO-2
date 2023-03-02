@@ -24,7 +24,8 @@ import React from "react";
 //   }
 // `;
 
-const ButtonsFQ = ({ createFQ, readFQ, read, create}) => {
+const ButtonsFQ = ({ createFQ, readFQ, read, create, }) => {
+
     return (
         <div>
             <button onClick={createFQ}>{create ? "Hide create" : "Create"} FQ</button>

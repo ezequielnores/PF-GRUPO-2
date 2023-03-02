@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   deleteFrequentAskById,
@@ -13,24 +13,24 @@ import FormFQ from "./FormFQ";
 //     font-size: 24px;
 //     font-weight: bold;
 //   }
-  
+
 //   ul {
 //     list-style-type: none;
 //     padding: 0;
 //   }
-  
+
 //   li {
 //     margin-bottom: 16px;
 //     border: 1px solid #ccc;
 //     border-radius: 4px;
 //     padding: 16px;
 //   }
-  
+
 //   p {
 //     margin: 0;
 //     font-size: 16px;
 //   }
-  
+
 //   button {
 //     margin-right: 8px;
 //     padding: 8px 16px;
@@ -40,16 +40,15 @@ import FormFQ from "./FormFQ";
 //     border-radius: 4px;
 //     cursor: pointer;
 //   }
-  
+
 //   button:hover {
 //     background-color: #444;
 //   }
 // `;
 
-const ListFQ = ({ list, crudFQ, setCrudFQ }) => {
+const ListFQ = ({ list }) => {
   const dispatch = useDispatch();
   const [renderForm, setRenderForm] = useState(false);
-  const [renderList, setRenderList] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
 
   const handleClick = (id) => {
@@ -68,9 +67,9 @@ const ListFQ = ({ list, crudFQ, setCrudFQ }) => {
               <p>Answer: {i?.answer}</p>
               {i?.id && (
                 <button
-                  onClick={() => {
-                    dispatch(deleteFrequentAskById(i?.id));
-                    dispatch(getAllFrequentQuestions());
+                  onClick={async () => {
+                    await dispatch(deleteFrequentAskById(i?.id));
+                    await dispatch(getAllFrequentQuestions());
                   }}
                 >
                   DELETE
