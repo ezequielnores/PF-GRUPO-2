@@ -30,6 +30,8 @@ const urgencyRouter = require("./urgencyRouter");
 
 const paymentRouter = require("./paymentRouter");
 
+const sendLinkRouter= require("./sendLinkRouter");
+
 const router = Router();
 
 // Configurar los routers
@@ -58,6 +60,8 @@ router.use("/blog", blogRouter);
 
 router.use("/payments", paymentRouter);
 
-router.use('/emailVerification', emailVerification)
+router.use('/emailVerification', emailVerification);
+
+router.use("/sendLink",sendLinkRouter);
 
 module.exports = router;

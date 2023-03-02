@@ -5,6 +5,7 @@ import {attendPatientTurns,attendedPatientTurns,createMedicalHistory} from "../.
 import { appointmentGetAllByDoctorId } from "../../../redux/reducers/appointmentReducer";
 import style from "./SeePatients.module.css"
 import swal from "sweetalert"
+import axios from "axios";
 
 // patientId, doctorId, date, diagnosis
 const validate = (input) => {
@@ -106,6 +107,11 @@ const SeePatients = ({idTurn,appointment}) => {
                 });
                 setLinkSent(true)
                 // aca va el dispatch para enviar el link
+                axios
+                    .post("http://localhost:3001/sendLink", {
+                        mail:appointment.Patient.mail,
+                        link:meetLink
+                    }).then((response)=>{console.log(response)})
             } 
             })
     }
