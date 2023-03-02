@@ -107,8 +107,9 @@ const ManageFQ = (props) => {
     });
   };
 
-  useEffect(async () => {
-    dispatch(getAllFrequentQuestions());
+  useEffect(() => {
+    const getAllFQ = async () => await dispatch(getAllFrequentQuestions());
+    getAllFQ();
   }, []);
 
   return (
@@ -129,9 +130,10 @@ const ManageFQ = (props) => {
           <p>Answer: {frequentAsk?.answer}</p>
           {frequentAsk?.id && (
             <button
-              onClick={() => {
-                dispatch(deleteFrequentAskById(frequentAsk?.id));
-                setFrequentAsk(false);
+              onClick={async () => {
+                await dispatch(deleteFrequentAskById(frequentAsk?.id));
+                setFrequentAsk(null);
+                await dispatch(getAllFrequentQuestions());
               }}
             >
               DELETE
