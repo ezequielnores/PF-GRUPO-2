@@ -80,7 +80,7 @@ function App() {
 
             <Route path="/register" element={<Register />}/>
             <Route path="/loginAdmin" element={<LoginAdmin />}/>
-            <Route path="/resetPassword/:mail" element={<ResetPassword/>}/>
+            <Route path="/resetPassword" element={<ResetPassword/>}/>
             <Route path='*' element={<ErrorPage/>} />
 
           </Routes>
