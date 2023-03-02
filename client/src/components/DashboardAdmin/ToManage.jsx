@@ -72,7 +72,6 @@ const ToManage = (props) => {
                 return (
                   <Grid style={{ position: "relative" }}>
                     <Item>
-                      {/* <h4>Patient:</h4> */}
                       <img src={p?.photo} alt="no-img-patient" style={photo} />
                       <div
                         style={{
@@ -259,8 +258,6 @@ const ToManage = (props) => {
 
       {props.toRenderComments && (
         <div>
-          <h3>Comments</h3>
-
           <Search
             title={"Comment"}
             deleteComment={deleteComment}
