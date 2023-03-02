@@ -35,8 +35,8 @@ const butonGroup = {
 };
 const logo = {
   height: "7vh",
-  width: "3.3vw"
-}
+  width: "3.3vw",
+};
 
 const Navbar = () => {
   return (
@@ -44,17 +44,22 @@ const Navbar = () => {
       <AppBar position="static">
         <Toolbar style={footer}>
           <Box style={divtext}>
-            <CopyrightIcon style={{ color: "black", marginRight: "0.8vw" }} />
-          <img src={Logo} style={logo} alt="" />
-          <Typography variant="h5" color="black">iCare</Typography>
+            <CopyrightIcon
+              style={{
+                color: "black",
+                marginLeft: "4rem",
+              }}
+            />
+            <img src={Logo} style={logo} alt="" />
+            <Typography variant="h5" color="black">
+              iCare
+            </Typography>
             <Typography
               variant="body1"
               color="text.secondary"
               align="justify"
               style={{ fontWeight: "semibold" }}
-            >
-              
-            </Typography>
+            ></Typography>
           </Box>
           <Box style={butonGroup}>
             <Typography variant="subtitle2" color="black" align="center">

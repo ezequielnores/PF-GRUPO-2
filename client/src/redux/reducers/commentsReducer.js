@@ -68,11 +68,31 @@ export const commentsByDoctor = createAsyncThunk(
   }
 );
 
+export const commentsByDoctor2 = createAsyncThunk(
+  "comments/getByMailDoctor",
+  async (mail) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/comments/commentsByMailDoctor?mail=${mail}`
+    );
+    return response.data;
+  }
+);
+
 export const commentsByPatient = createAsyncThunk(
   "comments/getByIdPatient",
   async (id) => {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/comments/patient/${id}`
+    );
+    return response.data;
+  }
+);
+
+export const commentsByPatient2 = createAsyncThunk(
+  "comments/getByMailPatient",
+  async (mail) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/comments/commentsByMailPatient?mail=${mail}`
     );
     return response.data;
   }
@@ -139,9 +159,31 @@ const commentsSlice = createSlice({
       })
       .addCase(commentsByPatient.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.list = action.payload;
+        state.listAll = action.payload;
       })
       .addCase(commentsByPatient.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(commentsByDoctor2.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(commentsByDoctor2.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(commentsByDoctor2.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(commentsByPatient2.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(commentsByPatient2.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.listAll = action.payload;
+      })
+      .addCase(commentsByPatient2.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

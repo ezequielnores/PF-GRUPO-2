@@ -8,7 +8,6 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import {
-  commentsGetAll,
   deleteComment,
   commentsByDoctor,
   commentsByPatient,
@@ -22,6 +21,7 @@ import {
   getFrequentAskById,
   getFrequentAskByAsk,
 } from "../../redux/reducers/frequentQuestionsReducer";
+import ManageFQ from "./ManageFQ";
 //style grid
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -72,7 +72,6 @@ const ToManage = (props) => {
                 return (
                   <Grid style={{ position: "relative" }}>
                     <Item>
-                      {/* <h4>Patient:</h4> */}
                       <img src={p?.photo} alt="no-img-patient" style={photo} />
                       <div
                         style={{
@@ -259,8 +258,6 @@ const ToManage = (props) => {
 
       {props.toRenderComments && (
         <div>
-          <h3>Comments</h3>
-
           <Search
             title={"Comment"}
             deleteComment={deleteComment}
@@ -276,17 +273,7 @@ const ToManage = (props) => {
       {props.toRenderFrequentQuestions && (
         <div>
           <h3>Frequent Questions</h3>
-
-          <Search
-            title={"Frequent Questions"}
-            findFrequentQuestions={props.toRenderFrequentQuestions}
-            getAllFrequentQuestions={getAllFrequentQuestions}
-            getFrequentAskByAsk={getFrequentAskByAsk}
-            getFrequentAskById={getFrequentAskById}
-            createFrequentAsk={createFrequentAsk}
-            updateFrequentAskById={updateFrequentAskById}
-            deleteFrequentAskById={deleteFrequentAskById}
-          />
+          <ManageFQ />
         </div>
       )}
     </div>

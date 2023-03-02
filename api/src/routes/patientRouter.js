@@ -8,7 +8,8 @@ const {
   getPatient,
   getPatientActive,
   getPatientInactive,
-  getPatientByMail
+  getPatientByMail,
+  setMakeDisableAdmin
 } = require("../controllers/patientController.js");
 
 const { Patient } = require("../db");
@@ -209,6 +210,10 @@ router.put("/edit/:id", async (req, res) => {
     if (id) {
       if (name) {
         const findPatient = await Patient.findByPk(id);
+        if (photo)
+        var uploadedResponse = await cloudinary.uploader.upload(photo, {
+          upload_preset: "iCare_Henry",
+        });
         await findPatient.update(
           {
             name,
@@ -221,7 +226,7 @@ router.put("/edit/:id", async (req, res) => {
             bmi,
             allergies,
             chronicDiseases,
-            photo,
+            photo: uploadedResponse ? uploadedResponse.url : null,
             location,
             dni,
             phone,
@@ -272,6 +277,21 @@ router.put("/setActive/:id", async (req, res) => {
     await Patient.update({ active: !patieToSetActive.active }, { where: { id: id } });
 
     res.status(200).json(patieToSetActive);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.put("/setMakeDisableAdmin/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!id) throw new Error(`El id esta indefinido.`);
+
+    const patientToSetAdmin = await setMakeDisableAdmin(id);
+    if (!patientToSetAdmin) throw new Error(`El paciente con el id ${id} no se encuentra en la BDD.`);
+
+    res.status(200).json(patientToSetAdmin);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
