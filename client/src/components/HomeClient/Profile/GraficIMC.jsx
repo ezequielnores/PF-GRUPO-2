@@ -53,11 +53,11 @@ const GraficIMC = () => {
   const patientDetail = useSelector((state) => state.patient.detail);
 
   const peso = patientDetail?.weight;
-
+console.log(peso)
   const altura = patientDetail?.height;
-
-  const altura2 = altura / 10;
-
+console.log(altura)
+  const altura2 = altura / 100;
+console.log(altura2)
   const IMC = peso / Math.pow(altura2, 2);
 
   console.log(IMC);

@@ -86,16 +86,16 @@ const Home = ({ isLogged }) => {
               }}
             >
               <p
-                style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem" }}
+                style={{ margin: "0", fontWeight: "bolder", fontSize: "1.2rem" }}
               >
                 {patient?.name + " " + patient?.surname}
               </p>
               <p
                 style={{
                   margin: "0",
-                  fontSize: "0.9rem",
+                  fontSize: "1rem",
                   fontWeight: "500",
-                  color: "gray",
+                  color: "#B7950B",
                 }}
               >
                 {patient?.PatientPlan?.name
