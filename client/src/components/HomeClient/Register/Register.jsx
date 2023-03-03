@@ -79,6 +79,22 @@ const Register = () => {
     password: "",
   });
 
+
+  const disableButtonHandler = () => {
+    if(form.name === "" || form.surname === "" || form.phone === "" || form.weight === "" || form.height === "" 
+     || form.allergies === "" || form.birthday === "" || form.dni === "" || form.location === "" 
+     || form.image === "" || form.mail === "" || form.password === ""  ){
+       return true;
+    }
+
+    if(error.name !== "" || error.surname !== "" || error.phone !== "" || error.weight !== "" 
+    || error.height !== "" || error.allergies !== "" || error.birthday !== "" || error.dni !== "" 
+    || error.name !== "" || error.location !== "" || error.image !== "" || error.mail !== ""  || error.location !== "" || error.password !== ""){
+      return true;
+    }
+    return false;
+  }
+
   const [error, setError] = React.useState({
     name: "",
     surname: "",
@@ -108,7 +124,6 @@ const Register = () => {
 
   const onChangeHandler = (name, value) => {
     setForm({ ...form, [name]: value });
-
     validateForm({ ...form, [name]: value }, name);
   };
 
@@ -478,6 +493,7 @@ const Register = () => {
           />
 
           <Button
+            disabled={disableButtonHandler()}
             onClick={handleRegister}
             style={{
               border: "1px solid",

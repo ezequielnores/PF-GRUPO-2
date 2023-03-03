@@ -133,6 +133,7 @@ const FormLoginClient = () => {
       }
     } catch (error) {
       console.log(error.message);
+      alert(`Error: ${error.message}`);
     }
   };
 
@@ -140,7 +141,7 @@ const FormLoginClient = () => {
   useEffect(() => {
     const id = localStorage.getItem("id");
     if (id) {
-      navigate("/HomeClient/Profile");
+      // navigate("/HomeClient/Profile");
     } else {
       dispatch(patientGetAll());
     }
