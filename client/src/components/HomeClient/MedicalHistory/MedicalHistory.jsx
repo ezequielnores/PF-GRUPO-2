@@ -34,16 +34,15 @@ const Historial = ({ consulta }) => {
   }, []);
 
   const [selectedConsulta, setSelectedConsulta] = useState(null);
-  const [adjuntos, setAdjuntos] = useState(false);
+  // const [adjuntos, setAdjuntos] = useState(false);
   const consultas = useSelector((state) => state.history.list);
 
-  function handlerAdjuntos() {
-    setAdjuntos(true);
-  }
+  // function handlerAdjuntos() {
+  //   setAdjuntos(true);
+  // }
   function handleConsultaSelect(event) {
     const consultaIndex = event.target.value;
     setSelectedConsulta(consultas[consultaIndex]);
-    setAdjuntos(false);
   }
 
   return (
@@ -60,14 +59,14 @@ const Historial = ({ consulta }) => {
         </Typography>
       </div>
       <div>
-        <Button
+        {/* <Button
           onClick={handlerAdjuntos}
           variant="outlined"
           size="large"
           style={{ marginRight: "5rem", color: "black" }}
         >
           Attachments
-        </Button>
+        </Button> */}
         <Select
           value=""
           onChange={handleConsultaSelect}
@@ -84,11 +83,11 @@ const Historial = ({ consulta }) => {
             </MenuItem>
           ))}
         </Select>
-        {adjuntos ? (
+        {/* {adjuntos ? (
           <MedicalHistoryRecipes />
-        ) : (
-          <DetalleConsulta consulta={selectedConsulta} />
-        )}
+        ) : ( */}
+        <DetalleConsulta consulta={selectedConsulta} />
+        {/* )} */}
       </div>
     </div>
   );

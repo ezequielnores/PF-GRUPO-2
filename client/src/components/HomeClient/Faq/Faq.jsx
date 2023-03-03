@@ -75,7 +75,7 @@ const Faq = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "0 2vw 0 5vw",
+        // padding: "0 2vw 0 5vw",
         width: "90vw",
         gap: "2vh",
       }}

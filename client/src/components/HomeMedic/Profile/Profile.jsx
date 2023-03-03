@@ -4,10 +4,6 @@ import { Avatar } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { doctorGetDetail } from "../../../redux/reducers/doctorReducer";
@@ -15,16 +11,17 @@ import { doctorGetDetail } from "../../../redux/reducers/doctorReducer";
 //styles
 const padreDiv = {
   width: "100%",
+  height: "100%",
   display: "flex",
   flexDirection: "column",
   justifyContent: " center",
   alignItems: "center",
 };
 const carde = {
+  paddingLeft: "1rem",
+  paddingBottom: "1rem",
   width: "30rem",
-  padding: "1rem",
   textAlign: "start",
-  marginBottom: "2rem",
 };
 const typoTitle = {
   fontSize: "18px",
@@ -32,24 +29,17 @@ const typoTitle = {
   marginTop: "4px",
   marginBottom: "4px",
 };
-const passwordStyle = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  textAlign: "center",
-  alignItems: "center",
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  display: "block",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
 };
 const Profile = () => {
   const dispatch = useDispatch();
   //ME TRAGIO EL DETAIL CON LA INFO DEL DOC!
   const dataDoc = useSelector((state) => state.doctor.detail);
-  console.log(dataDoc);
-  //Estado para ocultar o mostrar la pass
-  const [showPassword, setShowPassword] = useState(false);
-  //handler de setear estado
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-  //cambiar por bdd
-  const inputPassword = showPassword ? dataDoc.password : "****";
   //Aca hago dispatch con el id que tengo en localstorage
   useEffect(() => {
     const doctorId = localStorage.getItem("idMedic");
@@ -60,13 +50,11 @@ const Profile = () => {
   return (
     <div style={padreDiv}>
       <Typography
-        variant="h2"
-        style={{
-          color: "#307196",
-          fontWeight: "bold",
-          fontSize: "2.5rem",
-          marginBottom: "1rem",
-        }}
+        variant="button"
+        fontSize="2.5rem"
+        color="#307196"
+        fontWeight="bold"
+        style={test}
       >
         Personal information
       </Typography>
@@ -92,14 +80,6 @@ const Profile = () => {
 
           <Typography style={typoTitle}>Personal Email :</Typography>
           <Typography variant="body1">{dataDoc.mail}</Typography>
-          <Divider />
-          <div style={passwordStyle}>
-            <Typography style={typoTitle}>Password :</Typography>
-            <IconButton onClick={handleClickShowPassword}>
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </div>
-          <Typography variant="body1">{inputPassword}</Typography>
           <Divider />
 
           <Typography style={typoTitle}>Date of birth :</Typography>
