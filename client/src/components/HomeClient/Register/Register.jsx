@@ -9,6 +9,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import {doc, setDoc} from 'firebase/firestore'
 import { MuiTelInput } from "mui-tel-input";
 import { useDispatch, useSelector } from "react-redux";
 import { patientGetAll, patientRegister } from "../../../redux/reducers/patientReducer";
@@ -19,7 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //Firebase
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../../../authentication/firebase";
+import { auth, googleProvider, db } from "../../../authentication/firebase";
 //style
 const cardDiv = {
   display: "flex",
@@ -223,6 +224,16 @@ const Register = () => {
         })
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);
+        //create user on firestore
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          displayName: form.name,
+          email:form.mail,
+          photoURL: form.image,
+        });
+
+        //create empty user chats on firestore
+        await setDoc(doc(db, "userChats", user.uid), {});
         navigate("HomeClient/Profile", {state: {id}});
       } catch (error) {
         console.log({ Error: error.message });

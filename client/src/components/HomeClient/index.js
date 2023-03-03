@@ -7,7 +7,22 @@ import Profile from "./Profile/Profile";
 import Reviews from "./Reviews/Reviews";
 import Urgency from "./Urgency/Urgency";
 import HomeView from "./HomeView/HomeView";
-import ProfileUpdate from "./Profile/ProfileUpdate"
+import ProfileUpdate from "./Profile/ProfileUpdate";
 import Suscriptions from "./Suscriptions/Suscriptions";
-import History from "./Suscriptions/History"
-export { Faq, HomeClient, MedicalHistory, MedicalAppointments, MyAppointments, Profile, Reviews, Urgency, HomeView,ProfileUpdate, Suscriptions,History};
+import History from "./Suscriptions/History";
+import ChatHome from "../Chat/ChatHome.jsx";
+export {
+  Faq,
+  HomeClient,
+  MedicalHistory,
+  MedicalAppointments,
+  MyAppointments,
+  Profile,
+  Reviews,
+  Urgency,
+  HomeView,
+  ProfileUpdate,
+  Suscriptions,
+  History,
+  ChatHome,
+};
