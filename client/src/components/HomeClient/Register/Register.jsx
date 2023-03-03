@@ -30,6 +30,8 @@ const cardDiv = {
   width: "30rem",
   height: "82rem",
   justifyContent: "space-around",
+  marginTop:"10vw",
+  marginBottom:"10vw",
   padding: "2rem",
   boxShadow:
     "-10px 10px 0px #307196,-20px 20px 0px rgba(48, 113, 150, 0.7),-30px 30px 0px rgba(48, 113, 150, 0.4),-40px 40px 0px rgba(48, 113, 150, 0.1)",
@@ -408,8 +410,7 @@ const Register = () => {
               endAdornment: (
                 <InputAdornment position="start">cm</InputAdornment>
               ),
-            }}
-          />
+            }}/>
 
           <TextField
             error={error.allergies}
