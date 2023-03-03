@@ -21,7 +21,15 @@ import { Box, Container, Paper, Typography } from "@mui/material";
 import { Grid } from "@mui/material";
 import axios from "axios";
 import moment from "moment";
-
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  padding: ".25em 0 .325em",
+  display: "block",
+  margin: "0 auto",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
+};
 const MedicalAppointments = () => {
   const dispatch = useDispatch();
   const doctors = useSelector((state) => state.doctor.list);
@@ -158,25 +166,31 @@ const MedicalAppointments = () => {
   //   : doctors;
 
   return (
-    <Container maxWidth='sm'>
+    <Container maxWidth="sm">
       <Box my={4}>
         <Paper elevation={3} sx={{ p: 4 }}>
-          <Typography variant='h4' sx={{ mb: 3, color: "#307196" }}>
+          <Typography
+            variant="button"
+            fontSize="2rem"
+            color="#307196"
+            fontWeight="bold"
+            style={test}
+          >
             Select your appointment
           </Typography>
 
           <Box
-            component='form'
+            component="form"
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
-            <InputLabel id='demo-simple-select-required'>Date </InputLabel>
+            <InputLabel id="demo-simple-select-required">Date </InputLabel>
             <DatePicker
               selected={date}
               onChange={handleSelectDate}
               value={date}
-              name='selectedDate'
+              name="selectedDate"
               minDate={new Date()}
             />
 
@@ -185,18 +199,18 @@ const MedicalAppointments = () => {
               <br />
               <label style={{ marginRight: 10 }}>
                 <input
-                  type='radio'
-                  name='option'
-                  value='Face-to-face'
+                  type="radio"
+                  name="option"
+                  value="Face-to-face"
                   onChange={handleSelectType}
                 />
                 Face to face
               </label>
               <label>
                 <input
-                  type='radio'
-                  name='option'
-                  value='Virtual'
+                  type="radio"
+                  name="option"
+                  value="Virtual"
                   onChange={handleSelectType}
                 />
                 Virtual
@@ -219,16 +233,16 @@ const MedicalAppointments = () => {
             </Box>  */}
 
             <Box sx={{ mt: 2 }}>
-              <InputLabel id='demo-simple-select-required'>
+              <InputLabel id="demo-simple-select-required">
                 Doctor Specialty
               </InputLabel>
               <Select
-                labelId='demo-simple-select-required'
-                id='demo-simple-select-required'
+                labelId="demo-simple-select-required"
+                id="demo-simple-select-required"
                 onChange={handleSelectDoctor}
                 fullWidth
               >
-                <MenuItem value={speciality} name='speciality'>
+                <MenuItem value={speciality} name="speciality">
                   None
                 </MenuItem>
 
@@ -241,17 +255,17 @@ const MedicalAppointments = () => {
             </Box>
 
             <Box sx={{ mt: 2 }}>
-              <InputLabel id='demo-simple-select-required'>Location</InputLabel>
+              <InputLabel id="demo-simple-select-required">Location</InputLabel>
               <Select
-                labelId='demo-simple-select-required'
-                id='demo-simple-select-required'
+                labelId="demo-simple-select-required"
+                id="demo-simple-select-required"
                 value={ubication}
                 onChange={handleSelectUbication}
                 fullWidth
                 disabled={!speciality}
               >
                 {filteredDoctors.map((doctor) => (
-                  <MenuItem value={doctor.location} name='location'>
+                  <MenuItem value={doctor.location} name="location">
                     {doctor.location}
                   </MenuItem>
                 ))}
@@ -259,19 +273,19 @@ const MedicalAppointments = () => {
             </Box>
 
             <Box sx={{ mt: 2 }}>
-              <InputLabel id='demo-simple-select-required'>
+              <InputLabel id="demo-simple-select-required">
                 Doctor Name
               </InputLabel>
               <Select
-                labelId='demo-simple-select-required'
-                id='demo-simple-select-required'
+                labelId="demo-simple-select-required"
+                id="demo-simple-select-required"
                 value={name.doctorId}
                 onChange={handleSelectName}
                 fullWidth
                 disabled={!speciality}
               >
                 {filterNameDoctor.map((doctor) => (
-                  <MenuItem key={doctor.id} value={doctor.id} name='name'>
+                  <MenuItem key={doctor.id} value={doctor.id} name="name">
                     {doctor.name} {doctor.lastName}
                   </MenuItem>
                 ))}
@@ -279,14 +293,14 @@ const MedicalAppointments = () => {
             </Box>
 
             <Box sx={{ mt: 2 }}>
-              <InputLabel id='demo-simple-select-required'>Hour</InputLabel>
+              <InputLabel id="demo-simple-select-required">Hour</InputLabel>
               <Datetime
                 dateFormat={false}
                 // timeConstraints={{ minutes: { step: 60 }, seconds: { step: 60 } }}
                 timeConstraints={timeConstraints}
                 onChange={handleSelectHour}
-                name='hour'
-                timeFormat='HH:mm:ss'
+                name="hour"
+                timeFormat="HH:mm:ss"
                 defaultValue={defaultValue}
               />
             </Box>
@@ -303,19 +317,19 @@ const MedicalAppointments = () => {
             <br />
             <Stack
               sx={{ mt: 2 }}
-              direction='row'
+              direction="row"
               spacing={2}
-              justifyContent='center'
+              justifyContent="center"
             >
               {!date || !hour || !speciality ? (
-                <Button variant='contained' disabled>
+                <Button variant="contained" disabled>
                   Reserve
                 </Button>
               ) : (
                 <Button
                   sx={{ backgroundColor: "#307196", color: "#D9D9D9" }}
-                  variant='contained'
-                  type='submit'
+                  variant="contained"
+                  type="submit"
                   endIcon={<SendIcon />}
                 >
                   Reserve
@@ -326,7 +340,7 @@ const MedicalAppointments = () => {
 
           <Modal isOpen={modalAbierto} ariaHideApp={false}>
             <Box sx={{ p: 2 }}>
-              <Typography variant='h5' sx={{ mb: 2, color: "#307196" }}>
+              <Typography variant="h5" sx={{ mb: 2, color: "#307196" }}>
                 Appointment created successfully
               </Typography>
               <br />
@@ -334,64 +348,64 @@ const MedicalAppointments = () => {
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Typography
-                    variant='subtitle1'
+                    variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
                   >
                     Date:
                   </Typography>
-                  <Typography variant='body1' sx={{ mb: 2 }}>
+                  <Typography variant="body1" sx={{ mb: 2 }}>
                     {dateModify}
                   </Typography>
                   <Typography
-                    variant='subtitle1'
+                    variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
                   >
                     Time:
                   </Typography>
-                  <Typography variant='body1' sx={{ mb: 2 }}>
+                  <Typography variant="body1" sx={{ mb: 2 }}>
                     {hour}
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography
-                    variant='subtitle1'
+                    variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
                   >
                     Speciality:
                   </Typography>
-                  <Typography variant='body1' sx={{ mb: 2 }}>
+                  <Typography variant="body1" sx={{ mb: 2 }}>
                     {speciality}
                   </Typography>
 
                   <Typography
-                    variant='subtitle1'
+                    variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
                   >
                     Location:
                   </Typography>
-                  <Typography variant='body1' sx={{ mb: 2 }}>
+                  <Typography variant="body1" sx={{ mb: 2 }}>
                     {ubication}
                   </Typography>
 
                   <Typography
-                    variant='subtitle1'
+                    variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
                   >
                     Doctor's name:
                   </Typography>
-                  <Typography variant='body1' sx={{ mb: 2 }}>
+                  <Typography variant="body1" sx={{ mb: 2 }}>
                     {name.name} {name.lastName}
                   </Typography>
                 </Grid>
               </Grid>
               <br />
               <br />
-              <Stack sx={{ mt: 2 }} direction='row' spacing={2}>
+              <Stack sx={{ mt: 2 }} direction="row" spacing={2}>
                 <Button
-                  variant='outlined'
+                  variant="outlined"
                   onClick={closeModal}
-                  color='error'
-                  size='medium'
+                  color="error"
+                  size="medium"
                 >
                   Close
                 </Button>
@@ -401,17 +415,17 @@ const MedicalAppointments = () => {
 
           <Modal isOpen={modalReserved} ariaHideApp={false}>
             <Box sx={{ p: 2 }}>
-              <Typography variant='h5' sx={{ mb: 2, color: "#307196" }}>
+              <Typography variant="h5" sx={{ mb: 2, color: "#307196" }}>
                 Sorry, the appointment is already reserved
               </Typography>
               <br />
               <br />
-              <Stack sx={{ mt: 2 }} direction='row' spacing={2}>
+              <Stack sx={{ mt: 2 }} direction="row" spacing={2}>
                 <Button
-                  variant='outlined'
+                  variant="outlined"
                   onClick={closeModalReserved}
-                  color='error'
-                  size='medium'
+                  color="error"
+                  size="medium"
                 >
                   Close
                 </Button>

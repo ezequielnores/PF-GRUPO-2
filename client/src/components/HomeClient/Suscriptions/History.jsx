@@ -12,7 +12,7 @@ const root = {
   paddingTop: "4px",
   paddingBottom: "4px",
   backgroundColor: "#f5f5f5",
-  padding:10
+  padding: 10,
 };
 const title = {
   marginBottom: "2px",
@@ -25,8 +25,8 @@ const cardContainer = {
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "center",
-  padding:10,
-  width:800
+  padding: 10,
+  width: 800,
 };
 const card = {
   width: "500px", // Se establece un ancho fijo para la card
@@ -125,10 +125,18 @@ const History = () => {
   );
 
   const renderPlanCard = (plan) => {
-    console.log(filteredPlans)
+    console.log(filteredPlans);
     return (
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
-        <Card style={plan.name === "iCare pro" ? cardGold : plan.name === 'iCare simple' ? {} : cardBlue}> 
+        <Card
+          style={
+            plan.name === "iCare pro"
+              ? cardGold
+              : plan.name === "iCare simple"
+              ? {}
+              : cardBlue
+          }
+        >
           <CardContent style={cardContent}>
             <Typography
               variant="h5"
@@ -137,18 +145,23 @@ const History = () => {
               sx={{ fontSize: 67 }}
             >
               {plan.name}
-            </Typography><br/>
+            </Typography>
+            <br />
             <Typography variant="h6" style={planPrice}>
               ${plan.price}
-            </Typography><br/>
+            </Typography>
+            <br />
             <Typography variant="body1" style={planDuration}>
               Plan duration: {plan.durationMonths} months
-            </Typography><br/><br/>
+            </Typography>
+            <br />
+            <br />
             <Typography variant="body2" style={planDescription}>
               {plan.detail}
             </Typography>
           </CardContent>
-        </Card><br/>
+        </Card>
+        <br />
         <Button
           variant="contained"
           color="primary"
@@ -177,7 +190,8 @@ const History = () => {
           {patientDetail.PatientPlan ? (
             filteredPlans.map(renderPlanCard)
           ) : (
-            <div><br/>
+            <div>
+              <br />
               <h3>
                 You do not have a plan associated with your account, please go
                 back and associate with one

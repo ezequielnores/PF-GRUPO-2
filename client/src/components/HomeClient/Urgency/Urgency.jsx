@@ -13,7 +13,16 @@ import swal from "sweetalert"
 //redux
 import { urgencyCreate } from "../../../redux/reducers/urgencyReducer";
 import { useDispatch } from "react-redux";
-
+import { Typography } from "@mui/material";
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  padding: ".25em 0 .325em",
+  display: "block",
+  margin: "0 auto",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
+};
 const handleTempError = (temp) => {
   if (String(parseInt(temp)) === "NaN" && temp !== "") return true;
   else if (temp === "") return false;
@@ -138,9 +147,14 @@ const Urgency = () => {
           style={{ display: openModal ? "flex" : "none" }}
           className={style.modalDiv}
         >
-          <p>You have provided the following information</p>
-          <p>{body.symptomatology}</p>
-          <button className={style.sendButton} onClick={handleSubmit}>
+          <Typography>You have provided the following information</Typography>
+          <Typography>{body.symptomatology}</Typography>
+          <Button
+            className={style.sendButton}
+            onClick={handleSubmit}
+            variant="contained"
+            style={{ marginTop: "1rem" }}
+          >
             <div
               style={{
                 display: "flex",
@@ -150,7 +164,7 @@ const Urgency = () => {
             >
               Send
             </div>
-          </button>
+          </Button>
         </div>
       </div>
       <div
@@ -164,23 +178,31 @@ const Urgency = () => {
         }}
       >
         <div className={style.titleDiv}>
-          <h2>Urgency</h2>
+          <Typography
+            variant="button"
+            fontSize="2.5rem"
+            color="#307196"
+            fontWeight="bold"
+            style={test}
+          >
+            Urgency
+          </Typography>
           <div
             style={{
-              textAlign: "start",
               display: "flex",
               flexDirection: "column",
-              justifyContent: "flex-start",
+              justifyContent: "center",
+              textAlign: "start",
             }}
           >
-            <p>
+            <Typography variant="subtitle1">
               In this section, you can be attended by a doctor immediately 24
               hours a day.
-            </p>
-            <p>
+            </Typography>
+            <Typography variant="subtitle1">
               Please complete the following form to be added to the waiting
               list.
-            </p>
+            </Typography>
           </div>
         </div>
         <div style={{ width: "100%" }}>
