@@ -28,6 +28,7 @@ import Register from "../Register/Register.jsx";
 import ErrorPage from "../../ErrorPage/ErrorPage";
 
 const Home = ({ isLogged }) => {
+  isLogged = true;
   const dispatch = useDispatch();
   useEffect(() => {
     const patientId = localStorage.getItem("id");
