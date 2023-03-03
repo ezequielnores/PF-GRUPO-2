@@ -1,16 +1,16 @@
-/* import admin from "firebase-admin" */
+import {confirmPasswordReset} from "firebase/auth"
 
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button, Container, FormGroup, TextField, Typography } from '@mui/material';
 import { red } from "@mui/material/colors";
 import { swal } from 'sweetalert';
-import { useDispatch } from 'react-redux';
-import { getPatientByMail } from "../../redux/reducers/patientReducer";
+import { auth } from './../../authentication/firebase';
 
 function ResetPassword() {
-  const dispatch = useDispatch();
-  const { mail } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const oobCode = new URLSearchParams(location.search).get("oobCode");
   const [password , setPassword] = useState("");
   const [confirmPassword , setConfirmPassword] = useState("");
   const [errors , setErrors] = useState({password: "", confirmPassword: ""});
@@ -30,19 +30,16 @@ function ResetPassword() {
     const currentErrors = {};
     if (password.length < 8) currentErrors.password = "Must have a minimum of 8 characters";
     if (confirmPassword !== password) currentErrors.confirmPassword = "The passwords are different";
-    setErrors(...errors, currentErrors);
+    setErrors(currentErrors);
   }
- 
-  if (!mail) return <div>404</div>;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!errors.password && !errors.confirmPassword) {
       swal("It can not be sent! Correct the errors before sending.")
     } else {
-      const user = await dispatch(getPatientByMail(mail));
-      const uid = user.uid;
-/*       admin.auth().updateUser(uid, {password: password}); */
+      confirmPasswordReset(auth, oobCode, confirmPassword);
+      navigate("/LoginClient")
     }
   }
 

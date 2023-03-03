@@ -25,7 +25,15 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import Divider from "@mui/material/Divider";
-
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  padding: ".25em 0 .325em",
+  display: "block",
+  margin: "0 auto",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
+};
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -37,166 +45,189 @@ const Item = styled(Paper)(({ theme }) => ({
 const Profile = () => {
   const dispatch = useDispatch();
   const patientDetail = useSelector((state) => state.patient.detail);
-
   useEffect(() => {
     const patientId = localStorage.getItem("id");
+    console.log("Id " + patientId);
     if (patientId) {
       dispatch(patientGetDetail(patientId));
     }
+    console.log(patientDetail);
   }, []);
+
   return (
-    <Grid container spacing={2} style={{ marginLeft: "4px" }}>
-      <Grid item xs={12} md={6}>
-        <Paper elevation={3}>
-          <Typography variant='h5' gutterBottom style={{ color: "#307196" }}>
-            Personal information
-          </Typography>
-          <Divider />
-          <br></br>
-          <Stack
-            direction='column'
-            justifyContent='space-evenly'
-            alignItems='flex-start'
-            spacing={2}
-            sx={{ marginLeft: "20%" }}>
-            {patientDetail !== null ? (
-              <Avatar
-                alt='Remy Sharp'
-                sx={{ width: 100, height: 100 }}
-                src={patientDetail?.photo}
-              />
-            ) : (
-              <Avatar src='/broken-image.jpg' />
-            )}
+    <Grid
+      container
+      spacing={2}
+      style={{ marginLeft: "4px", display: "flex", flexDirection: "column" }}
+    >
+      <Typography
+        variant="button"
+        fontSize="2.5rem"
+        color="#307196"
+        fontWeight="bold"
+        style={test}
+      >
+        Personal information
+      </Typography>
+      <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3}>
             <Divider />
+            <br></br>
+            <Stack
+              direction="column"
+              justifyContent="space-evenly"
+              alignItems="flex-start"
+              spacing={2}
+              sx={{ marginLeft: "20%" }}
+            >
+              {patientDetail !== null ? (
+                <Avatar
+                  alt="Remy Sharp"
+                  sx={{ width: 100, height: 100 }}
+                  src={patientDetail?.photo}
+                />
+              ) : (
+                <Avatar src="/broken-image.jpg" />
+              )}
+              <Divider />
 
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <Item
-                sx={{
-                  backgroundColor: "#D9D9D9",
-                  color: "#307196",
-                  fontWeight: "bold",
-                }}>
-                Name:
-              </Item>
-              <Item sx={{ marginLeft: 3, color: "black" }}>
-                {patientDetail?.name}{" "}
-              </Item>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <Item
-                sx={{
-                  backgroundColor: "#D9D9D9",
-                  color: "#307196",
-                  fontWeight: "bold",
-                }}>
-                Surname:
-              </Item>
-              <Item sx={{ marginLeft: 3, color: "black" }}>
-                {patientDetail?.surname}{" "}
-              </Item>
-            </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Item
+                  sx={{
+                    backgroundColor: "#D9D9D9",
+                    color: "#307196",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Name:
+                </Item>
+                <Item sx={{ marginLeft: 3, color: "black" }}>
+                  {patientDetail?.name}{" "}
+                </Item>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Item
+                  sx={{
+                    backgroundColor: "#D9D9D9",
+                    color: "#307196",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Surname:
+                </Item>
+                <Item sx={{ marginLeft: 3, color: "black" }}>
+                  {patientDetail?.surname}{" "}
+                </Item>
+              </div>
 
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <Item
-                sx={{
-                  backgroundColor: "#D9D9D9",
-                  color: "#307196",
-                  fontWeight: "bold",
-                }}>
-                DNI:
-              </Item>
-              <Item sx={{ marginLeft: 3, color: "black" }}>
-                {patientDetail?.dni}{" "}
-              </Item>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <Item
-                sx={{
-                  backgroundColor: "#D9D9D9",
-                  color: "#307196",
-                  fontWeight: "bold",
-                }}>
-                Mail:
-              </Item>
-              <Item sx={{ marginLeft: 3, color: "black" }}>
-                {patientDetail.mail}{" "}
-              </Item>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <Item
-                sx={{
-                  backgroundColor: "#D9D9D9",
-                  color: "#307196",
-                  fontWeight: "bold",
-                }}>
-                Date:
-              </Item>
-              <Item sx={{ marginLeft: 3, color: "black" }}>
-                {patientDetail?.birthday}{" "}
-              </Item>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <Item
-                sx={{
-                  backgroundColor: "#D9D9D9",
-                  color: "#307196",
-                  fontWeight: "bold",
-                }}>
-                Weigth:
-              </Item>
-              <Item sx={{ marginLeft: 3, color: "black" }}>
-                {patientDetail?.weight}{" "}
-              </Item>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <Item
-                sx={{
-                  backgroundColor: "#D9D9D9",
-                  color: "#307196",
-                  fontWeight: "bold",
-                }}>
-                Heigth:
-              </Item>
-              <Item sx={{ marginLeft: 3, color: "black" }}>
-                {patientDetail?.height}{" "}
-              </Item>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <Item
-                sx={{
-                  backgroundColor: "#D9D9D9",
-                  color: "#307196",
-                  fontWeight: "bold",
-                }}>
-                Plan:
-              </Item>
-              <Item sx={{ marginLeft: 3, color: "black" }}>
-                {patientDetail?.PatientPlan?.name}{" "}
-              </Item>
-            </div>
-          </Stack>
-        </Paper>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Paper elevation={3}>
-          <Typography variant='h6' gutterBottom>
-            Graphics:
-          </Typography>
-          <GraficIMC />
-        </Paper>
-
-        <Divider />
-        <br />
-        <br />
-        <Link to='/HomeClient/Profile/Edit'>
-          <Button
-            variant='contained'
-            style={{ marginTop: "2rem", backgroundColor: "#307196" }}>
-            Edit personal information
-          </Button>
-        </Link>
-      </Grid>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Item
+                  sx={{
+                    backgroundColor: "#D9D9D9",
+                    color: "#307196",
+                    fontWeight: "bold",
+                  }}
+                >
+                  DNI:
+                </Item>
+                <Item sx={{ marginLeft: 3, color: "black" }}>
+                  {patientDetail?.dni}{" "}
+                </Item>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Item
+                  sx={{
+                    backgroundColor: "#D9D9D9",
+                    color: "#307196",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Mail:
+                </Item>
+                <Item sx={{ marginLeft: 3, color: "black" }}>
+                  {patientDetail.mail}{" "}
+                </Item>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Item
+                  sx={{
+                    backgroundColor: "#D9D9D9",
+                    color: "#307196",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Date:
+                </Item>
+                <Item sx={{ marginLeft: 3, color: "black" }}>
+                  {patientDetail?.birthday}{" "}
+                </Item>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Item
+                  sx={{
+                    backgroundColor: "#D9D9D9",
+                    color: "#307196",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Weigth:
+                </Item>
+                <Item sx={{ marginLeft: 3, color: "black" }}>
+                  {patientDetail?.weight}{" "}
+                </Item>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Item
+                  sx={{
+                    backgroundColor: "#D9D9D9",
+                    color: "#307196",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Heigth:
+                </Item>
+                <Item sx={{ marginLeft: 3, color: "black" }}>
+                  {patientDetail?.height}{" "}
+                </Item>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Item
+                  sx={{
+                    backgroundColor: "#D9D9D9",
+                    color: "#307196",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Plan:
+                </Item>
+                <Item
+                  sx={{ marginLeft: 3, color: "black", fontWeight: "bold" }}
+                >
+                  {patientDetail?.PatientPlan?.name}{" "}
+                </Item>
+              </div>
+              <br />
+            </Stack>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3}>
+            <GraficIMC />
+          </Paper>
+          <Divider />
+          <br />
+          <br />
+        </Grid>
+      </div>
+      <Link to="/HomeClient/Profile/Edit">
+        <Button
+          variant="contained"
+          style={{ marginTop: "1rem", backgroundColor: "#307196" }}
+        >
+          Edit personal information
+        </Button>
+      </Link>
     </Grid>
   );
 };

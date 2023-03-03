@@ -122,7 +122,7 @@ console.log(doctorIdLocal)
                   {" "}
                   ({review.rating})
                 </Typography>
-                <Typography style={reviewerName} sx={{marginLeft:52}}>Review #{review.id}</Typography>
+                <Typography style={reviewerName} sx={{marginLeft:70}}>Review #{review.id}</Typography>
               </div>
               
 

@@ -1,32 +1,79 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import {
+  createFrequentAsk,
+  updateFrequentAskById,
+  getAllFrequentQuestions,
+} from "../../redux/reducers/frequentQuestionsReducer";
+// import styled from "styled-components";
 
-const FormFQ = ({
-  sendInfo,
-  id,
-  askToUpdate,
-  answerToUpdate,
-  crudFQ,
-  setCrudFQ,
-}) => {
+// const Form = styled.form`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   margin: 20px;
+//   padding: 20px;
+//   border: 1px solid #ccc;
+//   border-radius: 5px;
+// `;
+
+// const Label = styled.label`
+//   display: flex;
+//   flex-direction: column;
+//   margin-bottom: 10px;
+// `;
+
+// const Input = styled.input`
+//   padding: 10px;
+//   border: 1px solid #ccc;
+//   border-radius: 5px;
+//   font-size: 16px;
+//   margin-top: 5px;
+// `;
+
+// const Button = styled.button`
+//   background-color: #4CAF50;
+//   border: none;
+//   color: white;
+//   padding: 10px 20px;
+//   text-align: center;
+//   text-decoration: none;
+//   display: inline-block;
+//   font-size: 16px;
+//   margin-top: 10px;
+//   border-radius: 5px;
+//   cursor: pointer;
+
+//   &:hover {
+//     background-color: #3e8e41;
+//   }
+// `;
+
+// const Heading = styled.h2`
+//   margin-bottom: 20px;
+// `;
+
+const FormFQ = ({ id, askToUpdate, answerToUpdate }) => {
   const dispatch = useDispatch();
   const [ask, setAsk] = useState("");
   const [answer, setAnswer] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (id) {
-      dispatch(sendInfo(id, { ask: ask, answer: answer })).then(() => alert("FQ UPDATED."));
-    //   alert("FQ UPDATED.");
+      await dispatch(
+        updateFrequentAskById({ id: id, ask: ask, answer: answer })
+      );
+      await dispatch(getAllFrequentQuestions());
+      alert("FQ UPDATED.");
     } else {
-      dispatch(sendInfo({ ask: ask, answer: answer })).then(() => alert("FQ CREATED."));
-    //   alert("FQ CREATED.");
+      await dispatch(createFrequentAsk({ ask: ask, answer: answer }));
+      await dispatch(getAllFrequentQuestions());
+      alert("FQ CREATED.");
     }
 
     setAsk("");
     setAnswer("");
-
-    setTimeout(setCrudFQ, 6000, { crudFQ, create: false, update: false });
   };
 
   return (

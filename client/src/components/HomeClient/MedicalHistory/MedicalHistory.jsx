@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from "react";
-import { useSelector, useDispatch} from "react-redux";
-import { historyGetAllbyPatient} from "../../../redux/reducers/historyReducer";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { historyGetAllbyPatient } from "../../../redux/reducers/historyReducer";
 import DetalleConsulta from "./MedicalHistoryDetail";
 import MedicalHistoryRecipes from "./MedicalHistoryRecipes";
 import Typography from "@mui/material/Typography";
@@ -8,27 +8,16 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { Button } from "@mui/material";
 
-// Datos ejemplo
-// const consultas = [
-//   { fecha: "2022-01-01", medico: "Julian Pérez", diagnostico: "Gripe" },
-//   {
-//     fecha: "2022-02-15",
-//     hora: "14:00",
-//     paciente: "Kevin",
-//     tratamiento: "PARACETAMOL.1 gr VO cada 8hs",
-//     motivoConsulta:
-//       "Sospecha de covid.Tos.Fiebre.Dolor de garganta.Dolor de cabeza.Dolor de espalda.Congestión Nasal.Nauseas.Tos.Fiebre o escalofríos.odinofagia.cefalea.nauseas/vómitos.lumbalgia.disnea.contacto estrecho.mialgias.",
-//     medico: "Jose josesito",
-//     diagnostico: "INESP Confirmado COVID19 x epidemiol",
-//   },
-//   {
-//     fecha: "2022-03-20",
-//     medico: "Juansito Garcia",
-//     diagnostico: "Presión alta",
-//   },
-// ];
-
 //style
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  padding: ".25em 0 .325em",
+  display: "block",
+  margin: "0 auto",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
+};
 const divPadre = {
   display: "flex",
   flexDirection: "column",
@@ -37,12 +26,12 @@ const divPadre = {
 
 //componente
 const Historial = ({ consulta }) => {
-    const dispatch = useDispatch();
-    const id = localStorage.getItem("id");
-    console.log(id)
-    useEffect(() => {
+  const dispatch = useDispatch();
+  const id = localStorage.getItem("id");
+  console.log(id);
+  useEffect(() => {
     dispatch(historyGetAllbyPatient(id));
-    }, []);
+  }, []);
 
   const [selectedConsulta, setSelectedConsulta] = useState(null);
   const [adjuntos, setAdjuntos] = useState(false);
@@ -61,13 +50,11 @@ const Historial = ({ consulta }) => {
     <div style={divPadre}>
       <div>
         <Typography
-          variant="h2"
-          gutterBottom
-          style={{
-            color: "#147bf4",
-            fontWeight: "bold",
-            fontSize: "2.5rem",
-          }}
+          variant="button"
+          fontSize="2.5rem"
+          color="#307196"
+          fontWeight="bold"
+          style={test}
         >
           Health care history
         </Typography>

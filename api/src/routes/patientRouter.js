@@ -9,7 +9,8 @@ const {
   getPatientActive,
   getPatientInactive,
   getPatientByMail,
-  setMakeDisableAdmin
+  setMakeDisableAdmin,
+  changePassword
 } = require("../controllers/patientController.js");
 
 const { Patient } = require("../db");
@@ -158,7 +159,6 @@ router.post("/", async (req, res) => {
         var uploadedResponse = await cloudinary.uploader.upload(image, {
           upload_preset: "iCare_Henry",
         });
-
       const newPatient = await Patient.create({
         name: name,
         surname: surname,
@@ -210,6 +210,10 @@ router.put("/edit/:id", async (req, res) => {
     if (id) {
       if (name) {
         const findPatient = await Patient.findByPk(id);
+        if (photo)
+        var uploadedResponse = await cloudinary.uploader.upload(photo, {
+          upload_preset: "iCare_Henry",
+        });
         await findPatient.update(
           {
             name,
@@ -222,7 +226,7 @@ router.put("/edit/:id", async (req, res) => {
             bmi,
             allergies,
             chronicDiseases,
-            photo,
+            photo: uploadedResponse ? uploadedResponse.url : null,
             location,
             dni,
             phone,
@@ -277,6 +281,18 @@ router.put("/setActive/:id", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+router.put("/changePassword/:id", async (req, res) => {
+  const { id } = req.params;
+  const {password} = req.body;
+
+  try {
+    await changePassword(id, password);
+    res.status(200).send("The password was updated")
+  } catch (error) {
+    res.status(400).send("The password couldnt be updated");
+  }
+})
 
 router.put("/setMakeDisableAdmin/:id", async (req, res) => {
   const { id } = req.params;

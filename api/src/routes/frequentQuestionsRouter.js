@@ -21,7 +21,7 @@ frequentQuestionsRouter.get("/", async (req, res) => {
         }
 
         const frequentQuestions = await findAllFrequentQuestions();
-        if (!frequentQuestions.length) throw new Error("No se encuentran preguntas frecuentes en la BDD.");
+       // if (!frequentQuestions.length) throw new Error("No se encuentran preguntas frecuentes en la BDD.");
 
         res.status(200).json(frequentQuestions);
     } catch (error) {
@@ -76,7 +76,7 @@ frequentQuestionsRouter.post("/", async (req, res) => {
 
 frequentQuestionsRouter.put("/update/:id", async (req, res) => {
     const { id }  = req.params;
-    const attributes = req.body;
+    const attributes = req.query;
 
     try {
         if (![id, attributes].every(Boolean)) throw new Error("Datos incompletos para acualizar.");
