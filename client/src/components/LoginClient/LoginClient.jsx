@@ -7,12 +7,13 @@ import Card from "@mui/material/Card";
 //logic
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { patientGetAll } from "../../redux/reducers/patientReducer";
+import { patientGetAll , patientUpdatePassword} from "../../redux/reducers/patientReducer";
 import { Alert } from "@mui/material";
 //Firebase
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../authentication/firebase";
 import MailSender from "../ResetPassword/MailSender";
+
 //styles
 const divPadre = {
   display: "flex",
@@ -87,17 +88,19 @@ const FormLoginClient = () => {
       );
       const user = userCredential.user;
       console.log("usuario logeado: " + user.email);
+  
       //Aca lo que hay que hacer es que firebase se ocupe de el logueo del usuario y no se haga una corroboracion con la db. Lo unico que se deberia hacer con la db es que mediante
       //un atributo como el uid brindado por firebase al registrarse, se guarde en un atributo de la db para que en este momento de logueo se encuentre al usuario mediante ese uid.
       //Primero para que se encargue de toda la autenticacion firebase y segundo porq cuando hay un cambio de contraseña nose puede cambiar la que esta en la base de datos en el
       //momento de resetPassword, entonces la idea es q para este punto este ya este logueado y q si la contraseña es distinta se cambie la de la db y ahi recien vaya a la HOME.
       const authenticatedPatient = pacientes.find((paciente) => {
-        return (
-          paciente.mail === info.mail && paciente.password === info.password
-        );
+        return paciente.mail === auth.currentUser.email;
       });
 
       if (authenticatedPatient) {
+        if (authenticatedPatient.password !== info.password) {
+          dispatch(patientUpdatePassword(authenticatedPatient.id, info.password));
+        }
         console.log(authenticatedPatient);
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);

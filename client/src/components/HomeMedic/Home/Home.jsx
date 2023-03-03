@@ -18,16 +18,13 @@ import {
 } from "../index";
 import { useSelector, useDispatch } from "react-redux";
 import ErrorPage from "../../ErrorPage/ErrorPage";
-  
 
 const Home = ({ isLogged }) => {
   const dispatch = useDispatch();
   //logic para mostrar render el doc actual logeado
   const dataDoc = useSelector((state) => state.doctor.detail);
-  // console.log(dataDoc); 
-  
+  // console.log(dataDoc);
 
-  
   const location = useLocation();
   const [open, setOpen] = useState(true);
   const handleOpen = () => {
@@ -41,8 +38,7 @@ const Home = ({ isLogged }) => {
     }
   }, []);
 
-  
-  if(isLogged === true){
+  if (isLogged === true) {
     return (
       <div style={{ position: "relative" }}>
         <img
@@ -80,7 +76,11 @@ const Home = ({ isLogged }) => {
               }}
             >
               <p
-                style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem" }}
+                style={{
+                  margin: "0",
+                  fontWeight: "bolder",
+                  fontSize: "1.1rem",
+                }}
               >
                 {dataDoc.name} {dataDoc.lastName}
               </p>
@@ -111,33 +111,32 @@ const Home = ({ isLogged }) => {
           style={{
             position: "absolute",
             top: "6rem",
-            width: open ? "85vw" : "95vw",
+            width: "85vw",
             right: "0",
           }}
         >
-          {(
-              location.pathname.endsWith("/HomeMedic/Profile") && <ProfileMedic />
-              ||
-              location.pathname.endsWith("/HomeMedic/Profile/Edit") && <ProfileEdit />
-              ||
-              location.pathname.endsWith("/HomeMedic/Agenda") && <Agenda />
-              ||
-              location.pathname.endsWith("/HomeMedic/MedicalEmergency") &&  <MedicalEmergency />
-              ||
-              location.pathname.endsWith("/HomeMedic/Reviews") && <ReviewsMedic />
-              ||
-              location.pathname.endsWith(`/HomeMedic/SeePatients`) && <SeePatients />
-
-          ) || <ErrorPage /> 
-          }
-
+          {(location.pathname.endsWith("/HomeMedic/Profile") && (
+            <ProfileMedic />
+          )) ||
+            (location.pathname.endsWith("/HomeMedic/Profile/Edit") && (
+              <ProfileEdit />
+            )) ||
+            (location.pathname.endsWith("/HomeMedic/Agenda") && <Agenda />) ||
+            (location.pathname.endsWith("/HomeMedic/MedicalEmergency") && (
+              <MedicalEmergency />
+            )) ||
+            (location.pathname.endsWith("/HomeMedic/Reviews") && (
+              <ReviewsMedic />
+            )) ||
+            (location.pathname.endsWith(`/HomeMedic/SeePatients`) && (
+              <SeePatients />
+            )) || <ErrorPage />}
         </div>
       </div>
     );
   }
-  if(isLogged === false){
-    return <Navigate to="/loginMedic"/>
+  if (isLogged === false) {
+    return <Navigate to="/loginMedic" />;
   }
- 
 };
 export default Home;

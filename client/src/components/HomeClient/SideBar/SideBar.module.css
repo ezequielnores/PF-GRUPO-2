@@ -1,4 +1,4 @@
-menu {
+/* menu {
   text-align: end;
   border-radius: 0 1rem 1rem 0;
   height: 4vh;
@@ -78,4 +78,32 @@ menu {
   margin-top: 2vh;
   margin-bottom: 2vh;
   cursor: pointer;
+}
+.divbutton {
+  display: flex;
+  justify-content: start;
+  padding: 0 0.4rem;
+  align-items: center;
+  text-align: start;
+}
+.divbutton p {
+  margin: 0.3vh 0vw;
+  margin-left: 0.5vw;
+}
+.icon {
+  color: #000000;
+  box-sizing: border-box;
+  border-radius: 0 1rem 1rem 0;
+  height: 4vh;
+  width: 9vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.buttonOut {
+  border: none;
+  background: #307196;
+  color: white;
+  border-radius: 0 1rem 1rem 0;
+  height: 4vh;
 }
