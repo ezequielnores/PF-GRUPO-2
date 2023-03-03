@@ -4,6 +4,7 @@ import style from "./SideBar.module.css";
 import Stack from "@mui/material/Stack";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
+import ChatIcon from '@mui/icons-material/Chat';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
@@ -12,29 +13,31 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ForumIcon from "@mui/icons-material/Forum";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import LogoutIcon from "@mui/icons-material/Logout";
-import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import swal from "sweetalert";
 //Firebase
 import { signOut } from "firebase/auth";
-import { auth } from '../../../authentication/firebase';
+import { auth } from "../../../authentication/firebase";
 
 const SideBar = ({ open, handleOpen, path }) => {
-    const handleLogout = async () => {
-      swal({
-        title: "Are you sure you want to log out?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          signOut(auth).then(()=>{
-          localStorage.clear();
-          window.location.href = "https://pf-grupo-2.vercel.app/";
-          }).catch((error) => {
-            console.log({Error: error.message});
+  const handleLogout = async () => {
+    swal({
+      title: "Are you sure you want to log out?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        signOut(auth)
+          .then(() => {
+            localStorage.clear();
+            window.location.href = "https://pf-grupo-2.vercel.app/";
           })
-        }
-      });
+          .catch((error) => {
+            console.log({ Error: error.message });
+          });
+      }
+    });
   };
 
   return (
@@ -70,6 +73,34 @@ const SideBar = ({ open, handleOpen, path }) => {
                   <HomeIcon />
                 ) : (
                   <HomeIcon style={{ color: "grey" }} />
+                )}
+              </Link>
+            </button>
+            <button className={style.buttonBar}>
+              <Link to="/HomeClient/Chat">
+                {open ? (
+                  <div className={style.divbutton}>
+                    {path.endsWith("/HomeClient/Chat") ? (
+                      <div
+                        className={style.icon}
+                        style={{ background: "#307196" }}
+                      >
+                        <ChatIcon style={{ color: "white" }} />
+                      </div>
+                    ) : (
+                      <div
+                        className={style.icon}
+                        style={{ background: "#c2c1c1" }}
+                      >
+                        <ChatIcon />
+                      </div>
+                    )}
+                    Chat
+                  </div>
+                ) : path.endsWith("/HomeClient") ? (
+                  <ChatIcon />
+                ) : (
+                  <ChatIcon style={{ color: "grey" }} />
                 )}
               </Link>
             </button>
