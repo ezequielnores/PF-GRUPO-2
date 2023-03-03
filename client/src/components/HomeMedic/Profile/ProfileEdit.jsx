@@ -20,6 +20,7 @@ import {
 } from "../../../redux/reducers/doctorReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { IconButton, InputAdornment } from "@mui/material";
+import swal from "sweetalert"
 
 //styles
 const padreDiv = {
@@ -145,12 +146,15 @@ const ProfileEdit = () => {
     };
     setHasChanged(true);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // const errors = validateFields();
     if (Object.values(error).every((item) => item === "")) {
       dispatch(doctorUpdate({ id: dataDoc.id, data: infoNueva }));
-      alert("Information updated");
+      await swal("Information updated", {
+        icon: "success",
+      });
+      // alert("Information updated");
       navigate("/HomeMedic/Profile");
     } else {
       alert("ERROR");
