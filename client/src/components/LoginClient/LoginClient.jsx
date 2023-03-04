@@ -66,8 +66,7 @@ const FormLoginClient = () => {
 
   const handleOpenResetPassword = () => {
     setOpen(true);
-  }
-
+  };
 
   //seteo la info con los inputs
   const handleChange = (evento) => {
@@ -92,7 +91,7 @@ const FormLoginClient = () => {
   
       //Aca lo que hay que hacer es que firebase se ocupe de el logueo del usuario y no se haga una corroboracion con la db. Lo unico que se deberia hacer con la db es que mediante
       //un atributo como el uid brindado por firebase al registrarse, se guarde en un atributo de la db para que en este momento de logueo se encuentre al usuario mediante ese uid.
-      //Primero para que se encargue de toda la autenticacion firebase y segundo porq cuando hay un cambio de contraseña nose puede cambiar la que esta en la base de datos en el 
+      //Primero para que se encargue de toda la autenticacion firebase y segundo porq cuando hay un cambio de contraseña nose puede cambiar la que esta en la base de datos en el
       //momento de resetPassword, entonces la idea es q para este punto este ya este logueado y q si la contraseña es distinta se cambie la de la db y ahi recien vaya a la HOME.
       const authenticatedPatient = pacientes.find((paciente) => {
         return paciente.mail === auth.currentUser.email;
@@ -102,9 +101,10 @@ const FormLoginClient = () => {
         if (authenticatedPatient.password !== info.password) {
           dispatch(patientUpdatePassword(authenticatedPatient.id, info.password));
         }
+        console.log(authenticatedPatient);
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);
-        navigate("/HomeClient/Profile", { state: { id } });
+        // navigate("/HomeClient/Profile", { state: { id } });
       } else {
         setSuccessLogin("error");
       }
@@ -129,7 +129,7 @@ const FormLoginClient = () => {
       } else {
         const id = found.id;
         localStorage.setItem("id", id);
-        navigate("/HomeClient/Profile", {state: {id}});
+        navigate("/HomeClient/Profile", { state: { id } });
       }
     } catch (error) {
       console.log(error.message);
@@ -139,11 +139,10 @@ const FormLoginClient = () => {
   //FIRST RENDER
   useEffect(() => {
     const id = localStorage.getItem("id");
-    if (id) {
-      navigate("/HomeClient/Profile");
-    } else {
+
+
       dispatch(patientGetAll());
-    }
+    
   }, []);
 
   return (
@@ -213,7 +212,7 @@ const FormLoginClient = () => {
             style={buton}
             onClick={handleOpenResetPassword}
           >
-          Forgot my password
+            Forgot my password
           </Button>
           <MailSender open={open} setOpen={setOpen} />
         </Card>
