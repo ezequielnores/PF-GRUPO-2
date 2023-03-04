@@ -23,12 +23,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //Firebase
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-<<<<<<< HEAD
-import { auth, googleProvider } from "../../../authentication/firebase";
 import axios from "axios";
-=======
 import { auth, googleProvider, db } from "../../../authentication/firebase";
->>>>>>> bd527ddb735f7101631a441041d02412297f858d
 //style
 const cardDiv = {
   display: "flex",
@@ -230,9 +226,6 @@ const Register = () => {
           setAlertSeverity("success");
           setAlertMessage("Account Created. Wait to be redirected");
           setShowAlert(true);
-<<<<<<< HEAD
-         
-=======
           //create user on firestore
           await setDoc(doc(db, "users", userCredential.user.uid), {
             uid: userCredential.user.uid,
@@ -249,18 +242,13 @@ const Register = () => {
           /*           setTimeout(() => {
             navigate("/loginClient");
           }, 2500); */
->>>>>>> bd527ddb735f7101631a441041d02412297f858d
         } else {
           setAlertSeverity("error");
           setAlertMessage("Error creating account!");
           setShowAlert(true);
           auth.currentUser.delete();
         }
-<<<<<<< HEAD
-
-=======
         console.log(res);
->>>>>>> bd527ddb735f7101631a441041d02412297f858d
       })
       .catch((err) => alert(err));
   };
