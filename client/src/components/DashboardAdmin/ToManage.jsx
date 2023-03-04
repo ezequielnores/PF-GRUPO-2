@@ -272,7 +272,14 @@ const ToManage = (props) => {
 
       {props.toRenderFrequentQuestions && (
         <div>
-          <h3>Frequent Questions</h3>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            color="#307196"
+            style={{ marginTop: "1rem", marginBottom: "1rem" }}
+          >
+            Frequent Questions
+          </Typography>
           <ManageFQ />
         </div>
       )}
