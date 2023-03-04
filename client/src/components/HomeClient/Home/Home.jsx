@@ -18,7 +18,7 @@ import {
   ProfileUpdate,
   Suscriptions,
   History,
-  ChatHome
+  ChatHome,
 } from "../index";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,7 +43,7 @@ const Home = ({ isLogged }) => {
     setOpen(!open);
   };
 
-  if  (isLogged === true)  {
+  if (isLogged === true) {
     return (
       <div style={{ position: "relative" }}>
         {/* <div
@@ -159,6 +159,7 @@ const Home = ({ isLogged }) => {
               <Reviews />
             )) ||
             (location.pathname.endsWith("/HomeClient/Faq") && <Faq />) ||
+            (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
             (location.pathname.endsWith("/HomeClient/Register") && (
               <Register />
             )) ||

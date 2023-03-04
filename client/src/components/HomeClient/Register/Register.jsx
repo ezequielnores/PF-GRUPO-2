@@ -9,7 +9,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import {doc, setDoc} from 'firebase/firestore'
+import { doc, setDoc } from "firebase/firestore";
 import { MuiTelInput } from "mui-tel-input";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -51,7 +51,7 @@ const divPadre = {
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "150vh",
+  height: "100%",
   backgroundColor: "#43B8C8",
 };
 const Register = () => {
@@ -185,16 +185,29 @@ const Register = () => {
     }
   };
 
-  const dispatchRegister = async () => {
+  const dispatchRegister = async (userCredential) => {
     await dispatch(
       patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
     )
-      .then((res) => {
+      .then(async (res) => {
         if (res.type === "patient/register/fulfilled") {
           // alert("Account Created");
           setAlertSeverity("success");
           setAlertMessage("Account Created. Wait to be redirected");
           setShowAlert(true);
+          //create user on firestore
+          await setDoc(doc(db, "users", userCredential.user.uid), {
+            uid: userCredential.user.uid,
+            displayName: form.name + " " + form.surname,
+            email: form.mail,
+            photoURL: form.image
+              ? form.image
+              : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+          });
+
+          //create empty user chats on firestore
+          await setDoc(doc(db, "userChats", userCredential.user.uid), {});
+
           /*           setTimeout(() => {
             navigate("/loginClient");
           }, 2500); */
@@ -206,9 +219,9 @@ const Register = () => {
           setShowAlert(true);
           auth.currentUser.delete();
         }
-        console.log("Register " + res.type);
+        console.log(res);
       })
-      .catch((err) => alert("error"));
+      .catch((err) => alert(err));
   };
 
   const handleRegister = async () => {
@@ -221,23 +234,14 @@ const Register = () => {
         );
         const user = userCredential.user;
         console.log("usuario creado: " + user.email);
-        dispatchRegister();
+        dispatchRegister(userCredential);
         const authenticatedPatient = patients.find((patient) => {
           return patient.mail === auth.currentUser.email;
-        })
-        const id = authenticatedPatient.id;
-        localStorage.setItem("id", id);
-        //create user on firestore
-        await setDoc(doc(db, "users", user.uid), {
-          uid: user.uid,
-          displayName: form.name,
-          email:form.mail,
-          photoURL: form.image,
         });
-
-        //create empty user chats on firestore
-        await setDoc(doc(db, "userChats", user.uid), {});
-        navigate("HomeClient/Profile", {state: {id}});
+        const id = authenticatedPatient.id;
+        console.log(authenticatedPatient);
+        localStorage.setItem("id", id);
+        navigate("HomeClient/Profile", { state: { id } });
       } catch (error) {
         console.log({ Error: error.message });
       }
