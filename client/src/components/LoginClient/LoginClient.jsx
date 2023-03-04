@@ -143,7 +143,7 @@ const FormLoginClient = () => {
       // navigate("/HomeClient/Profile");
     } else {
       dispatch(patientGetAll());
-    
+    }
   }, []);
 
   return (
