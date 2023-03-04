@@ -6,15 +6,22 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import {patientUpdate,patientGetDetail} from "../../../redux/reducers/patientReducer";
+import {
+  patientUpdate,
+  patientGetDetail,
+} from "../../../redux/reducers/patientReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmail, isNumeric, isStrongPassword, isAlpha, isInt } from "validator";
+import {
+  isEmail,
+  isNumeric,
+  isStrongPassword,
+  isAlpha,
+  isInt,
+} from "validator";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import swal from "sweetalert"
-
-
+import swal from "sweetalert";
 
 //styles
 const padreDiv = {
@@ -44,18 +51,18 @@ const ProfileEdit = () => {
   const navigate = useNavigate();
 
   const [infoNueva, setInfoNueva] = useState({
-    name: detailPatient? detailPatient.name:"",
-    surname: detailPatient? detailPatient.surname:"",
-    mail: detailPatient? detailPatient.mail:"",
-    password: detailPatient? detailPatient.password:"",
-    birthday: detailPatient? detailPatient.birthday:new Date(),
-    photo: detailPatient? detailPatient.photo:"",
-    weight: detailPatient? detailPatient.weight:"",
-    height: detailPatient? detailPatient.height:"",
-    allergies: detailPatient? detailPatient.allergies:"",
-    chronicDiseases: detailPatient? detailPatient.chronicDiseases:"",
-    location: detailPatient? detailPatient.location:"",
-    phone: detailPatient? detailPatient.phone:"",
+    name: detailPatient ? detailPatient.name : "",
+    surname: detailPatient ? detailPatient.surname : "",
+    mail: detailPatient ? detailPatient.mail : "",
+    password: detailPatient ? detailPatient.password : "",
+    birthday: detailPatient ? detailPatient.birthday : new Date(),
+    photo: detailPatient ? detailPatient.photo : "",
+    weight: detailPatient ? detailPatient.weight : "",
+    height: detailPatient ? detailPatient.height : "",
+    allergies: detailPatient ? detailPatient.allergies : "",
+    chronicDiseases: detailPatient ? detailPatient.chronicDiseases : "",
+    location: detailPatient ? detailPatient.location : "",
+    phone: detailPatient ? detailPatient.phone : "",
   });
 
   const [hasChanged, setHasChanged] = useState(false);
@@ -69,18 +76,15 @@ const ProfileEdit = () => {
     clinicMail: "",
     birthday: "",
     surname: "",
-    weight:"",
-    height:"",
-    location:""
+    weight: "",
+    height: "",
+    location: "",
   });
-
-
-  
 
   const handleChange = (name, value) => {
     setInfoNueva({
       ...infoNueva,
-      [name]:value,
+      [name]: value,
     });
     validateFields({ ...infoNueva, [name]: value }, name);
     setHasChanged(true);
@@ -96,12 +100,11 @@ const ProfileEdit = () => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setInfoNueva({...infoNueva, photo: reader.result});
+      setInfoNueva({ ...infoNueva, photo: reader.result });
       setHasChanged(true);
     };
     validateFields();
-  }
-
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,10 +117,9 @@ const ProfileEdit = () => {
       // alert("Information updated");
       navigate("/HomeClient/Profile");
     } else {
-      alert("Error")
+      alert("Error");
     }
   };
-
 
   // const validateFields = () => {
   //   const errors = {};
@@ -195,14 +197,12 @@ const ProfileEdit = () => {
     }
   };
 
-
   useEffect(() => {
     const patientId = localStorage.getItem("id");
     if (patientId) {
       dispatch(patientGetDetail(patientId));
     }
   }, []);
-
 
   return (
     <div style={padreDiv}>
@@ -338,10 +338,15 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e.target.name, e.target.value)}
         />
       </Card>
-      <Button variant="contained" onClick={(e) => handleSubmit(e)} disabled={!hasChanged}>
+      <Button
+        variant="contained"
+        onClick={(e) => handleSubmit(e)}
+        disabled={!hasChanged}
+      >
         Update information
       </Button>
-      <br/><br/>
+      <br />
+      <br />
     </div>
   );
 };
