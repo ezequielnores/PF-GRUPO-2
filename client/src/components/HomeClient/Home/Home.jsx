@@ -19,6 +19,7 @@ import {
   Suscriptions,
   History,
   ChatHome,
+  TestCovid,
 } from "../index";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -165,6 +166,9 @@ const Home = ({ isLogged }) => {
             )) ||
             (location.pathname.endsWith("/HomeClient/Suscriptions") && (
               <Suscriptions />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/TestCovid") && (
+              <TestCovid />
             )) ||
             (location.pathname.endsWith("/HomeClient/Suscriptions/history") && (
               <History />
