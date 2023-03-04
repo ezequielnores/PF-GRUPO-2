@@ -108,7 +108,7 @@ const SeePatients = ({idTurn,appointment}) => {
                 setLinkSent(true)
                 // aca va el dispatch para enviar el link
                 axios
-                    .post("http://localhost:3001/sendLink", {
+                    .post("https://pf-grupo-2-production.up.railway.app/sendLink", {
                         mail:appointment.Patient.mail,
                         link:meetLink
                     }).then((response)=>{console.log(response)})

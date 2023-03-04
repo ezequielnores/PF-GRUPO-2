@@ -155,7 +155,7 @@ const ProfileEdit = () => {
         icon: "success",
       });
       // alert("Information updated");
-      navigate("/HomeMedic/Profile");
+      // navigate("/HomeMedic/Profile");
     } else {
       alert("ERROR");
     }
