@@ -26,6 +26,15 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Button from "@mui/material/Button";
 
 //style
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  padding: ".25em 0 .325em",
+  display: "block",
+  margin: "0 auto",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
+};
 const container = {
   width: "100%",
   display: "flex",
@@ -34,8 +43,7 @@ const container = {
   alignItems: "center",
 };
 const hijoContainer = {
-  marginTop: "3rem",
-  width: "80%",
+  width: "95%",
 };
 const header = {
   fontSize: "23px",
@@ -168,15 +176,13 @@ const Agenda = () => {
         <div style={container}>
           <div style={hijoContainer}>
             <Typography
-              variant="h2"
-              style={{
-                color: "#307196",
-                fontWeight: "bold",
-                fontSize: "2.5rem",
-                marginBottom: "2rem",
-              }}
+              variant="button"
+              fontSize="2.5rem"
+              color="#307196"
+              fontWeight="bold"
+              style={test}
             >
-              Emergencies
+              URGENCY
             </Typography>
             <Button onClick={handlerRefresh}>Refresh</Button>
             <TableContainer component={Paper}>
@@ -199,9 +205,8 @@ const Agenda = () => {
                           <TableRow>
                             <TableCell style={{ fontSize: "17px" }}>
                               {urgencia.Patient
-                                ? `${urgencia.Patient.name ?? ""} ${
-                                    urgencia.Patient.surname ?? ""
-                                  }`
+                                ? `${urgencia.Patient.name ?? ""} ${urgencia
+                                    .Patient.surname ?? ""}`
                                 : "cargando"}
                             </TableCell>
                             <TableCell style={{ fontSize: "17px" }}>

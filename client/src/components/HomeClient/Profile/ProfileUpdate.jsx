@@ -6,9 +6,18 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import {patientUpdate,patientGetDetail} from "../../../redux/reducers/patientReducer";
+import {
+  patientUpdate,
+  patientGetDetail,
+} from "../../../redux/reducers/patientReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmail, isNumeric, isStrongPassword, isAlpha, isInt } from "validator";
+import {
+  isEmail,
+  isNumeric,
+  isStrongPassword,
+  isAlpha,
+  isInt,
+} from "validator";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -95,7 +104,7 @@ const ProfileEdit = () => {
   const handleChange = (name, value) => {
     setInfoNueva({
       ...infoNueva,
-      [name]:value,
+      [name]: value,
     });
     validateFields({ ...infoNueva, [name]: value }, name);
     setHasChanged(true);
@@ -129,7 +138,7 @@ const ProfileEdit = () => {
       // alert("Information updated");
       await navigate("/HomeClient/Profile");
     } else {
-      alert("Error")
+      alert("Error");
     }
   };
 
@@ -172,7 +181,6 @@ const ProfileEdit = () => {
       } else setError({ ...error, [name]: "" });
     }
   };
-
 
  
 
@@ -359,10 +367,15 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e.target.name, e.target.value)}
         /> */}
       </Card>
-      <Button variant="contained" onClick={(e) => handleSubmit(e)} disabled={!hasChanged}>
+      <Button
+        variant="contained"
+        onClick={(e) => handleSubmit(e)}
+        disabled={!hasChanged}
+      >
         Update information
       </Button>
-      <br/><br/>
+      <br />
+      <br />
     </div>
   );
 };

@@ -31,6 +31,21 @@ const test = {
   margin: "0 auto",
   textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
 };
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "40rem",
+    height: "auto",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+};
 const MedicalAppointments = () => {
   const dispatch = useDispatch();
   const doctors = useSelector((state) => state.doctor.list);
@@ -346,15 +361,38 @@ const MedicalAppointments = () => {
             </Stack>
           </Box>
 
-          <Modal isOpen={modalAbierto} ariaHideApp={false}>
-            <Box sx={{ p: 2 }}>
-              <Typography variant="h5" sx={{ mb: 2, color: "#307196" }}>
-                Appointment created successfully
-              </Typography>
-              <br />
-              <br />
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
+          <Modal isOpen={modalAbierto} ariaHideApp={false} style={customStyles}>
+            <Typography
+              variant="h5"
+              style={{
+                mb: 2,
+                color: "#307196",
+                textAlign: "center",
+                marginBottom: "2rem",
+              }}
+            >
+              Appointment created successfully
+            </Typography>
+            <Grid
+              container
+              spacing={2}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "2rem",
+                width: "100%",
+              }}
+            >
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                  width: "100%",
+                }}
+              >
+                <div>
                   <Typography
                     variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
@@ -364,6 +402,8 @@ const MedicalAppointments = () => {
                   <Typography variant="body1" sx={{ mb: 2 }}>
                     {dateModify}
                   </Typography>
+                </div>
+                <div>
                   <Typography
                     variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
@@ -373,8 +413,8 @@ const MedicalAppointments = () => {
                   <Typography variant="body1" sx={{ mb: 2 }}>
                     {hour}
                   </Typography>
-                </Grid>
-                <Grid item xs={6}>
+                </div>
+                <div>
                   <Typography
                     variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
@@ -384,7 +424,17 @@ const MedicalAppointments = () => {
                   <Typography variant="body1" sx={{ mb: 2 }}>
                     {speciality}
                   </Typography>
-
+                </div>
+              </Grid>
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                }}
+              >
+                <div>
                   <Typography
                     variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
@@ -394,7 +444,8 @@ const MedicalAppointments = () => {
                   <Typography variant="body1" sx={{ mb: 2 }}>
                     {ubication}
                   </Typography>
-
+                </div>
+                <div>
                   <Typography
                     variant="subtitle1"
                     sx={{ mb: 1, fontWeight: "bold" }}
@@ -404,41 +455,42 @@ const MedicalAppointments = () => {
                   <Typography variant="body1" sx={{ mb: 2 }}>
                     {name.name} {name.lastName}
                   </Typography>
-                </Grid>
+                </div>
               </Grid>
-              <br />
-              <br />
-              <Stack sx={{ mt: 2 }} direction="row" spacing={2}>
-                <Button
-                  variant="outlined"
-                  onClick={closeModal}
-                  color="error"
-                  size="medium"
-                >
-                  Close
-                </Button>
-              </Stack>
-            </Box>
+            </Grid>
+            <Button
+              variant="outlined"
+              onClick={closeModal}
+              style={{ alignSelf: "center", width: "25%", marginTop: "2rem" }}
+            >
+              Close
+            </Button>
           </Modal>
 
-          <Modal isOpen={modalReserved} ariaHideApp={false}>
-            <Box sx={{ p: 2 }}>
-              <Typography variant="h5" sx={{ mb: 2, color: "#307196" }}>
-                Sorry, the appointment is already reserved
-              </Typography>
-              <br />
-              <br />
-              <Stack sx={{ mt: 2 }} direction="row" spacing={2}>
-                <Button
-                  variant="outlined"
-                  onClick={closeModalReserved}
-                  color="error"
-                  size="medium"
-                >
-                  Close
-                </Button>
-              </Stack>
-            </Box>
+          <Modal
+            isOpen={modalReserved}
+            ariaHideApp={false}
+            style={customStyles}
+          >
+            <Typography
+              variant="h5"
+              style={{
+                mb: 2,
+                color: "#307196",
+                textAlign: "center",
+                marginBottom: "2rem",
+              }}
+            >
+              Sorry, the appointment is already reserved
+            </Typography>
+            <Button
+              variant="outlined"
+              onClick={closeModalReserved}
+              color="error"
+              style={{ alignSelf: "center", width: "25%", marginTop: "2rem" }}
+            >
+              Close
+            </Button>
           </Modal>
         </Paper>
       </Box>

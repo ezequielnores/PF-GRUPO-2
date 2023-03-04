@@ -3,6 +3,10 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
+const covid = require('./controllers/covid.js');
+const { Router } = require("express");
+
+const router = Router();
 
 require('./db.js');
 
@@ -22,7 +26,26 @@ server.use((req, res, next) => {
   next();
 });
 
+const net = covid.neuralNetwork().then((net) => {
+    return net;
+});
+
+
+// console.log(net)
+
 server.use('/', routes);
+
+router.post("/", async(req, res) => {
+    const {input} = req.body;
+    const netR = await net;
+    const output = await covid.testCovid(netR,input);
+    res.send(output);
+});
+
+server.use("/covid", router);
+
+
+
 
 // Error catching endware.
 server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars

@@ -34,7 +34,7 @@ const container = {
 };
 const hijoContainer = {
   marginTop: "3rem",
-  width: "80%",
+  width: "95%",
 };
 const header = {
   fontSize: "23px",
@@ -51,6 +51,15 @@ const modalContainer = {
   justifyContent: "center",
   alignItems: "center",
   flexDirection: "column",
+};
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  padding: ".25em 0 .325em",
+  display: "block",
+  margin: "0 auto",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
 };
 const modal = {
   backgroundColor: "#fff",
@@ -154,7 +163,15 @@ const Agenda = () => {
   }, [attend]);
   return (
     <div>
-      {/* {console.log(localStorage.getItem("idMedic"))} */}
+      <Typography
+        variant="button"
+        fontSize="2.5rem"
+        color="#307196"
+        fontWeight="bold"
+        style={test}
+      >
+        My Appointments
+      </Typography>
       {!attend ? (
         <div style={container}>
           <div style={hijoContainer}>
