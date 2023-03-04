@@ -14,6 +14,7 @@ import ForumIcon from "@mui/icons-material/Forum";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
+import CoronavirusIcon from "@mui/icons-material/Coronavirus";
 import swal from "sweetalert";
 //Firebase
 import { signOut } from "firebase/auth";
@@ -265,6 +266,24 @@ const SideBar = ({ open, handleOpen, path }) => {
                   <RequestQuoteIcon />
                 ) : (
                   <RequestQuoteIcon style={{ color: "#c2c1c1" }} />
+                )}
+              </Link>
+            </button>
+            <button className={style.buttonBar}>
+              <Link to="/HomeClient/TestCovid">
+                {open ? (
+                  <div className={style.divbutton}>
+                    {path.endsWith("/HomeClient/TestCovid") ? (
+                      <CoronavirusIcon />
+                    ) : (
+                      <CoronavirusIcon style={{ color: "#c2c1c1" }} />
+                    )}
+                    <p>AutoTest Covid-19</p>
+                  </div>
+                ) : path.endsWith("/HomeClient/TestCovid") ? (
+                  <CoronavirusIcon />
+                ) : (
+                  <CoronavirusIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>

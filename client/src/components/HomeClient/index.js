@@ -11,6 +11,7 @@ import ProfileUpdate from "./Profile/ProfileUpdate";
 import Suscriptions from "./Suscriptions/Suscriptions";
 import History from "./Suscriptions/History";
 import ChatHome from "../Chat/ChatHome.jsx";
+import TestCovid from "./TestCovid/TestCovid";
 export {
   Faq,
   HomeClient,
@@ -25,4 +26,5 @@ export {
   Suscriptions,
   History,
   ChatHome,
+  TestCovid,
 };
