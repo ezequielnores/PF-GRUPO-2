@@ -12,8 +12,11 @@ import swal from "sweetalert";
 import axios from "axios";
 
 // patientId, doctorId, date, diagnosis
-const validate = (input) => {
+const validate = (input,linkSent) => {
   let errors = {};
+  if (!linkSent) {
+    errors.link = "Please send the meet link";
+  }
   if (!input.diagnosis) {
     errors.diagnosis = "Diagnosis is required";
   } else if (!input.reason) {
@@ -23,6 +26,9 @@ const validate = (input) => {
   }
   return errors;
 };
+
+
+
 const SeePatients = ({ idTurn, appointment }) => {
   const dispatch = useDispatch();
   // useEffect(() => {
@@ -43,6 +49,7 @@ const SeePatients = ({ idTurn, appointment }) => {
   });
   const [openModal, setOpenModal] = useState(false);
   const [error, setError] = useState({
+    link: "",
     diagnosis: "",
     reason: "",
     prescription: "",
@@ -66,7 +73,7 @@ const SeePatients = ({ idTurn, appointment }) => {
       validate({
         ...newHistorial,
         [e.target.name]: e.target.value,
-      })
+      },linkSent)
     );
   };
   const handleOpenModal = () => {
@@ -109,6 +116,7 @@ const SeePatients = ({ idTurn, appointment }) => {
           icon: "success",
         });
         setLinkSent(true);
+        error.link = "";
         // aca va el dispatch para enviar el link
         axios
           .post("http://localhost:3001/sendLink", {
@@ -221,6 +229,7 @@ const SeePatients = ({ idTurn, appointment }) => {
               gap: "2vw",
             }}
           >
+            {!error.link ? (
             <TextField
               id="send-meet-link"
               label="Meet Link"
@@ -231,7 +240,27 @@ const SeePatients = ({ idTurn, appointment }) => {
               InputProps={{
                 readOnly: linkSent,
               }}
+
             ></TextField>
+            ) : (
+              <TextField
+                error
+                id="send-meet-link"
+                label="Meet Link"
+                value={meetLink}
+                onChange={(e) => setMeetLink(e.target.value)}
+                placeholder="Paste de meet link here"
+                variant="outlined"
+                helperText={error.link}
+                sx={{ width: "40%" }}
+                InputProps={{
+                  readOnly: linkSent,
+                }}
+              ></TextField>
+            )}
+
+            
+           
             <button className={style.saveButton} onClick={handleSendLink}>
               send link
             </button>
@@ -349,7 +378,9 @@ const SeePatients = ({ idTurn, appointment }) => {
               error.prescription ||
               !newHistorial.diagnosis ||
               !newHistorial.reason ||
-              !newHistorial.prescription
+              !newHistorial.prescription ||
+              !linkSent
+
             }
           >
             Save
