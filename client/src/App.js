@@ -17,7 +17,6 @@ import Register from "./components/HomeClient/Register/Register";
 import LoginMedic from "./components/LoginMedic/LoginMedic";
 import LoginAdmin from './components/LoginAdmin/LoginAdmin';
 import ResetPassword from "./components/ResetPassword/ResetPassword";
-import WaitList from "./components/Wait-List/Wait-List";
 import { Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import {
@@ -81,8 +80,8 @@ function App() {
             <Route path="/resetPassword" element={<ResetPassword/>}/>
             <Route path='*' element={<ErrorPage/>} />
             <Route path="/totalReviews" element={<Review/>} />
-            <Route path="/Wait-List" element={<WaitList/>}/>
-          
+
+
           </Routes>
           <Footer />
         </>
