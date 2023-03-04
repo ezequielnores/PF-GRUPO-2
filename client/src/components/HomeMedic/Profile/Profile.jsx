@@ -35,12 +35,23 @@ const test = {
   fontFamily: "tahoma",
   display: "block",
   textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
+  marginBottom:"5vh",
+  marginTop:"3vh"
+};
+const warning = {
+  color: "#dc2f2f",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  display: "block",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
+  
 };
 const Profile = () => {
   const dispatch = useDispatch();
   //ME TRAGIO EL DETAIL CON LA INFO DEL DOC!
   const dataDoc = useSelector((state) => state.doctor.detail);
   //Aca hago dispatch con el id que tengo en localstorage
+  const isActive = useSelector(state => state.doctor.detail.active);
   useEffect(() => {
     const doctorId = localStorage.getItem("idMedic");
     if (doctorId) {
@@ -49,6 +60,17 @@ const Profile = () => {
   }, []);
   return (
     <div style={padreDiv}>
+
+      { !isActive &&
+      <Typography   
+        fontSize="1rem"
+       
+        fontWeight="bold"
+        style={warning}>  
+          We are reviewing your information, we will activate your account as soon as possible, thank you for joining our team.
+        </Typography>
+        }
+
       <Typography
         variant="button"
         fontSize="2.5rem"

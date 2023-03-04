@@ -18,6 +18,7 @@ import {
   ProfileUpdate,
   Suscriptions,
   History,
+  ChatHome,
   TestCovid,
 } from "../index";
 import { useEffect } from "react";
@@ -28,6 +29,7 @@ import Register from "../Register/Register.jsx";
 import ErrorPage from "../../ErrorPage/ErrorPage";
 
 const Home = ({ isLogged }) => {
+  isLogged = true;
   const dispatch = useDispatch();
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -158,6 +160,7 @@ const Home = ({ isLogged }) => {
               <Reviews />
             )) ||
             (location.pathname.endsWith("/HomeClient/Faq") && <Faq />) ||
+            (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
             (location.pathname.endsWith("/HomeClient/Register") && (
               <Register />
             )) ||

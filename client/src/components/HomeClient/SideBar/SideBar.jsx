@@ -4,6 +4,7 @@ import style from "./SideBar.module.css";
 import Stack from "@mui/material/Stack";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
+import ChatIcon from '@mui/icons-material/Chat';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
@@ -73,16 +74,54 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient") ? (
-                      <HomeIcon />
+                      <div
+                        className={style.icon}
+                        style={{ background: "#307196" }}
+                      >
+                        <HomeIcon style={{ color: "white" }} />
+                      </div>
                     ) : (
-                      <HomeIcon style={{ color: "#c2c1c1" }} />
+                      <div
+                        className={style.icon}
+                        style={{ background: "#c2c1c1" }}
+                      >
+                        <HomeIcon />
+                      </div>
                     )}
-                    <p>Home</p>
+                    Home
                   </div>
                 ) : path.endsWith("/HomeClient") ? (
-                  <HomeIcon />
+                  <ChatIcon />
                 ) : (
-                  <HomeIcon style={{ color: "#c2c1c1" }} />
+                  <HomeIcon style={{ color: "grey" }} />
+                )}
+              </Link>
+            </button>
+            <button className={style.buttonBar}>
+              <Link to="/HomeClient/Chat">
+                {open ? (
+                  <div className={style.divbutton}>
+                    {path.endsWith("/HomeClient/Chat") ? (
+                      <div
+                        className={style.icon}
+                        style={{ background: "#307196" }}
+                      >
+                        <ChatIcon style={{ color: "white" }} />
+                      </div>
+                    ) : (
+                      <div
+                        className={style.icon}
+                        style={{ background: "#c2c1c1" }}
+                      >
+                        <ChatIcon />
+                      </div>
+                    )}
+                    Chat
+                  </div>
+                ) : path.endsWith("/HomeClient") ? (
+                  <ChatIcon />
+                ) : (
+                  <ChatIcon style={{ color: "grey" }} />
                 )}
               </Link>
             </button>

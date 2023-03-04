@@ -9,6 +9,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import { doc, setDoc } from "firebase/firestore";
 import { MuiTelInput } from "mui-tel-input";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,8 +23,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //Firebase
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+<<<<<<< HEAD
 import { auth, googleProvider } from "../../../authentication/firebase";
 import axios from "axios";
+=======
+import { auth, googleProvider, db } from "../../../authentication/firebase";
+>>>>>>> bd527ddb735f7101631a441041d02412297f858d
 //style
 const cardDiv = {
   display: "flex",
@@ -53,7 +58,7 @@ const divPadre = {
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "150vh",
+  height: "100%",
   backgroundColor: "#43B8C8",
 };
 const Register = () => {
@@ -215,26 +220,49 @@ const Register = () => {
     }
   };
 
-  const dispatchRegister = async () => {
+  const dispatchRegister = async (userCredential) => {
     await dispatch(
       patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
     )
-      .then((res) => {
+      .then(async (res) => {
         if (res.type === "patient/register/fulfilled") {
           // alert("Account Created");
           setAlertSeverity("success");
           setAlertMessage("Account Created. Wait to be redirected");
           setShowAlert(true);
+<<<<<<< HEAD
          
+=======
+          //create user on firestore
+          await setDoc(doc(db, "users", userCredential.user.uid), {
+            uid: userCredential.user.uid,
+            displayName: form.name + " " + form.surname,
+            email: form.mail,
+            photoURL: form.image
+              ? form.image
+              : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+          });
+
+          //create empty user chats on firestore
+          await setDoc(doc(db, "userChats", userCredential.user.uid), {});
+
+          /*           setTimeout(() => {
+            navigate("/loginClient");
+          }, 2500); */
+>>>>>>> bd527ddb735f7101631a441041d02412297f858d
         } else {
           setAlertSeverity("error");
           setAlertMessage("Error creating account!");
           setShowAlert(true);
           auth.currentUser.delete();
         }
+<<<<<<< HEAD
 
+=======
+        console.log(res);
+>>>>>>> bd527ddb735f7101631a441041d02412297f858d
       })
-      .catch((err) => alert("error"));
+      .catch((err) => alert(err));
   };
 
   const handleRegister = async () => {
@@ -245,8 +273,16 @@ const Register = () => {
           form.mail,
           form.password
         );
-        await dispatchRegister();
-        await dispatch(patientGetAll());
+        const user = userCredential.user;
+        console.log("usuario creado: " + user.email);
+        dispatchRegister(userCredential);
+        const authenticatedPatient = patients.find((patient) => {
+          return patient.mail === auth.currentUser.email;
+        });
+        const id = authenticatedPatient.id;
+        console.log(authenticatedPatient);
+        localStorage.setItem("id", id);
+        navigate("HomeClient/Profile", { state: { id } });
       } catch (error) {
         console.log({ Error: error.message });
       }
