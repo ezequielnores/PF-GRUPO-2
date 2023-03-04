@@ -71,6 +71,7 @@ const Register = () => {
     weight: "",
     height: "",
     allergies: "",
+    chronicDiseases: "",
     birthday: "03/02/1999",
     dni: "",
     location: "",
@@ -86,6 +87,7 @@ const Register = () => {
     weight: "",
     height: "",
     allergies: "",
+    chronicDiseases: "",
     birthday: "",
     dni: "",
     location: "",
@@ -135,7 +137,11 @@ const Register = () => {
         setError({ ...error, [name]: "•Only characters" });
       } else setError({ ...error, [name]: "" });
     }
-    if (name === "location" || name === "allergies") {
+    if (
+      name === "location" ||
+      name === "allergies" ||
+      name === "chronicDiseases"
+    ) {
       if (!/^[a-zA-Z,\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters and commas" });
       } else setError({ ...error, [name]: "" });
@@ -405,7 +411,15 @@ const Register = () => {
             name="allergies"
             value={form.allergies}
           />
-
+          <TextField
+            error={error.chronicDiseases}
+            helperText={error.chronicDiseases}
+            label="Chronic Diseases"
+            style={{ width: "40vh", marginBottom: "1vh" }}
+            onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+            name="chronicDiseases"
+            value={form.chronicDiseases}
+          />
           <TextField
             error={error.location}
             helperText={error.location}
