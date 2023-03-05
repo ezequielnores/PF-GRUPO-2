@@ -143,7 +143,9 @@ const MedicForm = () => {
   };
 
   const onChangeEmail = (name, value) => {
-    setForm({ ...form, [name]: value });
+    setForm((prev) => { 
+      return {  ...prev, [name]: value} 
+    });
 
     validateForm({ ...form, [name]: value }, name);
   };
@@ -197,13 +199,17 @@ const MedicForm = () => {
       }
     }
     if (name === "mail" ) {
-    const isValid = await axios.get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}&model=Patient`).then(r => r.data)
+    const isValid = await axios.get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`).then(r => r.data)
     
     if(isValid){
-      setError({...error, [name]:""})
+      setError((prev) => {
+        return {...prev, [name]:""}
+      })
     }else{
-      setError({...error, [name]:"Must enter a valid email"})
-    }}
+      setError((prev) => {
+        return {...prev, [name]:"Must enter a valid email"}
+      }
+      )}
 
     if (name === "image") {
       if (file.type !== "image/jpeg" && file.type!== "image/png") {
@@ -220,7 +226,6 @@ const MedicForm = () => {
         setError({...error, [name]: ""});
       }
     }
-
   };
   
   const handleSubmit = async (e) => {

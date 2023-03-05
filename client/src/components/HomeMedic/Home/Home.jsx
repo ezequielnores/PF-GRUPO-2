@@ -25,6 +25,7 @@ const Home = ({ isLogged }) => {
   const dataDoc = useSelector((state) => state.doctor.detail);
   // console.log(dataDoc);
 
+
   const location = useLocation();
   const [open, setOpen] = useState(true);
   const handleOpen = () => {

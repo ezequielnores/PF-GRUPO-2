@@ -1,13 +1,17 @@
 const { validate } =  require("deep-email-validator")
 const { Patient, Doctor }  = require('../db.js')
 
-const emailVerificationHandler = async ({ mail, model }) => {
+const emailVerificationHandler = async ({ mail }) => {
     
-    const userIsCreated = model === 'Patient' ? await Patient.findAll({ where: { mail: mail}  }) : await Doctor.findAll({ where: { mail: mail}  })
+    const comprobation = Promise.all([
+            Patient.findAll({ where: { mail: mail}  }),
+            Doctor.findAll({ where: { mail: mail}  }),
+            validate(mail)
+            ])
+    .then(array => array[0].length === 0 && array[1].length === 0 && array[2].valid === true)
+    .catch(error => error.message)
     
-    const { valid } = await validate(mail);
-
-    return valid && userIsCreated.length === 0;
+    return comprobation;
 }
 
 module.exports = emailVerificationHandler;

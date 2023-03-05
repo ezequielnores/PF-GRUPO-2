@@ -1,3 +1,4 @@
+import { Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -77,32 +78,57 @@ const FormFQ = ({ id, askToUpdate, answerToUpdate }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>{id ? "Update" : "Create"} FQ</h2>
-
-      <label htmlFor="">
-        Ask:{" "}
-        <input
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        marginTop: "1rem",
+      }}
+    >
+      <Typography fontSize="1.5rem" style={{ marginBottom: "0.5rem" }}>
+        {id ? "Update" : "Create"} FQ
+      </Typography>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "1rem",
+          justifyContent: "center",
+        }}
+      >
+        <TextField
+          label="Ask"
           type="text"
           name="ask"
           value={ask}
           onChange={(e) => setAsk(e.target.value)}
           placeholder={askToUpdate ? askToUpdate : "Ask"}
+          style={{ width: "35%" }}
         />
-      </label>
 
-      <label htmlFor="">
-        Answer:{" "}
-        <input
+        <TextField
+          label="Answer"
           type="text"
           name="answer"
           value={answer}
           onChange={(e) => setAnswer(e.target.value)}
           placeholder={answerToUpdate ? answerToUpdate : "Answer"}
+          style={{ width: "35%" }}
         />
-      </label>
-
-      <button type="submit">{id ? "Update" : "Create"}</button>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "1rem",
+        }}
+      >
+        <Button type="submit" variant="outlined">
+          {id ? "Update" : "Create"}
+        </Button>
+      </div>
     </form>
   );
 };

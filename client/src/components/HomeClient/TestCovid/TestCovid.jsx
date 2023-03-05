@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 //styles
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import { Alert, Card, Snackbar, Typography } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
+
 
 const test = {
   color: "#307196",
@@ -77,6 +79,8 @@ const TestCovid = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
+
+  const [result, setResult] = useState(0);
   //form
   const [form, setForm] = useState({
     breathingProblem: 0,
@@ -113,21 +117,75 @@ const TestCovid = () => {
   //   const activadorOpen = () => {
   //     setIsOpen(true);
   //   };
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     const checksVacios = Object.values(form).every((value) => value === 0);
     if (checksVacios) {
       setAlertSeverity("error");
       setAlertMessage(
-        "no se puede verificar su estado COVID si estan los campos vacios capo"
+        "You must select at least one symptom to know your risk of having COVID-19"
       );
       setShowAlert(true);
     } else {
       // dispatch(action)
+      const inputs = [
+        form.breathingProblem,
+        form.fever,
+        form.dryCough,
+        form.sorethroat,
+        form.runningNose,
+        form.asthma,
+        form.chronicLungDisease,
+        form.headache,
+        form.heartDisease,
+        form.diabetes,
+        form.hyperTension,
+        form.fatigue,
+        form.gastrointestinal,
+        form.abroadTravel,
+        form.contactWithCOVIDPatient,
+        form.attendedLargeGathering,
+        form.visitedPublicExposedPlaces,
+        form.familyWorkinginPublicExposedPlaces,
+        form.wearingMasks,
+        form.sanitizationFromMarket,
+      ];
+      const data ={
+        input: inputs
+      }
+      // console.log(inputs);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/covid`,
+        data
+      );
+      // console.log(response.data[0]);
+      setResult(response.data[0].toFixed(3)*100);
+      setForm({
+        breathingProblem: 0,
+        fever: 0,
+        dryCough: 0,
+        sorethroat: 0,
+        runningNose: 0,
+        asthma: 0,
+        chronicLungDisease: 0,
+        headache: 0,
+        heartDisease: 0,
+        diabetes: 0,
+        hyperTension: 0,
+        fatigue: 0,
+        gastrointestinal: 0,
+        abroadTravel: 0,
+        contactWithCOVIDPatient: 0,
+        attendedLargeGathering: 0,
+        visitedPublicExposedPlaces: 0,
+        familyWorkinginPublicExposedPlaces: 0,
+        wearingMasks: 0,
+        sanitizationFromMarket: 0,
+      });
       setIsOpen(true);
     }
   };
-  console.log(form);
+  // console.log(form);
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
@@ -159,13 +217,14 @@ const TestCovid = () => {
           {alertMessage}
         </Alert>
       </Snackbar>
-      {isOpen && (
+      {isOpen ? (
         <>
           <div style={overlay} onClick={() => setIsOpen(false)}></div>
           <div style={modalContainer}></div>
           <div style={modal}>
             <Typography variant="h5" style={{ marginBottom: "2rem" }}>
-              100 % COVID-19
+              {result} % COVID-19.
+              It's important to understand that an online COVID test is not a diagnosis; it's a preventative measure based on artificial intelligence. While it can be helpful in identifying potential symptoms of COVID-19, it's always recommended to contact a medical professional for a proper diagnosis. While technology can be incredibly useful, it's not a replacement for a trained medical practitioner. If you're experiencing any symptoms or are concerned about your health, it's always best to seek advice from a healthcare provider who can provide you with accurate information and guidance.
             </Typography>
             <Button
               type="button"
@@ -177,7 +236,7 @@ const TestCovid = () => {
             </Button>
           </div>
         </>
-      )}
+      ):
       <Card style={cardsin}>
         <form style={hijoCard}>
           <div style={containerCheckbox}>
@@ -397,6 +456,7 @@ const TestCovid = () => {
           Send
         </Button>
       </Card>
+      }
     </div>
   );
 };
