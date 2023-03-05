@@ -3,6 +3,7 @@ const axios = require("axios");
 const router = Router();
 const { PatientPlan, Patient, Plans } = require("../db");
 const { mercadopago } = require("../utils/mercadoPago");
+const {PASS_MAIL} = process.env;
 
 router.post("/producto", async (req, res) => {
   const prod = req.body;
@@ -120,8 +121,8 @@ const transporter = nodemailer.createTransport({
   host:'smtp.gmail.com',
   secure:true,
   auth: {
-    user: 'icarehenrypf@gmail.com',
-    pass: 'ayvcvcttlfhxxzzj'
+    user: 'icareh7@gmail.com',
+    pass: PASS_MAIL,
   }
 });
 

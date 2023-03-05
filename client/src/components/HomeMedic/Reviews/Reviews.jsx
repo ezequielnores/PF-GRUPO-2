@@ -7,12 +7,10 @@ import {
   Rating,
   Typography,
   FormControl,
-  Divider,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {commentsByDoctor} from "../../../redux/reducers/commentsReducer"
+import { commentsByDoctor } from "../../../redux/reducers/commentsReducer";
 import { useEffect } from "react";
-
 
 const root = {
   float: "right",
@@ -22,15 +20,17 @@ const root = {
   backgroundColor: "#f7f7f7",
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
 };
-
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  padding: ".25em 0 .325em",
+  display: "block",
+  margin: "0 auto",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
+};
 const header = {
   marginBottom: "2rem",
-};
-const title = {
-  fontWeight: "bold",
-  fontSize: "1.5rem",
-  marginBottom: "1",
-  color: "#307196",
 };
 const subtitle = {
   color: "secondary",
@@ -58,17 +58,14 @@ const reviewerName = {
 const reviewText = {
   marginBottom: "0.5rem",
 };
-const divider = {
-  marginBottom: "1rem",
-};
 
 const Reviews = () => {
   // const classes = useStyles();
-const reviews =useSelector(state=>state.comments.list);
-const doctorIdLocal = localStorage.getItem("idMedic");
-const dispatch = useDispatch();
-console.log(reviews)
-console.log(doctorIdLocal)
+  const reviews = useSelector((state) => state.comments.list);
+  const doctorIdLocal = localStorage.getItem("idMedic");
+  const dispatch = useDispatch();
+  console.log(reviews);
+  console.log(doctorIdLocal);
 
   const [filter, setFilter] = useState("all");
 
@@ -84,7 +81,7 @@ console.log(doctorIdLocal)
     }
   });
 
-  console.log(filteredReviews)
+  console.log(filteredReviews);
 
   useEffect(() => {
     dispatch(commentsByDoctor(doctorIdLocal));
@@ -93,7 +90,15 @@ console.log(doctorIdLocal)
   return (
     <Paper style={root}>
       <div style={header}>
-        <Typography style={title}>Patients reviews</Typography>
+        <Typography
+          variant="button"
+          fontSize="2.5rem"
+          color="#307196"
+          fontWeight="bold"
+          style={test}
+        >
+          Patients reviews
+        </Typography>
         <Typography style={subtitle}>Filter by rating:</Typography>
         <FormControl style={formControl}>
           <Select
@@ -113,21 +118,24 @@ console.log(doctorIdLocal)
       </div>
 
       {filteredReviews.length > 0 ? (
-        <div >
+        <div>
           {filteredReviews.map((review) => (
-            <Box key={review.id} style={reviewContainer} sx={{padding:2}}>
+            <Box key={review.id} style={reviewContainer} sx={{ padding: 2 }}>
               <div style={ratingContainer}>
-                <Rating name="read-only" value={review.rating} readOnly/>
+                <Rating name="read-only" value={review.rating} readOnly />
                 <Typography variant="body2" color="textSecondary">
                   {" "}
                   ({review.rating})
                 </Typography>
-                <Typography style={reviewerName} sx={{marginLeft:52}}>Review #{review.id}</Typography>
+                <Typography style={reviewerName} sx={{ marginLeft: 70 }}>
+                  Review #{review.id}
+                </Typography>
               </div>
-              
 
-              <br/>
-              <Typography style={reviewText} sx={{fontWeight:"bold"}}>{review.title}</Typography>
+              <br />
+              <Typography style={reviewText} sx={{ fontWeight: "bold" }}>
+                {review.title}
+              </Typography>
               <Typography style={reviewText}>{review.message}</Typography>
               <Typography variant="caption">
                 <i>By anonymus patient</i>

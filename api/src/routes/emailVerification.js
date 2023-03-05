@@ -1,13 +1,12 @@
 const { Router } = require('express');
-const { validate } =  require("deep-email-validator")
+const emailVerificationHandler = require('../controllers/emailVerificationController.js')
 
 const emailVerification = Router();
 
 emailVerification.get('/', async (req,res) => {
     try {
-        const{ mail } = req.query;
-        const { valid } = await validate(mail);
-        res.status(200).send(valid);
+        const response = await emailVerificationHandler(req.query)
+        res.status(200).send(response);
     } catch (error) {
         res.status(400).send(`Error: ${error.message}`);
     }

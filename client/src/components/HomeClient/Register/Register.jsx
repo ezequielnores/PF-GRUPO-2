@@ -9,6 +9,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import { doc, setDoc } from "firebase/firestore";
 import { MuiTelInput } from "mui-tel-input";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,7 +23,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //Firebase
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../../../authentication/firebase";
+import { auth, googleProvider, db } from "../../../authentication/firebase";
 //style
 const cardDiv = {
   display: "flex",
@@ -50,7 +51,7 @@ const divPadre = {
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "150vh",
+  height: "100%",
   backgroundColor: "#43B8C8",
 };
 const Register = () => {
@@ -71,6 +72,7 @@ const Register = () => {
     weight: "",
     height: "",
     allergies: "",
+    chronicDiseases: "",
     birthday: "03/02/1999",
     dni: "",
     location: "",
@@ -86,6 +88,7 @@ const Register = () => {
     weight: "",
     height: "",
     allergies: "",
+    chronicDiseases: "",
     birthday: "",
     dni: "",
     location: "",
@@ -135,7 +138,11 @@ const Register = () => {
         setError({ ...error, [name]: "•Only characters" });
       } else setError({ ...error, [name]: "" });
     }
-    if (name === "location" || name === "allergies") {
+    if (
+      name === "location" ||
+      name === "allergies" ||
+      name === "chronicDiseases"
+    ) {
       if (!/^[a-zA-Z,\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters and commas" });
       } else setError({ ...error, [name]: "" });
@@ -184,16 +191,29 @@ const Register = () => {
     }
   };
 
-  const dispatchRegister = async () => {
+  const dispatchRegister = async (userCredential) => {
     await dispatch(
       patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
     )
-      .then((res) => {
+      .then(async (res) => {
         if (res.type === "patient/register/fulfilled") {
           // alert("Account Created");
           setAlertSeverity("success");
           setAlertMessage("Account Created. Wait to be redirected");
           setShowAlert(true);
+          //create user on firestore
+          await setDoc(doc(db, "users", userCredential.user.uid), {
+            uid: userCredential.user.uid,
+            displayName: form.name + " " + form.surname,
+            email: form.mail,
+            photoURL: form.image
+              ? form.image
+              : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+          });
+
+          //create empty user chats on firestore
+          await setDoc(doc(db, "userChats", userCredential.user.uid), {});
+
           /*           setTimeout(() => {
             navigate("/loginClient");
           }, 2500); */
@@ -205,9 +225,9 @@ const Register = () => {
           setShowAlert(true);
           auth.currentUser.delete();
         }
-        console.log("Register " + res.type);
+        console.log(res);
       })
-      .catch((err) => alert("error"));
+      .catch((err) => alert(err));
   };
 
   const handleRegister = async () => {
@@ -218,8 +238,16 @@ const Register = () => {
           form.mail,
           form.password
         );
-        await dispatchRegister();
-        await dispatch(patientGetAll());
+        const user = userCredential.user;
+        console.log("usuario creado: " + user.email);
+        dispatchRegister(userCredential);
+        const authenticatedPatient = patients.find((patient) => {
+          return patient.mail === auth.currentUser.email;
+        });
+        const id = authenticatedPatient.id;
+        console.log(authenticatedPatient);
+        localStorage.setItem("id", id);
+        navigate("HomeClient/Profile", { state: { id } });
       } catch (error) {
         console.log({ Error: error.message });
       }
@@ -405,7 +433,15 @@ const Register = () => {
             name="allergies"
             value={form.allergies}
           />
-
+          <TextField
+            error={error.chronicDiseases}
+            helperText={error.chronicDiseases}
+            label="Chronic Diseases"
+            style={{ width: "40vh", marginBottom: "1vh" }}
+            onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+            name="chronicDiseases"
+            value={form.chronicDiseases}
+          />
           <TextField
             error={error.location}
             helperText={error.location}
