@@ -7,6 +7,14 @@ import { red } from "@mui/material/colors";
 import { swal } from 'sweetalert';
 import { auth } from './../../authentication/firebase';
 
+
+const validateInputs = (password, confirmPassword) => {
+  const currentErrors = {};
+  if (password.length < 8) currentErrors.password = "Must have a minimum of 8 characters";
+  if (confirmPassword !== password) currentErrors.confirmPassword = "The passwords are different";
+  return currentErrors;
+}
+
 function ResetPassword() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,15 +31,10 @@ function ResetPassword() {
     } else {
       setConfirmPassword(value);
     };
-    validateInputs();
+    setErrors(validateInputs(password, confirmPassword));
   };
 
-  const validateInputs = () => {
-    const currentErrors = {};
-    if (password.length < 8) currentErrors.password = "Must have a minimum of 8 characters";
-    if (confirmPassword !== password) currentErrors.confirmPassword = "The passwords are different";
-    setErrors(currentErrors);
-  }
+  validateInputs()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
