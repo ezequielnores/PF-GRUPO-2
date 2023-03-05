@@ -20,15 +20,15 @@ import ResetPassword from "./components/ResetPassword/ResetPassword";
 import { Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import {
-  Chat,
   HomeClient,
+  /* Chat,
   MedicalHistory,
   MedicalAppointments,
   MyShifts,
   Profile,
   Reviews,
   Urgency,
-  HomeView,
+  HomeView, */
 } from "./components/HomeClient/index";
 import { HomeMedic } from "./components/HomeMedic/index";
 import HomeAdmin from "./components/DashboardAdmin/Home";
@@ -40,8 +40,6 @@ import { onAuthStateChanged } from "firebase/auth";
 function App() {
   const location = useLocation();
 
-
-
   const[isLogged, setIsLogged] = React.useState(false);
     
   onAuthStateChanged(auth, (user) => {
@@ -51,7 +49,6 @@ function App() {
       if(isLogged === true) setIsLogged(prev => false);
     }
   })
-
 
   return (
     <div className="App">
@@ -82,8 +79,8 @@ function App() {
             <Route path="/loginAdmin" element={<LoginAdmin />}/>
             <Route path="/resetPassword" element={<ResetPassword/>}/>
             <Route path='*' element={<ErrorPage/>} />
-
             <Route path="/totalReviews" element={<Review/>} />
+
 
           </Routes>
           <Footer />

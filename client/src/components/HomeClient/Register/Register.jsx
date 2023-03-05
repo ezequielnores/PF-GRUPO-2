@@ -23,6 +23,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //Firebase
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import axios from "axios";
 import { auth, googleProvider, db } from "../../../authentication/firebase";
 //style
 const cardDiv = {
@@ -31,6 +32,8 @@ const cardDiv = {
   width: "30rem",
   height: "82rem",
   justifyContent: "space-around",
+  marginTop:"10vw",
+  marginBottom:"10vw",
   padding: "2rem",
   boxShadow:
     "-10px 10px 0px #307196,-20px 20px 0px rgba(48, 113, 150, 0.7),-30px 30px 0px rgba(48, 113, 150, 0.4),-40px 40px 0px rgba(48, 113, 150, 0.1)",
@@ -81,6 +84,22 @@ const Register = () => {
     password: "",
   });
 
+
+  const disableButtonHandler = () => {
+    if(form.name === "" || form.surname === "" || form.phone === "" || form.weight === "" || form.height === "" 
+     || form.allergies === "" || form.birthday === "" || form.dni === "" || form.location === "" 
+     || form.image === ""|| form.image === null || form.mail === "" || form.password === ""  ){
+       return true;
+    }
+
+    if(error.name !== "" || error.surname !== "" || error.phone !== "" || error.weight !== "" 
+    || error.height !== "" || error.allergies !== "" || error.birthday !== "" || error.dni !== "" 
+    || error.name !== "" || error.location !== "" || error.image !== "" || error.mail !== ""  || error.location !== "" || error.password !== ""){
+      return true;
+    }
+    return false;
+  }
+
   const [error, setError] = React.useState({
     name: "",
     surname: "",
@@ -111,12 +130,13 @@ const Register = () => {
 
   const onChangeHandler = (name, value) => {
     setForm({ ...form, [name]: value });
-
     validateForm({ ...form, [name]: value }, name);
   };
 
   const onChangeEmail = (name, value) => {
-    setForm({ ...form, [name]: value });
+    setForm(prev => {
+      return { ...prev, [name]: value } 
+    });
 
     validateForm({ ...form, [name]: value }, name);
   };
@@ -132,7 +152,7 @@ const Register = () => {
     validateForm({ ...form, [name]: form }, name);
   };
 
-  const validateForm = (form, name) => {
+  const validateForm = async (form, name) => {
     if (name === "name" || name === "surname") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -181,13 +201,18 @@ const Register = () => {
       }
     }
     if (name === "mail") {
-      if (
-        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
-          form[name] || form[name] !== ""
-        )
-      ) {
-        setError({ ...error, [name]: "•Musst be a valid email" });
-      } else setError({ ...error, [name]: "" });
+      const isValid = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/emailVerification?mail=${form.mail}`)
+      .then(response => response.data );
+
+      if(isValid === true){
+        setError(prev => { 
+          return { ...prev, [name]: "" }
+        });
+      } else{
+        setError((prev) => {
+          return { ...prev, [name]: "Invalid email, it is already in use, or it does not exist, enter another one please" } 
+        });
+      };
     }
   };
 
@@ -218,8 +243,6 @@ const Register = () => {
             navigate("/loginClient");
           }, 2500); */
         } else {
-          console.log({ ...form, phone: 12345, mail: auth.currentUser.email });
-          // alert("Error creating account!");
           setAlertSeverity("error");
           setAlertMessage("Error creating account!");
           setShowAlert(true);
@@ -294,7 +317,6 @@ const Register = () => {
   };
 
   useEffect(() => {
-    console.log("Dispatch");
     fillPatient();
   }, [dispatch, patients]);
 
@@ -339,7 +361,7 @@ const Register = () => {
             name="phone"
             value={form.phone}
             defaultCountry={"AR"}
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(value) => onChangeHandler("phone", value)}
             error={error.phone}
             helperText={error.phone}
@@ -348,7 +370,7 @@ const Register = () => {
           <TextField
             error={error.name}
             label="Name*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="name"
             value={form.name}
@@ -358,7 +380,7 @@ const Register = () => {
           <TextField
             error={error.surname}
             label="Surname*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="surname"
             value={form.surname}
@@ -369,7 +391,7 @@ const Register = () => {
             error={error.dni}
             helperText={error.dni}
             label="DNI*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="dni"
             value={form.dni}
@@ -388,7 +410,7 @@ const Register = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  style={{ width: "40vh", marginBottom: "0.9rem" }}
+                  style={{ width: "50vh", marginBottom: "0.9rem" }}
                 />
               )}
             />
@@ -398,7 +420,7 @@ const Register = () => {
             error={error.weight}
             helperText={error.weight}
             label="Weight*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="weight"
             value={form.weight}
@@ -411,7 +433,7 @@ const Register = () => {
 
           <TextField
             label="Height*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="height"
             value={form.height}
@@ -421,14 +443,13 @@ const Register = () => {
               endAdornment: (
                 <InputAdornment position="start">cm</InputAdornment>
               ),
-            }}
-          />
+            }}/>
 
           <TextField
             error={error.allergies}
             helperText={error.allergies}
             label="Allergies"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="allergies"
             value={form.allergies}
@@ -446,7 +467,7 @@ const Register = () => {
             error={error.location}
             helperText={error.location}
             label="Location*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="location"
             value={form.location}
@@ -457,16 +478,17 @@ const Register = () => {
             label="Image"
             style={
               form.image
-                ? { width: "40vh", marginBottom: "1vh" }
-                : { width: "40vh", label: { paddingLeft: "5vw" } }
+                ? { width: "50vh", marginBottom: "1vh" }
+                : { width: "50vh", label: { paddingLeft: "5vw" } }
             }
             onChange={handleImage}
             name="image"
             value={imageInputValue ? imageInputValue : ""}
             type="file"
+            accept="image/png, image/jpeg"
             InputProps={
               !form.image
-                ? { inputProps: { style: { paddingLeft: "4vw" } } }
+                ? { inputProps: { style: { paddingLeft: "5vw" } } }
                 : {
                     endAdornment: (
                       <InputAdornment position="end">
@@ -487,16 +509,16 @@ const Register = () => {
                   }
             }
           />
-          <Typography
+          {/* <Typography
             variant="h6"
             style={{ marginTop: "3vh", alignSelf: "start" }}
           >
             User Account
-          </Typography>
+          </Typography> */}
           <TextField
             error={error.mail}
             label="Email*"
-            style={{ width: "40vh", marginBottom: "1vh", marginTop: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh", marginTop: "1vh" }}
             onChange={(e) => onChangeEmail(e.target.name, e.target.value)}
             name="mail"
             value={form.mail}
@@ -505,7 +527,7 @@ const Register = () => {
           <TextField
             error={error.password}
             label="Password*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangePassword(e.target.name, e.target.value)}
             name="password"
             value={form.password}
@@ -514,18 +536,21 @@ const Register = () => {
           />
 
           <Button
+            disabled={disableButtonHandler()}
             onClick={handleRegister}
             style={{
+              width:"50vh",
               border: "1px solid",
               marginTop: "0.5rem",
             }}
           >
             Register
           </Button>
-          <Typography style={{ marginTop: "2vh" }}>or</Typography>
+          <Typography style={{ marginTop: "2vh" }}>OR</Typography>
           <Button
             onClick={handleRegisterwithGoogle}
             style={{
+              width:"50vh",
               border: "1px solid",
               marginTop: "0.5rem",
             }}

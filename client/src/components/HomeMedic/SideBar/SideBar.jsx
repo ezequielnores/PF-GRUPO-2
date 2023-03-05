@@ -12,6 +12,7 @@ import swal from "sweetalert";
 //Firebase
 import { signOut } from "firebase/auth";
 import { auth } from "../../../authentication/firebase";
+import { useSelector } from "react-redux";
 
 const SideBar = ({ open, handleOpen, path }) => {
   //delete id de localstorage, deslogeo
@@ -31,6 +32,9 @@ const SideBar = ({ open, handleOpen, path }) => {
       }
     });
   };
+
+  const isActive = useSelector(state => state.doctor.detail.active);
+
   return (
     <div>
       <div
@@ -63,8 +67,9 @@ const SideBar = ({ open, handleOpen, path }) => {
               textAlign: "center",
             }}
           >
+            
             <button style={{ border: "none", backgroundColor: "transparent" }}>
-              <Link to="/HomeMedic/Profile">
+              <Link to="/HomeMedic/Profile" >
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeMedic/Profile") ? (
@@ -81,6 +86,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
+            { isActive &&
             <button style={{ border: "none", backgroundColor: "transparent" }}>
               <Link to="/HomeMedic/Agenda">
                 {open ? (
@@ -99,6 +105,9 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
+            }
+
+            { isActive && 
             <button style={{ border: "none", backgroundColor: "transparent" }}>
               <Link to="/HomeMedic/MedicalEmergency">
                 {open ? (
@@ -117,6 +126,8 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
+            }
+            { isActive && 
             <button style={{ border: "none", backgroundColor: "transparent" }}>
               <Link to="/HomeMedic/Reviews">
                 {open ? (
@@ -135,6 +146,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
+            } 
           </Stack>
           <button
             style={{
