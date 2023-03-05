@@ -54,17 +54,17 @@ const GraficIMC = () => {
   const patientDetail = useSelector((state) => state.patient.detail);
 
   const peso = patientDetail?.weight;
-  console.log(peso);
+
   const altura = patientDetail?.height;
-  console.log(altura);
+
   const altura2 = altura / 100;
-  console.log(altura2);
+
   const IMC = peso / Math.pow(altura2, 2);
 
   console.log(IMC);
 
   const data = [
-    { name: "IMC", YourIMC: IMC, Low: 18, normal: 23, High: 28, Obesity: 35 },
+    { name: "IMC", YourIMC: IMC, Low: 18, normall: 22, High: 28, Obesity: 35 },
   ];
 
   return (
@@ -89,6 +89,7 @@ const GraficIMC = () => {
         <Bar dataKey="High" fill="#F0B27A" />
         <Bar dataKey="Obesity" fill="#F1948A" />
       </BarChart>
+      
     </div>
   );
 };

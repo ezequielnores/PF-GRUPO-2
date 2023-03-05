@@ -51,5 +51,5 @@ module.exports = {
   getPatientInactive,
   getPatientByMail,
   setMakeDisableAdmin,
-  changePassword
+  changePassword,
 };

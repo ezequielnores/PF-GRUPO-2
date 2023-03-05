@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
+import swal from "sweetalert"
 import { useDispatch, useSelector } from "react-redux";
 import { docrtorGetAll } from "../../../redux/reducers/doctorReducer";
 import {
@@ -60,6 +61,8 @@ const MedicalAppointments = () => {
   const [type, setSelectedType] = useState("");
   const [ubication, setUbication] = useState("");
   const [modalReserved, setModalReserved] = useState(false);
+  const patientDetail = useSelector((state) => state.patient.detail);
+  
 
   const availability = true;
   const attended = false;
@@ -111,7 +114,7 @@ const MedicalAppointments = () => {
       min: 6,
       max: 18,
     },
-    minutes: { step: 60 },
+    minutes: { step: 30 },
     seconds: { step: 60 },
   };
 
@@ -119,6 +122,11 @@ const MedicalAppointments = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!patientDetail.plan) {
+      await swal("Sorry, you must purchase a plan to book an appointment.");
+      return;
+    }
 
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}/turns/turnByDateAndHourAndDoctor`,
