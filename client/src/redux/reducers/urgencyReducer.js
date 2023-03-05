@@ -17,7 +17,15 @@ export const urgencyGetAll = createAsyncThunk("urgency/getAll", async () => {
   );
   return response.data;
 });
-
+export const urgencyGetAllNotAttended = createAsyncThunk(
+  "urgency/getAllNotAttended",
+  async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/urgency/notAttended`
+    );
+    return response.data;
+  }
+);
 export const urgencyCreate = createAsyncThunk(
   "urgency/create",
   async (data) => {
@@ -70,6 +78,17 @@ const appointmentSlice = createSlice({
         state.listAll = action.payload;
       })
       .addCase(urgencyGetAll.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(urgencyGetAllNotAttended.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(urgencyGetAllNotAttended.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(urgencyGetAllNotAttended.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })

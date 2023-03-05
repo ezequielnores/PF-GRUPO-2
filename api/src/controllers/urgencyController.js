@@ -21,12 +21,13 @@ const getUrgencies = async () => {
   return response;
 };
 
-const getNotAttendedUrgencies = async (patientId) => {
+const getNotAttendedUrgencies = async () => {
   const response = await Urgency.findAll({
-    attributes: ["id", "symptomatology", "attended", "PatientId"],
+    attributes: ["id", "symptomatology", "attended"],
     include: {
       model: Patient,
       attributes: [
+        "id",
         "name",
         "surname",
         "weight",
@@ -34,10 +35,10 @@ const getNotAttendedUrgencies = async (patientId) => {
         "bmi",
         "allergies",
         "chronicDiseases",
-        "createdAt",
+        // "createdAt",
       ],
     },
-    where: { PatientId: patientId },
+    // where: { PatientId: patientId },
   });
   const filterResponse = response.filter((urgency) => {
     return urgency.dataValues.attended === false;
