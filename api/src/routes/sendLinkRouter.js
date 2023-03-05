@@ -2,6 +2,7 @@ const { Router } = require("express");
 const axios = require("axios");
 const router = Router();
 const nodemailer = require('nodemailer');
+const {PASS_MAIL} = process.env;
 
 router.post("/", async (req,res)=>{
 
@@ -14,7 +15,7 @@ console.log(link)
         secure:true,
         auth: {
           user: 'icareh7@gmail.com',
-          pass: 'xftqhjpgblkmnfno'
+          pass: PASS_MAIL,
         }
       });
       

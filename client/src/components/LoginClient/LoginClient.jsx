@@ -140,7 +140,12 @@ const FormLoginClient = () => {
   //FIRST RENDER
   useEffect(() => {
     const id = localStorage.getItem("id");
+
+    if (id) {
+      // navigate("/HomeClient/Profile");
+    } else {
       dispatch(patientGetAll());
+    }
   }, []);
 
   return (
