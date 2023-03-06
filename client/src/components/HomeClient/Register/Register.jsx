@@ -68,6 +68,7 @@ const Register = () => {
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
   const [imageInputValue, setImageInputValue] = useState("");
+ 
   const [form, setForm] = React.useState({
     name: "",
     surname: "",
@@ -82,9 +83,13 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
+    bmi:""
+    
   });
 
 
+
+  
   const disableButtonHandler = () => {
     if(form.name === "" || form.surname === "" || form.phone === "" || form.weight === "" || form.height === "" 
      || form.allergies === "" || form.birthday === "" || form.dni === "" || form.location === "" 
@@ -114,6 +119,7 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
+    
   });
 
   const handleImage = (e) => {
@@ -218,7 +224,7 @@ const Register = () => {
 
   const dispatchRegister = async (userCredential) => {
     await dispatch(
-      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
+      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email, bmi:Math.floor(form?.weight/Math.pow((form?.height/100), 2)) })
     )
       .then(async (res) => {
         if (res.type === "patient/register/fulfilled") {
