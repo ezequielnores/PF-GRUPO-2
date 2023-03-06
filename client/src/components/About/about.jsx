@@ -22,7 +22,7 @@ const containerCards = {
   alignItems: "center",
 };
 const divContainer = {
-  height: "100%",
+  height: "75%",
   width: "100%",
   display: "flex",
   alignItems: "center",
@@ -85,14 +85,14 @@ const about = () => {
               style={{ padding: "10px", fontWeight: "semibold" }}
               align="justify"
               variant="body1"
-              color="text.secondary"
-            >
+              color="text.secondary">
               At our digital healthcare team, we are committed to improving
               people's health from the comfort of their home. Our virtual care
               service offers medical consultations through video calls and
               specialized appointments, allowing our patients to access
               high-quality medical care without having to leave home.{" "}
             </Typography>
+
             <Typography
               style={{ padding: "10px", fontWeight: "semibold" }}
               align="justify"
@@ -112,6 +112,7 @@ const about = () => {
               width: "30rem",
               height: "11rem",
               backgroundColor: "#eeeeee",
+              
             }}
           >
             <div style={{ width: "100%" }}>

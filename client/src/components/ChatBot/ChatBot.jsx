@@ -1,6 +1,7 @@
 import React from "react";
 import ChatBot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
+import LinkReview from "./LinkReview";
 
 const ContenidoChat = () => {
   const config = {
@@ -51,13 +52,17 @@ const ContenidoChat = () => {
             options: [
               { value: "site", label: "About the site", trigger: "site-1" },
               { value: "plans", label: "Types of plans", trigger: "plan-1" },
-              {
-                value: "join",
-                label: "How get the service",
-                trigger: "join-1",
-              },
+              {value: "join",label: "How get the service",trigger: "join-1",},
               { value: "contact", label: "Contact", trigger: "contact-1" },
+              { value: "reviews", label: "What do patients think of our specialists?", trigger: "review-1" },
             ],
+          },
+          {
+            id: "review-1",
+            component: <LinkReview />,
+            asMessage: true,
+            trigger: "back",
+            action: () => ({ goTo: "back" }),
           },
           {
             id: "site-1",

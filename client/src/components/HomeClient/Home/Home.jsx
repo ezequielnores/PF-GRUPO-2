@@ -18,6 +18,8 @@ import {
   ProfileUpdate,
   Suscriptions,
   History,
+  ChatHome,
+  TestCovid,
 } from "../index";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +29,7 @@ import Register from "../Register/Register.jsx";
 import ErrorPage from "../../ErrorPage/ErrorPage";
 
 const Home = ({ isLogged }) => {
+  isLogged = true;
   const dispatch = useDispatch();
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -41,120 +44,141 @@ const Home = ({ isLogged }) => {
     setOpen(!open);
   };
 
-  if(isLogged === true){
+  if (isLogged === true) {
     return (
       <div style={{ position: "relative" }}>
-        <div
+        {/* <div
           style={{
             width: "100vw",
             position: "absolute",
             display: "flex",
             justifyContent: "space-between",
           }}
-        >
-          <div
+        > */}
+        {/* <div
             style={{
               width: open ? "15vw" : "10vw",
               display: "flex",
               justifyContent: "center",
             }}
-          >
-            <img
-              style={{ width: "4.3vw", marginTop: "0.3vw" }}
-              src={logoICare}
-              alt=""
-            />
-          </div>
-          <Stack
+          > */}
+        <img
+          style={{
+            width: "4.3vw",
+            position: "absolute",
+            top: "0.5rem",
+            left: "4.3rem",
+          }}
+          src={logoICare}
+          alt=""
+        />
+        {/* </div> */}
+        <Stack
+          style={{
+            position: "absolute",
+            top: "0",
+            right: "0",
+            height: "5rem",
+            width: "85vw",
+            background: "#43B8C8",
+            display: "flex",
+            justifyContent: "flex-end",
+            padding: "1rem 2rem",
+            boxSizing: "border-box",
+          }}
+          direction="row"
+          spacing={2}
+        >
+          <div
             style={{
-              height: "5rem",
-              width: open ? "85vw" : "90vw",
-              background: "rgba(64, 184,200)",
               display: "flex",
-              justifyContent: "flex-end",
-              padding: "1rem 2rem",
-              boxSizing: "border-box",
+              flexDirection: "column",
+              alignItems: "flex-end",
             }}
-            direction="row"
-            spacing={2}
           >
-            <div
+            <p
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-end",
+                margin: "0",
+                fontWeight: "bolder",
+                fontSize: "1.1rem",
               }}
             >
-              <p
-                style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem" }}
-              >
-                {patient?.name + " " + patient?.surname}
-              </p>
-              <p
-                style={{
-                  margin: "0",
-                  fontSize: "0.9rem",
-                  fontWeight: "500",
-                  color: "gray",
-                }}
-              >
-                {patient?.PatientPlan?.name
-                  ? patient?.PatientPlan?.name
-                  : "Without plan"}
-              </p>
-            </div>
+              {patient?.name + " " + patient?.surname}
+            </p>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "1rem",
+                fontWeight: "500",
+                color: "#2d4059",
+              }}
+            >
+              {patient?.PatientPlan?.name
+                ? patient?.PatientPlan?.name
+                : "Without plan"}
+            </p>
+          </div>
 
-            <Avatar sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}>
-              <img
-                src={patient?.photo}
-                alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
-              />
-            </Avatar>
-          </Stack>
-        </div>
+          <Avatar sx={{ bgcolor: deepOrange[500], width: 55, height: 55 }}>
+            <img
+              src={patient?.photo}
+              alt={patient?.name?.charAt(0) + patient?.surname?.charAt(0)}
+            />
+          </Avatar>
+        </Stack>
+        {/* </div> */}
         <SideBar open={open} handleOpen={handleOpen} path={location.pathname} />
 
-      <div style={{
-          position: "absolute",
-          top: "6rem",
-          width: open ? "85vw" : "95vw",
-          right: "0",
-        }}>
-        
-        
-        {(
-            location.pathname.endsWith("/HomeClient") && <HomeView /> 
-            ||
-            location.pathname.endsWith("/HomeClient/Profile") && <Profile />
-            ||
-            location.pathname.endsWith("/HomeClient/Profile/Edit") && (<ProfileUpdate /> )
-            ||
-            location.pathname.endsWith("/HomeClient/MyAppointments") && ( <MyAppointments /> )
-            ||
-            location.pathname.endsWith("/HomeClient/Urgency") && <Urgency />
-            ||
-            location.pathname.endsWith("/HomeClient/MedicalAppointments") && ( <MedicalAppointments /> )
-            ||
-            location.pathname.endsWith("/HomeClient/MedicalHistory") && (  <MedicalHistory /> )
-            ||
-            location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />
-            ||
-            location.pathname.endsWith("/HomeClient/Faq") && <Faq />
-            ||
-            location.pathname.endsWith("/HomeClient/Register") && <Register />
-            ||
-            location.pathname.endsWith("/HomeClient/Suscriptions") && ( <Suscriptions /> )
-            ||
-            location.pathname.endsWith("/HomeClient/Suscriptions/history") && (<History />)
-        )   || <ErrorPage />
-        }
-
+        <div
+          style={{
+            position: "absolute",
+            top: "6rem",
+            width: "85vw",
+            right: "0",
+          }}
+        >
+          {(location.pathname.endsWith("/HomeClient") && <HomeView />) ||
+            (location.pathname.endsWith("/HomeClient/Profile") && (
+              <Profile />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Profile/Edit") && (
+              <ProfileUpdate />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/MyAppointments") && (
+              <MyAppointments />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Urgency") && (
+              <Urgency />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/MedicalAppointments") && (
+              <MedicalAppointments />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/MedicalHistory") && (
+              <MedicalHistory />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Reviews") && (
+              <Reviews />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Faq") && <Faq />) ||
+            (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
+            (location.pathname.endsWith("/HomeClient/Register") && (
+              <Register />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Suscriptions") && (
+              <Suscriptions />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/TestCovid") && (
+              <TestCovid />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Suscriptions/history") && (
+              <History />
+            )) || <ErrorPage />}
         </div>
       </div>
     );
   }
-  if(isLogged === false){
-    return <Navigate to="/loginClient"/>
+  if (isLogged === false) {
+    return <Navigate to="/loginClient" />;
   }
 };
 export default Home;

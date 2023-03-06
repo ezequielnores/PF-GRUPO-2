@@ -44,10 +44,9 @@ export const getAllFrequentQuestions = createAsyncThunk(
 
 export const updateFrequentAskById = createAsyncThunk(
   "frequentQuestions/update",
-  async (id, data) => {
+  async ({ id, ask, answer }) => {
     const response = await axios.put(
-      `${process.env.REACT_APP_BACKEND_URL}/frequentQuestions/update/${id}`,
-      data
+      `${process.env.REACT_APP_BACKEND_URL}/frequentQuestions/update/${id}?ask=${ask}&answer=${answer}`
     );
     return response.data;
   }
