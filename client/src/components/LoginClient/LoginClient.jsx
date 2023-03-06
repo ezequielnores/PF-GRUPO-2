@@ -133,12 +133,14 @@ const FormLoginClient = () => {
       }
     } catch (error) {
       console.log(error.message);
+      alert(`Error: ${error.message}`);
     }
   };
 
   //FIRST RENDER
   useEffect(() => {
     const id = localStorage.getItem("id");
+
     if (id) {
       // navigate("/HomeClient/Profile");
     } else {

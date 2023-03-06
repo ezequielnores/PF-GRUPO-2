@@ -20,15 +20,15 @@ import ResetPassword from "./components/ResetPassword/ResetPassword";
 import { Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import {
-  Chat,
   HomeClient,
+  /* Chat,
   MedicalHistory,
   MedicalAppointments,
   MyShifts,
   Profile,
   Reviews,
   Urgency,
-  HomeView,
+  HomeView, */
 } from "./components/HomeClient/index";
 import { HomeMedic } from "./components/HomeMedic/index";
 import HomeAdmin from "./components/DashboardAdmin/Home";

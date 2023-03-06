@@ -1,6 +1,7 @@
-import { confirmPasswordReset } from "firebase/auth";
-
 import React, { useState } from "react";
+
+import {confirmPasswordReset} from "firebase/auth"
+
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Button,
