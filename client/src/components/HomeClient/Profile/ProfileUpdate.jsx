@@ -124,6 +124,7 @@ const ProfileEdit = () => {
     reader.onloadend = () => {
       setInfoNueva({...infoNueva, [name]: reader.result});
       setHasChanged(true);
+      validateFields({...infoNueva}, name, file);
     };
   }
 
@@ -142,7 +143,7 @@ const ProfileEdit = () => {
     }
   };
 
-  const validateFields = (form, name) => {
+  const validateFields = (form, name, file) => {
     if (name === "name" || name === "lastName") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -179,6 +180,14 @@ const ProfileEdit = () => {
       ) {
         setError({ ...error, [name]: "•Musst be a valid email" });
       } else setError({ ...error, [name]: "" });
+    }
+
+    if (name === "photo") {
+      if (file.type !== "image/jpeg" && file.type!== "image/png") {
+        setError({...error, [name]: "The image must be a jpeg or png file"});
+      } else {
+        setError({...error, [name]: ""});
+      }
     }
   };
 
@@ -274,6 +283,8 @@ const ProfileEdit = () => {
           name="photo"
           value={imageInputValue ? imageInputValue : ""}
           type="file"
+          error={error.photo}
+          helperText={error.photo}
           InputProps={
             !infoNueva.photo
               ? { inputProps: { style: { paddingLeft: "5vw" } } }
