@@ -113,6 +113,23 @@ router.put("/edit/:id", async (req, res) => {
   }
 });
 
+router.put("/disable/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const admin = await Admin.findByPk(id);
+    if (!admin) res.status(404).send("Admin not found");
+      if(admin.active === true) {
+        admin.update({ active: false }, { where: { id: id } });
+        res.status(200).send("Admin disable successfully");
+      } else {
+        admin.update({ active: true }, { where: { id: id } });
+        res.status(200).send("Admin active successfully");
+      }
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+});
+
 router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -120,7 +137,7 @@ router.delete("/delete/:id", async (req, res) => {
     if (!adminDelete) {
       res.status(404).send("Admin not found");
     } else {
-      adminDelete.update({ active: false }, { where: { id: id } });
+      adminDelete.destroy({ where: { id: id } });
       res.status(200).send("Admin delete successfully");
     }
   } catch (error) {

@@ -33,14 +33,14 @@ export const adminRegister = createAsyncThunk(
       .catch((err) => {
         throw new Error("Failed");
       });
-    console.log(response);
+    // console.log(response);
     return response.data;
   }
 );
 
 export const adminGetAll = createAsyncThunk("admin/getAll", async () => {
   const response = await axios.get(
-    `${process.env.REACT_APP_BACKEND_URL}/admins/`
+    `${process.env.REACT_APP_BACKEND_URL}/admins`
   );
   return response.data;
 });
@@ -56,10 +56,18 @@ export const adminUpdate = createAsyncThunk(
   }
 );
 
+export const deleteAdmin = createAsyncThunk("admins/deleteById", async (id) => {
+  const response = await axios.delete(
+    `${process.env.REACT_APP_BACKEND_URL}/admins/delete/${id}`
+  );
+  return response.data;
+});
+
 const adminSlice = createSlice({
   name: "admin",
   initialState: {
     detail: {},
+    listAll: [],
     list: [],
     status: "idle",
     error: null,
@@ -79,17 +87,16 @@ const adminSlice = createSlice({
         state.state = "failed";
         state.detail = action.payload;
       })
-      .addCase(
-        adminGetAll.pending,
-        (state, action) => (state.status = "loading")
-      )
-      .addCase(adminGetAll, (state, action) => {
+      .addCase(adminGetAll.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(adminGetAll.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.list = action.payload;
+        state.listAll = action.payload;
       })
       .addCase(adminGetAll.rejected, (state, action) => {
         state.status = "failed";
-        state.list = action.payload;
+        state.error = action.payload;
       })
       .addCase(
         adminLogin.pending,
@@ -100,6 +107,17 @@ const adminSlice = createSlice({
         state.loggedIn = action.payload;
       })
       .addCase(adminLogin.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(deleteAdmin.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteAdmin.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.detail = action.payload;
+      })
+      .addCase(deleteAdmin.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
