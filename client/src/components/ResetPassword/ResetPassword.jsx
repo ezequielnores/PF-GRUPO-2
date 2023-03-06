@@ -1,6 +1,7 @@
+import React, { useState } from "react";
+
 import {confirmPasswordReset} from "firebase/auth"
 
-import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button, Container, FormGroup, TextField, Typography } from '@mui/material';
 import { red } from "@mui/material/colors";
