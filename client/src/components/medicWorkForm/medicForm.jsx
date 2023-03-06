@@ -210,6 +210,7 @@ const MedicForm = () => {
         return {...prev, [name]:"Must enter a valid email"}
       }
       )}
+    }
 
     if (name === "image") {
       if (file.type !== "image/jpeg" && file.type!== "image/png") {
