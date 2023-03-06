@@ -1,3 +1,4 @@
+import { Button, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -29,16 +30,14 @@ import ListFQ from "./ListFQ";
 //     outline: none;
 //   }
 
-//   button {
-//     padding: 0.5rem 1rem;
-//     margin-right: 1rem;
-//     border: none;
-//     border-radius: 0.25rem;
-//     background-color: #0077b6;
-//     color: white;
-//     font-size: 1.2rem;
-//     cursor: pointer;
-//   }
+// const buttonsin = {
+//   border: "none",
+//   borderRadius: "0.25rem",
+//   backgroundColor: "#0077b6",
+//   color: "white",
+//   // fontSize: "1.2rem",
+//   cursor: "pointer",
+// };
 
 //   p {
 //     margin: 0.5rem 0;
@@ -114,16 +113,21 @@ const ManageFQ = (props) => {
 
   return (
     <div>
-      <label htmlFor="">
-        Find FQ:{" "}
-        <input
-          type="text"
-          name="ask"
-          value={ask}
-          onChange={(e) => setAsk(e.target.value)}
-        />
-      </label>
-      <button onClick={findFQ}>FIND</button>
+      <TextField
+        size="small"
+        label="Find FQ"
+        type="text"
+        name="ask"
+        value={ask}
+        onChange={(e) => setAsk(e.target.value)}
+      />
+      <Button
+        onClick={findFQ}
+        variant="contained"
+        style={{ marginLeft: "1rem" }}
+      >
+        FIND
+      </Button>
       {frequentAsk && (
         <div>
           <p>Ask: {frequentAsk?.ask}</p>

@@ -185,66 +185,103 @@ router.post("/", async (req, res) => {
   }
 });
 
+
+
+
+// router.put("/edit/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const {
+//       name,
+//       surname,
+//       mail,
+//       password,
+//       birthday,
+//       weight,
+//       height,
+//       bmi,
+//       allergies,
+//       chronicDiseases,
+//       photo,
+//       location,
+//       dni,
+//       phone,
+//       socialSecurity,
+//       active,
+      
+//     } = req.body;
+
+//     if (id) {
+//       if (name) {
+//         const findPatient = await Patient.findByPk(id);
+//         if (photo)
+//         var uploadedResponse = await cloudinary.uploader.upload(photo, {
+//           upload_preset: "iCare_Henry",
+//         });
+//         await findPatient.update(
+//           {
+//             name,
+//             surname,
+//             mail,
+//             password,
+//             birthday,
+//             weight,
+//             height,
+//             bmi,
+//             allergies,
+//             chronicDiseases,
+//             photo: uploadedResponse ? uploadedResponse.url : null,
+//             location,
+//             dni,
+//             phone,
+//             socialSecurity,
+//             active,         
+//           },
+//           { where: { id: id } }
+//         );
+
+//         res.status(200).send("Patient modified successfully");
+//       } else {
+//         res.status(400).send("Missing data to modify patient");
+//       }
+//     }
+//   } catch (error) {
+//     console.log("Error del put", error);
+//   }
+// });
+
 router.put("/edit/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      name,
-      surname,
-      mail,
-      password,
-      birthday,
-      weight,
-      height,
-      bmi,
-      allergies,
-      chronicDiseases,
-      photo,
-      location,
-      dni,
-      phone,
-      socialSecurity,
-      active,
-    } = req.body;
+    const updatedPatient = req.body;
 
     if (id) {
-      if (name) {
-        const findPatient = await Patient.findByPk(id);
-        if (photo)
-        var uploadedResponse = await cloudinary.uploader.upload(photo, {
-          upload_preset: "iCare_Henry",
-        });
-        await findPatient.update(
-          {
-            name,
-            surname,
-            mail,
-            password,
-            birthday,
-            weight,
-            height,
-            bmi,
-            allergies,
-            chronicDiseases,
-            photo: uploadedResponse ? uploadedResponse.url : null,
-            location,
-            dni,
-            phone,
-            socialSecurity,
-            active,
-          },
-          { where: { id: id } }
-        );
+      const findPatient = await Patient.findByPk(id);
 
+      if (findPatient) {
+        // Merge current patient object with updated properties
+        const mergedPatient = { ...findPatient.toJSON(), ...updatedPatient };
+
+        // Update photo separately if it exists in the request
+        if (updatedPatient.photo) {
+          const uploadedResponse = await cloudinary.uploader.upload(updatedPatient.photo, {
+            upload_preset: "iCare_Henry",
+          });
+           mergedPatient.photo = uploadedResponse.url;
+        }
+
+        await findPatient.update(mergedPatient);
         res.status(200).send("Patient modified successfully");
       } else {
-        res.status(400).send("Missing data to modify patient");
+        res.status(404).send("Patient not found");
       }
     }
   } catch (error) {
     console.log("Error del put", error);
   }
 });
+
+
 
 // router.put("/edit/:id", async (req, res) => {
 //   const { id } = req.params;

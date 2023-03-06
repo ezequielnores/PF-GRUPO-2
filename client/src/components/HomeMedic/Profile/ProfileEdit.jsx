@@ -20,7 +20,7 @@ import {
 } from "../../../redux/reducers/doctorReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { IconButton, InputAdornment } from "@mui/material";
-import swal from "sweetalert"
+import swal from "sweetalert";
 
 //styles
 const padreDiv = {
@@ -155,7 +155,7 @@ const ProfileEdit = () => {
         icon: "success",
       });
       // alert("Information updated");
-      navigate("/HomeMedic/Profile");
+      // navigate("/HomeMedic/Profile");
     } else {
       alert("ERROR");
     }

@@ -9,6 +9,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import { doc, setDoc } from "firebase/firestore";
 import { MuiTelInput } from "mui-tel-input";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,7 +23,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 //Firebase
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../../../authentication/firebase";
+import axios from "axios";
+import { auth, googleProvider, db } from "../../../authentication/firebase";
 //style
 const cardDiv = {
   display: "flex",
@@ -30,6 +32,8 @@ const cardDiv = {
   width: "30rem",
   height: "82rem",
   justifyContent: "space-around",
+  marginTop:"10vw",
+  marginBottom:"10vw",
   padding: "2rem",
   boxShadow:
     "-10px 10px 0px #307196,-20px 20px 0px rgba(48, 113, 150, 0.7),-30px 30px 0px rgba(48, 113, 150, 0.4),-40px 40px 0px rgba(48, 113, 150, 0.1)",
@@ -50,7 +54,7 @@ const divPadre = {
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "150vh",
+  height: "100%",
   backgroundColor: "#43B8C8",
 };
 const Register = () => {
@@ -71,6 +75,7 @@ const Register = () => {
     weight: "",
     height: "",
     allergies: "",
+    chronicDiseases: "",
     birthday: "03/02/1999",
     dni: "",
     location: "",
@@ -79,6 +84,22 @@ const Register = () => {
     password: "",
   });
 
+
+  const disableButtonHandler = () => {
+    if(form.name === "" || form.surname === "" || form.phone === "" || form.weight === "" || form.height === "" 
+     || form.allergies === "" || form.birthday === "" || form.dni === "" || form.location === "" 
+     || form.image === ""|| form.image === null || form.mail === "" || form.password === ""  ){
+       return true;
+    }
+
+    if(error.name !== "" || error.surname !== "" || error.phone !== "" || error.weight !== "" 
+    || error.height !== "" || error.allergies !== "" || error.birthday !== "" || error.dni !== "" 
+    || error.name !== "" || error.location !== "" || error.image !== "" || error.mail !== ""  || error.location !== "" || error.password !== ""){
+      return true;
+    }
+    return false;
+  }
+
   const [error, setError] = React.useState({
     name: "",
     surname: "",
@@ -86,6 +107,7 @@ const Register = () => {
     weight: "",
     height: "",
     allergies: "",
+    chronicDiseases: "",
     birthday: "",
     dni: "",
     location: "",
@@ -102,18 +124,19 @@ const Register = () => {
     reader.onloadend = () => {
       setForm({ ...form, image: reader.result });
 
-      validateForm({ ...form, image: reader.result }, "image");
+      validateForm({ ...form, image: reader.result }, "image", file);
     };
   };
 
   const onChangeHandler = (name, value) => {
     setForm({ ...form, [name]: value });
-
     validateForm({ ...form, [name]: value }, name);
   };
 
   const onChangeEmail = (name, value) => {
-    setForm({ ...form, [name]: value });
+    setForm(prev => {
+      return { ...prev, [name]: value } 
+    });
 
     validateForm({ ...form, [name]: value }, name);
   };
@@ -129,13 +152,18 @@ const Register = () => {
     validateForm({ ...form, [name]: form }, name);
   };
 
-  const validateForm = (form, name) => {
+
+  const validateForm = async (form, name, file) => {
     if (name === "name" || name === "surname") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
       } else setError({ ...error, [name]: "" });
     }
-    if (name === "location" || name === "allergies") {
+    if (
+      name === "location" ||
+      name === "allergies" ||
+      name === "chronicDiseases"
+    ) {
       if (!/^[a-zA-Z,\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters and commas" });
       } else setError({ ...error, [name]: "" });
@@ -174,40 +202,64 @@ const Register = () => {
       }
     }
     if (name === "mail") {
-      if (
-        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
-          form[name] || form[name] !== ""
-        )
-      ) {
-        setError({ ...error, [name]: "•Musst be a valid email" });
-      } else setError({ ...error, [name]: "" });
+      const isValid = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/emailVerification?mail=${form.mail}`)
+      .then(response => response.data );
+
+      if(isValid === true){
+        setError(prev => { 
+          return { ...prev, [name]: "" }
+        });
+      } else{
+        setError((prev) => {
+          return { ...prev, [name]: "Invalid email, it is already in use, or it does not exist, enter another one please" } 
+        });
+      };
+    }
+
+    if (name === "image") {
+      if (file.type !== "image/jpeg" && file.type!== "image/png") {
+        setError({...error, [name]: "The image must be a jpeg or png file"});
+      } else {
+        setError({...error, [name]: ""});
+      }
     }
   };
 
-  const dispatchRegister = async () => {
+  const dispatchRegister = async (userCredential) => {
     await dispatch(
       patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
     )
-      .then((res) => {
+      .then(async (res) => {
         if (res.type === "patient/register/fulfilled") {
           // alert("Account Created");
           setAlertSeverity("success");
           setAlertMessage("Account Created. Wait to be redirected");
           setShowAlert(true);
+          //create user on firestore
+          await setDoc(doc(db, "users", userCredential.user.uid), {
+            uid: userCredential.user.uid,
+            displayName: form.name + " " + form.surname,
+            email: form.mail,
+            photoURL: form.image
+              ? form.image
+              : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+          });
+
+          //create empty user chats on firestore
+          await setDoc(doc(db, "userChats", userCredential.user.uid), {});
+
           /*           setTimeout(() => {
             navigate("/loginClient");
           }, 2500); */
         } else {
-          console.log({ ...form, phone: 12345, mail: auth.currentUser.email });
-          // alert("Error creating account!");
           setAlertSeverity("error");
           setAlertMessage("Error creating account!");
           setShowAlert(true);
           auth.currentUser.delete();
         }
-        console.log("Register " + res.type);
+        console.log(res);
       })
-      .catch((err) => alert("error"));
+      .catch((err) => alert(err));
   };
 
   const handleRegister = async () => {
@@ -218,8 +270,16 @@ const Register = () => {
           form.mail,
           form.password
         );
-        await dispatchRegister();
-        await dispatch(patientGetAll());
+        const user = userCredential.user;
+        console.log("usuario creado: " + user.email);
+        dispatchRegister(userCredential);
+        const authenticatedPatient = patients.find((patient) => {
+          return patient.mail === auth.currentUser.email;
+        });
+        const id = authenticatedPatient.id;
+        console.log(authenticatedPatient);
+        localStorage.setItem("id", id);
+        navigate("HomeClient/Profile", { state: { id } });
       } catch (error) {
         console.log({ Error: error.message });
       }
@@ -266,7 +326,6 @@ const Register = () => {
   };
 
   useEffect(() => {
-    console.log("Dispatch");
     fillPatient();
   }, [dispatch, patients]);
 
@@ -311,7 +370,7 @@ const Register = () => {
             name="phone"
             value={form.phone}
             defaultCountry={"AR"}
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(value) => onChangeHandler("phone", value)}
             error={error.phone}
             helperText={error.phone}
@@ -320,7 +379,7 @@ const Register = () => {
           <TextField
             error={error.name}
             label="Name*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="name"
             value={form.name}
@@ -330,7 +389,7 @@ const Register = () => {
           <TextField
             error={error.surname}
             label="Surname*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="surname"
             value={form.surname}
@@ -341,7 +400,7 @@ const Register = () => {
             error={error.dni}
             helperText={error.dni}
             label="DNI*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="dni"
             value={form.dni}
@@ -360,7 +419,7 @@ const Register = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  style={{ width: "40vh", marginBottom: "0.9rem" }}
+                  style={{ width: "50vh", marginBottom: "0.9rem" }}
                 />
               )}
             />
@@ -370,7 +429,7 @@ const Register = () => {
             error={error.weight}
             helperText={error.weight}
             label="Weight*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="weight"
             value={form.weight}
@@ -383,7 +442,7 @@ const Register = () => {
 
           <TextField
             label="Height*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="height"
             value={form.height}
@@ -393,24 +452,31 @@ const Register = () => {
               endAdornment: (
                 <InputAdornment position="start">cm</InputAdornment>
               ),
-            }}
-          />
+            }}/>
 
           <TextField
             error={error.allergies}
             helperText={error.allergies}
             label="Allergies"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="allergies"
             value={form.allergies}
           />
-
+          <TextField
+            error={error.chronicDiseases}
+            helperText={error.chronicDiseases}
+            label="Chronic Diseases"
+            style={{ width: "40vh", marginBottom: "1vh" }}
+            onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+            name="chronicDiseases"
+            value={form.chronicDiseases}
+          />
           <TextField
             error={error.location}
             helperText={error.location}
             label="Location*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             name="location"
             value={form.location}
@@ -421,16 +487,17 @@ const Register = () => {
             label="Image"
             style={
               form.image
-                ? { width: "40vh", marginBottom: "1vh" }
-                : { width: "40vh", label: { paddingLeft: "5vw" } }
+                ? { width: "50vh", marginBottom: "1vh" }
+                : { width: "50vh", label: { paddingLeft: "5vw" } }
             }
             onChange={handleImage}
             name="image"
             value={imageInputValue ? imageInputValue : ""}
             type="file"
+            helperText={error.image}
             InputProps={
               !form.image
-                ? { inputProps: { style: { paddingLeft: "4vw" } } }
+                ? { inputProps: { style: { paddingLeft: "5vw" } } }
                 : {
                     endAdornment: (
                       <InputAdornment position="end">
@@ -451,16 +518,16 @@ const Register = () => {
                   }
             }
           />
-          <Typography
+          {/* <Typography
             variant="h6"
             style={{ marginTop: "3vh", alignSelf: "start" }}
           >
             User Account
-          </Typography>
+          </Typography> */}
           <TextField
             error={error.mail}
             label="Email*"
-            style={{ width: "40vh", marginBottom: "1vh", marginTop: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh", marginTop: "1vh" }}
             onChange={(e) => onChangeEmail(e.target.name, e.target.value)}
             name="mail"
             value={form.mail}
@@ -469,7 +536,7 @@ const Register = () => {
           <TextField
             error={error.password}
             label="Password*"
-            style={{ width: "40vh", marginBottom: "1vh" }}
+            style={{ width: "50vh", marginBottom: "1vh" }}
             onChange={(e) => onChangePassword(e.target.name, e.target.value)}
             name="password"
             value={form.password}
@@ -478,18 +545,21 @@ const Register = () => {
           />
 
           <Button
+            disabled={disableButtonHandler()}
             onClick={handleRegister}
             style={{
+              width:"50vh",
               border: "1px solid",
               marginTop: "0.5rem",
             }}
           >
             Register
           </Button>
-          <Typography style={{ marginTop: "2vh" }}>or</Typography>
+          <Typography style={{ marginTop: "2vh" }}>OR</Typography>
           <Button
             onClick={handleRegisterwithGoogle}
             style={{
+              width:"50vh",
               border: "1px solid",
               marginTop: "0.5rem",
             }}

@@ -1,4 +1,6 @@
 import React from "react";
+import { Button, TextField, Typography } from "@mui/material";
+
 // import styled from "styled-components";
 
 // const ButtonsContainer = styled.div`
@@ -24,14 +26,21 @@ import React from "react";
 //   }
 // `;
 
-const ButtonsFQ = ({ createFQ, readFQ, read, create, }) => {
-
-    return (
-        <div>
-            <button onClick={createFQ}>{create ? "Hide create" : "Create"} FQ</button>
-            <button onClick={readFQ}>{read ? "Hide" : "Read"} FQ</button>
-        </div>
-    );
+const ButtonsFQ = ({ createFQ, readFQ, read, create }) => {
+  return (
+    <div
+      style={{
+        marginTop: "1rem",
+        display: "flex",
+        flexDirection: "row",
+        gap: "2rem",
+        justifyContent: "center",
+      }}
+    >
+      <Button onClick={createFQ}>{create ? "Hide create" : "Create"} FQ</Button>
+      <Button onClick={readFQ}>{read ? "Hide" : "Read"} FQ</Button>
+    </div>
+  );
 };
 
 export default ButtonsFQ;

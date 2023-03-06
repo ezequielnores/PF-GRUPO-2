@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 //styles
@@ -36,7 +36,12 @@ const finaldivText = {
   marginRight: "3rem",
 };
 //component
-const services = () => {
+const Services = () => {
+
+  useEffect(() => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  },[]);
+
   return (
     <div style={container}>
       <Box>
@@ -108,4 +113,4 @@ const services = () => {
   );
 };
 
-export default services;
+export default Services;
