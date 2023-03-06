@@ -133,7 +133,7 @@ const MedicForm = () => {
     reader.onloadend = () => {
       setForm({ ...form, [name]: reader.result });
 
-      validateForm({ ...form, [name]: reader.result }, name);
+      validateForm({ ...form, [name]: reader.result }, name, file);
     };
   };
 
@@ -161,7 +161,7 @@ const MedicForm = () => {
     validateForm({ ...form, [name]: form }, name);
   };
 
-  const validateForm = async (form, name) => {
+  const validateForm = async (form, name, file) => {
     if (name === "name" || name === "lastName" || name === "speciality") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -210,7 +210,23 @@ const MedicForm = () => {
         return {...prev, [name]:"Must enter a valid email"}
       }
       )}
-  }
+    }
+
+    if (name === "image") {
+      if (file.type !== "image/jpeg" && file.type!== "image/png") {
+        setError({...error, [name]: "The image must be a jpeg or png file"});
+      } else {
+        setError({...error, [name]: ""});
+      }
+    }
+
+    if (name === "cv") {
+      if (file.type !== "application/pdf") {
+        setError({...error, [name]: "The cv must be a pdf file"})
+      } else {
+        setError({...error, [name]: ""});
+      }
+    }
   };
   
   const handleSubmit = async (e) => {
@@ -424,6 +440,7 @@ const MedicForm = () => {
               name='image'
               value={imageInputValue ? imageInputValue : ""}
               type='file'
+              helperText={error.image}
               InputProps={
                 !form.image
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }
@@ -457,6 +474,7 @@ const MedicForm = () => {
             /> */}
             <select
               name='speciality'
+              style={{height: "5.7vh", width: "9vw", marginLeft: "1vw", marginRight: "1vw", borderRadius: "0.2vw", borderColor: "grey"}}
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             >
               <option value=''>--Speciality--</option>
@@ -478,7 +496,7 @@ const MedicForm = () => {
               error={error.cv}
               label='CV'
               style={
-                form.image
+                form.cv
                   ? { width: "40vh", marginBottom: "1vh" }
                   : { width: "40vh", label: { paddingLeft: "5vw" } }
               }
@@ -486,6 +504,7 @@ const MedicForm = () => {
               name='cv'
               value={cvInputValue ? cvInputValue : ""}
               type='file'
+              helperText={error.cv}
               InputProps={
                 !form.cv
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }

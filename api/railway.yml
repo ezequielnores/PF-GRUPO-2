@@ -1,0 +1,14 @@
+services:
+  app:
+    image: node:16
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm start
+    env:
+      NODE_ENV: production
+    ports:
+      - 3001
+    dependencies:
+      build:
+        - node_modules

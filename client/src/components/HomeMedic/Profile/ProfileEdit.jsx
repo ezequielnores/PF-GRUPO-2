@@ -75,6 +75,7 @@ const ProfileEdit = () => {
     birthdate: "",
     lastName: "",
     location: "",
+    image: ""
   });
   // const onChangeHandler = (name, value) => {
   //   setInfoNueva({ ...form, [name]: value });
@@ -96,7 +97,7 @@ const ProfileEdit = () => {
     setHasChanged(true);
   };
   console.log(dataDoc.id);
-  const validateFields = (form, name) => {
+  const validateFields = (form, name, file) => {
     if (name === "name" || name === "lastName") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -134,7 +135,16 @@ const ProfileEdit = () => {
         setError({ ...error, [name]: "•Musst be a valid email" });
       } else setError({ ...error, [name]: "" });
     }
+
+    if (name === "image") {
+      if (file.type !== "image/jpeg" && file.type!== "image/png") {
+        setError({...error, [name]: "The image must be a jpeg or png file"});
+      } else {
+        setError({...error, [name]: ""});
+      }
+    }
   };
+
   const handleImage = (e) => {
     const name = e.target.name;
     setImageInputValue(e.target.value);
@@ -145,7 +155,9 @@ const ProfileEdit = () => {
       setInfoNueva({ ...infoNueva, [name]: reader.result });
     };
     setHasChanged(true);
+    validateFields({...infoNueva}, name, file);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const errors = validateFields();
@@ -160,12 +172,14 @@ const ProfileEdit = () => {
       alert("ERROR");
     }
   };
+
   useEffect(() => {
     const doctorId = localStorage.getItem("idMedic");
     if (doctorId) {
       dispatch(doctorGetDetail(doctorId));
     }
   }, []);
+  
   return (
     <div style={padreDiv}>
       <Typography
@@ -278,6 +292,8 @@ const ProfileEdit = () => {
           name="image"
           value={imageInputValue ? imageInputValue : ""}
           type="file"
+          error={error.image}
+          helperText={error.image}
           InputProps={
             !infoNueva.image
               ? { inputProps: { style: { paddingLeft: "5vw" } } }
