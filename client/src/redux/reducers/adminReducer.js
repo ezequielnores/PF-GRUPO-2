@@ -18,6 +18,16 @@ export const adminGetDetail = createAsyncThunk(
   }
 );
 
+export const adminGetDetailForEdit = createAsyncThunk(
+  "admins/getDetailForEdit",
+  async (id) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/admins/${id}`
+    );
+    return response.data;
+  }
+);
+
 export const adminRegister = createAsyncThunk(
   "admins/register",
   async (data) => {
@@ -78,10 +88,10 @@ const adminSlice = createSlice({
   initialState: {
     detail: {},
     listAll: [],
-    list: [],
     status: "idle",
     error: null,
     loggedIn: {},
+    forEdit: {},
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -91,7 +101,6 @@ const adminSlice = createSlice({
       })
       .addCase(adminRegister.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.detail = action.payload;
       })
       .addCase(adminRegister.rejected, (state, action) => {
         state.state = "failed";
@@ -119,10 +128,9 @@ const adminSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
-      .addCase(
-        adminLogin.pending,
-        (state, action) => (state.status = "loading")
-      )
+      .addCase(adminLogin.pending,(state, action) => {
+        state.status = "loading";
+      })
       .addCase(adminLogin.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.loggedIn = action.payload;
@@ -150,6 +158,17 @@ const adminSlice = createSlice({
         state.detail = action.payload;
       })
       .addCase(disableAdmin.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(adminGetDetailForEdit.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(adminGetDetailForEdit.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.forEdit = action.payload;
+      })
+      .addCase(adminGetDetailForEdit.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
