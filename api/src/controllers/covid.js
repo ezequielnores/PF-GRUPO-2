@@ -7,10 +7,7 @@ const testCovid = async (model, input) => {
 };
 
 const neuralNetwork = async () => {
-  var dataSet = fs.readFileSync(
-    __dirname.replace(/\\/g, "/") + "/Covid-Dataset.csv",
-    "utf8"
-  );
+  var dataSet = fs.readFileSync(__dirname + "/Covid-Dataset.csv", "utf8");
   var lines = dataSet.split("\r\n");
   var dataArray = [];
   for (var i = 0; i < lines.length; i++) {
@@ -51,7 +48,7 @@ const neuralNetwork = async () => {
   const trainingDataInputs = trainingData.map((t) => t.slice(0, t.length - 1));
   const trainingDataOutputs = trainingData.map((t) => t[t.length - 1]);
 
-  async function entrena(model) {
+  async function entrena(model, xs, ys) {
     const historia = await model.fit(xs, ys, {
       epochs: 1000,
       callbacks: {
@@ -75,7 +72,7 @@ const neuralNetwork = async () => {
   const xs = tf.tensor2d(trainingDataInputs, [500, 20]);
   const ys = tf.tensor2d(trainingDataOutputs, [500, 1]);
 
-  await entrena(model);
+  await entrena(model, xs, ys);
   return model;
 };
 

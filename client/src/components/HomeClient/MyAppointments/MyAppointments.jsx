@@ -109,14 +109,21 @@ const MyAppointments = () => {
       setNextAppointmentDate(appointments[0].date + " " + appointments[0].hour);
   }, [appointments]);
   return (
-    <div>
+    <div
+      style={{
+        marginLeft: "4px",
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        height: "45.5rem",
+      }}
+    >
       <div
         style={{
           display: "flex",
           flexDirection: "row",
           alignItems: "flex-start",
           justifyContent: "space-between",
-          // padding: "0 2rem 0 5rem",
         }}
       >
         <div

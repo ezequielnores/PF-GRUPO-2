@@ -155,9 +155,6 @@ const Urgency = () => {
         icon: "success",
       });
       dispatch(urgencyGetAllNotAttended());
-      // alert("Your information has been sent");
-      //   await axios.post(`${process.env.REACT_APP_BACKEND_URL}/urgency`, body);
-      //   alert("Your information has been sent");
     } catch (error) {
       alert(error.message);
     }

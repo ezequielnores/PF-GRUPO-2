@@ -27,8 +27,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    paddingTop: "4px",
-    paddingBottom: "4px",
+    height: "45.5rem",
   },
   title: {
     fontWeight: "bold",

@@ -22,6 +22,8 @@ const divPadre = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  width: "100%",
+  height: "45.5rem",
 };
 
 //componente
@@ -34,12 +36,7 @@ const Historial = ({ consulta }) => {
   }, []);
 
   const [selectedConsulta, setSelectedConsulta] = useState(null);
-  // const [adjuntos, setAdjuntos] = useState(false);
   const consultas = useSelector((state) => state.history.list);
-
-  // function handlerAdjuntos() {
-  //   setAdjuntos(true);
-  // }
   function handleConsultaSelect(event) {
     const consultaIndex = event.target.value;
     setSelectedConsulta(consultas[consultaIndex]);
