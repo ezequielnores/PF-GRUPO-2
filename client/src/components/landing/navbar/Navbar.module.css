@@ -1,0 +1,25 @@
+.navbar {
+    background-color: #F0F8FF;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 6.5rem;
+    padding-left: 5rem;
+  }
+  
+  .link {
+    margin-left: 1.5vw;
+    margin-right: 1.5vw;
+    margin-top: 0.5vh;
+    text-decoration: none;
+    color: #43B8C8;
+  }
+  
+  .link-active {
+    border-bottom: 3px solid #128BCC;
+  }
+  
+  
+  
+  

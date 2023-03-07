@@ -81,57 +81,39 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <HomeIcon style={{ color: "white" }} />
-                      </div>
+                      <HomeIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <HomeIcon />
-                      </div>
+                      <HomeIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Home
+                    <p>Home</p>
                   </div>
                 ) : path.endsWith("/HomeClient") ? (
-                  <ChatIcon />
+                  <HomeIcon />
                 ) : (
-                  <HomeIcon style={{ color: "grey" }} />
+                  <HomeIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
-            <button className={style.buttonBar}>
+            {/* <button className={style.buttonBar}>
               <Link to="/HomeClient/Chat">
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient/Chat") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <ChatIcon style={{ color: "white" }} />
-                      </div>
+                        <ChatIcon  />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <ChatIcon />
-                      </div>
+                      
+                        <ChatIcon style={{ color: "#c2c1c1" }} />
+                      
                     )}
-                    Chat
+                    <p>Chat</p>
                   </div>
                 ) : path.endsWith("/HomeClient/Chat") ? (
                   <ChatIcon />
                 ) : (
-                  <ChatIcon style={{ color: "grey" }} />
+                  <ChatIcon style={{ color: "#c2c1c1" }}  />
                 )}
               </Link>
-            </button>
+            </button> */}
             <button className={style.buttonBar}>
               <Link to="/HomeClient/Profile">
                 {open ? (
@@ -276,7 +258,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
-            <button className={style.buttonBar}>
+            {/* <button className={style.buttonBar}>
               <Link to="/HomeClient/TestCovid">
                 {open ? (
                   <div className={style.divbutton}>
@@ -293,7 +275,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                   <CoronavirusIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
-            </button>
+            </button> */}
           </Stack>
           <button
             type="button"
