@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { adminGetDetail } from "../../redux/reducers/adminReducer";
 import swal from "sweetalert";
 import logo from "../../assets/logoiCare.png";
 import ManagePlans from "./ManagePlans/ManagePlans";
+import ManageAdmins from "./ManageAdmins";
 import {
   patientGetAll,
   patientSetActive,
@@ -15,6 +16,7 @@ import {
 } from "../../redux/reducers/doctorReducer";
 import { deleteComment } from "../../redux/reducers/commentsReducer";
 import { plansGetAll } from "../../redux/reducers/plansReducer.js";
+import { adminGetAll } from "../../redux/reducers/adminReducer.js";
 import ToManage from "./ToManage";
 import { Button, Typography } from "@mui/material";
 //styles
@@ -52,6 +54,7 @@ const Home = (props) => {
     comments: false,
     frequentQuestions: false,
     plans: false,
+    admin: false,
   });
 
   const handleClickPatients = () => {
@@ -61,6 +64,8 @@ const Home = (props) => {
       doctors: false,
       comments: false,
       frequentQuestions: false,
+      plans: false,
+      admin: false,
     });
   };
 
@@ -71,6 +76,8 @@ const Home = (props) => {
       doctors: true,
       comments: false,
       frequentQuestions: false,
+      plans: false,
+      admin: false,
     });
   };
 
@@ -80,6 +87,8 @@ const Home = (props) => {
       doctors: false,
       comments: true,
       frequentQuestions: false,
+      plans: false,
+      admin: false,
     });
   };
 
@@ -89,6 +98,8 @@ const Home = (props) => {
       doctors: false,
       comments: false,
       frequentQuestions: true,
+      plans: false,
+      admin: false,
     });
   };
   const handleClickPlans = () => {
@@ -99,6 +110,18 @@ const Home = (props) => {
       comments: false,
       frequentQuestions: false,
       plans: true,
+      admin: false,
+    });
+  };
+  const handleClickAdmins = () => {
+    dispatch(adminGetAll());
+    setSelected({
+      patients: false,
+      doctors: false,
+      comments: false,
+      frequentQuestions: false,
+      plans: false,
+      admin: true,
     });
   };
   const handleLogout = (e) => {
@@ -110,15 +133,11 @@ const Home = (props) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        localStorage.removeItem("idAdmin");
-        window.location.href = "http://localhost:3000/";
+        localStorage.removeItem("mailAdmin");
+        window.location.href = "https://pf-grupo-2.vercel.app/";
       }
     });
   };
-  // const handleLogout = () => {
-  //   props.setAdmin(null);
-  //   window.localStorage.removeItem("idAdmin");
-  // };
 
   useEffect(() => {
     const adminId = window.localStorage.getItem("idAdmin");
@@ -129,7 +148,7 @@ const Home = (props) => {
     }
   }, []);
 
-  console.log(patients);
+  // console.log(patients);
 
   return (
     <div style={container}>
@@ -183,6 +202,13 @@ const Home = (props) => {
             >
               Manage Plans
             </Button>
+            <Button
+              variant="contained"
+              onClick={handleClickAdmins}
+              style={{ backgroundColor: "#307196" }}
+            >
+              Manage Admins
+            </Button>
           </div>
           <div style={{ paddingRight: "2rem" }}>
             <Typography
@@ -230,6 +256,7 @@ const Home = (props) => {
         )}
 
         {selected.plans && <ManagePlans />}
+        {selected.admin && <ManageAdmins />}
       </div>
     </div>
   );

@@ -57,10 +57,13 @@ function App() {
       ) : location.pathname.startsWith("/HomeMedic") ? (
         <HomeMedic isLogged={isLogged} />
       ) : location.pathname.startsWith("/HomeAdmin") ? (
-        <HomeAdmin isLogged={isLogged} />
+        <HomeAdmin isLogged={isLogged}  />
+      ) : location.pathname.startsWith("/loginAdmin") ? (
+        <LoginAdmin isLogged={isLogged}  />
       ) : location.pathname.startsWith("/resetPassword") ? (
         <ResetPassword />
       ) : (
+
         <>
           <Navbar />
           <Routes>
@@ -77,9 +80,12 @@ function App() {
             <Route path="/work/registerForm" element={<MedicForm />} />
             <Route path="/loginMedic" element={<LoginMedic />} />
 
-            <Route path="/register" element={<Register />} />
-            <Route path="/loginAdmin" element={<LoginAdmin />} />
-            <Route path="*" element={<ErrorPage />} />
+            <Route path="/register" element={<Register />}/>
+            {/* <Route path="/loginAdmin" element={<LoginAdmin />}/> */}
+            <Route path="/resetPassword" element={<ResetPassword/>}/>
+            <Route path='*' element={<ErrorPage/>} />
+            <Route path="/totalReviews" element={<Review/>} />
+
 
             <Route path="/totalReviews" element={<Review />} />
           </Routes>

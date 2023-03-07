@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { adminGetAll, adminLogin } from "../../redux/reducers/adminReducer";
+//Firebase
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../authentication/firebase";
 
 const divPadre = {
   display: "flex",
@@ -44,6 +47,7 @@ export default function LoginAdmin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const state = useSelector((state) => state.admin);
+  // const admins = useSelector((state) => state.admins.list);
   const [successLogin, setSuccessLogin] = useState(null);
   const [info, setInfo] = useState({
     mail: "",
@@ -59,24 +63,36 @@ export default function LoginAdmin() {
     });
   };
 
-  const handleSubmit = (e) => {
+  //SUBMIT
+  const handleSubmit =  async (e) => {
     e.preventDefault();
-    dispatch(adminLogin({ mail: info.mail, password: info.password })).then(
-      (res) => {
-        console.log(res);
-        if (state.loggedIn) {
-          alert("logged In");
-        } else {
-          alert("not logged in");
-        }
+    try{
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        info.mail,
+        info.password,
+      );
+      const user = userCredential.user;
+      console.log("admin logueado: " + user.email);
+      if(user) {
+        const email = user.email
+        localStorage.setItem("mailAdmin", email);
+        setSuccessLogin(true);
+        navigate("/HomeAdmin");
+      } else {
+        setSuccessLogin(false);
       }
-    );
+    } catch(error){
+      console.log({ Error: error.message });
+    }
   };
 
   useEffect(() => {
-    const admin = localStorage.getItem("admin");
-    if (admin) alert("Admin ya logueado");
-  }, []);
+    const admin = localStorage.getItem("mailAdmin");
+    if (admin){
+      navigate("/HomeAdmin");
+    } dispatch(adminGetAll())
+  }, [dispatch, navigate]);
 
   return (
     <div style={divPadre}>
@@ -104,7 +120,7 @@ export default function LoginAdmin() {
               fontSize: "3rem",
             }}
           >
-            Login
+            Login Admins
           </Typography>
           <label>Email</label>
           <Input

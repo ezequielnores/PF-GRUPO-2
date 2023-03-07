@@ -59,7 +59,7 @@ const SideBar = ({ path }) => {
                 </div>
               </Link>
             </button>
-            <button style={{ border: "none", backgroundColor: "transparent" }}>
+            {/* <button style={{ border: "none", backgroundColor: "transparent" }}>
               <Link to="/HomeAdmin/ManageFQ">
                 <div style={butonsitos}>
                   <RateReviewIcon style={{ color: "#c2c1c1" }} />
@@ -68,7 +68,7 @@ const SideBar = ({ path }) => {
                   </p>
                 </div>
               </Link>
-            </button>
+            </button> */}
           </Stack>
           <button
             style={{
