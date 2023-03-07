@@ -8,8 +8,8 @@ const testCovid = async (model,input) => {
 }
 
 const neuralNetwork = async () => {
-    
-    var dataSet = fs.readFileSync(__dirname + "/Covid-Dataset.csv", 'utf8');
+    try {
+        var dataSet = fs.readFileSync(__dirname + "/Covid-Dataset.csv", 'utf8');
     var lines = dataSet.split('\r\n');
     var dataArray = [];
     for (var i = 0; i < lines.length; i++) {
@@ -68,6 +68,13 @@ const neuralNetwork = async () => {
 
     await entrena(model,xs ,ys);
     return model
+        
+    } catch (error) {
+        console.log(dataSet);
+        console.log(dataArray);
+        console.log(error.message);
+    }
+    
 }
 
 module.exports = {
