@@ -12,7 +12,7 @@ import swal from "sweetalert";
 import axios from "axios";
 
 // patientId, doctorId, date, diagnosis
-const validate = (input,linkSent) => {
+const validate = (input, linkSent) => {
   let errors = {};
   if (!linkSent) {
     errors.link = "Please send the meet link";
@@ -26,8 +26,6 @@ const validate = (input,linkSent) => {
   }
   return errors;
 };
-
-
 
 const SeePatients = ({ idTurn, appointment }) => {
   const dispatch = useDispatch();
@@ -70,10 +68,13 @@ const SeePatients = ({ idTurn, appointment }) => {
   const handleChanges = (e) => {
     setNewHistorial({ ...newHistorial, [e.target.name]: e.target.value });
     setError(
-      validate({
-        ...newHistorial,
-        [e.target.name]: e.target.value,
-      },linkSent)
+      validate(
+        {
+          ...newHistorial,
+          [e.target.name]: e.target.value,
+        },
+        linkSent
+      )
     );
   };
   const handleOpenModal = () => {
@@ -102,6 +103,14 @@ const SeePatients = ({ idTurn, appointment }) => {
 
     window.location.reload();
   };
+
+  const handleChat = (e) => {
+    e.preventDefault();
+    const queryString = `?d=${appointment.doctor.uid}&p=${appointment.Patient.uid}`;
+    // const encodedQueryString = encodeURIComponent(queryString);
+    window.open(`/HomeMedic/Chat${queryString}`, "_blank");
+  };
+
   const handleSendLink = (e) => {
     e.preventDefault();
     swal({
@@ -230,18 +239,17 @@ const SeePatients = ({ idTurn, appointment }) => {
             }}
           >
             {!error.link ? (
-            <TextField
-              id="send-meet-link"
-              label="Meet Link"
-              value={meetLink}
-              onChange={(e) => setMeetLink(e.target.value)}
-              placeholder="Paste de meet link here"
-              sx={{ width: "40%" }}
-              InputProps={{
-                readOnly: linkSent,
-              }}
-
-            ></TextField>
+              <TextField
+                id="send-meet-link"
+                label="Meet Link"
+                value={meetLink}
+                onChange={(e) => setMeetLink(e.target.value)}
+                placeholder="Paste de meet link here"
+                sx={{ width: "40%" }}
+                InputProps={{
+                  readOnly: linkSent,
+                }}
+              ></TextField>
             ) : (
               <TextField
                 error
@@ -259,10 +267,11 @@ const SeePatients = ({ idTurn, appointment }) => {
               ></TextField>
             )}
 
-            
-           
             <button className={style.saveButton} onClick={handleSendLink}>
-              send link
+              Send Link
+            </button>
+            <button className={style.saveButton} onClick={handleChat}>
+              Chat
             </button>
           </div>
           <h4 style={{ textAlign: "start" }}>Appoinment Details</h4>
@@ -380,7 +389,6 @@ const SeePatients = ({ idTurn, appointment }) => {
               !newHistorial.reason ||
               !newHistorial.prescription ||
               !linkSent
-
             }
           >
             Save

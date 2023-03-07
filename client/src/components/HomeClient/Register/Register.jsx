@@ -32,8 +32,8 @@ const cardDiv = {
   width: "30rem",
   height: "82rem",
   justifyContent: "space-around",
-  marginTop:"10vw",
-  marginBottom:"10vw",
+  marginTop: "10vw",
+  marginBottom: "10vw",
   padding: "2rem",
   boxShadow:
     "-10px 10px 0px #307196,-20px 20px 0px rgba(48, 113, 150, 0.7),-30px 30px 0px rgba(48, 113, 150, 0.4),-40px 40px 0px rgba(48, 113, 150, 0.1)",
@@ -68,6 +68,7 @@ const Register = () => {
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
   const [imageInputValue, setImageInputValue] = useState("");
+ 
   const [form, setForm] = React.useState({
     name: "",
     surname: "",
@@ -82,23 +83,49 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
+    bmi:""
+    
   });
 
-
   const disableButtonHandler = () => {
-    if(form.name === "" || form.surname === "" || form.phone === "" || form.weight === "" || form.height === "" 
-     || form.allergies === "" || form.birthday === "" || form.dni === "" || form.location === "" 
-     || form.image === ""|| form.image === null || form.mail === "" || form.password === ""  ){
-       return true;
+    if (
+      form.name === "" ||
+      form.surname === "" ||
+      form.phone === "" ||
+      form.weight === "" ||
+      form.height === "" ||
+      form.allergies === "" ||
+      form.birthday === "" ||
+      form.dni === "" ||
+      form.location === "" ||
+      form.image === "" ||
+      form.image === null ||
+      form.mail === "" ||
+      form.password === ""
+    ) {
+      return true;
     }
 
-    if(error.name !== "" || error.surname !== "" || error.phone !== "" || error.weight !== "" 
-    || error.height !== "" || error.allergies !== "" || error.birthday !== "" || error.dni !== "" 
-    || error.name !== "" || error.location !== "" || error.image !== "" || error.mail !== ""  || error.location !== "" || error.password !== ""){
+    if (
+      error.name !== "" ||
+      error.surname !== "" ||
+      error.phone !== "" ||
+      error.weight !== "" ||
+      error.height !== "" ||
+      error.allergies !== "" ||
+      error.birthday !== "" ||
+      error.dni !== "" ||
+      error.name !== "" ||
+      error.location !== "" ||
+      error.image !== "" ||
+      error.mail !== "" ||
+      error.location !== "" ||
+      error.password !== ""
+    ) {
       return true;
     }
     return false;
-  }
+  };
 
   const [error, setError] = React.useState({
     name: "",
@@ -114,6 +141,7 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
+    
   });
 
   const handleImage = (e) => {
@@ -124,7 +152,7 @@ const Register = () => {
     reader.onloadend = () => {
       setForm({ ...form, image: reader.result });
 
-      validateForm({ ...form, image: reader.result }, "image");
+      validateForm({ ...form, image: reader.result }, "image", file);
     };
   };
 
@@ -134,8 +162,8 @@ const Register = () => {
   };
 
   const onChangeEmail = (name, value) => {
-    setForm(prev => {
-      return { ...prev, [name]: value } 
+    setForm((prev) => {
+      return { ...prev, [name]: value };
     });
 
     validateForm({ ...form, [name]: value }, name);
@@ -152,7 +180,7 @@ const Register = () => {
     validateForm({ ...form, [name]: form }, name);
   };
 
-  const validateForm = async (form, name) => {
+  const validateForm = async (form, name, file) => {
     if (name === "name" || name === "surname") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -201,26 +229,48 @@ const Register = () => {
       }
     }
     if (name === "mail") {
-      const isValid = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/emailVerification?mail=${form.mail}`)
-      .then(response => response.data );
+      const isValid = await axios
+        .get(
+          `${process.env.REACT_APP_BACKEND_URL}/emailVerification?mail=${form.mail}`
+        )
+        .then((response) => response.data);
 
-      if(isValid === true){
-        setError(prev => { 
-          return { ...prev, [name]: "" }
-        });
-      } else{
+      if (isValid === true) {
         setError((prev) => {
-          return { ...prev, [name]: "Invalid email, it is already in use, or it does not exist, enter another one please" } 
+          return { ...prev, [name]: "" };
         });
-      };
+      } else {
+        setError((prev) => {
+          return {
+            ...prev,
+            [name]:
+              "Invalid email, it is already in use, or it does not exist, enter another one please",
+          };
+        });
+      }
+    }
+
+    if (name === "image") {
+      if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        setError({ ...error, [name]: "The image must be a jpeg or png file" });
+      } else {
+        setError({ ...error, [name]: "" });
+      }
     }
   };
 
   const dispatchRegister = async (userCredential) => {
     await dispatch(
-      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
+      patientRegister({
+        ...form,
+        phone: 12345,
+        mail: auth.currentUser.email,
+        uid: auth.currentUser.uid,
+        bmi:Math.floor(form?.weight/Math.pow((form?.height/100), 2))
+      })
     )
       .then(async (res) => {
+        console.log(auth);
         if (res.type === "patient/register/fulfilled") {
           // alert("Account Created");
           setAlertSeverity("success");
@@ -263,6 +313,7 @@ const Register = () => {
         );
         const user = userCredential.user;
         console.log("usuario creado: " + user.email);
+        console.log(userCredential);
         dispatchRegister(userCredential);
         const authenticatedPatient = patients.find((patient) => {
           return patient.mail === auth.currentUser.email;
@@ -288,7 +339,7 @@ const Register = () => {
         const userCredential = await signInWithPopup(auth, googleProvider);
         const user = userCredential.user;
         console.log("usuario creado: " + user.email);
-        dispatchRegister();
+        dispatchRegister(userCredential);
       } catch (error) {
         console.log({ Error: error.message });
       }
@@ -443,7 +494,8 @@ const Register = () => {
               endAdornment: (
                 <InputAdornment position="start">cm</InputAdornment>
               ),
-            }}/>
+            }}
+          />
 
           <TextField
             error={error.allergies}
@@ -485,7 +537,7 @@ const Register = () => {
             name="image"
             value={imageInputValue ? imageInputValue : ""}
             type="file"
-            accept="image/png, image/jpeg"
+            helperText={error.image}
             InputProps={
               !form.image
                 ? { inputProps: { style: { paddingLeft: "5vw" } } }
@@ -539,7 +591,7 @@ const Register = () => {
             disabled={disableButtonHandler()}
             onClick={handleRegister}
             style={{
-              width:"50vh",
+              width: "50vh",
               border: "1px solid",
               marginTop: "0.5rem",
             }}
@@ -550,7 +602,7 @@ const Register = () => {
           <Button
             onClick={handleRegisterwithGoogle}
             style={{
-              width:"50vh",
+              width: "50vh",
               border: "1px solid",
               marginTop: "0.5rem",
             }}

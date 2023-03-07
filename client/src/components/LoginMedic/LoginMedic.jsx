@@ -9,8 +9,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { docrtorGetAll } from "../../redux/reducers/doctorReducer";
 //Firebase
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../authentication/firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../authentication/firebase";
 //styles
 const divPadre = {
   display: "flex",
@@ -54,6 +54,7 @@ const FormLoginMedic = () => {
   const [successLogin, setSuccessLogin] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginSuccess, setLoginSuccess] = useState(null);
   //me creo estado para guardar lo que toma de inptus
   const [info, setInfo] = useState({
     mail: "",
@@ -86,13 +87,14 @@ const FormLoginMedic = () => {
       if (authenticatedDoctor) {
         const id = authenticatedDoctor.id;
         localStorage.setItem("idMedic", id);
+        setLoginSuccess(true);
         navigate("/HomeMedic/Profile");
       } else {
-        setSuccessLogin("error");
+        setLoginSuccess(false);
       }
-  } catch(error){
-    console.log({ Error: error.message });
-  }
+    } catch (error) {
+      console.log({ Error: error.message });
+    }
   };
   //primera carga
   useEffect(() => {
@@ -102,7 +104,7 @@ const FormLoginMedic = () => {
     } else {
       dispatch(docrtorGetAll());
     }
-  }, []);
+  }, [dispatch,navigate]);
 
   // console.log(info);
   //RENDER

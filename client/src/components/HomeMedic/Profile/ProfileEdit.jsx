@@ -54,8 +54,8 @@ const ProfileEdit = () => {
   const [infoNueva, setInfoNueva] = useState({
     name: dataDoc ? dataDoc.name : "",
     lastName: dataDoc ? dataDoc.lastName : "",
-    mail: dataDoc ? dataDoc.mail : "",
-    password: dataDoc ? dataDoc.password : "",
+    // mail: dataDoc ? dataDoc.mail : "",
+    // password: dataDoc ? dataDoc.password : "",
     clinicMail: dataDoc ? dataDoc.clinicMail : "",
     birthdate: dataDoc ? dataDoc.birthdate : new Date(),
     phone: dataDoc ? dataDoc.phone : "",
@@ -68,13 +68,14 @@ const ProfileEdit = () => {
   //estado de errores validaciones
   const [error, setError] = useState({
     name: "",
-    mail: "",
+    // mail: "",
     phone: "",
-    password: "",
+    // password: "",
     clinicMail: "",
     birthdate: "",
     lastName: "",
     location: "",
+    image: ""
   });
   // const onChangeHandler = (name, value) => {
   //   setInfoNueva({ ...form, [name]: value });
@@ -96,7 +97,7 @@ const ProfileEdit = () => {
     setHasChanged(true);
   };
   console.log(dataDoc.id);
-  const validateFields = (form, name) => {
+  const validateFields = (form, name, file) => {
     if (name === "name" || name === "lastName") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -107,25 +108,25 @@ const ProfileEdit = () => {
         setError({ ...error, [name]: "•Only characters and commas" });
       } else setError({ ...error, [name]: "" });
     }
-    if (name === "password") {
-      if (
-        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
-          form[name] || form[name] !== ""
-        )
-      ) {
-        setError({
-          ...error,
-          [name]:
-            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
-        });
-      } else {
-        setError({
-          ...error,
-          [name]: "",
-        });
-      }
-    }
-    if (name === "mail" || name === "clinicMail") {
+    // if (name === "password") {
+    //   if (
+    //     !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+    //       form[name] || form[name] !== ""
+    //     )
+    //   ) {
+    //     setError({
+    //       ...error,
+    //       [name]:
+    //         "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
+    //     });
+    //   } else {
+    //     setError({
+    //       ...error,
+    //       [name]: "",
+    //     });
+    //   }
+    // }
+    if (name === "clinicMail") {
       if (
         !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
           form[name] || form[name] !== ""
@@ -134,7 +135,16 @@ const ProfileEdit = () => {
         setError({ ...error, [name]: "•Musst be a valid email" });
       } else setError({ ...error, [name]: "" });
     }
+
+    if (name === "image") {
+      if (file.type !== "image/jpeg" && file.type!== "image/png") {
+        setError({...error, [name]: "The image must be a jpeg or png file"});
+      } else {
+        setError({...error, [name]: ""});
+      }
+    }
   };
+
   const handleImage = (e) => {
     const name = e.target.name;
     setImageInputValue(e.target.value);
@@ -145,7 +155,9 @@ const ProfileEdit = () => {
       setInfoNueva({ ...infoNueva, [name]: reader.result });
     };
     setHasChanged(true);
+    validateFields({...infoNueva}, name, file);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const errors = validateFields();
@@ -160,12 +172,14 @@ const ProfileEdit = () => {
       alert("ERROR");
     }
   };
+
   useEffect(() => {
     const doctorId = localStorage.getItem("idMedic");
     if (doctorId) {
       dispatch(doctorGetDetail(doctorId));
     }
   }, []);
+  
   return (
     <div style={padreDiv}>
       <Typography
@@ -203,7 +217,7 @@ const ProfileEdit = () => {
           error={error.lastName}
           helperText={error.lastName}
         />
-        <TextField
+        {/* <TextField
           value={infoNueva.password}
           name="password"
           label="Password"
@@ -211,7 +225,7 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e.target.name, e.target.value)}
           error={error.password}
           helperText={error.password}
-        />
+        /> */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Birthdate"
@@ -236,7 +250,7 @@ const ProfileEdit = () => {
           error={error.clinicMail}
           helperText={error.clinicMail}
         />
-        <TextField
+        {/* <TextField
           value={infoNueva.mail}
           name="mail"
           label="Email"
@@ -244,7 +258,7 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e.target.name, e.target.value)}
           error={error.mail}
           helperText={error.mail}
-        />
+        /> */}
         <TextField
           value={infoNueva.location}
           name="location"
@@ -278,6 +292,8 @@ const ProfileEdit = () => {
           name="image"
           value={imageInputValue ? imageInputValue : ""}
           type="file"
+          error={error.image}
+          helperText={error.image}
           InputProps={
             !infoNueva.image
               ? { inputProps: { style: { paddingLeft: "5vw" } } }

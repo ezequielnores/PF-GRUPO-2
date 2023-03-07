@@ -35,7 +35,8 @@ const postDoctor = async (
   speciality,
   license,
   cv,
-  clinicMail
+  clinicMail,
+  uid
 ) => {
   console.log("In the controlller post");
   try {
@@ -61,6 +62,7 @@ const postDoctor = async (
       license,
       cv: uploadedCvResponse.url,
       clinicMail,
+      uid,
     });
     console.log("Esta es la respuesta " + response);
     return response;

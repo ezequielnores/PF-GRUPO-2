@@ -8,11 +8,11 @@ module.exports = (sequelize) =>{
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            allowNull: false
+            allowNull: false,
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         surname:{
             type: DataTypes.STRING,
@@ -25,7 +25,7 @@ module.exports = (sequelize) =>{
         },
         password:{
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         active: {
             type: DataTypes.BOOLEAN,
