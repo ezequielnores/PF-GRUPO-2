@@ -63,8 +63,8 @@ const neuralNetwork = async () => {
 
     model.compile({loss: 'binaryCrossentropy', optimizer: 'adam', metrics: ['accuracy']});
     model.summary();
-    const xs = tf.tensor2d(trainingDataInputs, [trainingDataInputs.length, trainingDataInputs[0].length]);
-    const ys = tf.tensor2d(trainingDataOutputs, [trainingDataOutputs.length, 1]);
+    const xs = tf.tensor2d(trainingDataInputs, [trainingDataInputs?.length, trainingDataInputs[0]?.length]);
+    const ys = tf.tensor2d(trainingDataOutputs, [trainingDataOutputs?.length, 1]);
 
     await entrena(model,xs ,ys);
     return model
