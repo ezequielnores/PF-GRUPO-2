@@ -124,7 +124,7 @@ const Register = () => {
     reader.onloadend = () => {
       setForm({ ...form, image: reader.result });
 
-      validateForm({ ...form, image: reader.result }, "image");
+      validateForm({ ...form, image: reader.result }, "image", file);
     };
   };
 
@@ -152,7 +152,8 @@ const Register = () => {
     validateForm({ ...form, [name]: form }, name);
   };
 
-  const validateForm = async (form, name) => {
+
+  const validateForm = async (form, name, file) => {
     if (name === "name" || name === "surname") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -213,6 +214,14 @@ const Register = () => {
           return { ...prev, [name]: "Invalid email, it is already in use, or it does not exist, enter another one please" } 
         });
       };
+    }
+
+    if (name === "image") {
+      if (file.type !== "image/jpeg" && file.type!== "image/png") {
+        setError({...error, [name]: "The image must be a jpeg or png file"});
+      } else {
+        setError({...error, [name]: ""});
+      }
     }
   };
 
@@ -485,7 +494,7 @@ const Register = () => {
             name="image"
             value={imageInputValue ? imageInputValue : ""}
             type="file"
-            accept="image/png, image/jpeg"
+            helperText={error.image}
             InputProps={
               !form.image
                 ? { inputProps: { style: { paddingLeft: "5vw" } } }

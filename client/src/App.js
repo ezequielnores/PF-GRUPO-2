@@ -15,7 +15,7 @@ import LoginClient from "./components/LoginClient/LoginClient";
 import MedicForm from "./components/medicWorkForm/medicForm";
 import Register from "./components/HomeClient/Register/Register";
 import LoginMedic from "./components/LoginMedic/LoginMedic";
-import LoginAdmin from './components/LoginAdmin/LoginAdmin';
+import LoginAdmin from "./components/LoginAdmin/LoginAdmin";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import { Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -40,27 +40,30 @@ import { onAuthStateChanged } from "firebase/auth";
 function App() {
   const location = useLocation();
 
-  const[isLogged, setIsLogged] = React.useState(false);
-    
+  const [isLogged, setIsLogged] = React.useState(false);
+
   onAuthStateChanged(auth, (user) => {
-    if(user){       
-      if( isLogged === false ) setIsLogged(prev => true);
-    }else{
-      if(isLogged === true) setIsLogged(prev => false);
+    if (user) {
+      if (isLogged === false) setIsLogged((prev) => true);
+    } else {
+      if (isLogged === true) setIsLogged((prev) => false);
     }
-  })
+  });
 
   return (
     <div className="App">
       {location.pathname.startsWith("/HomeClient") ? (
-        <HomeClient  isLogged={isLogged}/>
+        <HomeClient isLogged={isLogged} />
       ) : location.pathname.startsWith("/HomeMedic") ? (
-        <HomeMedic isLogged={isLogged}/>
+        <HomeMedic isLogged={isLogged} />
       ) : location.pathname.startsWith("/HomeAdmin") ? (
         <HomeAdmin isLogged={isLogged}  />
       ) : location.pathname.startsWith("/loginAdmin") ? (
         <LoginAdmin isLogged={isLogged}  />
-      ) :(
+      ) : location.pathname.startsWith("/resetPassword") ? (
+        <ResetPassword />
+      ) : (
+
         <>
           <Navbar />
           <Routes>
@@ -84,6 +87,7 @@ function App() {
             <Route path="/totalReviews" element={<Review/>} />
 
 
+            <Route path="/totalReviews" element={<Review />} />
           </Routes>
           <Footer />
         </>
