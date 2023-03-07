@@ -77,9 +77,10 @@ export default function LoginAdmin() {
       if(user) {
         const email = user.email
         localStorage.setItem("mailAdmin", email);
-        navigate("/HomeAdmin", { state: { email } });
+        setSuccessLogin(true);
+        navigate("/HomeAdmin");
       } else {
-        setSuccessLogin("error");
+        setSuccessLogin(false);
       }
     } catch(error){
       console.log({ Error: error.message });
@@ -87,9 +88,11 @@ export default function LoginAdmin() {
   };
 
   useEffect(() => {
-    const admin = localStorage.getItem("admin");
-    if (admin) alert("Admin ya logueado");
-  }, []);
+    const admin = localStorage.getItem("mailAdmin");
+    if (admin){
+      navigate("/HomeAdmin");
+    } dispatch(adminGetAll())
+  }, [dispatch, navigate]);
 
   return (
     <div style={divPadre}>

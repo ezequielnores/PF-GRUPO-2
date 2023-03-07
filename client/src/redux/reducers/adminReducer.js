@@ -78,7 +78,6 @@ const adminSlice = createSlice({
   initialState: {
     detail: {},
     listAll: [],
-    list: [],
     status: "idle",
     error: null,
     loggedIn: {},
@@ -91,7 +90,6 @@ const adminSlice = createSlice({
       })
       .addCase(adminRegister.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.detail = action.payload;
       })
       .addCase(adminRegister.rejected, (state, action) => {
         state.state = "failed";
@@ -119,10 +117,9 @@ const adminSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
-      .addCase(
-        adminLogin.pending,
-        (state, action) => (state.status = "loading")
-      )
+      .addCase(adminLogin.pending,(state, action) => {
+        state.status = "loading";
+      })
       .addCase(adminLogin.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.loggedIn = action.payload;

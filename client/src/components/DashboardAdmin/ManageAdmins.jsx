@@ -8,6 +8,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import swal from "sweetalert";
 import { 
   adminRegister, 
   adminGetAll, 
@@ -96,10 +97,10 @@ const dataAdmins = useSelector((state) => state.admin.listAll);
 //detalle de admins
 const adminDetail = useSelector((state) => state.admin.detail);
 const [oldData, setOldData] = useState({
-  name: "",
-  surname: "",
-  mail: "",
-  password: "",
+  name: adminDetail ? adminDetail.name : "",
+  surname: adminDetail ? adminDetail.surname : "",
+  mail: adminDetail ? adminDetail.mail : "",
+  password: adminDetail ? adminDetail.password : "",
 });
 //controles modal
 const activadorOpen = (name) => {
@@ -123,16 +124,18 @@ const activadorOpenEdit = async (id) => {
 const handleEditAdmin = async (e) => {
   e.preventDefault();
   await dispatch(adminEdit({ id: adminDetail.id, data: oldData }));
-  setIsOpenForEdit(false);
+  await swal("Information updated", {
+    icon: "success",
+  });
   dispatch(adminGetAll());
+  setIsOpenForEdit(false);
 };
-const handleChange = (e) => {
-  e.preventDefault();
+const handleChange = (name, value) => {
   setOldData({
     ...oldData,
-    [e.target.name]: e.target.value,
+    [name]: value,
   });
-  console.log(oldData);
+  validateForm({ ...oldData, [name]: value}, name);
 };
 //eliminar un admin
 const handleDeleteAdmin = async (id) => {
@@ -414,19 +417,19 @@ return (
     )}
     {isOpenForEdit && (
       <>
-      <div style={overlay} onClick={() => setIsOpenForEdit(false)}>
+      <div style={overlay}>
         <div style={modalContainer}>
           <div style={modal}>
           <Typography variant="h5" style={{ marginBottom: "2rem" }}>
             Edit administrator
           </Typography>
-          <form onSubmit={handleEditAdmin}>
+          {/* <form onSubmit={handleEditAdmin}> */}
               <TextField
                 label="Name"
                 defaultValue="Default Value"
                 name="name"
                 value={adminDetail ? oldData.name : ""}
-                onChange={() => handleChange()}
+                onChange={(e) => handleChange(e.target.name, e.target.value)}
                 required
                 fullWidth
                 margin="normal"
@@ -436,7 +439,7 @@ return (
                 name="surname"
                 defaultValue="Default Value"
                 value={adminDetail ? oldData.surname : ""}
-                onChange={() => handleChange()}
+                onChange={(e) => handleChange(e.target.name, e.target.value)}
                 required
                 fullWidth
                 margin="normal"
@@ -446,7 +449,7 @@ return (
                 name="password"
                 defaultValue="Default Value"
                 value={adminDetail ? oldData.password : ""}
-                onChange={() => handleChange()}
+                onChange={(e) => handleChange(e.target.name, e.target.value)}
                 required
                 fullWidth
                 margin="normal"
@@ -469,7 +472,7 @@ return (
                   Save
                 </Button>
                 </div>
-              </form>
+              {/* </form> */}
           </div>
         </div>
       </div>

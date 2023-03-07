@@ -30,20 +30,6 @@ router.get("/:id", async (req, res) => {
       .catch((err) => {
         res.status(400).send(err.message);
       });
-    // const { id } = req.params;
-    // const allAdmin = getAdmins();
-    // if (id) {
-    //   const adminById = allAdmin.filter((e) => {
-    //     e.id === id;
-    //   });
-    //   if (adminById) {
-    //     res.status(200).send(adminById);
-    //   } else {
-    //     res.status(404).send("No found admin with this ID");
-    //   }
-    // } else {
-    //   res.status(404).send("No se encontro el id por params");
-    // }
   } catch (error) {
     res.status(404).json({ error: error.massage });
   }
@@ -82,28 +68,6 @@ router.put("/edit/:id", async (req, res) => {
         console.log(err);
         res.status(400).json(err);
       });
-    // const { id } = req.params;
-    // const { name, surname, mail, password } = req.body;
-    // if (id && name && surname && mail && password) {
-    //   const findAdmin = await Admin.findByPk(id);
-    //   console.log(findAdmin);
-    //   if (findAdmin) {
-    //     await findAdmin.update(
-    //       {
-    //         name,
-    //         surname,
-    //         mail,
-    //         password,
-    //       },
-    //       { where: { id: id } }
-    //     );
-    //     res.status(200).send("Admin modificado con exito");
-    //   } else {
-    //     res.status(404).send("Id no encontrado");
-    //   }
-    // } else {
-    //   res.status(404).send("faltan datos para modificar el Admin");
-    // }
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
