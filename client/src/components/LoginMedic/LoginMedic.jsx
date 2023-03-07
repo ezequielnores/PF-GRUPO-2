@@ -9,8 +9,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { docrtorGetAll } from "../../redux/reducers/doctorReducer";
 //Firebase
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../authentication/firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../authentication/firebase";
 //styles
 const divPadre = {
   display: "flex",
@@ -90,9 +90,9 @@ const FormLoginMedic = () => {
       } else {
         setSuccessLogin("error");
       }
-  } catch(error){
-    console.log({ Error: error.message });
-  }
+    } catch (error) {
+      console.log({ Error: error.message });
+    }
   };
   //primera carga
   useEffect(() => {
