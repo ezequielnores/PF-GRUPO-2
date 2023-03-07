@@ -46,22 +46,12 @@ const Home = ({ isLogged }) => {
 
   if (isLogged === true) {
     return (
-      <div style={{ position: "relative" }}>
-        {/* <div
-          style={{
-            width: "100vw",
-            position: "absolute",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        > */}
-        {/* <div
-            style={{
-              width: open ? "15vw" : "10vw",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          > */}
+      <div
+        style={{
+          height: "100vh",
+          backgroundColor: "white",
+        }}
+      >
         <img
           style={{
             width: "4.3vw",
@@ -72,7 +62,6 @@ const Home = ({ isLogged }) => {
           src={logoICare}
           alt=""
         />
-        {/* </div> */}
         <Stack
           style={{
             position: "absolute",
@@ -126,7 +115,7 @@ const Home = ({ isLogged }) => {
             />
           </Avatar>
         </Stack>
-        {/* </div> */}
+
         <SideBar open={open} handleOpen={handleOpen} path={location.pathname} />
 
         <div
@@ -160,16 +149,16 @@ const Home = ({ isLogged }) => {
               <Reviews />
             )) ||
             (location.pathname.endsWith("/HomeClient/Faq") && <Faq />) ||
-            (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
+            // (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
             (location.pathname.endsWith("/HomeClient/Register") && (
               <Register />
             )) ||
             (location.pathname.endsWith("/HomeClient/Suscriptions") && (
               <Suscriptions />
             )) ||
-            (location.pathname.endsWith("/HomeClient/TestCovid") && (
-              <TestCovid />
-            )) ||
+            // (location.pathname.endsWith("/HomeClient/TestCovid") && (
+            //   <TestCovid />
+            // )) ||
             (location.pathname.endsWith("/HomeClient/Suscriptions/history") && (
               <History />
             )) || <ErrorPage />}

@@ -54,13 +54,11 @@ function Reviews() {
 
   const resetForm = () => {
     setFields({
-      title: '',
-      message: '',
+      title: "",
+      message: "",
     });
 
     setValue(0);
-
-
   };
 
   const submitHandler = (event) => {
@@ -78,7 +76,7 @@ function Reviews() {
     );
 
     setModalAbierto(true);
-    resetForm()
+    resetForm();
   };
 
   const closeModal = () => {
@@ -86,7 +84,15 @@ function Reviews() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        marginLeft: "4px",
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        height: "45.5rem",
+      }}
+    >
       <form onSubmit={submitHandler}>
         <Typography
           variant="button"
