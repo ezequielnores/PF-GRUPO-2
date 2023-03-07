@@ -15,6 +15,7 @@ import {
   ProfileEdit,
   Agenda,
   SeePatients,
+  ChatHome,
 } from "../index";
 import { useSelector, useDispatch } from "react-redux";
 import ErrorPage from "../../ErrorPage/ErrorPage";
@@ -24,7 +25,6 @@ const Home = ({ isLogged }) => {
   //logic para mostrar render el doc actual logeado
   const dataDoc = useSelector((state) => state.doctor.detail);
   // console.log(dataDoc);
-
 
   const location = useLocation();
   const [open, setOpen] = useState(true);
@@ -122,6 +122,7 @@ const Home = ({ isLogged }) => {
             (location.pathname.endsWith("/HomeMedic/Profile/Edit") && (
               <ProfileEdit />
             )) ||
+            (location.pathname.includes("/HomeMedic/Chat") && <ChatHome />) ||
             (location.pathname.endsWith("/HomeMedic/Agenda") && <Agenda />) ||
             (location.pathname.endsWith("/HomeMedic/MedicalEmergency") && (
               <MedicalEmergency />

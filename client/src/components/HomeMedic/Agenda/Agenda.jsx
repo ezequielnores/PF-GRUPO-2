@@ -160,6 +160,7 @@ const Agenda = () => {
     setAppointment(data);
     dispatch(attendedPatientTurns(e.target.value));
     setAttend(true);
+
   };
   useEffect(() => {
     dispatch(appointmentGetAllByDoctorId(localStorage.getItem("idMedic")));
