@@ -71,7 +71,7 @@ const neuralNetwork = async () => {
         
     } catch (error) {
         console.log(dataSet);
-        console.log(dataArray);
+       
         console.log(error.message);
     }
     
