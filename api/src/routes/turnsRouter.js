@@ -165,6 +165,7 @@ turnsRouter.post("/", async (req, res) => {
 
         res.status(200).json(turn);
     } catch (error) {
+        console.log(error)
         res.status(400).json({ error: error.message });
     }
 });
