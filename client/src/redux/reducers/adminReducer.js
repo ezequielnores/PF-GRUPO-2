@@ -18,6 +18,16 @@ export const adminGetDetail = createAsyncThunk(
   }
 );
 
+export const adminGetDetailForEdit = createAsyncThunk(
+  "admins/getDetailForEdit",
+  async (id) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/admins/${id}`
+    );
+    return response.data;
+  }
+);
+
 export const adminRegister = createAsyncThunk(
   "admins/register",
   async (data) => {
@@ -81,6 +91,7 @@ const adminSlice = createSlice({
     status: "idle",
     error: null,
     loggedIn: {},
+    forEdit: {},
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -147,6 +158,17 @@ const adminSlice = createSlice({
         state.detail = action.payload;
       })
       .addCase(disableAdmin.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(adminGetDetailForEdit.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(adminGetDetailForEdit.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.forEdit = action.payload;
+      })
+      .addCase(adminGetDetailForEdit.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

@@ -16,6 +16,7 @@ import {
   disableAdmin, 
   adminEdit,
   adminGetDetail,
+  adminGetDetailForEdit,
 } from "../../redux/reducers/adminReducer.js";
 //Firebase
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -60,7 +61,6 @@ const gridContainer = {
   display: "flex",
   justifyContent: "center",
   flexDirection: "column",
-  border: "2px solid black",
 };
 const divsitoButton = {
   display: "flex",
@@ -95,7 +95,8 @@ const dispatch = useDispatch();
 //lista de admins
 const dataAdmins = useSelector((state) => state.admin.listAll);
 //detalle de admins
-const adminDetail = useSelector((state) => state.admin.detail);
+const adminDetail = useSelector((state) => state.admin.forEdit);
+const adminLogeado = useSelector((state) => state.admin.detail);
 const [oldData, setOldData] = useState({
   name: adminDetail ? adminDetail.name : "",
   surname: adminDetail ? adminDetail.surname : "",
@@ -119,7 +120,7 @@ const activadorOpenEdit = async (id) => {
   //abre el modal
   setIsOpenForEdit(true);
   //le hago click y dispatcho ese plan a detail
-  await dispatch(adminGetDetail(id));
+  await dispatch(adminGetDetailForEdit(id));
 };
 const handleEditAdmin = async (e) => {
   e.preventDefault();
@@ -295,18 +296,20 @@ return (
           sm={6} 
           md={4}
         >
-          <Card>
+          <Card style={{margin: "2rem"}}>
             <CardContent style={{display: 'flex', justifyContent: 'center', alignItems: "center"}}>
               <div style={{flex: 1}}>
                 <h3>{admin.name} {admin.surname}</h3>
               </div>
               <div style={divsitoButton}>
+              {admin.id == adminLogeado.id ?
               <Button
                 variant="outlined"
                 onClick={() => activadorOpenEdit(admin.id)}
               >
                 EDIT
               </Button>
+              : null }
               {admin.active === true ? (
                   <Button
                     variant="outlined"

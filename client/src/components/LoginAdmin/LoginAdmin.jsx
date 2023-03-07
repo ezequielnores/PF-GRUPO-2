@@ -1,8 +1,9 @@
 import { Alert, Button, Card, Input, Typography } from "@mui/material";
+import swal from "sweetalert";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { adminGetAll, adminLogin } from "../../redux/reducers/adminReducer";
+import { adminGetAll, adminGetDetail } from "../../redux/reducers/adminReducer";
 //Firebase
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../authentication/firebase";
@@ -46,7 +47,7 @@ const buton = {
 export default function LoginAdmin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const state = useSelector((state) => state.admin);
+  const admin = useSelector((state) => state.admin.listAll);
   // const admins = useSelector((state) => state.admins.list);
   const [successLogin, setSuccessLogin] = useState(null);
   const [info, setInfo] = useState({
@@ -54,13 +55,47 @@ export default function LoginAdmin() {
     password: "",
     id: "",
   });
+  const [error, setError] = useState({
+    mail: "",
+    password: "",
+  });
 
-  const handleChange = (evento) => {
-    evento.preventDefault();
+  const validateForm = (data, name) => {
+    if (name === "password") {
+      if (
+        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+          data[name] || data[name] !== ""
+        )
+      ) {
+        setError({
+          ...error,
+          [name]:
+            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
+        });
+      } else {
+        setError({
+          ...error,
+          [name]: "",
+        });
+      }
+    }
+    if (name === "mail") {
+      if (
+        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+          data[name] || data[name] !== ""
+        )
+      ) {
+        setError({ ...error, [name]: "•Musst be a valid email" });
+      } else setError({ ...error, [name]: "" });
+    }
+  };
+
+  const handleChange = (name, value) => {
     setInfo({
       ...info,
-      [evento.target.name]: evento.target.value,
+      [name]: value,
     });
+    validateForm({ ...info, [name]: value}, name);
   };
 
   //SUBMIT
@@ -76,20 +111,39 @@ export default function LoginAdmin() {
       console.log("admin logueado: " + user.email);
       if(user) {
         const email = user.email
-        localStorage.setItem("mailAdmin", email);
-        setSuccessLogin(true);
-        navigate("/HomeAdmin");
+        const adminFind = admin.find((admin) => {
+          return admin.mail === email
+        })
+        if(adminFind.active === false){
+          setSuccessLogin(false);
+          await swal("Administrator disabled", {
+            icon: "warning",
+          });
+        } else {
+          localStorage.setItem("mailAdmin",email);
+          localStorage.setItem("idAdmin", adminFind.id);
+          dispatch(adminGetDetail(adminFind.id))
+          setSuccessLogin(true);
+          navigate("/HomeAdmin");
+        }
       } else {
         setSuccessLogin(false);
+        await swal("Unregistered administrator", {
+          icon: "warning",
+        });
       }
     } catch(error){
       console.log({ Error: error.message });
+      await swal("Error loging", {
+        icon: "warning",
+      });
     }
   };
 
   useEffect(() => {
     const admin = localStorage.getItem("mailAdmin");
     if (admin){
+      dispatch(adminGetAll())
       navigate("/HomeAdmin");
     } dispatch(adminGetAll())
   }, [dispatch, navigate]);
@@ -124,18 +178,41 @@ export default function LoginAdmin() {
           </Typography>
           <label>Email</label>
           <Input
-            type="email"
-            name="mail"
+            error={error.mail}
             style={inputs}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e.target.name, e.target.value)}
+            name="mail"
+            value={info.mail}
+            type="mail"
+            required
+            fullWidth
+            margin="normal"
           />
+          {error.mail && 
+            <Typography
+              variant="caption" 
+              color="error">
+                •Musst be a valid email
+            </Typography>}
           <label>Password</label>
           <Input
-            type="password"
-            name="password"
+            error={error.password}
             style={inputs}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e.target.name, e.target.value)}
+            name="password"
+            value={info.password}
+            type="password"
+            helperText={error.password}
+            required
+            fullWidth
+            margin="normal"
           />
+          {error.password && 
+            <Typography
+              variant="caption" 
+              color="error">
+                •Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character
+            </Typography>}
           <Button
             variant="contained"
             type="submit"
