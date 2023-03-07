@@ -227,9 +227,10 @@ const Register = () => {
 
   const dispatchRegister = async (userCredential) => {
     await dispatch(
-      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
+      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email, uid: auth.currentUser.uid })
     )
       .then(async (res) => {
+        console.log(auth)
         if (res.type === "patient/register/fulfilled") {
           // alert("Account Created");
           setAlertSeverity("success");
@@ -272,6 +273,7 @@ const Register = () => {
         );
         const user = userCredential.user;
         console.log("usuario creado: " + user.email);
+        console.log(userCredential)
         dispatchRegister(userCredential);
         const authenticatedPatient = patients.find((patient) => {
           return patient.mail === auth.currentUser.email;
