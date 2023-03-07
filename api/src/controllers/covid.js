@@ -8,9 +8,8 @@ const testCovid = async (model,input) => {
 }
 
 const neuralNetwork = async () => {
-   
-    var dataSet = fs.readFileSync(__dirname.replace(/\\/g, '/')+'/Covid-Dataset.csv', 'utf8');
-    console.log(dataSet)
+    
+    var dataSet = fs.readFileSync(__dirname + "/Covid-Dataset.csv", 'utf8');
     var lines = dataSet.split('\r\n');
     var dataArray = [];
     for (var i = 0; i < lines.length; i++) {
