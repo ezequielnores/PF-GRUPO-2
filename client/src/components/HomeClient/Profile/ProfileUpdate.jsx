@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import { useNavigate,useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -21,10 +21,8 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import swal from "sweetalert"
+import swal from "sweetalert";
 import { IconButton, InputAdornment } from "@mui/material";
-
-
 
 //styles
 const padreDiv = {
@@ -55,21 +53,20 @@ const ProfileEdit = () => {
   const patientDetail = useSelector((state) => state.patient.detail);
   const [imageInputValue, setImageInputValue] = useState("");
 
-
   const [infoNueva, setInfoNueva] = useState({
-    name: detailPatient? detailPatient.name:"",
-    surname: detailPatient? detailPatient.surname:"",
+    name: detailPatient ? detailPatient.name : "",
+    surname: detailPatient ? detailPatient.surname : "",
     // mail: detailPatient? detailPatient.mail:"",
     // password: detailPatient? detailPatient.password:"",
-    birthday: detailPatient? detailPatient.birthday:new Date(),
-    photo: detailPatient? detailPatient.photo:"",
-    weight: detailPatient? detailPatient.weight:"",
-    height: detailPatient? detailPatient.height:"",
-    allergies: detailPatient? detailPatient.allergies:"",
-    chronicDiseases: detailPatient? detailPatient.chronicDiseases:"",
-    location: detailPatient? detailPatient.location:"",
-    phone: detailPatient? detailPatient.phone:"",
-    bmi:detailPatient? detailPatient.bmi:"",
+    birthday: detailPatient ? detailPatient.birthday : new Date(),
+    photo: detailPatient ? detailPatient.photo : "",
+    weight: detailPatient ? detailPatient.weight : "",
+    height: detailPatient ? detailPatient.height : "",
+    allergies: detailPatient ? detailPatient.allergies : "",
+    chronicDiseases: detailPatient ? detailPatient.chronicDiseases : "",
+    location: detailPatient ? detailPatient.location : "",
+    phone: detailPatient ? detailPatient.phone : "",
+    bmi: detailPatient ? detailPatient.bmi : "",
   });
 
   const [hasChanged, setHasChanged] = useState(false);
@@ -82,13 +79,13 @@ const ProfileEdit = () => {
     // password: "",
     birthday: "",
     surname: "",
-    weight:"",
-    height:"",
-    location:"",
-    chronicDiseases:"",
-    allergies:"",
-    
+    weight: "",
+    height: "",
+    location: "",
+    chronicDiseases: "",
+    allergies: "",
   });
+  const patientId = localStorage.getItem("id");
 
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -96,10 +93,6 @@ const ProfileEdit = () => {
       dispatch(patientGetDetail(patientId));
     }
   }, []);
-
- 
-
-  
 
   const handleChange = (name, value) => {
     setInfoNueva({
@@ -122,22 +115,23 @@ const ProfileEdit = () => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setInfoNueva({...infoNueva, [name]: reader.result});
+      setInfoNueva({ ...infoNueva, [name]: reader.result });
       setHasChanged(true);
-      validateFields({...infoNueva}, name, file);
+      validateFields({ ...infoNueva }, name, file);
     };
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const errors = validateFields();
     if (Object.values(error).every((item) => item === "")) {
-       dispatch(patientUpdate({ id:patientDetail.id,data:infoNueva }));
+      dispatch(patientUpdate({ id: patientDetail.id, data: infoNueva }));
       await swal("Information updated", {
         icon: "success",
       });
       // alert("Information updated");
       await navigate("/HomeClient/Profile");
+      dispatch(patientGetDetail(patientId));
     } else {
       alert("Error");
     }
@@ -183,15 +177,13 @@ const ProfileEdit = () => {
     // }
 
     if (name === "photo") {
-      if (file.type !== "image/jpeg" && file.type!== "image/png") {
-        setError({...error, [name]: "The image must be a jpeg or png file"});
+      if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        setError({ ...error, [name]: "The image must be a jpeg or png file" });
       } else {
-        setError({...error, [name]: ""});
+        setError({ ...error, [name]: "" });
       }
     }
   };
-
- 
 
   return (
     <div style={padreDiv}>
@@ -213,7 +205,7 @@ const ProfileEdit = () => {
       </Link>
       <Card style={carde}>
         <TextField
-        value={infoNueva.name}
+          value={infoNueva.name}
           name="name"
           label="Name"
           style={typoTitle}
@@ -223,7 +215,7 @@ const ProfileEdit = () => {
           helperText={error.name}
         />
         <TextField
-        value={infoNueva.surname}
+          value={infoNueva.surname}
           name="surname"
           label="Last name"
           style={typoTitle}
@@ -235,7 +227,7 @@ const ProfileEdit = () => {
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
-          name="birthday"
+            name="birthday"
             label="Birthdate"
             value={infoNueva.birthday}
             onChange={handleFechaNacimientoChange}
@@ -270,7 +262,7 @@ const ProfileEdit = () => {
         /> */}
 
         <TextField
-        sx={{marginTop:2}}
+          sx={{ marginTop: 2 }}
           label="Photo"
           InputLabelProps={{
             shrink: true,
@@ -311,7 +303,7 @@ const ProfileEdit = () => {
         />
 
         <TextField
-        value={infoNueva.weight}
+          value={infoNueva.weight}
           name="weight"
           label="Weight"
           style={typoTitle}
@@ -321,7 +313,7 @@ const ProfileEdit = () => {
           helperText={error.weight}
         />
         <TextField
-        value={infoNueva.height}
+          value={infoNueva.height}
           name="height"
           label="Height"
           style={typoTitle}
@@ -331,7 +323,7 @@ const ProfileEdit = () => {
           helperText={error.height}
         />
         <TextField
-        value={infoNueva.allergies}
+          value={infoNueva.allergies}
           name="allergies"
           label="Allergies"
           style={typoTitle}
@@ -339,7 +331,7 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e.target.name, e.target.value)}
         />
         <TextField
-        value={infoNueva.chronicDiseases}
+          value={infoNueva.chronicDiseases}
           name="chronicDiseases"
           label="Chronic diseases"
           style={typoTitle}
@@ -349,7 +341,7 @@ const ProfileEdit = () => {
           helperText={error.chronicDiseases}
         />
         <TextField
-        value={infoNueva.location}
+          value={infoNueva.location}
           name="location"
           label="Location"
           style={typoTitle}
@@ -359,7 +351,6 @@ const ProfileEdit = () => {
           helperText={error.location}
         />
         <TextField
-          
           name="phone"
           label="Phone"
           value={infoNueva.phone}

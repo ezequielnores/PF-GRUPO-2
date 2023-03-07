@@ -154,6 +154,7 @@ const Urgency = () => {
       await swal("The urgency has been sent.", {
         icon: "success",
       });
+      dispatch(urgencyGetAllNotAttended());
       // alert("Your information has been sent");
       //   await axios.post(`${process.env.REACT_APP_BACKEND_URL}/urgency`, body);
       //   alert("Your information has been sent");
@@ -164,13 +165,6 @@ const Urgency = () => {
   useEffect(() => {
     dispatch(urgencyGetAllNotAttended());
   }, []);
-  const handleGmailClick = () => {
-    window.open("https://www.gmail.com", "_blank");
-  };
-
-  const handleOutlookClick = () => {
-    window.open("https://www.outlook.com", "_blank");
-  };
   return (
     <div className={style.generalDiv}>
       <div
