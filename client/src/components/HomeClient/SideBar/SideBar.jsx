@@ -4,7 +4,7 @@ import style from "./SideBar.module.css";
 import Stack from "@mui/material/Stack";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChatIcon from '@mui/icons-material/Chat';
+import ChatIcon from "@mui/icons-material/Chat";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
@@ -118,7 +118,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                     )}
                     Chat
                   </div>
-                ) : path.endsWith("/HomeClient") ? (
+                ) : path.endsWith("/HomeClient/Chat") ? (
                   <ChatIcon />
                 ) : (
                   <ChatIcon style={{ color: "grey" }} />

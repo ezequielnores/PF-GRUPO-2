@@ -158,8 +158,9 @@ const TestCovid = () => {
         `${process.env.REACT_APP_BACKEND_URL}/covid`,
         data
       );
-      // console.log(response.data[0]);
-      setResult(response.data[0].toFixed(3)*100);
+      // console.log(response.data[0][0]);
+      
+      setResult(response.data[0][0].toFixed(3)*100);
       setForm({
         breathingProblem: 0,
         fever: 0,

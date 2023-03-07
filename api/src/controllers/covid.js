@@ -1,21 +1,15 @@
 var fs = require('fs');
-const { NeuralNetwork } = require('brain.js');
-const testCovid = async (net,input) => {
-    // const weightsAndBiases = require('../utils/weightsCovid.json');
-    // const weight1 = weightsAndBiases.weight1
-    // const weight2 = weightsAndBiases.weight2
-    // const bias1 = weightsAndBiases.bias1
-    // const bias2 = weightsAndBiases.bias2
+const tf = require('@tensorflow/tfjs');
 
-    // console.log(weight1);
-    const output = net.run(input);
+const testCovid = async (model,input) => {
+
+    const output = model.predict(tf.tensor2d(input, [1, 20])).arraySync()
     return output;
 }
 
-
 const neuralNetwork = async () => {
-   
-    var dataSet = fs.readFileSync(__dirname.replace(/\\/g, '/')+'/Covid-Dataset.csv', 'utf8');
+    
+    var dataSet = fs.readFileSync(__dirname + "/Covid-Dataset.csv", 'utf8');
     var lines = dataSet.split('\r\n');
     var dataArray = [];
     for (var i = 0; i < lines.length; i++) {
@@ -54,30 +48,29 @@ const neuralNetwork = async () => {
     const trainingDataInputs = trainingData.map(t => t.slice(0, t.length - 1));
     const trainingDataOutputs = trainingData.map(t => t[t.length - 1]);
 
-    const prueba = testingData[0]
-    const pruebaInputs = prueba.slice(0, prueba.length - 1);
-    const pruebaOutputs = prueba[prueba.length - 1];
-
-    const modifyData = (data) => {
-        return data.map(d => {
-            return {
-                input: d.slice(0, d.length - 1),
-                output: [d[d.length - 1]]
+    async function entrena(model,xs,ys){
+        const historia = await model.fit(xs, ys, {
+            epochs: 1000,
+            callbacks: {
+                // onEpochEnd: async(epoch, log) => console.log(`Epoch ${epoch}: loss = ${log.loss}`)
             }
         });
     }
-    const dataModify = modifyData(trainingData);
-    const net = new NeuralNetwork({
-        activation: 'sigmoid', // activation function
-        learningRate: 0.6, // global learning rate, useful when training using streams
-    });
-    net.train(dataModify);
-    // const output = net.run(pruebaInputs);
-    return net;
+    const model = tf.sequential();
+    model.add(tf.layers.dense({inputShape: [20], units: 10, activation: 'sigmoid'}));
+    model.add(tf.layers.dense({units: 10, activation: 'sigmoid'}));
+    model.add(tf.layers.dense({units: 1, activation: 'sigmoid'}));
+
+    model.compile({loss: 'binaryCrossentropy', optimizer: 'adam', metrics: ['accuracy']});
+    model.summary();
+    const xs = tf.tensor2d(trainingDataInputs, [trainingDataInputs.length, trainingDataInputs[0].length]);
+    const ys = tf.tensor2d(trainingDataOutputs, [trainingDataOutputs.length, 1]);
+
+    await entrena(model,xs ,ys);
+    return model
 }
 
 module.exports = {
     neuralNetwork,
     testCovid
 }
-// neuralNetwork();

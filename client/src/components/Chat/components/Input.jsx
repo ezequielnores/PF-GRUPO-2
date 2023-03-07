@@ -21,6 +21,12 @@ const Input = () => {
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
 
+  const handlePress = (event) => {
+    if (event.key === 'Enter') {
+      handleSend()
+    }
+  };
+
   const handleSend = async () => {
     if (img) {
       const storageRef = ref(storage, uuid());
@@ -46,6 +52,7 @@ const Input = () => {
         }
       );
     } else {
+      setText("")
       await updateDoc(doc(db, "chats", data.chatId), {
         messages: arrayUnion({
           id: uuid(),
@@ -54,6 +61,7 @@ const Input = () => {
           date: Timestamp.now(),
         }),
       });
+      
     }
 
     await updateDoc(doc(db, "userChats", currentUser.uid), {
@@ -77,9 +85,11 @@ const Input = () => {
     <div className="input">
       <input
         type="text"
-        placeholder="Type something..."
+        placeholder={data.chatId == "null" ? "Select a chat" : "Type something..."}
         onChange={(e) => setText(e.target.value)}
         value={text}
+        onKeyDown={handlePress}
+        disabled={data.chatId == "null"}
       />
       <div className="send">
         <img src={Attach} alt="" />
@@ -88,11 +98,12 @@ const Input = () => {
           style={{ display: "none" }}
           id="file"
           onChange={(e) => setImg(e.target.files[0])}
+          disabled={data.chatId == "null"}
         />
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label>
-        <button onClick={handleSend}>Send</button>
+        <button onClick={handleSend} >Send</button>
       </div>
     </div>
   );
