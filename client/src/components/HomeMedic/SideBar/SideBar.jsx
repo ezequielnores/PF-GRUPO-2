@@ -8,6 +8,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ChatIcon from "@mui/icons-material/Chat";
 import swal from "sweetalert";
 //Firebase
 import { signOut } from "firebase/auth";
@@ -33,7 +34,7 @@ const SideBar = ({ open, handleOpen, path }) => {
     });
   };
 
-  const isActive = useSelector(state => state.doctor.detail.active);
+  const isActive = useSelector((state) => state.doctor.detail.active);
 
   return (
     <div>
@@ -67,9 +68,8 @@ const SideBar = ({ open, handleOpen, path }) => {
               textAlign: "center",
             }}
           >
-            
             <button style={{ border: "none", backgroundColor: "transparent" }}>
-              <Link to="/HomeMedic/Profile" >
+              <Link to="/HomeMedic/Profile">
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeMedic/Profile") ? (
@@ -86,67 +86,95 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
-            { isActive &&
-            <button style={{ border: "none", backgroundColor: "transparent" }}>
-              <Link to="/HomeMedic/Agenda">
-                {open ? (
-                  <div className={style.divbutton}>
-                    {path.endsWith("/HomeMedic/Agenda") ? (
-                      <CalendarMonthIcon />
-                    ) : (
-                      <CalendarMonthIcon style={{ color: "#c2c1c1" }} />
-                    )}
-                    <p>My Appointments</p>
-                  </div>
-                ) : path.endsWith("/HomeMedic/Agenda") ? (
-                  <CalendarMonthIcon />
-                ) : (
-                  <CalendarMonthIcon style={{ color: "#c2c1c1" }} />
-                )}
-              </Link>
-            </button>
-            }
+            {isActive && (
+              <button
+                style={{ border: "none", backgroundColor: "transparent" }}
+              >
+                <Link to="/HomeMedic/Agenda">
+                  {open ? (
+                    <div className={style.divbutton}>
+                      {path.endsWith("/HomeMedic/Agenda") ? (
+                        <CalendarMonthIcon />
+                      ) : (
+                        <CalendarMonthIcon style={{ color: "#c2c1c1" }} />
+                      )}
+                      <p>My Appointments</p>
+                    </div>
+                  ) : path.endsWith("/HomeMedic/Agenda") ? (
+                    <CalendarMonthIcon />
+                  ) : (
+                    <CalendarMonthIcon style={{ color: "#c2c1c1" }} />
+                  )}
+                </Link>
+              </button>
+            )}
+            {isActive && (
+              <button
+                style={{ border: "none", backgroundColor: "transparent" }}
+              >
+                <Link to="/HomeMedic/Chat">
+                  {open ? (
+                    <div className={style.divbutton}>
+                      {path.endsWith("/HomeMedic/Chat") ? (
+                        <ChatIcon />
+                      ) : (
+                        <ChatIcon style={{ color: "#c2c1c1" }} />
+                      )}
+                      <p>Chat</p>
+                    </div>
+                  ) : path.endsWith("/HomeMedic/Chat") ? (
+                    <ChatIcon />
+                  ) : (
+                    <ChatIcon style={{ color: "#c2c1c1" }} />
+                  )}
+                </Link>
+              </button>
+            )}
 
-            { isActive && 
-            <button style={{ border: "none", backgroundColor: "transparent" }}>
-              <Link to="/HomeMedic/MedicalEmergency">
-                {open ? (
-                  <div className={style.divbutton}>
-                    {path.endsWith("/HomeMedic/MedicalEmergency") ? (
-                      <MedicalServicesIcon />
-                    ) : (
-                      <MedicalServicesIcon style={{ color: "#c2c1c1" }} />
-                    )}
-                    <p>Urgency</p>
-                  </div>
-                ) : path.endsWith("/HomeMedic/MedicalEmergency") ? (
-                  <MedicalServicesIcon />
-                ) : (
-                  <MedicalServicesIcon style={{ color: "#c2c1c1" }} />
-                )}
-              </Link>
-            </button>
-            }
-            { isActive && 
-            <button style={{ border: "none", backgroundColor: "transparent" }}>
-              <Link to="/HomeMedic/Reviews">
-                {open ? (
-                  <div className={style.divbutton}>
-                    {path.endsWith("/HomeMedic/Reviews") ? (
-                      <RateReviewIcon />
-                    ) : (
-                      <RateReviewIcon style={{ color: "#c2c1c1" }} />
-                    )}
-                    <p>Reviews</p>
-                  </div>
-                ) : path.endsWith("/HomeMedic/Reviews") ? (
-                  <RateReviewIcon />
-                ) : (
-                  <RateReviewIcon style={{ color: "#c2c1c1" }} />
-                )}
-              </Link>
-            </button>
-            } 
+            {isActive && (
+              <button
+                style={{ border: "none", backgroundColor: "transparent" }}
+              >
+                <Link to="/HomeMedic/MedicalEmergency">
+                  {open ? (
+                    <div className={style.divbutton}>
+                      {path.endsWith("/HomeMedic/MedicalEmergency") ? (
+                        <MedicalServicesIcon />
+                      ) : (
+                        <MedicalServicesIcon style={{ color: "#c2c1c1" }} />
+                      )}
+                      <p>Urgency</p>
+                    </div>
+                  ) : path.endsWith("/HomeMedic/MedicalEmergency") ? (
+                    <MedicalServicesIcon />
+                  ) : (
+                    <MedicalServicesIcon style={{ color: "#c2c1c1" }} />
+                  )}
+                </Link>
+              </button>
+            )}
+            {isActive && (
+              <button
+                style={{ border: "none", backgroundColor: "transparent" }}
+              >
+                <Link to="/HomeMedic/Reviews">
+                  {open ? (
+                    <div className={style.divbutton}>
+                      {path.endsWith("/HomeMedic/Reviews") ? (
+                        <RateReviewIcon />
+                      ) : (
+                        <RateReviewIcon style={{ color: "#c2c1c1" }} />
+                      )}
+                      <p>Reviews</p>
+                    </div>
+                  ) : path.endsWith("/HomeMedic/Reviews") ? (
+                    <RateReviewIcon />
+                  ) : (
+                    <RateReviewIcon style={{ color: "#c2c1c1" }} />
+                  )}
+                </Link>
+              </button>
+            )}
           </Stack>
           <button
             style={{

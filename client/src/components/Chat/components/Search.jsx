@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   collection,
   query,
@@ -12,12 +12,34 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../authentication/firebase";
 import { AuthContext } from "../../../context/AuthContext";
+import { useSelector } from "react-redux";
 const Search = () => {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState(null);
   const [err, setErr] = useState(false);
+  const [currentData, setCurrentData] = useState();
 
   const { currentUser } = useContext(AuthContext);
+
+  const getCurrentData = async (dude) => {
+    const qu = query(
+      collection(db, "users"),
+      where("uid", "==", dude.uid)
+    );
+    try {
+      const querySnapshot = await getDocs(qu);
+      querySnapshot.forEach((doc) => {
+        setCurrentData(doc.data());
+      });
+    } catch (err) {
+      setErr(true);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentData(currentUser)
+    return () => {};
+  }, [currentUser]);
 
   const handleSearch = async () => {
     const q = query(
@@ -61,12 +83,11 @@ const Search = () => {
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
-
         await updateDoc(doc(db, "userChats", user.uid), {
           [combinedId + ".userInfo"]: {
             uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
+            displayName: currentData.displayName,
+            photoURL: currentData.photoURL,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });

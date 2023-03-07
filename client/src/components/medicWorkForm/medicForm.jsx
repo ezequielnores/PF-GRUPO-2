@@ -19,8 +19,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { doctorAdd } from "../../redux/reducers/doctorReducer";
 //Firebase
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../authentication/firebase";
+import { auth, db } from "../../authentication/firebase";
 import axios from "axios";
+import { doc, setDoc } from "firebase/firestore";
 const { REACT_APP_BACKEND_URL } = process.env;
 
 //style
@@ -110,18 +111,36 @@ const MedicForm = () => {
   });
 
   const DisableButton = () => {
-    if(error.mail !== "" || error.password !== "" || error.name !== "" || error.lastName !== "" 
-    || error.dni !== "" || error.license){
+    if (
+      error.mail !== "" ||
+      error.password !== "" ||
+      error.name !== "" ||
+      error.lastName !== "" ||
+      error.dni !== "" ||
+      error.license
+    ) {
       return true;
     }
-    if(form.name === "" || form.lastName === "" || form.mail === "" || form.password === "" 
-    || form.phone === "" || form.dni === "" || form.license === "" 
-    || form.birthdate === "" || form.speciality === "" || form.location === "" || form.cv === "" 
-    || form.cv === null || form.image === "" || form.image === null ){
+    if (
+      form.name === "" ||
+      form.lastName === "" ||
+      form.mail === "" ||
+      form.password === "" ||
+      form.phone === "" ||
+      form.dni === "" ||
+      form.license === "" ||
+      form.birthdate === "" ||
+      form.speciality === "" ||
+      form.location === "" ||
+      form.cv === "" ||
+      form.cv === null ||
+      form.image === "" ||
+      form.image === null
+    ) {
       return true;
     }
     return false;
-  }
+  };
 
   const handleImage = (e) => {
     const name = e.target.name;
@@ -143,8 +162,8 @@ const MedicForm = () => {
   };
 
   const onChangeEmail = (name, value) => {
-    setForm((prev) => { 
-      return {  ...prev, [name]: value} 
+    setForm((prev) => {
+      return { ...prev, [name]: value };
     });
 
     validateForm({ ...form, [name]: value }, name);
@@ -198,37 +217,39 @@ const MedicForm = () => {
         });
       }
     }
-    if (name === "mail" ) {
-    const isValid = await axios.get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`).then(r => r.data)
-    
-    if(isValid){
-      setError((prev) => {
-        return {...prev, [name]:""}
-      })
-    }else{
-      setError((prev) => {
-        return {...prev, [name]:"Must enter a valid email"}
+    if (name === "mail") {
+      const isValid = await axios
+        .get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`)
+        .then((r) => r.data);
+
+      if (isValid) {
+        setError((prev) => {
+          return { ...prev, [name]: "" };
+        });
+      } else {
+        setError((prev) => {
+          return { ...prev, [name]: "Must enter a valid email" };
+        });
       }
-      )}
     }
 
     if (name === "image") {
-      if (file.type !== "image/jpeg" && file.type!== "image/png") {
-        setError({...error, [name]: "The image must be a jpeg or png file"});
+      if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        setError({ ...error, [name]: "The image must be a jpeg or png file" });
       } else {
-        setError({...error, [name]: ""});
+        setError({ ...error, [name]: "" });
       }
     }
 
     if (name === "cv") {
       if (file.type !== "application/pdf") {
-        setError({...error, [name]: "The cv must be a pdf file"})
+        setError({ ...error, [name]: "The cv must be a pdf file" });
       } else {
-        setError({...error, [name]: ""});
+        setError({ ...error, [name]: "" });
       }
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const error = validateFields();
@@ -240,12 +261,23 @@ const MedicForm = () => {
           form.mail,
           form.password
         );
-        const user = userCredential.user;
         // console.log("medico creado: " + user.email);
-        dispatch(doctorAdd({ ...form }))
-          .then((res) => {
+        dispatch(doctorAdd({ ...form, uid: userCredential.user.uid }))
+          .then(async (res) => {
             if (res.type === "doctor/addById/fulfilled") {
               // alert("Account sent! Pending to activate..");
+              //create user on firestore
+              await setDoc(doc(db, "users", userCredential.user.uid), {
+                uid: userCredential.user.uid,
+                displayName: form.name + " " + form.lastName,
+                email: form.mail,
+                photoURL: form.image
+                  ? form.image
+                  : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+              });
+
+              //create empty user chats on firestore
+              await setDoc(doc(db, "userChats", userCredential.user.uid), {});
               setAlertSeverity("success");
               setAlertMessage(
                 "Account sent! Pending to activate.. Wait to be redirected"
@@ -255,8 +287,9 @@ const MedicForm = () => {
                 return doctor.mail === auth.currentUser.email;
               });
               localStorage.setItem("idMedic", authenticatedDoctor.id);
-              navigate("/HomeMedic/Profile")
-/*               setTimeout(() => {
+
+              navigate("/HomeMedic/Profile");
+              /*               setTimeout(() => {
                 navigate("/loginMedic");
               }, 2500); */
             } else {
@@ -281,9 +314,8 @@ const MedicForm = () => {
       setAlertMessage("Existing errors     ");
       setShowAlert(true);
     }
-   
   };
-  
+
   return (
     <div style={divPadre}>
       <Snackbar
@@ -293,7 +325,7 @@ const MedicForm = () => {
         onClose={() => setShowAlert(false)}
       >
         <Alert
-          variant='filled'
+          variant="filled"
           severity={alertSeverity}
           onClose={() => setShowAlert(false)}
         >
@@ -301,27 +333,27 @@ const MedicForm = () => {
         </Alert>
       </Snackbar>
       <form
-        component='form'
+        component="form"
         sx={{
           "& .MuiTextField-root": { m: 1, width: "25ch" },
         }}
         style={box}
         noValidate
-        autoComplete='off'
+        autoComplete="off"
         onSubmit={handleSubmit}
       >
         {successForm === "success" && (
-          <Alert severity='success'>Will be in contact soon !</Alert>
+          <Alert severity="success">Will be in contact soon !</Alert>
         )}
         {successForm === "error" && (
-          <Alert severity='error'>Server error !</Alert>
+          <Alert severity="error">Server error !</Alert>
         )}
 
         <Card style={cardDiv}>
           <div style={finalinput}>
             <Typography
-              variant='h2'
-              align='justify'
+              variant="h2"
+              align="justify"
               style={{
                 color: "#307196",
                 fontWeight: "bold",
@@ -334,23 +366,23 @@ const MedicForm = () => {
           </div>
           <div style={divHijo}>
             <TextField
-              name='name'
-              label=' First Name'
+              name="name"
+              label=" First Name"
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.name}
               helperText={error.name}
             />
             <TextField
-              name='lastName'
-              label='Last Name'
-              size='large'
+              name="lastName"
+              label="Last Name"
+              size="large"
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.lastName}
               helperText={error.lastName}
             />
             <TextField
-              name='mail'
-              label='Email'
+              name="mail"
+              label="Email"
               onChange={(e) => onChangeEmail(e.target.name, e.target.value)}
               error={error.mail}
               helperText={error.mail}
@@ -358,20 +390,20 @@ const MedicForm = () => {
             <TextField
               error={error.password}
               helperText={error.password}
-              label='Password'
+              label="Password"
               onChange={(e) => onChangePassword(e.target.name, e.target.value)}
-              name='password'
-              type='password'
+              name="password"
+              type="password"
             />
           </div>
           <div style={divHijo}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                name='birthdate'
-                label='Birthdate'
+                name="birthdate"
+                label="Birthdate"
                 value={form.birthdate}
                 maxDate={new Date()}
-                inputVariant='outlined'
+                inputVariant="outlined"
                 onChange={handleFechaNacimientoChange}
                 helperText={error.birthdate}
                 renderInput={(params) => (
@@ -385,8 +417,8 @@ const MedicForm = () => {
             </LocalizationProvider>
 
             <MuiTelInput
-              label='Phone'
-              name='phone'
+              label="Phone"
+              name="phone"
               value={form.phone}
               defaultCountry={"AR"}
               style={{ width: "30vh" }}
@@ -395,8 +427,8 @@ const MedicForm = () => {
               helperText={error.phone}
             />
             <TextField
-              name='location'
-              label='Location'
+              name="location"
+              label="Location"
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.location}
               helperText={error.location}
@@ -405,23 +437,23 @@ const MedicForm = () => {
           <Divider />
           <div style={divHijo}>
             <TextField
-              name='dni'
-              label='D.N.I'
+              name="dni"
+              label="D.N.I"
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.dni}
               helperText={error.dni}
             />
             <TextField
-              name='license'
-              label='License'
+              name="license"
+              label="License"
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.license}
               helperText={error.license}
             />
             <TextField
-              type='email'
-              name='clinicMail'
-              label='Clinic mail'
+              type="email"
+              name="clinicMail"
+              label="Clinic mail"
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
               error={error.clinicMail}
               helperText={error.clinicMail}
@@ -430,23 +462,23 @@ const MedicForm = () => {
           <div style={finalinput}>
             <TextField
               error={error.image}
-              label='Image'
+              label="Image"
               style={
                 form.image
                   ? { width: "40vh", marginBottom: "1vh" }
                   : { width: "40vh", label: { paddingLeft: "5vw" } }
               }
               onChange={handleImage}
-              name='image'
+              name="image"
               value={imageInputValue ? imageInputValue : ""}
-              type='file'
+              type="file"
               helperText={error.image}
               InputProps={
                 !form.image
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }
                   : {
                       endAdornment: (
-                        <InputAdornment position='end'>
+                        <InputAdornment position="end">
                           {form.image && (
                             <IconButton
                               onClick={() => {
@@ -473,44 +505,51 @@ const MedicForm = () => {
               helperText={error.speciality}
             /> */}
             <select
-              name='speciality'
-              style={{height: "5.7vh", width: "9vw", marginLeft: "1vw", marginRight: "1vw", borderRadius: "0.2vw", borderColor: "grey"}}
+              name="speciality"
+              style={{
+                height: "5.7vh",
+                width: "9vw",
+                marginLeft: "1vw",
+                marginRight: "1vw",
+                borderRadius: "0.2vw",
+                borderColor: "grey",
+              }}
               onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
             >
-              <option value=''>--Speciality--</option>
-              <option value='Cardiology'>Cardiology</option>
-              <option value='Gynecology'>Gynecology</option>
-              <option value='Neurology'>Neurology</option>
-              <option value='Oncology'>Oncology</option>
-              <option value='Psychiatry'>Psychiatry</option>
-              <option value='Dermatology'>Dermatology</option>
-              <option value='Ophthalmology'>Ophthalmology</option>
-              <option value='Urology'>Urology</option>
-              <option value='Endocrinology'>Endocrinology</option>
-              <option value='Gastroenterology'>Gastroenterology</option>
-              <option value='General'>General</option>
-              <option value='Deportologist'>Deportologist</option>
+              <option value="">--Speciality--</option>
+              <option value="Cardiology">Cardiology</option>
+              <option value="Gynecology">Gynecology</option>
+              <option value="Neurology">Neurology</option>
+              <option value="Oncology">Oncology</option>
+              <option value="Psychiatry">Psychiatry</option>
+              <option value="Dermatology">Dermatology</option>
+              <option value="Ophthalmology">Ophthalmology</option>
+              <option value="Urology">Urology</option>
+              <option value="Endocrinology">Endocrinology</option>
+              <option value="Gastroenterology">Gastroenterology</option>
+              <option value="General">General</option>
+              <option value="Deportologist">Deportologist</option>
             </select>
 
             <TextField
               error={error.cv}
-              label='CV'
+              label="CV"
               style={
                 form.cv
                   ? { width: "40vh", marginBottom: "1vh" }
                   : { width: "40vh", label: { paddingLeft: "5vw" } }
               }
               onChange={handleImage}
-              name='cv'
+              name="cv"
               value={cvInputValue ? cvInputValue : ""}
-              type='file'
+              type="file"
               helperText={error.cv}
               InputProps={
                 !form.cv
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }
                   : {
                       endAdornment: (
-                        <InputAdornment position='end'>
+                        <InputAdornment position="end">
                           {form.cv && (
                             <IconButton
                               onClick={() => {

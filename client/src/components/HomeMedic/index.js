@@ -5,6 +5,7 @@ import ProfileMedic from "./Profile/Profile";
 import ProfileEdit from "./Profile/ProfileEdit";
 import ReviewsMedic from "./Reviews/Reviews";
 import SeePatients from "./SeePatients/SeePatients";
+import ChatHome from "../Chat/ChatHome";
 
 export {
   Agenda,
@@ -14,4 +15,5 @@ export {
   ReviewsMedic,
   ProfileEdit,
   SeePatients,
+  ChatHome,
 };
