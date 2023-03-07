@@ -13,7 +13,7 @@ function Item({ item }) {
         <div
           style={{
             textAlign: "center",
-            height: "3vh ",
+            height: "4vh ",
             backgroundColor: "#f7f7f7",
           }}
         >
