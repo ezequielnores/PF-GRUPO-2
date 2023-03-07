@@ -68,6 +68,7 @@ const Register = () => {
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
   const [imageInputValue, setImageInputValue] = useState("");
+ 
   const [form, setForm] = React.useState({
     name: "",
     surname: "",
@@ -82,9 +83,13 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
+    bmi:""
+    
   });
 
 
+
+  
   const disableButtonHandler = () => {
     if(form.name === "" || form.surname === "" || form.phone === "" || form.weight === "" || form.height === "" 
      || form.allergies === "" || form.birthday === "" || form.dni === "" || form.location === "" 
@@ -114,6 +119,7 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
+    
   });
 
   const handleImage = (e) => {
@@ -124,7 +130,7 @@ const Register = () => {
     reader.onloadend = () => {
       setForm({ ...form, image: reader.result });
 
-      validateForm({ ...form, image: reader.result }, "image");
+      validateForm({ ...form, image: reader.result }, "image", file);
     };
   };
 
@@ -152,7 +158,8 @@ const Register = () => {
     validateForm({ ...form, [name]: form }, name);
   };
 
-  const validateForm = async (form, name) => {
+
+  const validateForm = async (form, name, file) => {
     if (name === "name" || name === "surname") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -214,11 +221,19 @@ const Register = () => {
         });
       };
     }
+
+    if (name === "image") {
+      if (file.type !== "image/jpeg" && file.type!== "image/png") {
+        setError({...error, [name]: "The image must be a jpeg or png file"});
+      } else {
+        setError({...error, [name]: ""});
+      }
+    }
   };
 
   const dispatchRegister = async (userCredential) => {
     await dispatch(
-      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email })
+      patientRegister({ ...form, phone: 12345, mail: auth.currentUser.email, bmi:Math.floor(form?.weight/Math.pow((form?.height/100), 2)) })
     )
       .then(async (res) => {
         if (res.type === "patient/register/fulfilled") {
@@ -485,7 +500,7 @@ const Register = () => {
             name="image"
             value={imageInputValue ? imageInputValue : ""}
             type="file"
-            accept="image/png, image/jpeg"
+            helperText={error.image}
             InputProps={
               !form.image
                 ? { inputProps: { style: { paddingLeft: "5vw" } } }

@@ -85,7 +85,6 @@ const ProfileEdit = () => {
     chronicDiseases: "",
     allergies: "",
   });
-  const patientId = localStorage.getItem("id");
 
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -130,7 +129,6 @@ const ProfileEdit = () => {
       });
       // alert("Information updated");
       await navigate("/HomeClient/Profile");
-      dispatch(patientGetDetail(patientId));
     } else {
       alert("Error");
     }
