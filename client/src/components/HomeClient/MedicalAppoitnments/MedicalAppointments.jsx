@@ -130,10 +130,10 @@ const MedicalAppointments = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // if (!patientDetail.plan) {
-    //   await swal("Sorry, you must purchase a plan to book an appointment.");
-    //   return;
-    // }
+    if (!patientDetail.plan) {
+      await swal("Sorry, you must purchase a plan to book an appointment.");
+      return;
+    }
 
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}/turns/turnByDateAndHourAndDoctor`,
