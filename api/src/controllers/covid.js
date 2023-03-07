@@ -2,7 +2,7 @@ var fs = require('fs');
 const tf = require('@tensorflow/tfjs');
 
 const testCovid = async (model,input) => {
-
+   
     const output = model.predict(tf.tensor2d(input, [1, 20])).arraySync()
     return output;
 }
@@ -47,7 +47,7 @@ const neuralNetwork = async () => {
 
     const trainingDataInputs = trainingData.map(t => t.slice(0, t.length - 1));
     const trainingDataOutputs = trainingData.map(t => t[t.length - 1]);
-
+  
     async function entrena(model,xs,ys){
         const historia = await model.fit(xs, ys, {
             epochs: 1000,
