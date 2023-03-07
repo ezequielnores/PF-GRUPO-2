@@ -156,9 +156,9 @@ const Home = ({ isLogged }) => {
             (location.pathname.endsWith("/HomeClient/Suscriptions") && (
               <Suscriptions />
             )) ||
-            (location.pathname.endsWith("/HomeClient/TestCovid") && (
-              <TestCovid />
-            )) ||
+            // (location.pathname.endsWith("/HomeClient/TestCovid") && (
+            //   <TestCovid />
+            // )) ||
             (location.pathname.endsWith("/HomeClient/Suscriptions/history") && (
               <History />
             )) || <ErrorPage />}

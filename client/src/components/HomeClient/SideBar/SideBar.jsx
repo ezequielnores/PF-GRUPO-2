@@ -258,7 +258,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
-            <button className={style.buttonBar}>
+            {/* <button className={style.buttonBar}>
               <Link to="/HomeClient/TestCovid">
                 {open ? (
                   <div className={style.divbutton}>
@@ -275,7 +275,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                   <CoronavirusIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
-            </button>
+            </button> */}
           </Stack>
           <button
             type="button"
