@@ -58,7 +58,13 @@ const Profile = () => {
     <Grid
       container
       spacing={2}
-      style={{ marginLeft: "4px", display: "flex", flexDirection: "column" }}
+      style={{
+        marginLeft: "4px",
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        height: "100%",
+      }}
     >
       <Typography
         variant="button"
@@ -69,7 +75,14 @@ const Profile = () => {
       >
         Personal information
       </Typography>
-      <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "10px",
+          width: "100%",
+        }}
+      >
         <Grid item xs={12} md={6}>
           <Paper elevation={3}>
             <Divider />
@@ -211,19 +224,43 @@ const Profile = () => {
             </Stack>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Paper elevation={3}>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          style={{
+            width: "100%",
+            marginRight: "1rem",
+            // border: "2px solid red",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Paper
+            elevation={3}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+              width: "100%",
+            }}
+          >
             <GraficIMC />
           </Paper>
-          <Divider />
-          <br />
-          <br />
         </Grid>
       </div>
       <Link to="/HomeClient/Profile/Edit">
         <Button
           variant="contained"
-          style={{ marginTop: "1rem", backgroundColor: "#307196" }}
+          style={{
+            marginTop: "1rem",
+            backgroundColor: "#307196",
+            marginBottom: "1rem",
+          }}
         >
           Edit personal information
         </Button>

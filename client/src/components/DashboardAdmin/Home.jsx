@@ -133,15 +133,11 @@ const Home = (props) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        localStorage.removeItem("idAdmin");
-        window.location.href = "http://localhost:3000/";
+        localStorage.removeItem("mailAdmin");
+        window.location.href = "https://pf-grupo-2.vercel.app/";
       }
     });
   };
-  // const handleLogout = () => {
-  //   props.setAdmin(null);
-  //   window.localStorage.removeItem("idAdmin");
-  // };
 
   useEffect(() => {
     const adminId = window.localStorage.getItem("idAdmin");
@@ -152,7 +148,7 @@ const Home = (props) => {
     }
   }, []);
 
-  console.log(patients);
+  // console.log(patients);
 
   return (
     <div style={container}>
@@ -219,7 +215,7 @@ const Home = (props) => {
               variant="body1"
               style={{ paddingBottom: "5px", fontWeight: "bold" }}
             >
-              {/* {admin?.name} {admin?.surname} */}
+              {admin?.name} {admin?.surname}
             </Typography>
             <Button
               variant="contained"
