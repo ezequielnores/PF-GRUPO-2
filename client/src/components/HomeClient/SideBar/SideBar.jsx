@@ -44,7 +44,14 @@ const SideBar = ({ open, handleOpen, path }) => {
 
   return (
     <div>
-      <div style={{ position: "fixed", left: "0", top: "9rem" }}>
+      <div
+        style={{
+          height: "100%",
+          position: "relative",
+          left: "0",
+          top: "10rem",
+        }}
+      >
         <Stack spacing={2}>
           <Button
             onClick={handleOpen}
@@ -294,7 +301,6 @@ const SideBar = ({ open, handleOpen, path }) => {
             style={{ width: open ? "9vw" : "2vw" }}
             onClick={handleLogout}
           >
-            {/* <Link to="/" > */}
             {open ? (
               <div className={style.divbutton} style={{ color: "white" }}>
                 <LogoutIcon />
@@ -303,7 +309,6 @@ const SideBar = ({ open, handleOpen, path }) => {
             ) : (
               <LogoutIcon style={{ color: "white" }} />
             )}
-            {/* </Link> */}
           </button>
         </Stack>
       </div>
