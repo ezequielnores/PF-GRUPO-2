@@ -69,9 +69,12 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
-      plan:{
-        type:DataTypes.STRING,
-      }
+      plan: {
+        type: DataTypes.STRING,
+      },
+      uid: {
+        type: DataTypes.STRING,
+      },
     },
     {
       timestamps: false,

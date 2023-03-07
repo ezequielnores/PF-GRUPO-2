@@ -64,6 +64,7 @@ router.post("/", async (req, res) => {
     license,
     cv,
     clinicMail,
+    uid,
   } = req.body;
   try {
     console.log(req.body);
@@ -80,7 +81,8 @@ router.post("/", async (req, res) => {
       speciality,
       license,
       cv,
-      clinicMail
+      clinicMail,
+      uid
     );
     if (!doctor) throw new Error();
     res.status(200).send(doctor);

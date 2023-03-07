@@ -80,7 +80,7 @@ const about = () => {
                 Care
               </Typography>
             </div>
-
+                
             <Typography
               style={{ padding: "10px", fontWeight: "semibold" }}
               align="justify"
@@ -92,6 +92,8 @@ const about = () => {
               specialized appointments, allowing our patients to access
               high-quality medical care without having to leave home.{" "}
             </Typography>
+            
+            
 
             <Typography
               style={{ padding: "10px", fontWeight: "semibold" }}
@@ -105,6 +107,9 @@ const about = () => {
               easier and more convenient for everyone.
             </Typography>
           </Card>
+          <div style={{marginLeft:"25%"}}>
+          <iframe style={{borderRadius:"2%", frameborder:"0", scrolling:"no", border:"none", borderWidth:0}} frameborder="0" width="550" height="300" src="https://biteable.com/watch/embed/3863999/1365b4da58b6fbe7712556476e2fe80e" allowfullscreen="true" allow="autoplay"></iframe> <p><a href="https://biteable.com/watch/3863999/1365b4da58b6fbe7712556476e2fe80e"></a><a href="https://biteable.com"></a>.</p>
+          </div>
         </div>
         <div style={containerCards}>
           <Card
@@ -237,7 +242,9 @@ const about = () => {
             Know more
           </Button>
         </Link>
+        
       </Box>
+      
     </div>
   );
 };

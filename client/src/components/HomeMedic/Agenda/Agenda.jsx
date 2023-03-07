@@ -137,6 +137,7 @@ const Agenda = () => {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/turns/${e.target.value}`
     );
+    console.log({ response: response });
     const data = {
       idTurn: e.target.value,
       date: response.data.date,
@@ -146,17 +147,20 @@ const Agenda = () => {
         name: response.data.Patient.name,
         surname: response.data.Patient.surname,
         mail: response.data.Patient.mail,
+        uid: response.data.Patient.uid,
       },
       doctor: {
         id: response.data.doctor.id,
         name: response.data.doctor.name,
         lastName: response.data.doctor.lastName,
         mail: response.data.doctor.mail,
+        uid: response.data.doctor.uid,
       },
     };
     setAppointment(data);
     dispatch(attendedPatientTurns(e.target.value));
     setAttend(true);
+
   };
   useEffect(() => {
     dispatch(appointmentGetAllByDoctorId(localStorage.getItem("idMedic")));
@@ -246,7 +250,15 @@ const Agenda = () => {
                             </Button>
                           </TableCell>
                         ) : (
-                          <TableCell></TableCell>
+                          <TableCell>
+                            <Button
+                              variant="outlined"
+                              value={turno.id}
+                              onClick={handleAttend}
+                            >
+                              Attend
+                            </Button>
+                          </TableCell>
                         )}
                         <TableCell style={{ width: "10rem" }}>
                           <Button

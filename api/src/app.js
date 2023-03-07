@@ -39,6 +39,8 @@ router.post("/", async(req, res) => {
     const {input} = req.body;
     const netR = await net;
     const output = await covid.testCovid(netR,input);
+    
+    console.log(output);
     res.send(output);
 });
 
