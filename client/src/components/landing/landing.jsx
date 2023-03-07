@@ -3,7 +3,7 @@ import Carrusel from "./carruselDep/carusel";
 import Planes from "./planes/planes";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ContenidoChat from '../ChatBot/ChatBot.jsx';
+import ContenidoChat from "../ChatBot/ChatBot.jsx";
 
 //mui
 const container = {
@@ -27,7 +27,6 @@ const carru = {
   width: "50%",
   marginRight: "4rem",
   marginTop: "4rem",
-/*   marginBottom: "1rem" */
 };
 const textoMarca = {
   display: "flex",
@@ -35,7 +34,7 @@ const textoMarca = {
   justifyContent: "center",
 };
 const Landing = () => {
-const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div style={container}>
@@ -45,14 +44,17 @@ const navigate = useNavigate()
             <Typography variant="h1" style={{ color: "#43B8C8" }}>
               i
             </Typography>
-            <Typography variant="h1" style={{ color: /* "#307196" */"black" }}>
+            <Typography variant="h1" style={{ color: /* "#307196" */ "black" }}>
               Care
             </Typography>
           </div>
           <Typography variant="h5" color="text.secondary">
             Online health services
           </Typography>
-          <Button onClick={()=> navigate('/register')} style={{ marginTop: "2rem", fontSize: "15px" }}>
+          <Button
+            onClick={() => navigate("/register")}
+            style={{ marginTop: "2rem", fontSize: "15px" }}
+          >
             Register client
           </Button>
         </div>
@@ -60,10 +62,12 @@ const navigate = useNavigate()
           <Carrusel />
         </div>
       </div>
-      <Planes />
+      <div style={{ height: "100%", width: "100%" }}>
+        <Planes />
+      </div>
       <div>
-      <ContenidoChat/>
-    </div>
+        <ContenidoChat />
+      </div>
     </div>
   );
 };
