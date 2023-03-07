@@ -48,7 +48,7 @@ const neuralNetwork = async () => {
     const trainingDataInputs = trainingData.map(t => t.slice(0, t.length - 1));
     const trainingDataOutputs = trainingData.map(t => t[t.length - 1]);
 
-    async function entrena(model){
+    async function entrena(model,xs,ys){
         const historia = await model.fit(xs, ys, {
             epochs: 1000,
             callbacks: {
@@ -66,7 +66,7 @@ const neuralNetwork = async () => {
     const xs = tf.tensor2d(trainingDataInputs, [trainingDataInputs.length, trainingDataInputs[0].length]);
     const ys = tf.tensor2d(trainingDataOutputs, [trainingDataOutputs.length, 1]);
 
-    await entrena(model);
+    await entrena(model,xs ,ys);
     return model
 }
 
