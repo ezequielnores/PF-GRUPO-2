@@ -54,6 +54,7 @@ const FormLoginMedic = () => {
   const [successLogin, setSuccessLogin] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginSuccess, setLoginSuccess] = useState(null);
   //me creo estado para guardar lo que toma de inptus
   const [info, setInfo] = useState({
     mail: "",
@@ -86,9 +87,10 @@ const FormLoginMedic = () => {
       if (authenticatedDoctor) {
         const id = authenticatedDoctor.id;
         localStorage.setItem("idMedic", id);
+        setLoginSuccess(true);
         navigate("/HomeMedic/Profile");
       } else {
-        setSuccessLogin("error");
+        setLoginSuccess(false);
       }
   } catch(error){
     console.log({ Error: error.message });
@@ -102,7 +104,7 @@ const FormLoginMedic = () => {
     } else {
       dispatch(docrtorGetAll());
     }
-  }, []);
+  }, [dispatch,navigate]);
 
   // console.log(info);
   //RENDER

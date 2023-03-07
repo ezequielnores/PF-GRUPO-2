@@ -59,8 +59,8 @@ const ProfileEdit = () => {
   const [infoNueva, setInfoNueva] = useState({
     name: detailPatient? detailPatient.name:"",
     surname: detailPatient? detailPatient.surname:"",
-    mail: detailPatient? detailPatient.mail:"",
-    password: detailPatient? detailPatient.password:"",
+    // mail: detailPatient? detailPatient.mail:"",
+    // password: detailPatient? detailPatient.password:"",
     birthday: detailPatient? detailPatient.birthday:new Date(),
     photo: detailPatient? detailPatient.photo:"",
     weight: detailPatient? detailPatient.weight:"",
@@ -77,9 +77,9 @@ const ProfileEdit = () => {
   const [error, setError] = useState({
     photo: "",
     name: "",
-    mail: "",
+    // mail: "",
     phone: "",
-    password: "",
+    // password: "",
     birthday: "",
     surname: "",
     weight:"",
@@ -154,33 +154,33 @@ const ProfileEdit = () => {
         setError({ ...error, [name]: "•Only characters and commas" });
       } else setError({ ...error, [name]: "" });
     }
-    if (name === "password") {
-      if (
-        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
-          form[name] || form[name] !== ""
-        )
-      ) {
-        setError({
-          ...error,
-          [name]:
-            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
-        });
-      } else {
-        setError({
-          ...error,
-          [name]: "",
-        });
-      }
-    }
-    if (name === "mail") {
-      if (
-        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
-          form[name] || form[name] !== ""
-        )
-      ) {
-        setError({ ...error, [name]: "•Musst be a valid email" });
-      } else setError({ ...error, [name]: "" });
-    }
+    // if (name === "password") {
+    //   if (
+    //     !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+    //       form[name] || form[name] !== ""
+    //     )
+    //   ) {
+    //     setError({
+    //       ...error,
+    //       [name]:
+    //         "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
+    //     });
+    //   } else {
+    //     setError({
+    //       ...error,
+    //       [name]: "",
+    //     });
+    //   }
+    // }
+    // if (name === "mail") {
+    //   if (
+    //     !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+    //       form[name] || form[name] !== ""
+    //     )
+    //   ) {
+    //     setError({ ...error, [name]: "•Musst be a valid email" });
+    //   } else setError({ ...error, [name]: "" });
+    // }
 
     if (name === "photo") {
       if (file.type !== "image/jpeg" && file.type!== "image/png") {
@@ -248,7 +248,7 @@ const ProfileEdit = () => {
           />
         </LocalizationProvider>
 
-        <TextField
+        {/* <TextField
         value={infoNueva.mail}
           name="mail"
           label="Mail"
@@ -257,8 +257,8 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e.target.name, e.target.value)}
           error={error.mail}
           helperText={error.mail}
-        />
-        <TextField
+        /> */}
+        {/* <TextField
           name="password"
           label="Password"
           value={infoNueva.password}
@@ -267,9 +267,10 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e.target.name, e.target.value)}
           error={error.password}
           helperText={error.password}
-        />
+        /> */}
 
         <TextField
+        sx={{marginTop:2}}
           label="Photo"
           InputLabelProps={{
             shrink: true,

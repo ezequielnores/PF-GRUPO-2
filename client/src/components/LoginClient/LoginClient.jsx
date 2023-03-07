@@ -142,7 +142,7 @@ const FormLoginClient = () => {
     const id = localStorage.getItem("id");
 
     if (id) {
-      // navigate("/HomeClient/Profile");
+      navigate("/HomeClient/Profile");
     } else {
       dispatch(patientGetAll());
     }

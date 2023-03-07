@@ -52,6 +52,17 @@ function Reviews() {
     setFields({ ...fields, [property]: value });
   };
 
+  const resetForm = () => {
+    setFields({
+      title: '',
+      message: '',
+    });
+
+    setValue(0);
+
+
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
     dispatch(
@@ -67,6 +78,7 @@ function Reviews() {
     );
 
     setModalAbierto(true);
+    resetForm()
   };
 
   const closeModal = () => {
