@@ -36,7 +36,7 @@
     "react-simple-chatbot": "^0.6.1",
     "recharts": "^2.4.1",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^5.3.8",
+    "styled-components": "^5.3.6",
     "sweetalert": "^2.1.2",
     "uuid": "^9.0.0",
     "validator": "^13.9.0",
