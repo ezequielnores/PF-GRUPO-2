@@ -40,13 +40,13 @@ import { onAuthStateChanged } from "firebase/auth";
 function App() {
   const location = useLocation();
 
-  const [isLogged, setIsLogged] = React.useState(null);
+  const [isLogged, setIsLogged] = React.useState(false);
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      if (isLogged === false || isLogged === null) setIsLogged((prev) => true);
+      if (isLogged === false) setIsLogged((prev) => true);
     } else {
-      if (isLogged === true || isLogged === null) setIsLogged((prev) => false);
+      if (isLogged === true) setIsLogged((prev) => false);
     }
   });
 
