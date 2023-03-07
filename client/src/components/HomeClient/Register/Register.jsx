@@ -289,9 +289,6 @@ const Register = () => {
           //create empty user chats on firestore
           await setDoc(doc(db, "userChats", userCredential.user.uid), {});
 
-          /*           setTimeout(() => {
-            navigate("/loginClient");
-          }, 2500); */
         } else {
           setAlertSeverity("error");
           setAlertMessage("Error creating account!");
@@ -314,17 +311,31 @@ const Register = () => {
         const user = userCredential.user;
         console.log("usuario creado: " + user.email);
         console.log(userCredential);
-        dispatchRegister(userCredential);
+        const success= dispatchRegister(userCredential)
+        if (success) {
         const authenticatedPatient = patients.find((patient) => {
           return patient.mail === auth.currentUser.email;
         });
+        
         const id = authenticatedPatient.id;
-        console.log(authenticatedPatient);
+        if (id) {
         localStorage.setItem("id", id);
-        navigate("HomeClient/Profile", { state: { id } });
+        navigate("/HomeClient/Profile");
+      } else {
+        setAlertSeverity("error");
+        setAlertMessage("Patient not found");
+        setShowAlert(true);
+      }
+    } else {
+      console.log("Error creating account");
+      setAlertSeverity("error");
+      setAlertMessage("Error creating account");
+      setShowAlert(true);
+    }
       } catch (error) {
         console.log({ Error: error.message });
       }
+      // { state: { id } }
     } else {
       // alert("Please complete all fields");
       setAlertSeverity("error");
@@ -363,16 +374,17 @@ const Register = () => {
     }
   };
 
-  const redirectToHome = () => {
-    navigate("/HomeClient/Profile", { state: { id: patient.id } });
-  };
-
+  // const redirectToHome = () => {
+  //   ;
+  // };
+  // { state: { id: patient.id } }
   useEffect(() => {
     fillPatient();
   }, [dispatch, patients]);
 
   if (patient) {
-    redirectToHome();
+    // redirectToHome();
+    navigate("/HomeClient/Profile")
   }
 
   return (
