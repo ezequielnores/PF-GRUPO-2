@@ -64,6 +64,8 @@ const Home = (props) => {
       doctors: false,
       comments: false,
       frequentQuestions: false,
+      plans: false,
+      admin: false,
     });
   };
 
@@ -74,6 +76,8 @@ const Home = (props) => {
       doctors: true,
       comments: false,
       frequentQuestions: false,
+      plans: false,
+      admin: false,
     });
   };
 
@@ -83,6 +87,8 @@ const Home = (props) => {
       doctors: false,
       comments: true,
       frequentQuestions: false,
+      plans: false,
+      admin: false,
     });
   };
 
@@ -92,6 +98,8 @@ const Home = (props) => {
       doctors: false,
       comments: false,
       frequentQuestions: true,
+      plans: false,
+      admin: false,
     });
   };
   const handleClickPlans = () => {
@@ -102,6 +110,7 @@ const Home = (props) => {
       comments: false,
       frequentQuestions: false,
       plans: true,
+      admin: false,
     });
   };
   const handleClickAdmins = () => {
@@ -210,7 +219,7 @@ const Home = (props) => {
               variant="body1"
               style={{ paddingBottom: "5px", fontWeight: "bold" }}
             >
-              {admin?.name} {admin?.surname}
+              {/* {admin?.name} {admin?.surname} */}
             </Typography>
             <Button
               variant="contained"

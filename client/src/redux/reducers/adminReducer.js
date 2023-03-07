@@ -1,9 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const adminGetAll = createAsyncThunk("admins/getAll", async () => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_BACKEND_URL}/admins`
+  );
+  return response.data;
+});
+
 export const adminGetDetail = createAsyncThunk(
-  "admin/getDetail",
-  async (id, thunkAPI) => {
+  "admins/getDetail",
+  async (id) => {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/admins/${id}`
     );
@@ -11,19 +18,8 @@ export const adminGetDetail = createAsyncThunk(
   }
 );
 
-export const adminLogin = createAsyncThunk(
-  "admin/login",
-  async (data, thunkAPI) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/admins/login`,
-      data
-    );
-    return response.data;
-  }
-);
-
 export const adminRegister = createAsyncThunk(
-  "admin/register",
+  "admins/register",
   async (data) => {
     const response = await axios
       .post(`${process.env.REACT_APP_BACKEND_URL}/admins`, data)
@@ -33,20 +29,24 @@ export const adminRegister = createAsyncThunk(
       .catch((err) => {
         throw new Error("Failed");
       });
-    // console.log(response);
+    console.log(response);
     return response.data;
   }
 );
 
-export const adminGetAll = createAsyncThunk("admin/getAll", async () => {
-  const response = await axios.get(
-    `${process.env.REACT_APP_BACKEND_URL}/admins`
-  );
-  return response.data;
-});
+export const adminLogin = createAsyncThunk(
+  "admins/login",
+  async (data, thunkAPI) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/admins/login`,
+      data
+    );
+    return response.data;
+  }
+);
 
-export const adminUpdate = createAsyncThunk(
-  "admin/editById",
+export const adminEdit = createAsyncThunk(
+  "admins/editById",
   async ({ id, data }) => {
     const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/admins/edit/${id}`,
@@ -63,6 +63,16 @@ export const deleteAdmin = createAsyncThunk("admins/deleteById", async (id) => {
   return response.data;
 });
 
+export const disableAdmin = createAsyncThunk(
+  "admins/disableById",
+  async (id) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/admins/disable/${id}`
+    );
+    return response.data;
+  }
+);
+
 const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -76,6 +86,17 @@ const adminSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(adminRegister.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(adminRegister.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.detail = action.payload;
+      })
+      .addCase(adminRegister.rejected, (state, action) => {
+        state.state = "failed";
+        state.error = action.payload;
+      })
       .addCase(adminGetDetail.pending, (state, action) => {
         state.status = "loading";
       })
@@ -118,6 +139,17 @@ const adminSlice = createSlice({
         state.detail = action.payload;
       })
       .addCase(deleteAdmin.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(disableAdmin.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(disableAdmin.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.detail = action.payload;
+      })
+      .addCase(disableAdmin.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
