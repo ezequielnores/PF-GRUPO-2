@@ -149,16 +149,16 @@ const Home = ({ isLogged }) => {
               <Reviews />
             )) ||
             (location.pathname.endsWith("/HomeClient/Faq") && <Faq />) ||
-            (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
+            // (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
             (location.pathname.endsWith("/HomeClient/Register") && (
               <Register />
             )) ||
             (location.pathname.endsWith("/HomeClient/Suscriptions") && (
               <Suscriptions />
             )) ||
-            (location.pathname.endsWith("/HomeClient/TestCovid") && (
-              <TestCovid />
-            )) ||
+            // (location.pathname.endsWith("/HomeClient/TestCovid") && (
+            //   <TestCovid />
+            // )) ||
             (location.pathname.endsWith("/HomeClient/Suscriptions/history") && (
               <History />
             )) || <ErrorPage />}
