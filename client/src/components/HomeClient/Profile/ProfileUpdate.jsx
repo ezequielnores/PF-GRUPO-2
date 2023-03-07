@@ -56,8 +56,8 @@ const ProfileEdit = () => {
   const [infoNueva, setInfoNueva] = useState({
     name: detailPatient ? detailPatient.name : "",
     surname: detailPatient ? detailPatient.surname : "",
-    mail: detailPatient ? detailPatient.mail : "",
-    password: detailPatient ? detailPatient.password : "",
+    // mail: detailPatient? detailPatient.mail:"",
+    // password: detailPatient? detailPatient.password:"",
     birthday: detailPatient ? detailPatient.birthday : new Date(),
     photo: detailPatient ? detailPatient.photo : "",
     weight: detailPatient ? detailPatient.weight : "",
@@ -74,9 +74,9 @@ const ProfileEdit = () => {
   const [error, setError] = useState({
     photo: "",
     name: "",
-    mail: "",
+    // mail: "",
     phone: "",
-    password: "",
+    // password: "",
     birthday: "",
     surname: "",
     weight: "",
@@ -85,6 +85,7 @@ const ProfileEdit = () => {
     chronicDiseases: "",
     allergies: "",
   });
+  const patientId = localStorage.getItem("id");
 
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -116,6 +117,7 @@ const ProfileEdit = () => {
     reader.onloadend = () => {
       setInfoNueva({ ...infoNueva, [name]: reader.result });
       setHasChanged(true);
+      validateFields({ ...infoNueva }, name, file);
     };
   };
 
@@ -129,12 +131,13 @@ const ProfileEdit = () => {
       });
       // alert("Information updated");
       await navigate("/HomeClient/Profile");
+      dispatch(patientGetDetail(patientId));
     } else {
       alert("Error");
     }
   };
 
-  const validateFields = (form, name) => {
+  const validateFields = (form, name, file) => {
     if (name === "name" || name === "lastName") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
         setError({ ...error, [name]: "•Only characters" });
@@ -145,32 +148,40 @@ const ProfileEdit = () => {
         setError({ ...error, [name]: "•Only characters and commas" });
       } else setError({ ...error, [name]: "" });
     }
-    if (name === "password") {
-      if (
-        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
-          form[name] || form[name] !== ""
-        )
-      ) {
-        setError({
-          ...error,
-          [name]:
-            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
-        });
+    // if (name === "password") {
+    //   if (
+    //     !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+    //       form[name] || form[name] !== ""
+    //     )
+    //   ) {
+    //     setError({
+    //       ...error,
+    //       [name]:
+    //         "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
+    //     });
+    //   } else {
+    //     setError({
+    //       ...error,
+    //       [name]: "",
+    //     });
+    //   }
+    // }
+    // if (name === "mail") {
+    //   if (
+    //     !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+    //       form[name] || form[name] !== ""
+    //     )
+    //   ) {
+    //     setError({ ...error, [name]: "•Musst be a valid email" });
+    //   } else setError({ ...error, [name]: "" });
+    // }
+
+    if (name === "photo") {
+      if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        setError({ ...error, [name]: "The image must be a jpeg or png file" });
       } else {
-        setError({
-          ...error,
-          [name]: "",
-        });
+        setError({ ...error, [name]: "" });
       }
-    }
-    if (name === "mail") {
-      if (
-        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
-          form[name] || form[name] !== ""
-        )
-      ) {
-        setError({ ...error, [name]: "•Musst be a valid email" });
-      } else setError({ ...error, [name]: "" });
     }
   };
 
@@ -229,8 +240,8 @@ const ProfileEdit = () => {
           />
         </LocalizationProvider>
 
-        <TextField
-          value={infoNueva.mail}
+        {/* <TextField
+        value={infoNueva.mail}
           name="mail"
           label="Mail"
           style={typoTitle}
@@ -238,8 +249,8 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e.target.name, e.target.value)}
           error={error.mail}
           helperText={error.mail}
-        />
-        <TextField
+        /> */}
+        {/* <TextField
           name="password"
           label="Password"
           value={infoNueva.password}
@@ -248,9 +259,10 @@ const ProfileEdit = () => {
           onChange={(e) => handleChange(e.target.name, e.target.value)}
           error={error.password}
           helperText={error.password}
-        />
+        /> */}
 
         <TextField
+          sx={{ marginTop: 2 }}
           label="Photo"
           InputLabelProps={{
             shrink: true,
@@ -264,6 +276,8 @@ const ProfileEdit = () => {
           name="photo"
           value={imageInputValue ? imageInputValue : ""}
           type="file"
+          error={error.photo}
+          helperText={error.photo}
           InputProps={
             !infoNueva.photo
               ? { inputProps: { style: { paddingLeft: "5vw" } } }
