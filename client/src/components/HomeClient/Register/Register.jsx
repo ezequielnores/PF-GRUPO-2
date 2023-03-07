@@ -68,6 +68,7 @@ const Register = () => {
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
   const [imageInputValue, setImageInputValue] = useState("");
+ 
   const [form, setForm] = React.useState({
     name: "",
     surname: "",
@@ -82,6 +83,8 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
+    bmi:""
+    
   });
 
   const disableButtonHandler = () => {
@@ -138,6 +141,7 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
+    
   });
 
   const handleImage = (e) => {
@@ -262,6 +266,7 @@ const Register = () => {
         phone: 12345,
         mail: auth.currentUser.email,
         uid: auth.currentUser.uid,
+        bmi:Math.floor(form?.weight/Math.pow((form?.height/100), 2))
       })
     )
       .then(async (res) => {

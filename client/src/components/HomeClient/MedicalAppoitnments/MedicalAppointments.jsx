@@ -120,13 +120,23 @@ const MedicalAppointments = () => {
 
   const defaultValue = moment().set({ hour: 6, minute: 0, second: 0 });
 
+
+
+  const resetForm = () => {
+    setDoctorSpecialty();
+    setDoctor({ doctorId: "", name: "", lastName: "" });
+    setSelectedType("")
+    setUbication("")
+    setSelectedTime("")
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!patientDetail.plan) {
-      await swal("Sorry, you must purchase a plan to book an appointment.");
-      return;
-    }
+    // if (!patientDetail.plan) {
+    //   await swal("Sorry, you must purchase a plan to book an appointment.");
+    //   return;
+    // }
 
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}/turns/turnByDateAndHourAndDoctor`,
@@ -152,6 +162,7 @@ const MedicalAppointments = () => {
         })
       );
       setModalAbierto(true);
+      resetForm();
     } else {
       setModalReserved(true);
       // alert("Sorry, the appointment is already reserved");
@@ -178,6 +189,8 @@ const MedicalAppointments = () => {
     type && speciality
       ? filterClinicMail.filter((doctor) => doctor.speciality === speciality)
       : doctors;
+
+
 
   const filterNameDoctor =
     type && speciality && ubication
@@ -305,7 +318,7 @@ const MedicalAppointments = () => {
                 value={name.doctorId}
                 onChange={handleSelectName}
                 fullWidth
-                disabled={!speciality}
+                disabled={!ubication}
               >
                 {filterNameDoctor.map((doctor) => (
                   <MenuItem key={doctor.id} value={doctor.id} name="name">
