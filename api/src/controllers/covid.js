@@ -70,7 +70,7 @@ const neuralNetwork = async () => {
     return model
         
     } catch (error) {
-        console.log(dataSet);
+        console.log(dataArray);
        
         console.log(error.message);
     }
