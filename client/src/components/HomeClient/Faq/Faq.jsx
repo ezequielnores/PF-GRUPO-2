@@ -26,7 +26,7 @@ const Faq = () => {
   const [allFaq, setAllFaq] = React.useState([]);
   useEffect(() => {
     axios
-      .get("http://localHost:3001/frequentQuestions")
+      .get(`${process.env.REACT_APP_BACKEND_URL}/frequentQuestions`)
       .then((res) => {
         setAllFaq(res.data);
       })
