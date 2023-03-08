@@ -18,6 +18,16 @@ export const adminGetDetail = createAsyncThunk(
   }
 );
 
+export const adminLogin = createAsyncThunk(
+  "admins/login",
+  async (id) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/admins/${id}`
+    );
+    return response.data;
+  }
+);
+
 export const adminGetDetailForEdit = createAsyncThunk(
   "admins/getDetailForEdit",
   async (id) => {
@@ -31,28 +41,11 @@ export const adminGetDetailForEdit = createAsyncThunk(
 export const adminRegister = createAsyncThunk(
   "admins/register",
   async (data) => {
-    const response = await axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}/admins`, data)
-      .then((response) => {
-        return response.data;
-      })
-      .catch((err) => {
-        throw new Error("Failed");
-      });
+    const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/admins`, data)
     return response.data;
   }
 );
 
-export const adminLogin = createAsyncThunk(
-  "admins/login",
-  async (data, thunkAPI) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/admins/login`,
-      data
-    );
-    return response.data;
-  }
-);
 
 export const adminEdit = createAsyncThunk(
   "admins/editById",
@@ -154,7 +147,7 @@ const adminSlice = createSlice({
       })
       .addCase(disableAdmin.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.detail = action.payload;
+        // state.detail = action.payload;
       })
       .addCase(disableAdmin.rejected, (state, action) => {
         state.status = "failed";
@@ -168,6 +161,17 @@ const adminSlice = createSlice({
         state.forEdit = action.payload;
       })
       .addCase(adminGetDetailForEdit.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(adminEdit.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(adminEdit.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.listAll = action.payload;
+      })
+      .addCase(adminEdit.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

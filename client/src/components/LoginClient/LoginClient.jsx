@@ -246,7 +246,6 @@ const FormLoginClient = () => {
           </Typography>
           <label>Email</label>
           <Input
-            error={error.mail}
             type="email"
             name="mail"
             style={inputs}
@@ -261,7 +260,6 @@ const FormLoginClient = () => {
             </Typography>}
           <label>Password</label>
           <Input
-            error={error.password}
             type="password"
             name="password"
             style={inputs}
