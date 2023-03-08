@@ -259,7 +259,7 @@ function Reviews() {
           <Button
             variant="contained"
             onClick={closeModal}
-            style={{ marginLeft: "10%", marginTop: "5%", scale: "1.2" }}
+            style={{ marginLeft: "10%", marginTop: "5%", scale: "1.2",backgroundColor: "#307196" }}
           >
             Cerrar
           </Button>
