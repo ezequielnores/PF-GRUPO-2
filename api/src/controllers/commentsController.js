@@ -70,10 +70,10 @@ const getComments =  async () => {
                 model: Patient,
                 attributes: ['name', 'surname', "mail"]
             },
-            {
-                model: Report,
-                as: "reports"
-            }
+            // {
+            //     model: Report,
+            //     as: "reports"
+            // }
         ],
     });
     return infoComments;
