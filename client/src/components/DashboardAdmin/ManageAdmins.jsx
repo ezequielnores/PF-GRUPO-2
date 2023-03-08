@@ -9,11 +9,11 @@ import Alert from "@mui/material/Alert";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import swal from "sweetalert";
-import { 
-  adminRegister, 
-  adminGetAll, 
-  deleteAdmin, 
-  disableAdmin, 
+import {
+  adminRegister,
+  adminGetAll,
+  deleteAdmin,
+  disableAdmin,
   adminEdit,
   adminGetDetail,
   adminGetDetailForEdit,
@@ -95,8 +95,8 @@ const dispatch = useDispatch();
 //lista de admins
 const dataAdmins = useSelector((state) => state.admin.listAll);
 //detalle de admins
-const adminDetail = useSelector((state) => state.admin.forEdit);
-const adminLogeado = useSelector((state) => state.admin.detail);
+const adminDetail = useSelector((state) => state.admin.loggedIn);
+const adminLogeado = useSelector((state) => state.admin.loggedIn);
 const [oldData, setOldData] = useState({
   name: adminDetail ? adminDetail.name : "",
   surname: adminDetail ? adminDetail.surname : "",
@@ -142,7 +142,7 @@ const handleChange = (name, value) => {
 const handleDeleteAdmin = async (id) => {
   await dispatch(deleteAdmin(id));
   dispatch(adminGetAll());
-  auth.currentUser.delete();
+  // auth.currentUser.delete();
 };
  //desactivar admin
  const handleDisableAdmin = async (id) => {
@@ -177,76 +177,77 @@ const validateForm = (data, name) => {
   }
   if (name === "mail") {
     if (
-      !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+      !/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6}$/.test(
         data[name] || data[name] !== ""
       )
     ) {
-      setError({ ...error, [name]: "•Musst be a valid email" });
+      setError({ ...error, [name]: "•6 characters •One upper case letter •One number" });
     } else setError({ ...error, [name]: "" });
   }
 };
 
-const dispatchRegister = () => {
+const dispatchRegister = async (data) => {
   // console.log(data);
-  dispatch(
-    adminRegister({ ...data, mail: auth.currentUser.email })
+  await dispatch(
+    adminRegister({ ...data})
   )
-  .then((res) => {
+  .then(async (res) => {
     if (res.type === "admins/register/fulfilled") {
       setAlertSeverity("success");
       setAlertMessage("Account Created. Wait to be redirected");
       setShowAlert(true);
       closeModal();
-      dispatch(adminGetAll());
-      setData({
+      await dispatch(adminGetAll());
+      await setData({
         name: "",
         surname: "",
         mail: "",
         password: "",
       });
     } else {
-      // console.log({ ...data, mail: auth.currentUser.email });
+
       setAlertSeverity("error");
       setAlertMessage("Error creating account!");
       setShowAlert(true);
-      auth.currentUser.delete();
+
     }
-    // console.log(res.type);
+
   })
-  .catch((err) => alert("error"));
+  .catch((err) => alert(err));
 };
 
 const handleRegiterAdmin = async () => {
   if (Object.values(error).every((item) => item === "")) {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        data.mail,
-        data.password
-      );
-      const user = userCredential.user;
-      console.log("administrador creado: " + user.email);
-      const res = await dispatchRegister();
+      await dispatchRegister(data);
+      // if(res){
+      //   await dataAdmins.find((admin) => {
+      //     return admin.id === data.id;
+      //   })
     } catch (error) {
       console.log({ Error: error.message });
+      setAlertSeverity("error");
+      setAlertMessage("Please complete all fields");
+      setShowAlert(true);
     } 
   } else {
     setAlertSeverity("error");
-    setAlertMessage("Please complete all fields   ");
+    setAlertMessage("Registration failed");
     setShowAlert(true);
   }
+
 };
 
-useEffect(() => {
-  if (adminDetail) {
-    setOldData({
-      name: adminDetail.name,
-      surname: adminDetail.surname,
-      mail: adminDetail.mail,
-      password: adminDetail.password,
-    });
-  }
-}, [adminDetail]);
+  useEffect(() => {
+    if (adminDetail) {
+      setOldData({
+        name: adminDetail.name,
+        surname: adminDetail.surname,
+        mail: adminDetail.mail,
+        password: adminDetail.password,
+      });
+    }
+  }, [adminDetail]);
 
 return (
   <div style={container}>
@@ -310,27 +311,32 @@ return (
                 EDIT
               </Button>
               : null }
-              {admin.active === true ? (
-                  <Button
-                    variant="outlined"
-                    onClick={() => handleDisableAdmin(admin.id)}
-                  >
-                    DISABLE
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outlined"
-                    onClick={() => handleDisableAdmin(admin.id)}
-                  >
-                    ACTIVATE
-                  </Button>
-                )}
-                <Button
-                  variant="outlined"
-                  onClick={() => handleDeleteAdmin(admin.id)}
-                >
-                  DELETE
-                </Button>
+              {admin.id == adminLogeado.id ? (
+                null ) : (
+                  <div>
+                    {admin.active === true ? (
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleDisableAdmin(admin.id)}
+                        >
+                          DISABLE
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleDisableAdmin(admin.id)}
+                        >
+                          ACTIVATE
+                        </Button>
+                      )}  
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleDeleteAdmin(admin.id)}
+                      >
+                        DELETE
+                      </Button>
+                    </div>
+              )}
               </div>
             </CardContent>
           </Card>
@@ -373,7 +379,7 @@ return (
             />
             <TextField
               error={error.mail}
-              label="Mail"
+              label="User"
               onChange={(e) => handleInput(e.target.name, e.target.value)}
               name="mail"
               value={data.mail}
@@ -413,76 +419,76 @@ return (
               Save
               </Button>
               </div>
-            {/* </form> */}
-          </div>
-        </div>
-      </>
-    )}
-    {isOpenForEdit && (
-      <>
-      <div style={overlay}>
-        <div style={modalContainer}>
-          <div style={modal}>
-          <Typography variant="h5" style={{ marginBottom: "2rem" }}>
-            Edit administrator
-          </Typography>
-          {/* <form onSubmit={handleEditAdmin}> */}
-              <TextField
-                label="Name"
-                defaultValue="Default Value"
-                name="name"
-                value={adminDetail ? oldData.name : ""}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Lastname"
-                name="surname"
-                defaultValue="Default Value"
-                value={adminDetail ? oldData.surname : ""}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Password"
-                name="password"
-                defaultValue="Default Value"
-                value={adminDetail ? oldData.password : ""}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button
-                  type="button"
-                  variant="outlined"
-                  style={{ marginRight: "1rem" }}
-                  onClick={() => setIsOpenForEdit(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  onClick={handleEditAdmin}
-                >
-                  Save
-                </Button>
-                </div>
               {/* </form> */}
+            </div>
           </div>
-        </div>
-      </div>
-      </>
-    )}
-  </div>  
-  )
+        </>
+      )}
+      {isOpenForEdit && (
+        <>
+          <div style={overlay}>
+            <div style={modalContainer}>
+              <div style={modal}>
+                <Typography variant="h5" style={{ marginBottom: "2rem" }}>
+                  Edit administrator
+                </Typography>
+                {/* <form onSubmit={handleEditAdmin}> */}
+                <TextField
+                  label="Name"
+                  defaultValue="Default Value"
+                  name="name"
+                  value={adminDetail ? oldData.name : ""}
+                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  required
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  label="Lastname"
+                  name="surname"
+                  defaultValue="Default Value"
+                  value={adminDetail ? oldData.surname : ""}
+                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  required
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  label="Password"
+                  name="password"
+                  defaultValue="Default Value"
+                  value={adminDetail ? oldData.password : ""}
+                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  required
+                  fullWidth
+                  margin="normal"
+                />
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button
+                    type="button"
+                    variant="outlined"
+                    style={{ marginRight: "1rem" }}
+                    onClick={() => setIsOpenForEdit(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={handleEditAdmin}
+                  >
+                    Save
+                  </Button>
+                </div>
+                {/* </form> */}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default ManageAdmins;

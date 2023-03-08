@@ -26,7 +26,8 @@ const cardContainer = {
   flexWrap: "wrap",
   justifyContent: "center",
   padding: 10,
-  width: 800,
+  width:1000,
+    height: 1500,
 };
 const card = {
   width: "500px", // Se establece un ancho fijo para la card
@@ -47,6 +48,7 @@ const cardContent = {
   alignItems: "center",
   flexGrow: 1,
   padding: "15px",
+  
 };
 const cardActions = {
   display: "flex",
@@ -97,17 +99,12 @@ const cardGold = {
 const cardBlue = {
   border: "1px solid #1976d2",
   backgroundColor: "#f0f8ff",
-  "&:hover": {
-    transform: "translateY(-5px)",
-    boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-  },
+  height:378,
 };
-const cardSimple = {
-  "&:hover": {
-    transform: "translateY(-5px)",
-    boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-  },
-};
+const cardSimple= {
+  border: "1px solid black",
+  height:378,
+}
 
 const History = () => {
   const dispatch = useDispatch();
@@ -125,7 +122,7 @@ const History = () => {
   );
 
   const renderPlanCard = (plan) => {
-    console.log(filteredPlans);
+ 
     return (
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
         <Card
@@ -133,8 +130,8 @@ const History = () => {
             plan.name === "iCare Full"
               ? cardGold
               : plan.name === "iCare Guard"
-              ? {}
-              : cardBlue
+              ? cardBlue
+              : cardSimple
           }
         >
           <CardContent style={cardContent}>

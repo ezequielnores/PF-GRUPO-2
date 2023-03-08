@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Modal from "react-modal";
 import Button from "@mui/material/Button";
@@ -48,11 +49,12 @@ const customStyles = {
 };
 const MedicalAppointments = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const doctors = useSelector((state) => state.doctor.list);
   const turnos = useSelector((state) => state.appointment.detail);
   const [date, setSelectedDate] = useState(new Date());
   const [minDate, setMinDate] = useState(new Date());
-  const [hour, setSelectedTime] = useState("06:00:00");
+  const [hour, setSelectedTime] = useState("");
   const [speciality, setDoctorSpecialty] = useState("");
   const [modalAbierto, setModalAbierto] = useState(false);
   const patientIdLocal = localStorage.getItem("id");
@@ -78,7 +80,7 @@ const MedicalAppointments = () => {
   useEffect(() => {
     dispatch(docrtorGetAll());
   }, []);
-  console.log(turnos);
+
 
   const handleSelectType = (e) => {
     setSelectedType(e.target.value);
@@ -130,10 +132,32 @@ const MedicalAppointments = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!patientDetail.plan) {
-      await swal("Sorry, you must purchase a plan to book an appointment.");
+ 
+    // if (!patientDetail.PatientPlan) {
+    //   await swal("Sorry, you must purchase a plan to book an appointment.");
+    //   return;
+    // }
+
+
+    if (!patientDetail.PatientPlan) {
+      await swal({
+        text: "Sorry, you must purchase a plan to book an appointment.",
+        buttons: {
+          cancel: "Cancel",
+          redirect: {
+            text: "Purchase Plan",
+            value: "redirect",
+          },
+        },
+      }).then((value) => {
+        if (value === "redirect") {
+          navigate("/HomeClient/Suscriptions");
+        }
+      });
       return;
     }
+    
+
 
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}/turns/turnByDateAndHourAndDoctor`,
@@ -353,7 +377,7 @@ const MedicalAppointments = () => {
               spacing={2}
               justifyContent="center"
             >
-              {!date || !hour || !speciality ? (
+              {!date || !hour || !speciality || !ubication ? (
                 <Button variant="contained" disabled>
                   Reserve
                 </Button>

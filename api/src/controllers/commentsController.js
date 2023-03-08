@@ -52,7 +52,10 @@ var newBadWords = [
     "Tarado",
     "Zarrapastroso",  
     "Zopenco",   
-    "Zoquete"
+    "Zoquete", 
+    "Idiota",
+    "Tonto",
+    "Forro"
 ];
 
 filter.addWords(...newBadWords)

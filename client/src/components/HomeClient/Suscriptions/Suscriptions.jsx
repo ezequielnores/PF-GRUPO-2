@@ -39,10 +39,12 @@ const styles = {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
+    width:1000,
+    height: 1500,
   },
   card: {
-    width: "100%",
-    height: "100%",
+    
+    
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -51,6 +53,7 @@ const styles = {
     overflow: "hidden",
     backgroundColor: "#ffffff",
     margin: "1px",
+    
   },
   cardContent: {
     display: "flex",
@@ -58,7 +61,8 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     flexGrow: 1,
-    // padding: "15px",
+    
+    padding: "15px",
   },
   cardActions: {
     display: "flex",
@@ -101,18 +105,18 @@ const styles = {
   cardGold: {
     border: "1px solid #ffd700",
     backgroundColor: "#fffacd",
-    "&:hover": {
-      transform: "translateY(-5px)",
-      boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-    },
+
   },
   cardBlue: {
     border: "1px solid #1976d2",
     backgroundColor: "#f0f8ff",
-    "&:hover": {
-      transform: "translateY(-5px)",
-      boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-    },
+    height:378
+
+  },
+  cardSimple: {
+    border: "1px solid black",
+    height:378
+
   },
 };
 
@@ -131,7 +135,7 @@ const Subscriptions = () => {
     (plan) => plan.name !== patientDetail.PatientPlan?.name
   );
 
-  console.log(filteredPlans);
+ 
 
   const handleBuyPlan = (plan) => {
     axios
@@ -152,12 +156,14 @@ const Subscriptions = () => {
     return (
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
         <Card
+        
           style={
             plan.name === "iCare Full"
               ? styles.cardGold
               : plan.name === "iCare Guard"
-              ? {}
-              : styles.cardBlue
+              ? styles.cardBlue
+              : styles.cardSimple
+            
           }
         >
           <CardContent style={styles.cardContent}>
@@ -194,7 +200,7 @@ const Subscriptions = () => {
   };
 
   return (
-    <div style={styles.root}>
+    <div style={styles.root} > 
       <Typography
         variant="button"
         fontSize="2.5rem"
@@ -230,6 +236,7 @@ const Subscriptions = () => {
           Current plan
         </Button>
       </div>
+      <br></br>
     </div>
   );
 };

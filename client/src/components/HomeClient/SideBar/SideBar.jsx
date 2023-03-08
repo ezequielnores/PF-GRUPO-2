@@ -36,7 +36,7 @@ const SideBar = ({ open, handleOpen, path }) => {
             window.location.href = "https://pf-grupo-2.vercel.app/";
           })
           .catch((error) => {
-            console.log({ Error: error.message });
+ 
           });
       }
     });

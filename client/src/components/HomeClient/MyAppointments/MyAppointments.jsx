@@ -61,7 +61,7 @@ const MyAppointments = () => {
       }
       return 1;
     }); // ordenar por fecha y hora;
-    console.log(sortAppointment);
+ 
     return appointments;
   };
   const [value, setValue] = React.useState(dayjs(date));
