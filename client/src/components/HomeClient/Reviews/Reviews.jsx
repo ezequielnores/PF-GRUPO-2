@@ -76,11 +76,12 @@ function Reviews() {
     );
 
     setModalAbierto(true);
-    resetForm();
+    
   };
 
   const closeModal = () => {
     setModalAbierto(false);
+    resetForm();
   };
 
   return (

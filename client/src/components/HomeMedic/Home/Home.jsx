@@ -7,6 +7,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { doctorGetDetail } from "../../../redux/reducers/doctorReducer";
 import React, { useEffect } from "react";
+import Loading from "../../Loader/Loader";
 
 import {
   ProfileMedic,
@@ -38,6 +39,11 @@ const Home = ({ isLogged }) => {
       dispatch(doctorGetDetail(doctorId));
     }
   }, []);
+  if(isLogged === null){
+    return (
+      <Loading />
+    )
+  }
 
   if (isLogged === true) {
     return (
@@ -137,6 +143,7 @@ const Home = ({ isLogged }) => {
       </div>
     );
   }
+  
   if (isLogged === false) {
     return <Navigate to="/loginMedic" />;
   }

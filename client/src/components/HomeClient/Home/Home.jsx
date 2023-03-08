@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import logoICare from "../../../assets/logoiCare.png";
 import { Navigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import Loading from "../../Loader/Loader";
 import {
   Faq,
   MedicalHistory,
@@ -29,7 +30,7 @@ import Register from "../Register/Register.jsx";
 import ErrorPage from "../../ErrorPage/ErrorPage";
 
 const Home = ({ isLogged }) => {
-  isLogged = true;
+
   const dispatch = useDispatch();
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -43,6 +44,16 @@ const Home = ({ isLogged }) => {
   const handleOpen = () => {
     setOpen(!open);
   };
+
+  if(isLogged === null){
+    return (
+     <Loading />
+    )
+  }
+
+  if (isLogged === false) {
+    return <Navigate to="/loginClient" />;
+  }
 
   if (isLogged === true) {
     return (
@@ -166,8 +177,7 @@ const Home = ({ isLogged }) => {
       </div>
     );
   }
-  if (isLogged === false) {
-    return <Navigate to="/loginClient" />;
-  }
+
+  
 };
 export default Home;
