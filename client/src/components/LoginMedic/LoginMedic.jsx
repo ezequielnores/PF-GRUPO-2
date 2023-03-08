@@ -175,7 +175,6 @@ const FormLoginMedic = () => {
           </Typography>
           <label>Email</label>
           <Input
-            error={error.mail}
             type="email"
             name="mail"
             style={inputs}
@@ -190,7 +189,6 @@ const FormLoginMedic = () => {
             </Typography>}
           <label>Password</label>
           <Input
-            error={error.password}
             type="password"
             name="password"
             style={inputs}

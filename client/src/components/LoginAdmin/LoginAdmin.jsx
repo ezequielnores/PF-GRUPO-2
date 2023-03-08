@@ -3,10 +3,7 @@ import swal from "sweetalert";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { adminGetAll, adminGetDetail } from "../../redux/reducers/adminReducer";
-//Firebase
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../authentication/firebase";
+import { adminGetAll, adminLogin } from "../../redux/reducers/adminReducer";
 
 const divPadre = {
   display: "flex",
@@ -81,11 +78,11 @@ export default function LoginAdmin() {
     }
     if (name === "mail") {
       if (
-        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+        !/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6}$/.test(
           data[name] || data[name] !== ""
         )
       ) {
-        setError({ ...error, [name]: "•Musst be a valid email" });
+        setError({ ...error, [name]: "•6 characters •One upper case letter •One number" });
       } else setError({ ...error, [name]: "" });
     }
   };
@@ -102,27 +99,20 @@ export default function LoginAdmin() {
   const handleSubmit =  async (e) => {
     e.preventDefault();
     try{
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        info.mail,
-        info.password,
-      );
-      const user = userCredential.user;
-      console.log("admin logueado: " + user.email);
-      if(user) {
-        const email = user.email
-        const adminFind = admin.find((admin) => {
-          return admin.mail === email
-        })
-        if(adminFind.active === false){
+      const authAdmin = await admin.find((admin) => {
+        return admin.mail === info.mail && admin.password === info.password;
+      })
+      if(authAdmin) {
+        console.log("respuest: " + authAdmin);
+        if(authAdmin.active === false){
           setSuccessLogin(false);
           await swal("Administrator disabled", {
             icon: "warning",
           });
         } else {
-          localStorage.setItem("mailAdmin",email);
-          localStorage.setItem("idAdmin", adminFind.id);
-          dispatch(adminGetDetail(adminFind.id))
+          localStorage.setItem("mailAdmin", authAdmin.mail);
+          localStorage.setItem("idAdmin", authAdmin.id);
+          dispatch(adminLogin(authAdmin.id))
           setSuccessLogin(true);
           navigate("/HomeAdmin");
         }
@@ -134,7 +124,7 @@ export default function LoginAdmin() {
       }
     } catch(error){
       console.log({ Error: error.message });
-      await swal("Unregistered administrator", {
+      await swal("Registered administrator error", {
         icon: "warning",
       });
     }
@@ -176,17 +166,17 @@ export default function LoginAdmin() {
           >
             Login Admins
           </Typography>
-          <label>Email</label>
+          <label>User</label>
           <Input
-            error={error.mail}
+            // error={error.mail}
             style={inputs}
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             name="mail"
             value={info.mail}
             type="mail"
-            required
-            fullWidth
-            margin="normal"
+            // required
+            // fullWidth
+            // margin="normal"
           />
           {error.mail && 
             <Typography
@@ -196,15 +186,15 @@ export default function LoginAdmin() {
             </Typography>}
           <label>Password</label>
           <Input
-            error={error.password}
+            // error={error.password}
             style={inputs}
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             name="password"
             value={info.password}
             type="password"
-            required
-            fullWidth
-            margin="normal"
+            // required
+            // fullWidth
+            // margin="normal"
           />
           {error.password && 
             <Typography
