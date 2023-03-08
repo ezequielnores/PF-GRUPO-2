@@ -9,24 +9,25 @@ const root = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  paddingTop: "4px",
-  paddingBottom: "4px",
-  backgroundColor: "#f5f5f5",
-  padding: 10,
+  height: "45.5rem",
 };
-const title = {
-  marginBottom: "2px",
-  fontWeight: "bold",
-  color: "#333333",
-  textAlign: "center",
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  padding: ".25em 0 .325em",
+  display: "block",
+  margin: "0 auto",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
 };
 const cardContainer = {
-  marginTop: "4px",
+  marginTop: "1rem",
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "center",
   padding: 10,
-  width: 800,
+  width: 1000,
+  height: 1500,
 };
 const card = {
   width: "500px", // Se establece un ancho fijo para la card
@@ -97,16 +98,11 @@ const cardGold = {
 const cardBlue = {
   border: "1px solid #1976d2",
   backgroundColor: "#f0f8ff",
-  "&:hover": {
-    transform: "translateY(-5px)",
-    boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-  },
+  height: 378,
 };
 const cardSimple = {
-  "&:hover": {
-    transform: "translateY(-5px)",
-    boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-  },
+  border: "1px solid black",
+  height: 378,
 };
 
 const History = () => {
@@ -125,7 +121,6 @@ const History = () => {
   );
 
   const renderPlanCard = (plan) => {
- 
     return (
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
         <Card
@@ -133,8 +128,8 @@ const History = () => {
             plan.name === "iCare Full"
               ? cardGold
               : plan.name === "iCare Guard"
-              ? {}
-              : cardBlue
+              ? cardBlue
+              : cardSimple
           }
         >
           <CardContent style={cardContent}>
@@ -178,30 +173,37 @@ const History = () => {
   return (
     <div style={root}>
       <Typography
-        variant="h4"
-        component="h1"
-        style={title}
-        sx={{ fontSize: 50 }}
+        variant="button"
+        fontSize="2.5rem"
+        color="#307196"
+        fontWeight="bold"
+        style={test}
       >
         Current plan
       </Typography>
       <div style={cardContainer}>
-        <Grid container spacing={3}>
+        <Grid
+          container
+          spacing={3}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           {patientDetail.PatientPlan ? (
             filteredPlans.map(renderPlanCard)
           ) : (
             <div>
-              <br />
-              <h3>
+              <Typography variant="h6">
                 You do not have a plan associated with your account, please go
                 back and associate with one
-              </h3>
+              </Typography>
               <Button
                 variant="contained"
                 color="primary"
                 component={Link}
                 to="/HomeClient/Suscriptions"
-                sx={{ marginLeft: 100 }}
+                sx={{ backgroundColor: "#307196", marginTop: "1rem" }}
               >
                 Back
               </Button>
