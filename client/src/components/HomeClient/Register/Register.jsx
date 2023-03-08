@@ -283,11 +283,11 @@ const Register = () => {
             //create empty user chats on firestore
             await setDoc(doc(db, "userChats", auth.currentUser.uid), {});
           });
+
           // alert("Account Created");
           setAlertSeverity("success");
           setAlertMessage("Account Created. Wait to be redirected");
-          setShowAlert(true);
-          
+          setShowAlert(true); 
         } else {
           setAlertSeverity("error");
           setAlertMessage("Error creating account!");
@@ -296,7 +296,11 @@ const Register = () => {
         }
         console.log(res);
       })
-      .catch((err) => alert(err));
+      .catch(
+        (err) => setAlertSeverity("error"),
+        setAlertMessage("Error creating account!"),
+        setShowAlert(true)
+      );
   };
 
   const handleRegister = async () => {
