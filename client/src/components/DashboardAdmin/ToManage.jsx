@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Search from "./Search";
 import { patientGetAll } from "../../redux/reducers/patientReducer";
 import { docrtorGetAll } from "../../redux/reducers/doctorReducer";
@@ -8,20 +8,63 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import {
+  commentsGetAll,
   deleteComment,
   commentsByDoctor,
   commentsByPatient,
 } from "../../redux/reducers/commentsReducer";
-
-import {
-  createFrequentAsk,
-  deleteFrequentAskById,
-  updateFrequentAskById,
-  getAllFrequentQuestions,
-  getFrequentAskById,
-  getFrequentAskByAsk,
-} from "../../redux/reducers/frequentQuestionsReducer";
+//import { deleteReportByCommentNull } from "../../redux/reducers/reportReducer";
 import ManageFQ from "./ManageFQ";
+// styled-components
+import styledComponent from "styled-components";
+
+const ButtonShowReport = styledComponent.button`
+  background-color: #FFA500;
+  color: ${(props) => props.theme.textColor};
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.theme.primaryColorDark};
+  }
+`;
+
+const CommentContainer = styledComponent.div`
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  p {
+    margin: 5px 0;
+  }
+
+  button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f44336;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #d32f2f;
+  }
+
+  .report {
+    margin-top: 10px;
+
+    p {
+      margin: 5px 0;
+      font-weight: bold;
+    }
+  }
+`;
 //style grid
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -47,11 +90,21 @@ const photo = {
 const ToManage = (props) => {
   const dispatch = useDispatch();
   const [change, setChange] = useState(false);
+  const [renderSearchComments, setRenderSearchComments] = useState(true);
+  const allComments = useSelector((state) => state.comments.listAll);
+  const [commentsReported, setCommentsReported] = useState([]);
+
+  const filterCommentsReported = () => {
+    setCommentsReported(allComments.filter((c) => c.reports.length));
+    setRenderSearchComments(!renderSearchComments);
+  };
 
   useEffect(() => {
     if (props.toRenderPatients) dispatch(patientGetAll());
     if (props.toRenderDoctors) dispatch(docrtorGetAll());
-  }, [dispatch, change]);
+    if (props.toRenderComments) dispatch(commentsGetAll());
+    // if (commentsReported.length) filterCommentsReported();
+  }, [dispatch, change, renderSearchComments]);
 
   return (
     <div>
@@ -121,7 +174,9 @@ const ToManage = (props) => {
                           }}
                         >
                           State Active:
-                          <Typography>{p?.active ? "Alta" : "Baja"}</Typography>
+                          <Typography>
+                            {p?.active ? "Active" : "No activated"}
+                          </Typography>
                         </Typography>
                       </div>
                       {p?.id && (
@@ -138,7 +193,7 @@ const ToManage = (props) => {
                             setTimeout(setChange, 2000, !change);
                           }}
                         >
-                          Discharge
+                          Activate
                         </Button>
                       )}
                     </Item>
@@ -238,7 +293,7 @@ const ToManage = (props) => {
                             setTimeout(setChange, 2000, !change);
                           }}
                         >
-                          Discharge
+                          Activate
                         </Button>
                       )}
                     </Item>
@@ -267,6 +322,56 @@ const ToManage = (props) => {
             change={change}
             setChange={setChange}
           />
+          {/* {renderSearchComments && (
+            <Search
+              title={"Comment"}
+              deleteComment={deleteComment}
+              commentsByPatient={commentsByPatient}
+              commentsByDoctor={commentsByDoctor}
+              findComment={props.toRenderComments}
+              change={change}
+              setChange={setChange}
+            />
+          )}
+          <ButtonShowReport onClick={filterCommentsReported}>
+            {renderSearchComments
+              ? "View comments reported"
+              : "Hide comments reported"}
+          </ButtonShowReport>
+
+          {!renderSearchComments &&
+            commentsReported?.length &&
+            commentsReported?.map((c) => (
+              <CommentContainer>
+                <p>
+                  <b>Title</b>: {c?.title}
+                </p>
+                <p>
+                  <b>Message</b>: {c?.message}
+                </p>
+                <p>
+                  <b>This comment have {c?.reports.length} reports.</b>
+                </p>
+                <button
+                  onClick={async () => {
+                    await dispatch(deleteComment(c?.id));
+                    await dispatch(commentsGetAll());
+                    await dispatch(deleteReportByCommentNull());
+                    setTimeout(setChange, 3000, !change);
+                  }}
+                >
+                  DELETE
+                </button>
+                {c?.reports.length < 6 &&
+                  c?.reports.map((r) => (
+                    <div>
+                      <p>
+                        <b>Reason report</b>: {r?.reasonReport}
+                      </p>
+                    </div>
+                  ))}
+              </CommentContainer>
+            ))} */}
         </div>
       )}
 
