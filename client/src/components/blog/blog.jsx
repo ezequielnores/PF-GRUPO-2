@@ -49,11 +49,11 @@ const blog = () => {
           >
             Take care of your health with these tips
           </Typography>
-          <div style={buttonContainer}>
+          {/* <div style={buttonContainer}>
             <Button>Health</Button>
             <Button>Nutrition</Button>
             <Button>Tech</Button>
-          </div>
+          </div> */}
           <div style={cardsContainer}>
             <Card sx={{ maxWidth: 345 }}>
               <CardMedia
@@ -76,8 +76,9 @@ const blog = () => {
                   attention to body hydration
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button size="small">Share</Button>
+              <CardActions
+                style={{ display: "flex", justifyContent: "center" }}
+              >
                 <Link to="/blog/noteOne">
                   <Button size="small">Learn More</Button>
                 </Link>
@@ -103,8 +104,9 @@ const blog = () => {
                   body overheats and is unable to regulate its temperature.
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button size="small">Share</Button>
+              <CardActions
+                style={{ display: "flex", justifyContent: "center" }}
+              >
                 <Link to="/blog/noteTwo">
                   <Button size="small">Learn More</Button>
                 </Link>
@@ -130,8 +132,9 @@ const blog = () => {
                   healthcare, including the way patients receive medical care.
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button size="small">Share</Button>
+              <CardActions
+                style={{ display: "flex", justifyContent: "center" }}
+              >
                 <Link to="/blog/noteThree">
                   <Button size="small">Learn More</Button>
                 </Link>

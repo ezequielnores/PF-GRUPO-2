@@ -8,7 +8,6 @@ const testCovid = async (model, input) => {
 
 const neuralNetwork = async () => {
   try {
-
     var dataSet = fs.readFileSync(__dirname + "/Covid-Dataset.csv", "utf8");
     var lines = dataSet.split("\r\n");
     var dataArray = [];
@@ -74,21 +73,19 @@ const neuralNetwork = async () => {
     });
     model.summary();
     const xs = tf.tensor2d(trainingDataInputs, [
-      trainingDataInputs.length,
-      trainingDataInputs[0].length,
+      trainingDataInputs?.length,
+      trainingDataInputs[0]?.length,
     ]);
     const ys = tf.tensor2d(trainingDataOutputs, [
-      trainingDataOutputs.length,
+      trainingDataOutputs?.length,
       1,
     ]);
 
     await entrena(model, xs, ys);
     return model;
-
   } catch (error) {
-    
-    console.log(dataSet);
     console.log(dataArray);
+
     console.log(error.message);
   }
 };

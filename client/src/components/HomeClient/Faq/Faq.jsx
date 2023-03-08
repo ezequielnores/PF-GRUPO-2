@@ -26,7 +26,7 @@ const Faq = () => {
   const [allFaq, setAllFaq] = React.useState([]);
   useEffect(() => {
     axios
-      .get("http://localHost:3001/frequentQuestions")
+      .get(`${process.env.REACT_APP_BACKEND_URL}/frequentQuestions`)
       .then((res) => {
         setAllFaq(res.data);
       })
@@ -71,80 +71,89 @@ const Faq = () => {
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-between",
-        // padding: "0 2vw 0 5vw",
         width: "90vw",
-        gap: "2vh",
+        height: "45.5rem",
       }}
     >
-      <Typography
-        variant="button"
-        fontSize="2.5rem"
-        color="#307196"
-        fontWeight="bold"
-        style={test}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "2vh",
+        }}
       >
-        Frequently Asked Questions
-      </Typography>
-      <div>
+        <Typography
+          variant="button"
+          fontSize="2.5rem"
+          color="#307196"
+          fontWeight="bold"
+          style={test}
+        >
+          Frequently Asked Questions
+        </Typography>
+        <div>
+          <div
+            style={{
+              border: "1px solid  rgba(131, 130, 130, 0.7)",
+              borderRadius: "15px",
+              height: "8vh",
+              width: "40vw",
+              display: "flex",
+            }}
+          >
+            <div className={style.divSearch}>
+              <label className={style.labelSearch}>Search Question</label>
+              <input
+                value={search}
+                onChange={handleChangeSearch}
+                className={style.inputSearch}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleSearch}
+              className={style.buttonSearch}
+            >
+              Search
+            </button>
+          </div>
+        </div>
         <div
           style={{
-            border: "1px solid  rgba(131, 130, 130, 0.7)",
-            borderRadius: "15px",
-            height: "8vh",
-            width: "40vw",
+            width: "100%",
             display: "flex",
+            justifyContent: "flex-start",
           }}
         >
-          <div className={style.divSearch}>
-            <label className={style.labelSearch}>Search Question</label>
-            <input
-              value={search}
-              onChange={handleChangeSearch}
-              className={style.inputSearch}
+          <TableContainer component={Paper} sx={{ width: 7 / 8 }}>
+            <Table aria-label="collapsible table">
+              <TableBody>
+                {faq[0] ? (
+                  faq
+                    .slice(page * 4, page * 4 + 4)
+                    .map((f) => (
+                      <RowsFaq key={f.id} question={f.ask} answer={f.answer} />
+                    ))
+                ) : (
+                  <TableRow>
+                    <TableCell>No Question</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+            <TablePagination
+              component="div"
+              count={faq.length}
+              rowsPerPage={4}
+              page={page}
+              labelRowsPerPage={""}
+              rowsPerPageOptions={[]}
+              onPageChange={handleChangePage}
             />
-          </div>
-          <button
-            type="button"
-            onClick={handleSearch}
-            className={style.buttonSearch}
-          >
-            Search
-          </button>
+          </TableContainer>
         </div>
-      </div>
-      <div
-        style={{ width: "100%", display: "flex", justifyContent: "flex-start" }}
-      >
-        <TableContainer component={Paper} sx={{ width: 7 / 8 }}>
-          <Table aria-label="collapsible table">
-            <TableBody>
-              {faq[0] ? (
-                faq
-                  .slice(page * 4, page * 4 + 4)
-                  .map((f) => (
-                    <RowsFaq key={f.id} question={f.ask} answer={f.answer} />
-                  ))
-              ) : (
-                <TableRow>
-                  <TableCell>No Question</TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={faq.length}
-            rowsPerPage={4}
-            page={page}
-            labelRowsPerPage={""}
-            rowsPerPageOptions={[]}
-            onPageChange={handleChangePage}
-          />
-        </TableContainer>
       </div>
     </div>
   );

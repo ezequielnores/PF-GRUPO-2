@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import logoICare from "../../../assets/logoiCare.png";
 import { Navigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import Loading from "../../Loader/Loader";
 import {
   Faq,
   MedicalHistory,
@@ -29,7 +30,7 @@ import Register from "../Register/Register.jsx";
 import ErrorPage from "../../ErrorPage/ErrorPage";
 
 const Home = ({ isLogged }) => {
-  isLogged = true;
+
   const dispatch = useDispatch();
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -44,24 +45,24 @@ const Home = ({ isLogged }) => {
     setOpen(!open);
   };
 
+  if(isLogged === null){
+    return (
+     <Loading />
+    )
+  }
+
+  if (isLogged === false) {
+    return <Navigate to="/loginClient" />;
+  }
+
   if (isLogged === true) {
     return (
-      <div style={{ position: "relative" }}>
-        {/* <div
-          style={{
-            width: "100vw",
-            position: "absolute",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        > */}
-        {/* <div
-            style={{
-              width: open ? "15vw" : "10vw",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          > */}
+      <div
+        style={{
+          height: "100vh",
+          backgroundColor: "white",
+        }}
+      >
         <img
           style={{
             width: "4.3vw",
@@ -72,7 +73,6 @@ const Home = ({ isLogged }) => {
           src={logoICare}
           alt=""
         />
-        {/* </div> */}
         <Stack
           style={{
             position: "absolute",
@@ -126,7 +126,7 @@ const Home = ({ isLogged }) => {
             />
           </Avatar>
         </Stack>
-        {/* </div> */}
+
         <SideBar open={open} handleOpen={handleOpen} path={location.pathname} />
 
         <div
@@ -160,16 +160,16 @@ const Home = ({ isLogged }) => {
               <Reviews />
             )) ||
             (location.pathname.endsWith("/HomeClient/Faq") && <Faq />) ||
-            (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
+            // (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
             (location.pathname.endsWith("/HomeClient/Register") && (
               <Register />
             )) ||
             (location.pathname.endsWith("/HomeClient/Suscriptions") && (
               <Suscriptions />
             )) ||
-            (location.pathname.endsWith("/HomeClient/TestCovid") && (
-              <TestCovid />
-            )) ||
+            // (location.pathname.endsWith("/HomeClient/TestCovid") && (
+            //   <TestCovid />
+            // )) ||
             (location.pathname.endsWith("/HomeClient/Suscriptions/history") && (
               <History />
             )) || <ErrorPage />}
@@ -177,8 +177,7 @@ const Home = ({ isLogged }) => {
       </div>
     );
   }
-  if (isLogged === false) {
-    return <Navigate to="/loginClient" />;
-  }
+
+  
 };
 export default Home;

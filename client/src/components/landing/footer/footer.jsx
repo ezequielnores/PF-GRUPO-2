@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import CopyrightIcon from "@mui/icons-material/Copyright";
 import Logo from "../../../assets/logoiCare.png";
+import { Link } from "react-router-dom";
 const footer = {
   backgroundColor: "#F0F8FF",
   width: "100%",
@@ -40,7 +41,7 @@ const logo = {
 
 const Navbar = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static">
         <Toolbar style={footer}>
           <Box style={divtext}>
@@ -67,13 +68,19 @@ const Navbar = () => {
             </Typography>
             <ButtonGroup>
               <IconButton>
-                <FacebookRoundedIcon />
+                <Link to="https://es-la.facebook.com/">
+                  <FacebookRoundedIcon color="primary" />
+                </Link>
               </IconButton>
               <IconButton>
-                <LinkedInIcon />
+                <Link to="https://www.linkedin.com/">
+                  <LinkedInIcon />
+                </Link>
               </IconButton>
               <IconButton>
-                <YouTubeIcon />
+                <Link to="https://www.youtube.com/">
+                  <YouTubeIcon color="error" />
+                </Link>
               </IconButton>
             </ButtonGroup>
           </Box>

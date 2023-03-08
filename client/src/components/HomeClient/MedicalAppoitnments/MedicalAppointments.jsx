@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
-import swal from "sweetalert"
+import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { docrtorGetAll } from "../../../redux/reducers/doctorReducer";
 import {
@@ -62,7 +62,6 @@ const MedicalAppointments = () => {
   const [ubication, setUbication] = useState("");
   const [modalReserved, setModalReserved] = useState(false);
   const patientDetail = useSelector((state) => state.patient.detail);
-  
 
   const availability = true;
   const attended = false;
@@ -120,23 +119,21 @@ const MedicalAppointments = () => {
 
   const defaultValue = moment().set({ hour: 6, minute: 0, second: 0 });
 
-
-
   const resetForm = () => {
     setDoctorSpecialty();
     setDoctor({ doctorId: "", name: "", lastName: "" });
-    setSelectedType("")
-    setUbication("")
-    setSelectedTime("")
+    setSelectedType("");
+    setUbication("");
+    setSelectedTime("");
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // if (!patientDetail.plan) {
-    //   await swal("Sorry, you must purchase a plan to book an appointment.");
-    //   return;
-    // }
+    if (!patientDetail.plan) {
+      await swal("Sorry, you must purchase a plan to book an appointment.");
+      return;
+    }
 
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}/turns/turnByDateAndHourAndDoctor`,
@@ -161,8 +158,8 @@ const MedicalAppointments = () => {
           attended,
         })
       );
-      setModalAbierto(true);
-      resetForm();
+      setModalAbierto(true)
+       
     } else {
       setModalReserved(true);
       // alert("Sorry, the appointment is already reserved");
@@ -174,6 +171,7 @@ const MedicalAppointments = () => {
   };
   const closeModal = () => {
     setModalAbierto(false);
+    resetForm()
   };
 
   const filterClinicMail =
@@ -190,8 +188,6 @@ const MedicalAppointments = () => {
       ? filterClinicMail.filter((doctor) => doctor.speciality === speciality)
       : doctors;
 
-
-
   const filterNameDoctor =
     type && speciality && ubication
       ? filteredDoctors.filter((doctor) => doctor.location === ubication)
@@ -202,7 +198,7 @@ const MedicalAppointments = () => {
   //   : doctors;
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" style={{ height: "45.5rem" }}>
       <Box my={4}>
         <Paper elevation={3} sx={{ p: 4 }}>
           <Typography

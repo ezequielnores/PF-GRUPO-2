@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import { Alert, Card, Snackbar, Typography } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
-
 const test = {
   color: "#307196",
   font: "700 3em/1",
@@ -150,17 +149,17 @@ const TestCovid = () => {
         form.wearingMasks,
         form.sanitizationFromMarket,
       ];
-      const data ={
-        input: inputs
-      }
+      const data = {
+        input: inputs,
+      };
       // console.log(inputs);
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/covid`,
         data
       );
       // console.log(response.data[0][0]);
-      
-      setResult(response.data[0][0].toFixed(3)*100);
+
+      setResult(response.data[0][0].toFixed(3) * 100);
       setForm({
         breathingProblem: 0,
         fever: 0,
@@ -189,7 +188,12 @@ const TestCovid = () => {
   // console.log(form);
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "45.5rem",
+      }}
     >
       <Typography
         variant="button"
@@ -224,8 +228,16 @@ const TestCovid = () => {
           <div style={modalContainer}></div>
           <div style={modal}>
             <Typography variant="h5" style={{ marginBottom: "2rem" }}>
-              {result} % COVID-19.
-              It's important to understand that an online COVID test is not a diagnosis; it's a preventative measure based on artificial intelligence. While it can be helpful in identifying potential symptoms of COVID-19, it's always recommended to contact a medical professional for a proper diagnosis. While technology can be incredibly useful, it's not a replacement for a trained medical practitioner. If you're experiencing any symptoms or are concerned about your health, it's always best to seek advice from a healthcare provider who can provide you with accurate information and guidance.
+              {result} % COVID-19. It's important to understand that an online
+              COVID test is not a diagnosis; it's a preventative measure based
+              on artificial intelligence. While it can be helpful in identifying
+              potential symptoms of COVID-19, it's always recommended to contact
+              a medical professional for a proper diagnosis. While technology
+              can be incredibly useful, it's not a replacement for a trained
+              medical practitioner. If you're experiencing any symptoms or are
+              concerned about your health, it's always best to seek advice from
+              a healthcare provider who can provide you with accurate
+              information and guidance.
             </Typography>
             <Button
               type="button"
@@ -237,227 +249,227 @@ const TestCovid = () => {
             </Button>
           </div>
         </>
-      ):
-      <Card style={cardsin}>
-        <form style={hijoCard}>
-          <div style={containerCheckbox}>
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.breathingProblem}
-                  name="breathingProblem"
-                />
-              }
-              label="Breathing Problem"
-            ></FormControlLabel>
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.fever}
-                  name="fever"
-                />
-              }
-              label="Fever"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.dryCough}
-                  name="dryCough"
-                />
-              }
-              label="Dry Cough"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.sorethroat}
-                  name="sorethroat"
-                />
-              }
-              label="Sore throat"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.runningNose}
-                  name="runningNose"
-                />
-              }
-              label="Running Nose"
-            />
+      ) : (
+        <Card style={cardsin}>
+          <form style={hijoCard}>
+            <div style={containerCheckbox}>
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.breathingProblem}
+                    name="breathingProblem"
+                  />
+                }
+                label="Breathing Problem"
+              ></FormControlLabel>
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.fever}
+                    name="fever"
+                  />
+                }
+                label="Fever"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.dryCough}
+                    name="dryCough"
+                  />
+                }
+                label="Dry Cough"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.sorethroat}
+                    name="sorethroat"
+                  />
+                }
+                label="Sore throat"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.runningNose}
+                    name="runningNose"
+                  />
+                }
+                label="Running Nose"
+              />
 
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.familyWorkinginPublicExposedPlaces}
-                  name="familyWorkinginPublicExposedPlaces"
-                />
-              }
-              label="Family working in Public Exposed Places"
-            />
-          </div>
-          <div style={containerCheckbox}>
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.chronicLungDisease}
-                  name="chronicLungDisease"
-                />
-              }
-              label="Chronic Lung Disease"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.heartDisease}
-                  name="heartDisease"
-                />
-              }
-              label="Heart Disease"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.hyperTension}
-                  name="hyperTension"
-                />
-              }
-              label="Hyper Tension"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.gastrointestinal}
-                  name="gastrointestinal"
-                />
-              }
-              label="Gastrointestinal"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.abroadTravel}
-                  name="abroadTravel"
-                />
-              }
-              label="Abroad travel"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.attendedLargeGathering}
-                  name="attendedLargeGathering"
-                />
-              }
-              label="Attended Large Gathering"
-            />
-          </div>
-          <div style={containerCheckbox}>
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.contactWithCOVIDPatient}
-                  name="contactWithCOVIDPatient"
-                />
-              }
-              label="Contact with COVID Patient"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.fatigue}
-                  name="fatigue"
-                />
-              }
-              label="Fatigue"
-            />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.familyWorkinginPublicExposedPlaces}
+                    name="familyWorkinginPublicExposedPlaces"
+                  />
+                }
+                label="Family working in Public Exposed Places"
+              />
+            </div>
+            <div style={containerCheckbox}>
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.chronicLungDisease}
+                    name="chronicLungDisease"
+                  />
+                }
+                label="Chronic Lung Disease"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.heartDisease}
+                    name="heartDisease"
+                  />
+                }
+                label="Heart Disease"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.hyperTension}
+                    name="hyperTension"
+                  />
+                }
+                label="Hyper Tension"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.gastrointestinal}
+                    name="gastrointestinal"
+                  />
+                }
+                label="Gastrointestinal"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.abroadTravel}
+                    name="abroadTravel"
+                  />
+                }
+                label="Abroad travel"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.attendedLargeGathering}
+                    name="attendedLargeGathering"
+                  />
+                }
+                label="Attended Large Gathering"
+              />
+            </div>
+            <div style={containerCheckbox}>
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.contactWithCOVIDPatient}
+                    name="contactWithCOVIDPatient"
+                  />
+                }
+                label="Contact with COVID Patient"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.fatigue}
+                    name="fatigue"
+                  />
+                }
+                label="Fatigue"
+              />
 
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.visitedPublicExposedPlaces}
-                  name="visitedPublicExposedPlaces"
-                />
-              }
-              label="Visited Public Exposed Places"
-            />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.visitedPublicExposedPlaces}
+                    name="visitedPublicExposedPlaces"
+                  />
+                }
+                label="Visited Public Exposed Places"
+              />
 
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.wearingMasks}
-                  name="wearingMasks"
-                />
-              }
-              label="Wearing Masks"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.sanitizationFromMarket}
-                  name="sanitizationFromMarket"
-                />
-              }
-              label="Sanitization from Market"
-            />
-            <FormControlLabel
-              style={checkboxLabel}
-              control={
-                <Checkbox
-                  onChange={handleCheckbox}
-                  checked={form.asthma}
-                  name="asthma"
-                />
-              }
-              label="Asthma"
-            />
-          </div>
-        </form>
-        <Button
-          variant="contained"
-          type="submit"
-          onClick={submitForm}
-          style={{ width: "2rem", alignSelf: "center" }}
-        >
-          Send
-        </Button>
-      </Card>
-      }
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.wearingMasks}
+                    name="wearingMasks"
+                  />
+                }
+                label="Wearing Masks"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.sanitizationFromMarket}
+                    name="sanitizationFromMarket"
+                  />
+                }
+                label="Sanitization from Market"
+              />
+              <FormControlLabel
+                style={checkboxLabel}
+                control={
+                  <Checkbox
+                    onChange={handleCheckbox}
+                    checked={form.asthma}
+                    name="asthma"
+                  />
+                }
+                label="Asthma"
+              />
+            </div>
+          </form>
+          <Button
+            variant="contained"
+            type="submit"
+            onClick={submitForm}
+            style={{ width: "2rem", alignSelf: "center" }}
+          >
+            Send
+          </Button>
+        </Card>
+      )}
     </div>
   );
 };

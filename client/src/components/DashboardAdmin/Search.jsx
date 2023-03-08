@@ -16,7 +16,9 @@ import {
 import {
   commentsByDoctor2,
   commentsByPatient2,
+  commentsGetAll,
 } from "../../redux/reducers/commentsReducer";
+import { patientGetAll } from "../../redux/reducers/patientReducer";
 import { fontWeight } from "@mui/system";
 //styles
 const Item = styled(Paper)(({ theme }) => ({
@@ -73,9 +75,11 @@ const Search = (props) => {
   const [patient2, setPatient2] = useState({});
   const doctors = useSelector((state) => state.doctor.list);
   const patients = useSelector((state) => state.patient.list);
-  const commentsByDoctor = useSelector((state) => state.comments.list);
-  const commentsByPatient = useSelector((state) => state.comments.listAll);
-  // const allComments = useSelector((state) => state.comments.listAll);
+  // const commentsByDoctor = useSelector((state) => state.comments.list);
+  // const commentsByPatient = useSelector((state) => state.comments.listAll);
+  const [commentsByPatient, setCommentsByPatient] = useState([]);
+  const [commentsByDoctor, setCommentsByDoctor] = useState([]);
+  const allComments = useSelector((state) => state.comments.listAll);
   // const [commentsDoctor, setCommentsDoctor] = useState([]);
   // const [commentsPatient, setCommentsPatient] = useState([]);
   //agregue para el render on o false
@@ -106,21 +110,28 @@ const Search = (props) => {
     const mail = input.doctorMail;
     // dispatch(doctorGetByMail(mail));
     setDoctor2(doctors.find((d) => d.mail === mail));
-    dispatch(commentsByDoctor2(mail));
+    // dispatch(commentsByDoctor2(mail));
+    setCommentsByDoctor(allComments.filter((c) => c.doctor.mail === mail));
   };
 
   const handleSearchCommentsByPatientMail = () => {
     const mail = input.patientMail;
     setPatient2(patients.find((p) => p.mail === mail));
-    dispatch(commentsByPatient2(mail));
+    // dispatch(commentsByPatient2(mail));
+    setCommentsByPatient(allComments.filter((c) => c.Patient.mail === mail));
   };
 
   useEffect(() => {
-    // dispatch(commentsGetAll());
+    dispatch(commentsGetAll());
     dispatch(docrtorGetAll());
+    dispatch(patientGetAll());
     if (input.doctorMail.length) {
-      setDoctor2(doctors.find((d) => d.mail === input.doctorMail));
-      dispatch(commentsByDoctor2(input.doctorMail));
+      // setDoctor2(doctors.find((d) => d.mail === input.doctorMail));
+      // dispatch(commentsByDoctor2(input.doctorMail));
+      setCommentsByDoctor(allComments.filter((c) => c.doctor.mail === input.doctorMail));
+    }
+    if (input.patientMail.length) {
+      setCommentsByPatient(allComments.filter((c) => c.Patient.mail === input.patientMail));
     }
     // dispatch(docrtorGetAll());
   }, [render]);
@@ -388,7 +399,7 @@ const Search = (props) => {
                     </Typography>
                   </Typography>
                 )}
-                {commentsByDoctor?.length && (
+                {commentsByDoctor?.length && doctor2.name && (
                   <Comments
                     comments={commentsByDoctor}
                     authorName={doctor2.name}
@@ -447,12 +458,14 @@ const Search = (props) => {
                     </Typography>
                   </Typography>
                 )}
-                {commentsByPatient?.length && (
+                {commentsByPatient?.length && patient2?.name && (
                   <Comments
                     comments={commentsByPatient}
                     authorName={patient2?.name}
                     authorLastName={patient2?.lastName}
                     deleteComment={props.deleteComment}
+                    setRenderSearch={setRender}
+                    renderSearch={render}
                   />
                 )}
               </ScrollableContainer>

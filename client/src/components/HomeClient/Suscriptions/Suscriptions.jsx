@@ -27,8 +27,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    paddingTop: "4px",
-    paddingBottom: "4px",
+    height: "45.5rem",
   },
   title: {
     fontWeight: "bold",
@@ -154,9 +153,9 @@ const Subscriptions = () => {
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
         <Card
           style={
-            plan.name === "iCare pro"
+            plan.name === "iCare Full"
               ? styles.cardGold
-              : plan.name === "iCare simple"
+              : plan.name === "iCare Guard"
               ? {}
               : styles.cardBlue
           }
