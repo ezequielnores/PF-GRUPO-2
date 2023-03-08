@@ -158,8 +158,8 @@ const MedicalAppointments = () => {
           attended,
         })
       );
-      setModalAbierto(true);
-      resetForm();
+      setModalAbierto(true)
+       
     } else {
       setModalReserved(true);
       // alert("Sorry, the appointment is already reserved");
@@ -171,6 +171,7 @@ const MedicalAppointments = () => {
   };
   const closeModal = () => {
     setModalAbierto(false);
+    resetForm()
   };
 
   const filterClinicMail =
