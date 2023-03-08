@@ -70,165 +70,173 @@ const divsitoButton = {
 };
 
 const ManageAdmins = () => {
-  const navigate = useNavigate();
-  //estado de alertas!!!!
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState("success");
-  const [alertMessage, setAlertMessage] = useState("");
-  //Estado de open modal
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenForEdit, setIsOpenForEdit] = useState(false);
-  //estado para postear
-  const [data, setData] = useState({
-    name: "",
-    surname: "",
-    mail: "",
-    password: "",
-  });
-  const [error, setError] = useState({
-    name: "",
-    surname: "",
-    mail: "",
-    password: "",
-  });
-  const dispatch = useDispatch();
-  //lista de admins
-  const dataAdmins = useSelector((state) => state.admin.listAll);
-  //detalle de admins
-  const adminDetail = useSelector((state) => state.admin.forEdit);
-  const adminLogeado = useSelector((state) => state.admin.detail);
-  const [oldData, setOldData] = useState({
-    name: adminDetail ? adminDetail.name : "",
-    surname: adminDetail ? adminDetail.surname : "",
-    mail: adminDetail ? adminDetail.mail : "",
-    password: adminDetail ? adminDetail.password : "",
-  });
-  //controles modal
-  const activadorOpen = (name) => {
+const navigate = useNavigate();
+//estado de alertas!!!!
+const [showAlert, setShowAlert] = useState(false);
+const [alertSeverity, setAlertSeverity] = useState("success");
+const [alertMessage, setAlertMessage] = useState("");
+//Estado de open modal
+const [isOpen, setIsOpen] = useState(false);
+const [isOpenForEdit, setIsOpenForEdit] = useState(false);
+//estado para postear
+const [data, setData] = useState({
+  name: "",
+  surname: "",
+  mail: "",
+  password: "",
+});
+const [error, setError] = useState({
+  name: "",
+  surname: "",
+  mail: "",
+  password: "",
+});
+const dispatch = useDispatch();
+//lista de admins
+const dataAdmins = useSelector((state) => state.admin.listAll);
+//detalle de admins
+const adminDetail = useSelector((state) => state.admin.loggedIn);
+const adminLogeado = useSelector((state) => state.admin.loggedIn);
+const [oldData, setOldData] = useState({
+  name: adminDetail ? adminDetail.name : "",
+  surname: adminDetail ? adminDetail.surname : "",
+  mail: adminDetail ? adminDetail.mail : "",
+  password: adminDetail ? adminDetail.password : "",
+});
+//controles modal
+const activadorOpen = (name) => {
     setIsOpen(true);
-  };
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-  //postear un admin
-  const handleInput = (name, value) => {
-    setData({ ...data, [name]: value });
-    validateForm({ ...data, [name]: value }, name);
-  };
-  // editar admins
-  const activadorOpenEdit = async (id) => {
-    //abre el modal
-    setIsOpenForEdit(true);
-    //le hago click y dispatcho ese plan a detail
-    await dispatch(adminGetDetailForEdit(id));
-  };
-  const handleEditAdmin = async (e) => {
-    e.preventDefault();
-    await dispatch(adminEdit({ id: adminDetail.id, data: oldData }));
-    await swal("Information updated", {
-      icon: "success",
-    });
-    dispatch(adminGetAll());
-    setIsOpenForEdit(false);
-  };
-  const handleChange = (name, value) => {
-    setOldData({
-      ...oldData,
-      [name]: value,
-    });
-    validateForm({ ...oldData, [name]: value }, name);
-  };
-  //eliminar un admin
-  const handleDeleteAdmin = async (id) => {
-    await dispatch(deleteAdmin(id));
-    dispatch(adminGetAll());
-    auth.currentUser.delete();
-  };
-  //desactivar admin
-  const handleDisableAdmin = async (id) => {
-    await dispatch(disableAdmin(id));
-    dispatch(adminGetAll());
-  };
+};
+const closeModal = () => {
+  setIsOpen(false);
+};
+//postear un admin
+const handleInput = (name, value) => {
+  setData({ ...data, [name]: value });
+  validateForm({ ...data, [name]: value}, name);
+};
+// editar admins
+const activadorOpenEdit = async (id) => {
+  //abre el modal
+  setIsOpenForEdit(true);
+  //le hago click y dispatcho ese plan a detail
+  await dispatch(adminGetDetailForEdit(id));
+};
+const handleEditAdmin = async (e) => {
+  e.preventDefault();
+  await dispatch(adminEdit({ id: adminDetail.id, data: oldData }));
+  await swal("Information updated", {
+    icon: "success",
+  });
+  dispatch(adminGetAll());
+  setIsOpenForEdit(false);
+};
+const handleChange = (name, value) => {
+  setOldData({
+    ...oldData,
+    [name]: value,
+  });
+  validateForm({ ...oldData, [name]: value}, name);
+};
+//eliminar un admin
+const handleDeleteAdmin = async (id) => {
+  await dispatch(deleteAdmin(id));
+  dispatch(adminGetAll());
+  // auth.currentUser.delete();
+};
+ //desactivar admin
+ const handleDisableAdmin = async (id) => {
+  await dispatch(disableAdmin(id));
+  dispatch(adminGetAll());
+};
 
-  //validation reguster form
-  const validateForm = (data, name) => {
-    if (name === "name" || name === "surname") {
-      if (!/^[A-Za-z\s]+$/.test(data[name])) {
-        setError({ ...error, [name]: "•Only characters" });
-      } else setError({ ...error, [name]: "" });
-    }
-    if (name === "password") {
-      if (
-        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
-          data[name] || data[name] !== ""
-        )
-      ) {
-        setError({
-          ...error,
-          [name]:
-            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
-        });
-      } else {
-        setError({
-          ...error,
-          [name]: "",
-        });
-      }
-    }
-    if (name === "mail") {
-      if (
-        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
-          data[name] || data[name] !== ""
-        )
-      ) {
-        setError({ ...error, [name]: "•Musst be a valid email" });
-      } else setError({ ...error, [name]: "" });
-    }
-  };
-
-  const dispatchRegister = () => {
-    dispatch(adminRegister({ ...data, mail: auth.currentUser.email }))
-      .then((res) => {
-        if (res.type === "admins/register/fulfilled") {
-          setAlertSeverity("success");
-          setAlertMessage("Account Created. Wait to be redirected");
-          setShowAlert(true);
-          closeModal();
-          dispatch(adminGetAll());
-          setData({
-            name: "",
-            surname: "",
-            mail: "",
-            password: "",
-          });
-        } else {
-          setAlertSeverity("error");
-          setAlertMessage("Error creating account!");
-          setShowAlert(true);
-          auth.currentUser.delete();
-        }
-      })
-      .catch((err) => alert("error"));
-  };
-
-  const handleRegiterAdmin = async () => {
-    if (Object.values(error).every((item) => item === "")) {
-      try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          data.mail,
-          data.password
-        );
-        const user = userCredential.user;
-
-        const res = await dispatchRegister();
-      } catch (error) {}
+//validation reguster form
+const validateForm = (data, name) => {
+  if (name === "name" || name === "surname") {
+    if (!/^[A-Za-z\s]+$/.test(data[name])) {
+      setError({ ...error, [name]: "•Only characters" });
+    } else setError({ ...error, [name]: "" });
+  }
+  if (name === "password") {
+    if (
+      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+        data[name] || data[name] !== ""
+      )
+    ) {
+      setError({
+        ...error,
+        [name]:
+          "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
+      });
     } else {
-      setAlertSeverity("error");
-      setAlertMessage("Please complete all fields   ");
-      setShowAlert(true);
+      setError({
+        ...error,
+        [name]: "",
+      });
     }
-  };
+  }
+  if (name === "mail") {
+    if (
+      !/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6}$/.test(
+        data[name] || data[name] !== ""
+      )
+    ) {
+      setError({ ...error, [name]: "•6 characters •One upper case letter •One number" });
+    } else setError({ ...error, [name]: "" });
+  }
+};
+
+const dispatchRegister = async (data) => {
+  // console.log(data);
+  await dispatch(
+    adminRegister({ ...data})
+  )
+  .then(async (res) => {
+    if (res.type === "admins/register/fulfilled") {
+      setAlertSeverity("success");
+      setAlertMessage("Account Created. Wait to be redirected");
+      setShowAlert(true);
+      closeModal();
+      await dispatch(adminGetAll());
+      await setData({
+        name: "",
+        surname: "",
+        mail: "",
+        password: "",
+      });
+    } else {
+
+      setAlertSeverity("error");
+      setAlertMessage("Error creating account!");
+      setShowAlert(true);
+
+    }
+
+  })
+  .catch((err) => alert(err));
+};
+
+const handleRegiterAdmin = async () => {
+  if (Object.values(error).every((item) => item === "")) {
+    try {
+      await dispatchRegister(data);
+      // if(res){
+      //   await dataAdmins.find((admin) => {
+      //     return admin.id === data.id;
+      //   })
+    } catch (error) {
+      console.log({ Error: error.message });
+      setAlertSeverity("error");
+      setAlertMessage("Please complete all fields");
+      setShowAlert(true);
+    } 
+  } else {
+    setAlertSeverity("error");
+    setAlertMessage("Registration failed");
+    setShowAlert(true);
+  }
+
+};
 
   useEffect(() => {
     if (adminDetail) {
@@ -241,175 +249,175 @@ const ManageAdmins = () => {
     }
   }, [adminDetail]);
 
-  return (
-    <div style={container}>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={showAlert}
-        autoHideDuration={6000}
-        onClose={() => setShowAlert(false)}
-      >
-        <Alert severity={alertSeverity} onClose={() => setShowAlert(false)}>
-          {alertMessage}
-        </Alert>
-      </Snackbar>
-      <Typography
-        variant="h4"
-        style={{
-          marginTop: "2rem",
-        }}
-      >
-        ADMINS
-      </Typography>
-      <Button style={{ left: "50rem" }} onClick={() => dispatch(adminGetAll())}>
-        Refresh
-      </Button>
-      <Button
-        variant="contained"
-        size="large"
-        style={{
-          marginTop: "1rem",
-          marginBottom: "1rem",
-          marginLeft: "0.5rem",
-        }}
-        onClick={() => activadorOpen()}
-      >
-        NEW ADMIN
-      </Button>
-      <Grid container spacing={3}>
-        {dataAdmins.map((admin, index) => (
-          <Grid
-            key={admin.id}
-            item
-            style={{ gridContainer }}
-            xs={5}
-            sm={6}
-            md={4}
-          >
-            <Card style={{ margin: "2rem" }}>
-              <CardContent
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
+return (
+  <div style={container}>
+    <Snackbar
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      open={showAlert}
+      autoHideDuration={6000}
+      onClose={() => setShowAlert(false)}
+    >
+      <Alert severity={alertSeverity} onClose={() => setShowAlert(false)}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
+    <Typography
+      variant="h4"
+      style={{
+        marginTop: "2rem",
+      }}
+    >
+    ADMINS
+    </Typography>
+    <Button
+      style={{ left: "50rem" }}
+      onClick={() => dispatch(adminGetAll())}
+    >
+      Refresh
+    </Button>
+    <Button
+      variant="contained"
+      size="large"
+      style={{ 
+        marginTop: "1rem", 
+        marginBottom: "1rem", 
+        marginLeft: "0.5rem",
+      }}
+      onClick={() => activadorOpen()}
+    >
+    NEW ADMIN
+    </Button>
+    <Grid container spacing={3}>
+      {dataAdmins.map((admin, index) =>(
+        <Grid 
+          key={admin.id} 
+          item 
+          style={{gridContainer}}
+          xs={5} 
+          sm={6} 
+          md={4}
+        >
+          <Card style={{margin: "2rem"}}>
+            <CardContent style={{display: 'flex', justifyContent: 'center', alignItems: "center"}}>
+              <div style={{flex: 1}}>
+                <h3>{admin.name} {admin.surname}</h3>
+              </div>
+              <div style={divsitoButton}>
+              {admin.id == adminLogeado.id ?
+              <Button
+                variant="outlined"
+                onClick={() => activadorOpenEdit(admin.id)}
               >
-                <div style={{ flex: 1 }}>
-                  <h3>
-                    {admin.name} {admin.surname}
-                  </h3>
-                </div>
-                <div style={divsitoButton}>
-                  {admin.id == adminLogeado.id ? (
-                    <Button
-                      variant="outlined"
-                      onClick={() => activadorOpenEdit(admin.id)}
-                    >
-                      EDIT
-                    </Button>
-                  ) : null}
-                  {admin.active === true ? (
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleDisableAdmin(admin.id)}
-                    >
-                      DISABLE
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleDisableAdmin(admin.id)}
-                    >
-                      ACTIVATE
-                    </Button>
-                  )}
-                  <Button
-                    variant="outlined"
-                    onClick={() => handleDeleteAdmin(admin.id)}
-                  >
-                    DELETE
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-      {/* MODAL MODAL MODAL */}
-      {isOpen && (
-        <>
-          <div style={overlay} onClick={() => setIsOpen(false)}></div>
-          <div style={modalContainer}>
-            <div style={modal}>
-              <Typography variant="h5" style={{ marginBottom: "2rem" }}>
-                Add a new Administrator
-              </Typography>
-              {/* <form> */}
-              <TextField
-                error={error.name}
-                label="Name"
-                onChange={(e) => handleInput(e.target.name, e.target.value)}
-                name="name"
-                value={data.name}
-                type="name"
-                helperText={error.name}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                error={error.surname}
-                label="Lastname"
-                onChange={(e) => handleInput(e.target.name, e.target.value)}
-                name="surname"
-                value={data.surname}
-                type="surname"
-                helperText={error.surname}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                error={error.mail}
-                label="Mail"
-                onChange={(e) => handleInput(e.target.name, e.target.value)}
-                name="mail"
-                value={data.mail}
-                type="mail"
-                helperText={error.mail}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                error={error.password}
-                label="Password"
-                onChange={(e) => handleInput(e.target.name, e.target.value)}
-                name="password"
-                value={data.password}
-                type="password"
-                helperText={error.password}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button
-                  type="button"
-                  variant="outlined"
-                  style={{ marginRight: "1rem" }}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleRegiterAdmin()}
-                >
-                  Save
-                </Button>
+                EDIT
+              </Button>
+              : null }
+              {admin.id == adminLogeado.id ? (
+                null ) : (
+                  <div>
+                    {admin.active === true ? (
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleDisableAdmin(admin.id)}
+                        >
+                          DISABLE
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleDisableAdmin(admin.id)}
+                        >
+                          ACTIVATE
+                        </Button>
+                      )}  
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleDeleteAdmin(admin.id)}
+                      >
+                        DELETE
+                      </Button>
+                    </div>
+              )}
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+    {/* MODAL MODAL MODAL */}
+    {isOpen && (
+      <>
+        <div style={overlay} onClick={() => setIsOpen(false)}></div>
+        <div style={modalContainer}>
+          <div style={modal}>
+            <Typography variant="h5" style={{ marginBottom: "2rem" }}>
+            Add a new Administrator
+            </Typography>
+            {/* <form> */}
+            <TextField
+              error={error.name}
+              label="Name"
+              onChange={(e) => handleInput(e.target.name, e.target.value)}
+              name="name"
+              value={data.name}
+              type="name"
+              helperText={error.name}
+              required
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              error={error.surname}
+              label="Lastname"
+              onChange={(e) => handleInput(e.target.name, e.target.value)}
+              name="surname"
+              value={data.surname}
+              type="surname"
+              helperText={error.surname}
+              required
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              error={error.mail}
+              label="User"
+              onChange={(e) => handleInput(e.target.name, e.target.value)}
+              name="mail"
+              value={data.mail}
+              type="mail"
+              helperText={error.mail}
+              required
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              error={error.password}
+              label="Password"
+              onChange={(e) => handleInput(e.target.name, e.target.value)}
+              name="password"
+              value={data.password}
+              type="password"
+              helperText={error.password}
+              required
+              fullWidth
+              margin="normal"
+            />
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button
+                type="button"
+                variant="outlined"
+                style={{ marginRight: "1rem" }}
+                onClick={() => setIsOpen(false)}
+              >
+              Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={() => handleRegiterAdmin()}
+              >
+              Save
+              </Button>
               </div>
               {/* </form> */}
             </div>
