@@ -4,6 +4,7 @@ import Input from "@mui/material/Input";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import { Alert } from "@mui/material";
+import swal from "sweetalert";
 //logic
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,13 +61,48 @@ const FormLoginMedic = () => {
     mail: "",
     password: "",
   });
+  const [error, setError] = useState({
+    mail: "",
+    password: "",
+  });
+
+  const validateForm = (data, name) => {
+    if (name === "password") {
+      if (
+        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+          data[name] || data[name] !== ""
+        )
+      ) {
+        setError({
+          ...error,
+          [name]:
+            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
+        });
+      } else {
+        setError({
+          ...error,
+          [name]: "",
+        });
+      }
+    }
+    if (name === "mail") {
+      if (
+        !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+          data[name] || data[name] !== ""
+        )
+      ) {
+        setError({ ...error, [name]: "•Musst be a valid email" });
+      } else setError({ ...error, [name]: "" });
+    }
+  };
+
   //seteo la info con los inputs
-  const handleChange = (evento) => {
-    evento.preventDefault();
+  const handleChange = (name, value) => {
     setInfo({
       ...info,
-      [evento.target.name]: evento.target.value,
+      [name]: value,
     });
+    validateForm({ ...info, [name]: value}, name);
   };
   // console.log(doctores);
 
@@ -89,11 +125,12 @@ const FormLoginMedic = () => {
         localStorage.setItem("idMedic", id);
         setLoginSuccess(true);
         navigate("/HomeMedic/Profile");
-      } else {
-        setLoginSuccess(false);
-      }
+      } 
     } catch (error) {
       console.log({ Error: error.message });
+      await swal("Unregistered doctor", {
+        icon: "warning",
+      });
     }
   };
   //primera carga
@@ -138,18 +175,34 @@ const FormLoginMedic = () => {
           </Typography>
           <label>Email</label>
           <Input
+            error={error.mail}
             type="email"
             name="mail"
             style={inputs}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e.target.name, e.target.value)}
+            value={info.mail}
           />
+          {error.mail && 
+            <Typography
+              variant="caption" 
+              color="error">
+                •Musst be a valid email
+            </Typography>}
           <label>Password</label>
           <Input
+            error={error.password}
             type="password"
             name="password"
             style={inputs}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e.target.name, e.target.value)}
+            value={info.password}
           />
+          {error.password && 
+            <Typography
+              variant="caption" 
+              color="error">
+                •Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character
+            </Typography>}
           <Button
             variant="contained"
             type="submit"

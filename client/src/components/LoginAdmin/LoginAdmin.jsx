@@ -134,7 +134,7 @@ export default function LoginAdmin() {
       }
     } catch(error){
       console.log({ Error: error.message });
-      await swal("Error loging", {
+      await swal("Unregistered administrator", {
         icon: "warning",
       });
     }
@@ -202,7 +202,6 @@ export default function LoginAdmin() {
             name="password"
             value={info.password}
             type="password"
-            helperText={error.password}
             required
             fullWidth
             margin="normal"
