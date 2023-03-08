@@ -325,10 +325,10 @@ const Register = () => {
       try {
         const userCredential = await signInWithPopup(auth, googleProvider);
         const user = userCredential.user;
-        console.log("usuario creado: " + user.email);
+ 
         dispatchRegister(userCredential);
       } catch (error) {
-        console.log({ Error: error.message });
+ 
       }
     } else {
       // alert("Please complete all fields");

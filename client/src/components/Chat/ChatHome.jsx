@@ -50,7 +50,7 @@ const Home = (props) => {
         await setDoc(doc(db, "chats", combinedId), { messages: [] });
 
         //create user chats
-        console.log(doctorData);
+
         await updateDoc(doc(db, "userChats", doctorData.uid), {
           [combinedId + ".userInfo"]: {
             uid: patientData.uid,

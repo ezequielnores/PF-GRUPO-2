@@ -95,34 +95,34 @@ export default function LoginAdmin() {
       ...info,
       [name]: value,
     });
-    validateForm({ ...info, [name]: value}, name);
+    validateForm({ ...info, [name]: value }, name);
   };
 
   //SUBMIT
-  const handleSubmit =  async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         info.mail,
-        info.password,
+        info.password
       );
       const user = userCredential.user;
-      console.log("admin logueado: " + user.email);
-      if(user) {
-        const email = user.email
+
+      if (user) {
+        const email = user.email;
         const adminFind = admin.find((admin) => {
-          return admin.mail === email
-        })
-        if(adminFind.active === false){
+          return admin.mail === email;
+        });
+        if (adminFind.active === false) {
           setSuccessLogin(false);
           await swal("Administrator disabled", {
             icon: "warning",
           });
         } else {
-          localStorage.setItem("mailAdmin",email);
+          localStorage.setItem("mailAdmin", email);
           localStorage.setItem("idAdmin", adminFind.id);
-          dispatch(adminGetDetail(adminFind.id))
+          dispatch(adminGetDetail(adminFind.id));
           setSuccessLogin(true);
           navigate("/HomeAdmin");
         }
@@ -132,8 +132,7 @@ export default function LoginAdmin() {
           icon: "warning",
         });
       }
-    } catch(error){
-      console.log({ Error: error.message });
+    } catch (error) {
       await swal("Unregistered administrator", {
         icon: "warning",
       });
@@ -142,10 +141,11 @@ export default function LoginAdmin() {
 
   useEffect(() => {
     const admin = localStorage.getItem("mailAdmin");
-    if (admin){
-      dispatch(adminGetAll())
+    if (admin) {
+      dispatch(adminGetAll());
       navigate("/HomeAdmin");
-    } dispatch(adminGetAll())
+    }
+    dispatch(adminGetAll());
   }, [dispatch, navigate]);
 
   return (
@@ -188,12 +188,11 @@ export default function LoginAdmin() {
             fullWidth
             margin="normal"
           />
-          {error.mail && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Musst be a valid email
-            </Typography>}
+          {error.mail && (
+            <Typography variant="caption" color="error">
+              •Musst be a valid email
+            </Typography>
+          )}
           <label>Password</label>
           <Input
             error={error.password}
@@ -206,12 +205,12 @@ export default function LoginAdmin() {
             fullWidth
             margin="normal"
           />
-          {error.password && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character
-            </Typography>}
+          {error.password && (
+            <Typography variant="caption" color="error">
+              •Minimum 8 characters •One upper case letter •One loweer case
+              letter •One number •One special character
+            </Typography>
+          )}
           <Button
             variant="contained"
             type="submit"

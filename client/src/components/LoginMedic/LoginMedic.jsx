@@ -105,9 +105,9 @@ const FormLoginMedic = () => {
       ...info,
       [name]: value,
     });
-    validateForm({ ...info, [name]: value}, name);
+    validateForm({ ...info, [name]: value }, name);
   };
-  // console.log(doctores);
+ 
 
   //SUBMIT
   const handleSubmit = async (e) => {
@@ -119,7 +119,7 @@ const FormLoginMedic = () => {
         info.password
       );
       const user = userCredential.user;
-      // console.log('medico logeado: ' + user.email);
+ 
       const authenticatedDoctor = doctores.find((doctor) => {
         return doctor.mail === info.mail && doctor.password === info.password;
       });
@@ -128,9 +128,9 @@ const FormLoginMedic = () => {
         localStorage.setItem("idMedic", id);
         setLoginSuccess(true);
         navigate("/HomeMedic/Profile");
-      } 
+      }
     } catch (error) {
-      console.log({ Error: error.message });
+ 
       setAlertSeverity("error");
       setAlertMessage(`Error: ${error.message}`);
       setShowAlert(true);
@@ -146,7 +146,6 @@ const FormLoginMedic = () => {
     }
   }, [dispatch, navigate]);
 
-  // console.log(info);
   //RENDER
   return (
     <div style={divPadre}>
@@ -199,12 +198,11 @@ const FormLoginMedic = () => {
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             value={info.mail}
           />
-          {error.mail && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Musst be a valid email
-            </Typography>}
+          {error.mail && (
+            <Typography variant="caption" color="error">
+              •Musst be a valid email
+            </Typography>
+          )}
           <label>Password</label>
           <Input
             error={error.password}
@@ -214,12 +212,12 @@ const FormLoginMedic = () => {
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             value={info.password}
           />
-          {error.password && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character
-            </Typography>}
+          {error.password && (
+            <Typography variant="caption" color="error">
+              •Minimum 8 characters •One upper case letter •One loweer case
+              letter •One number •One special character
+            </Typography>
+          )}
           <Button
             variant="contained"
             type="submit"

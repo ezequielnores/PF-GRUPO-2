@@ -18,8 +18,6 @@ const cardSita = {
 };
 const Comments = ({
   comments,
-  authorName,
-  authorLastName,
   deleteComment,
   setRenderSearch,
   renderSearch,
@@ -70,7 +68,7 @@ const Comments = ({
           >
             By:
             <Typography variant="body2">
-              {authorName} {authorLastName}
+              {comment.Patient.name} {comment.Patient.surname}
             </Typography>
           </Typography>
           <Typography
