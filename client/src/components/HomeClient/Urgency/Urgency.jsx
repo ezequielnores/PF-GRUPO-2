@@ -234,20 +234,19 @@ const Urgency = () => {
         {misTurnosActivos.length === 0 ? (
           <>
             <div style={{ width: "100%" }}>
-              <FormControl
-                sx={{ width: 1 / 1 }}
-                component="fieldset"
-                variant="standard"
+              <div
+                style={{ width: "100%"}}
               >
                 <div
                   style={{
                     display: "flex",
                     width: "100%",
                     justifyContent: "center",
+                    height: "40vh",
                   }}
                 >
                   <div className={style.symptomsAndUpload}>
-                    <FormGroup sx={{ width: 1 / 1 }}>
+                    <div style={{ width: "100%" , height:"100%"}}>
                       <div className={style.labelAndSymtoms}>
                         <FormLabel component="legend" sx={{ color: "#307196" }}>
                           Symptomatology
@@ -399,7 +398,7 @@ const Urgency = () => {
                           </div>
                         </div>
                       </div>
-                    </FormGroup>
+                    </div>
                     {/* decomentar las siguientes lineas cuando en la bd se pueda subir archivos */}
                     {/* <button className={style.sendButton}>
                                   <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
@@ -412,8 +411,9 @@ const Urgency = () => {
                     style={{
                       border: "1px solid  rgba(131, 130, 130, 0.7)",
                       borderRadius: "15px",
-                      height: "38vh",
+                      height: "100%",
                       width: "40vw",
+                      boxSizing: "border-box",
                     }}
                   >
                     <div className={style.divTextArea}>
@@ -426,7 +426,7 @@ const Urgency = () => {
                     </div>
                   </div>
                 </div>
-              </FormControl>
+              </div>
               <div
                 style={{
                   display: "flex",
@@ -446,7 +446,7 @@ const Urgency = () => {
                   <Button
                     variant="contained"
                     onClick={handleOpenModal}
-                    sx={{ width: 1 / 9, borderRadius: 9999 }}
+                    sx={{ width: 1 / 9, borderRadius: 9999 , marginTop:"1.5vh"}}
                   >
                     Submit
                   </Button>

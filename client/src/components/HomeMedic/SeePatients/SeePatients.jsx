@@ -267,7 +267,7 @@ const SeePatients = ({ idTurn, appointment }) => {
               ></TextField>
             )}
 
-            <button className={style.saveButton} onClick={handleSendLink}>
+            <button className={style.saveButton} onClick={handleSendLink} disabled={linkSent} >
               Send Link
             </button>
             <button className={style.saveButton} onClick={handleChat}>
