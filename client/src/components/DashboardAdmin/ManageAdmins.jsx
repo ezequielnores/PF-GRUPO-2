@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import { Button, CardContent, TextField, Typography } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
@@ -15,12 +14,8 @@ import {
   deleteAdmin,
   disableAdmin,
   adminEdit,
-  adminGetDetail,
   adminGetDetailForEdit,
 } from "../../redux/reducers/adminReducer.js";
-//Firebase
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../authentication/firebase";
 //style
 const container = {
   display: "flex",
@@ -28,6 +23,7 @@ const container = {
   alignItems: "center",
   width: "100%",
   height: "100vh",
+    backgroundColor: "white",
 };
 //MODAL
 const modalContainer = {
@@ -70,7 +66,6 @@ const divsitoButton = {
 };
 
 const ManageAdmins = () => {
-const navigate = useNavigate();
 //estado de alertas!!!!
 const [showAlert, setShowAlert] = useState(false);
 const [alertSeverity, setAlertSeverity] = useState("success");
@@ -142,7 +137,6 @@ const handleChange = (name, value) => {
 const handleDeleteAdmin = async (id) => {
   await dispatch(deleteAdmin(id));
   dispatch(adminGetAll());
-  // auth.currentUser.delete();
 };
  //desactivar admin
  const handleDisableAdmin = async (id) => {
@@ -187,7 +181,6 @@ const validateForm = (data, name) => {
 };
 
 const dispatchRegister = async (data) => {
-  // console.log(data);
   await dispatch(
     adminRegister({ ...data})
   )
@@ -205,13 +198,10 @@ const dispatchRegister = async (data) => {
         password: "",
       });
     } else {
-
       setAlertSeverity("error");
       setAlertMessage("Error creating account!");
       setShowAlert(true);
-
     }
-
   })
   .catch((err) => alert(err));
 };
@@ -220,10 +210,6 @@ const handleRegiterAdmin = async () => {
   if (Object.values(error).every((item) => item === "")) {
     try {
       await dispatchRegister(data);
-      // if(res){
-      //   await dataAdmins.find((admin) => {
-      //     return admin.id === data.id;
-      //   })
     } catch (error) {
       console.log({ Error: error.message });
       setAlertSeverity("error");
@@ -235,7 +221,6 @@ const handleRegiterAdmin = async () => {
     setAlertMessage("Registration failed");
     setShowAlert(true);
   }
-
 };
 
   useEffect(() => {
@@ -248,7 +233,6 @@ const handleRegiterAdmin = async () => {
       });
     }
   }, [adminDetail]);
-
   return (
     <div style={container}>
       <Snackbar
@@ -303,6 +287,7 @@ const handleRegiterAdmin = async () => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
+
               >
                 <div style={{ flex: 1 }}>
                   <h3>
@@ -421,7 +406,6 @@ const handleRegiterAdmin = async () => {
                   Save
                 </Button>
               </div>
-              {/* </form> */}
             </div>
           </div>
         </>
@@ -434,7 +418,6 @@ const handleRegiterAdmin = async () => {
                 <Typography variant="h5" style={{ marginBottom: "2rem" }}>
                   Edit administrator
                 </Typography>
-                {/* <form onSubmit={handleEditAdmin}> */}
                 <TextField
                   label="Name"
                   defaultValue="Default Value"
@@ -483,7 +466,6 @@ const handleRegiterAdmin = async () => {
                     Save
                   </Button>
                 </div>
-                {/* </form> */}
               </div>
             </div>
           </div>
