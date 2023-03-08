@@ -226,7 +226,8 @@ const ManagePlans = () => {
             style={{ 
               marginTop: "1rem", 
               marginBottom: "1rem",
-              marginLeft:"5rem" }}
+              // marginLeft:"1rem" 
+            }}
           >
           Plans
         </Typography>

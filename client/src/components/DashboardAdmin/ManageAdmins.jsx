@@ -257,19 +257,7 @@ const handleRegiterAdmin = async () => {
       <Button style={{ left: "50rem" }} onClick={() => dispatch(adminGetAll())}>
         Refresh
       </Button>
-      <Button
-        variant="contained"
-        size="large"
-        style={{
-          marginTop: "1rem",
-          marginBottom: "1rem",
-          marginLeft: "0.5rem",
-          backgroundColor: "#307196",
-        }}
-        onClick={() => activadorOpen()}
-      >
-        NEW ADMIN
-      </Button>
+      
       <Grid container spacing={3}>
         {dataAdmins.map((admin, index) => (
           <Grid
@@ -330,6 +318,19 @@ const handleRegiterAdmin = async () => {
           </Grid>
         ))}
       </Grid>
+      <Button
+        variant="contained"
+        size="large"
+        style={{
+          marginTop: "1rem",
+          marginBottom: "1rem",
+          marginLeft: "0.5rem",
+          backgroundColor: "#307196",
+        }}
+        onClick={() => activadorOpen()}
+      >
+        NEW ADMIN
+      </Button>
       {/* MODAL MODAL MODAL */}
       {isOpen && (
         <>
