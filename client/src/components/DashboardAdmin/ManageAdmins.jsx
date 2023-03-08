@@ -254,12 +254,13 @@ const ManageAdmins = () => {
         </Alert>
       </Snackbar>
       <Typography
-        variant="h4"
-        style={{
-          marginTop: "2rem",
-        }}
+            variant="h4"
+            fontWeight="bold"
+            color="#307196"
+            style={{ marginTop: "1rem", marginBottom: "1rem",marginLeft:"1rem" }}
+
       >
-        ADMINS
+        Admins
       </Typography>
       <Button style={{ left: "50rem" }} onClick={() => dispatch(adminGetAll())}>
         Refresh
@@ -271,6 +272,7 @@ const ManageAdmins = () => {
           marginTop: "1rem",
           marginBottom: "1rem",
           marginLeft: "0.5rem",
+          backgroundColor: "#307196",
         }}
         onClick={() => activadorOpen()}
       >

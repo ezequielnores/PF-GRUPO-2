@@ -218,14 +218,14 @@ const ManagePlans = () => {
         }}
       >
         <Typography
-          variant="h4"
-          style={{
-            marginTop: "2rem",
-            marginBottom: "2rem",
-            marginLeft: "5rem",
-          }}
-        >
-          PLANS
+            variant="h4"
+            fontWeight="bold"
+            color="#307196"
+            style={{ marginTop: "1rem", marginBottom: "1rem",marginLeft:"5rem" }}
+
+          >
+        
+          Plans
         </Typography>
         <Button
           style={{ left: "50rem" }}
@@ -315,7 +315,7 @@ const ManagePlans = () => {
       <Button
         variant="contained"
         size="large"
-        style={{ marginTop: "2rem" }}
+        style={{ marginTop: "2rem",background:"#307196"}}
         onClick={activadorOpen}
       >
         NEW PLAN

@@ -170,7 +170,8 @@ const MyAppointments = () => {
                   className={style.buttonfilter}
                   onClick={handleChangeFilter}
                 >
-                  {dayjs(value.$d).format("YYYY-MM-DD")} x
+                  {/* {dayjs(value.$d).format("YYYY-MM-DD")} x */}
+                  All appointments
                 </button>
               ) : null}
             </div>
