@@ -90,6 +90,7 @@ const Agenda = () => {
   const dataHistoria = useSelector((state) => state.history.list);
   const [idTurn, setIdTurn] = useState("");
   const [appointment, setAppointment] = useState({});
+  const [urgenciaWithouAttended, setUrgenciaWithouAttended] = useState([]);
 
   const sortedUrgencias = data.slice().sort((a, b) => {
     const dateA = new Date(a.createdAt);
@@ -140,7 +141,6 @@ const Agenda = () => {
   const handlerRefresh = () => {
     dispatch(urgencyGetAll());
   };
- 
   const formatDate = (dateStr) => {
     //creo date
     const date = new Date(dateStr);
@@ -168,6 +168,11 @@ const Agenda = () => {
     //se va hacer getall cada vez que cambie el isUrgencyUpdated , osea cada vez que acepte
     dispatch(urgencyGetAll());
   }, [isUrgencyUpdated, dispatch]);
+
+  useEffect(() => {
+    setUrgenciaWithouAttended(sortedUrgencias.filter((urgencia) => !urgencia.attended));
+  }, [sortedUrgencias]);
+
   //otro
 
   return (
@@ -198,7 +203,9 @@ const Agenda = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {sortedUrgencias?.map((urgencia, index) => (
+                  {urgenciaWithouAttended[0]?
+                  
+                  urgenciaWithouAttended?.map((urgencia, index) => (
                     <>
                       {urgencia.attended === false ? (
                         <React.Fragment key={urgencia.id}>
@@ -288,29 +295,37 @@ const Agenda = () => {
                                             </TableRow>
                                           </TableHead>
                                           <TableBody>
-                                            {dataHistoria.map((historia) => (
-                                              <TableRow key={historia.id}>
+                                            
+                                            {dataHistoria[0]?
+                                              dataHistoria.map((historia) => (
+                                                <TableRow key={historia.id}>
+                                                  <TableCell>
+                                                    {historia.register[0].date}
+                                                  </TableCell>
+                                                  <TableCell>
+                                                    {
+                                                      historia.register[0]
+                                                        .diagnosis
+                                                    }
+                                                  </TableCell>
+                                                  <TableCell>
+                                                    {historia.register[0].reason}
+                                                  </TableCell>
+                                                  <TableCell>
+                                                    {
+                                                      historia.register[0]
+                                                        .prescription
+                                                    }
+                                                    
+                                                  </TableCell>
+                                                </TableRow>
+                                              ))
+                                              :<TableRow>
                                                 <TableCell>
-                                                  {historia.register[0].date}
-                                                </TableCell>
-                                                <TableCell>
-                                                  {
-                                                    historia.register[0]
-                                                      .diagnosis
-                                                  }
-                                                </TableCell>
-                                                <TableCell>
-                                                  {historia.register[0].reason}H
-                                                </TableCell>
-                                                <TableCell>
-                                                  {
-                                                    historia.register[0]
-                                                      .prescription
-                                                  }
-                                                  H
+                                                  <h4 style={{fontWeight:"400"}}>Not history</h4>
                                                 </TableCell>
                                               </TableRow>
-                                            ))}
+                                            }
                                           </TableBody>
                                         </Table>
                                       </TableContainer>
@@ -401,9 +416,15 @@ const Agenda = () => {
                             </TableCell>
                           </TableRow>
                         </React.Fragment>
-                      ) : null}
+                      ) :null}
                     </>
-                  ))}
+                  ))
+                : <TableRow>
+                <TableCell>
+                  
+                  Don´t have urgencies
+                </TableCell>
+              </TableRow>}
                 </TableBody>
               </Table>
             </TableContainer>
