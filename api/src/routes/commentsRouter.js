@@ -131,7 +131,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { title, message, rating, doctorId, patientId } = req.body;
+    const { title, message, rating, doctorId, PatientId } = req.body;
     if (message) {
       const filterMessage = containOffensiveWords(message);
       const comment = await Comments.create({
@@ -141,7 +141,7 @@ router.post("/", async (req, res) => {
       });
 
       await comment.setDoctor(doctorId);
-      await comment.setPatient(patientId);
+      await comment.setPatient(PatientId);
 
       res.status(200).send("Comment create successfully");
     } else {
