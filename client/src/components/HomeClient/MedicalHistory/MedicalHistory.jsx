@@ -30,7 +30,7 @@ const divPadre = {
 const Historial = ({ consulta }) => {
   const dispatch = useDispatch();
   const id = localStorage.getItem("id");
-  console.log(id);
+ 
   useEffect(() => {
     dispatch(historyGetAllbyPatient(id));
   }, []);

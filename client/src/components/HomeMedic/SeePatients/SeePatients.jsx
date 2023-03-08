@@ -132,9 +132,7 @@ const SeePatients = ({ idTurn, appointment }) => {
             mail: appointment.Patient.mail,
             link: meetLink,
           })
-          .then((response) => {
-            console.log(response);
-          });
+          .then((response) => {});
       }
     });
   };
