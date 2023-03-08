@@ -253,7 +253,7 @@ const MedicForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const error = validateFields();
-    // console.log(errors);
+
     if (Object.values(error).every((item) => item === "")) {
       try {
         const userCredential = await createUserWithEmailAndPassword(
@@ -261,7 +261,7 @@ const MedicForm = () => {
           form.mail,
           form.password
         );
-        // console.log("medico creado: " + user.email);
+
         dispatch(doctorAdd({ ...form, uid: userCredential.user.uid }))
           .then(async (res) => {
             if (res.type === "doctor/addById/fulfilled") {
@@ -307,7 +307,6 @@ const MedicForm = () => {
             setShowAlert(true)
           );
       } catch (error) {
-        console.log({ Error: error.message });
         setAlertSeverity("error");
         setAlertMessage("Error, existing information");
         setShowAlert(true);
@@ -397,18 +396,14 @@ const MedicForm = () => {
               helperText={error.mail}
             />
 
-
             <TextField
               error={error.password}
               helperText={error.password}
               label="Password"
               onChange={(e) => onChangePassword(e.target.name, e.target.value)}
               name="password"
-              type= "password"
-            
+              type="password"
             />
-
-
           </div>
           <div style={divHijo}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -558,7 +553,8 @@ const MedicForm = () => {
               value={cvInputValue ? cvInputValue : ""}
               type="file"
               helperText={error.cv}
-              InputProps={ !form.cv
+              InputProps={
+                !form.cv
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }
                   : {
                       endAdornment: (

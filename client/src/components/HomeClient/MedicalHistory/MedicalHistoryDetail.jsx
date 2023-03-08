@@ -31,7 +31,7 @@ const DetalleConsulta = ({ consulta }) => {
 
   return (
     <div style={padreDiv}>
-      {console.log(consulta)}
+ 
       <Card style={carde}>
         <Typography style={typoTitle}>Date of attention:</Typography>
         <Typography>{consulta.register[0].date}</Typography>

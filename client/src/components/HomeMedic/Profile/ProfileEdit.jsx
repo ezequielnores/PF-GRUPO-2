@@ -62,7 +62,7 @@ const ProfileEdit = () => {
     image: dataDoc ? dataDoc.image : "",
     location: dataDoc ? dataDoc.location : "",
   });
-  console.log(infoNueva);
+ 
   //estado para validar el button
   const [hasChanged, setHasChanged] = useState(false);
   //estado de errores validaciones
@@ -75,7 +75,7 @@ const ProfileEdit = () => {
     birthdate: "",
     lastName: "",
     location: "",
-    image: ""
+    image: "",
   });
   // const onChangeHandler = (name, value) => {
   //   setInfoNueva({ ...form, [name]: value });
@@ -96,7 +96,7 @@ const ProfileEdit = () => {
     setInfoNueva({ ...infoNueva, birthdate: date });
     setHasChanged(true);
   };
-  console.log(dataDoc.id);
+
   const validateFields = (form, name, file) => {
     if (name === "name" || name === "lastName") {
       if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
@@ -137,10 +137,10 @@ const ProfileEdit = () => {
     }
 
     if (name === "image") {
-      if (file.type !== "image/jpeg" && file.type!== "image/png") {
-        setError({...error, [name]: "The image must be a jpeg or png file"});
+      if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        setError({ ...error, [name]: "The image must be a jpeg or png file" });
       } else {
-        setError({...error, [name]: ""});
+        setError({ ...error, [name]: "" });
       }
     }
   };
@@ -155,7 +155,7 @@ const ProfileEdit = () => {
       setInfoNueva({ ...infoNueva, [name]: reader.result });
     };
     setHasChanged(true);
-    validateFields({...infoNueva}, name, file);
+    validateFields({ ...infoNueva }, name, file);
   };
 
   const handleSubmit = async (e) => {
@@ -179,7 +179,7 @@ const ProfileEdit = () => {
       dispatch(doctorGetDetail(doctorId));
     }
   }, []);
-  
+
   return (
     <div style={padreDiv}>
       <Typography

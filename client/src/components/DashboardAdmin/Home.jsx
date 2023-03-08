@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { adminGetDetail } from "../../redux/reducers/adminReducer";
+import { adminLogin } from "../../redux/reducers/adminReducer";
 import swal from "sweetalert";
 import logo from "../../assets/logoiCare.png";
 import ManagePlans from "./ManagePlans/ManagePlans";
@@ -43,8 +43,7 @@ const casiContainer = {
 const belowNav = {};
 const Home = (props) => {
   const dispatch = useDispatch();
-  const admin = useSelector((state) => state.admin.detail);
-  console.log(admin);
+  const admin = useSelector((state) => state.admin.loggedIn);
   const patients = useSelector((state) => state.patient.list);
   const doctors = useSelector((state) => state.doctor.list);
   const location = useLocation();
@@ -133,6 +132,7 @@ const Home = (props) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        localStorage.removeItem("idAdmin");
         localStorage.removeItem("mailAdmin");
         window.location.href = "https://pf-grupo-2.vercel.app/";
       }
@@ -143,12 +143,9 @@ const Home = (props) => {
     const adminId = window.localStorage.getItem("idAdmin");
 
     if (adminId) {
-      dispatch(adminGetDetail(adminId));
-      console.log("despachado");
+      dispatch(adminLogin(adminId));
     }
   }, []);
-
-  // console.log(patients);
 
   return (
     <div style={container}>
@@ -244,15 +241,9 @@ const Home = (props) => {
             toRenderDoctors={selected.doctors}
           />
         )}
-        {selected.comments && (
-          <ToManage
-            toRenderComments={selected.comments}
-          />
-        )}
+        {selected.comments && <ToManage toRenderComments={selected.comments} />}
         {selected.frequentQuestions && (
-          <ToManage
-            toRenderFrequentQuestions={selected.frequentQuestions}
-          />
+          <ToManage toRenderFrequentQuestions={selected.frequentQuestions} />
         )}
 
         {selected.plans && <ManagePlans />}

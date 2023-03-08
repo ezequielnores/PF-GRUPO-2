@@ -132,9 +132,7 @@ const SeePatients = ({ idTurn, appointment }) => {
             mail: appointment.Patient.mail,
             link: meetLink,
           })
-          .then((response) => {
-            console.log(response);
-          });
+          .then((response) => {});
       }
     });
   };
@@ -267,7 +265,7 @@ const SeePatients = ({ idTurn, appointment }) => {
               ></TextField>
             )}
 
-            <button className={style.saveButton} onClick={handleSendLink}>
+            <button className={style.saveButton} onClick={handleSendLink} disabled={linkSent} >
               Send Link
             </button>
             <button className={style.saveButton} onClick={handleChat}>
