@@ -144,7 +144,7 @@ const FormLoginClient = () => {
         console.log(authenticatedPatient);
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);
-        // navigate("/HomeClient/Profile", { state: { id } });
+        await navigate("/HomeClient/Profile");
       } else {
         setSuccessLogin("error");
         await swal("Unregistered patient", {
@@ -158,7 +158,7 @@ const FormLoginClient = () => {
       });
     }
   };
-
+  // , { state: { id } }
   //SUBMIT WITH GOOGLE
   const handleLoginWithGoogle = async (e) => {
     e.preventDefault();

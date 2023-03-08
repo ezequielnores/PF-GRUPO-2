@@ -38,6 +38,11 @@ const Home = ({ isLogged }) => {
       dispatch(doctorGetDetail(doctorId));
     }
   }, []);
+  if(isLogged === null){
+    return (
+      <h1>Loading...</h1>
+    )
+  }
 
   if (isLogged === true) {
     return (
