@@ -108,6 +108,7 @@ const doctorSlice = createSlice({
       })
       .addCase(doctorAdd.fulfilled, (state, action) => {
         state.status = "succeeded";
+        state.list.push(action.payload);
       })
       .addCase(doctorAdd.rejected, (state, action) => {
         state.status = "failed";

@@ -94,7 +94,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
-            {/* <button className={style.buttonBar}>
+            <button className={style.buttonBar}>
               <Link to="/HomeClient/Chat">
                 {open ? (
                   <div className={style.divbutton}>
@@ -113,7 +113,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                   <ChatIcon style={{ color: "#c2c1c1" }}  />
                 )}
               </Link>
-            </button> */}
+            </button>
             <button className={style.buttonBar}>
               <Link to="/HomeClient/Profile">
                 {open ? (

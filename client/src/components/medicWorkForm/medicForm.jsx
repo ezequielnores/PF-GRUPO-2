@@ -303,9 +303,9 @@ const MedicForm = () => {
             }
             console.log(res.type);
           })
-          .catch((err) => alert("Error"));
+          .catch((err) => console.log(err));
       } catch (error) {
-        console.log({ Error: error.message });
+        console.log({ Error: error });
         setAlertSeverity("error");
         setAlertMessage("Error, missing data");
         setShowAlert(true);

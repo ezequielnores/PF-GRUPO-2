@@ -268,15 +268,11 @@ const Register = () => {
       })
     )
       .then(async (res) => {
-        console.log(auth);
+        console.log(auth.currentUser);
         if (res.type === "patient/register/fulfilled") {
-          // alert("Account Created");
-          setAlertSeverity("success");
-          setAlertMessage("Account Created. Wait to be redirected");
-          setShowAlert(true);
           //create user on firestore
-          await setDoc(doc(db, "users", auth.currentUser.user.uid), {
-            uid: auth.currentUser.user.uid,
+          await setDoc(doc(db, "users", auth.currentUser.uid), {
+            uid: auth.currentUser.uid,
             displayName: form.name + " " + form.surname,
             email: form.mail,
             photoURL: form.image
@@ -285,8 +281,13 @@ const Register = () => {
           }).then(async (res) => {
             console.log(res);
             //create empty user chats on firestore
-            await setDoc(doc(db, "userChats", auth.currentUser.user.uid), {});
+            await setDoc(doc(db, "userChats", auth.currentUser.uid), {});
           });
+          // alert("Account Created");
+          setAlertSeverity("success");
+          setAlertMessage("Account Created. Wait to be redirected");
+          setShowAlert(true);
+          
         } else {
           setAlertSeverity("error");
           setAlertMessage("Error creating account!");
@@ -331,7 +332,7 @@ const Register = () => {
           setShowAlert(true);
         }
       } catch (error) {
-        console.log({ Error: error.message });
+        console.log(error);
       }
       // { state: { id } }
     } else {
