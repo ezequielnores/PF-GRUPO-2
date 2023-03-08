@@ -13,8 +13,8 @@ router.post("/", async (req, res) => {
     host: "smtp.gmail.com",
     secure: true,
     auth: {
-      user: "icareh7@gmail.com",
-      pass: "xftqhjpgblkmnfno",
+      user: "icarehenry1@gmail.com",
+      pass: "tgkcplcfullrixxp",
     },
   });
 
