@@ -128,7 +128,7 @@ const Agenda = () => {
     };
     setAppointment(dataAppointmen);
     setIdTurn(id);
-    console.log(response.data);
+ 
     dispatch(urgencyEdit({ id, data }));
     setIsUrgencyUpdated(true);
   };

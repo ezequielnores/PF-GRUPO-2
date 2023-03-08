@@ -152,12 +152,12 @@ const TestCovid = () => {
       const data = {
         input: inputs,
       };
-      // console.log(inputs);
+ 
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/covid`,
         data
       );
-      // console.log(response.data[0][0]);
+ 
 
       setResult(response.data[0][0].toFixed(3) * 100);
       setForm({
@@ -185,7 +185,7 @@ const TestCovid = () => {
       setIsOpen(true);
     }
   };
-  // console.log(form);
+ 
   return (
     <div
       style={{

@@ -13,7 +13,7 @@ import {
   commentsByDoctor,
   commentsByPatient,
 } from "../../redux/reducers/commentsReducer";
-import { deleteReportByCommentNull } from "../../redux/reducers/reportReducer";
+//import { deleteReportByCommentNull } from "../../redux/reducers/reportReducer";
 import ManageFQ from "./ManageFQ";
 // styled-components
 import styledComponent from "styled-components";

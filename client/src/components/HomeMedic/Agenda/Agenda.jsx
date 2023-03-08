@@ -86,7 +86,7 @@ const Agenda = () => {
   const dispatch = useDispatch();
   const dataTurnos = useSelector((state) => state.appointment.list);
   const dataHistoria = useSelector((state) => state.history.list);
-  // console.log(dataTurnos);
+ 
 
   ///// ORDENAMIENTO POR MAS PROXIMO, NO PUEDO USAR EL OTRO DATATURNOS, NO DEJA MODIFICAR!! ! ! !
   const dataTurnosd = useSelector((state) =>

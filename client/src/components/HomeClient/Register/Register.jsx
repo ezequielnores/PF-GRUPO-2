@@ -268,7 +268,7 @@ const Register = () => {
       })
     )
       .then(async (res) => {
-        console.log(auth);
+ 
         if (res.type === "patient/register/fulfilled") {
           // alert("Account Created");
           setAlertSeverity("success");
@@ -292,7 +292,7 @@ const Register = () => {
           setShowAlert(true);
           auth.currentUser.delete();
         }
-        console.log(res);
+ 
       })
       .catch(
         (err) => setAlertSeverity("error"),
@@ -310,8 +310,7 @@ const Register = () => {
           form.password
         );
         const user = userCredential.user;
-        console.log("usuario creado: " + user.email);
-        console.log(userCredential);
+ 
         const success = dispatchRegister(userCredential);
         if (success) {
           const authenticatedPatient = patients.find((patient) => {
@@ -328,13 +327,13 @@ const Register = () => {
             setShowAlert(true);
           }
         } else {
-          console.log("Error creating account");
+ 
           setAlertSeverity("error");
           setAlertMessage("Error creating account");
           setShowAlert(true);
         }
       } catch (error) {
-        console.log({ Error: error.message });
+ 
       }
       // { state: { id } }
     } else {
@@ -350,10 +349,10 @@ const Register = () => {
       try {
         const userCredential = await signInWithPopup(auth, googleProvider);
         const user = userCredential.user;
-        console.log("usuario creado: " + user.email);
+ 
         dispatchRegister(userCredential);
       } catch (error) {
-        console.log({ Error: error.message });
+ 
       }
     } else {
       // alert("Please complete all fields");
@@ -371,7 +370,7 @@ const Register = () => {
       localStorage.setItem("id", patientfound.id);
       setPatient(patientfound);
     } else {
-      console.log("Patient not found");
+ 
     }
   };
 

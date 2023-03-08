@@ -60,7 +60,7 @@ const Urgency = () => {
   const misTurnosActivos = pacientes.filter(
     (paciente) => paciente.id === idNumerico
   );
-  console.log(misTurnosActivos.length);
+ 
   const [openModal, setOpenModal] = React.useState(false);
   const [body, setBody] = React.useState({
     patient: patientId,
