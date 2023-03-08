@@ -130,10 +130,10 @@ const MedicalAppointments = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // if (!patientDetail.plan) {
-    //   await swal("Sorry, you must purchase a plan to book an appointment.");
-    //   return;
-    // }
+    if (!patientDetail.plan) {
+      await swal("Sorry, you must purchase a plan to book an appointment.");
+      return;
+    }
 
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}/turns/turnByDateAndHourAndDoctor`,
@@ -158,8 +158,8 @@ const MedicalAppointments = () => {
           attended,
         })
       );
-      setModalAbierto(true);
-      resetForm();
+      setModalAbierto(true)
+       
     } else {
       setModalReserved(true);
       // alert("Sorry, the appointment is already reserved");
@@ -171,6 +171,7 @@ const MedicalAppointments = () => {
   };
   const closeModal = () => {
     setModalAbierto(false);
+    resetForm()
   };
 
   const filterClinicMail =
