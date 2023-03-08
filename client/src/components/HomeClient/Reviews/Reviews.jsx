@@ -12,7 +12,7 @@ import { docrtorGetAll } from "../../../redux/reducers/doctorReducer";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 import { postComments } from "../../../redux/reducers/commentsReducer";
-
+import { Box, Container, Paper } from "@mui/material";
 const test = {
   color: "#307196",
   font: "700 3em/1",
@@ -85,7 +85,12 @@ function Reviews() {
   };
 
   return (
-    <div
+    
+
+
+
+
+    <Paper
       style={{
         marginLeft: "4px",
         display: "flex",
@@ -95,6 +100,7 @@ function Reviews() {
       }}
     >
       <form onSubmit={submitHandler}>
+
         <Typography
           variant="button"
           fontSize="2.5rem"
@@ -104,9 +110,11 @@ function Reviews() {
         >
           Send us a review
         </Typography>
-        <div
+        <Paper
+        elevation={6}
+        sx={{ p: 4 }}
           style={{
-            border: "double",
+           
             width: "fit-content",
             padding: 50,
             display: "flex",
@@ -118,7 +126,7 @@ function Reviews() {
         >
           <InputLabel
             id="demo-simple-select-filled-label"
-            sx={{ marginRight: 19 }}
+            sx={{ marginRight: 21 }}
           >
             Select the doctor:{" "}
           </InputLabel>
@@ -154,7 +162,7 @@ function Reviews() {
           <div>
             <InputLabel
               id="demo-simple-select-filled-label"
-              sx={{ marginRight: 32 }}
+              sx={{ marginRight: 32.5 }}
             >
               Title:{" "}
             </InputLabel>
@@ -172,7 +180,7 @@ function Reviews() {
           <div>
             <InputLabel
               id="demo-simple-select-filled-label"
-              sx={{ marginRight: 28 }}
+              sx={{ marginRight: 27.8 }}
             >
               Comment:{" "}
             </InputLabel>
@@ -185,32 +193,40 @@ function Reviews() {
               value={fields.message}
               onChange={changeHandler}
               name="message"
-              sx={{ width: 300 }}
+              sx={{ width: 300,marginLeft: 0.5 }}
             />
           </div>
           <br />
           <br />
+
+          <div style={{}}>
           {!name.name ||
           !name.lastName ||
           !doctors.length ||
           !value ||
           !fields.title ||
           !fields.message ? (
-            <Button variant="contained" disabled>
+            <Button sx={{padding:1, paddingLeft:3, paddingRight:3}} variant="contained" disabled>
               Send
             </Button>
           ) : (
             <Button
               variant="contained"
               endIcon={<SendIcon />}
-              sx={{ backgroundColor: "#307196", marginLeft: 9 }}
+              sx={{ backgroundColor: "#307196",padding:1, paddingLeft:3, paddingRight:3 }}
               type="submit"
             >
               Send
             </Button>
           )}
-        </div>
+          </div>
+        </Paper>
+
       </form>
+
+      
+
+
 
       <Modal isOpen={modalAbierto} onRequestClose={closeModal}>
         <div
@@ -243,13 +259,13 @@ function Reviews() {
           <Button
             variant="contained"
             onClick={closeModal}
-            style={{ marginLeft: "10%", marginTop: "5%", scale: "1.2" }}
+            style={{ marginLeft: "10%", marginTop: "5%", scale: "1.2",backgroundColor: "#307196" }}
           >
             Cerrar
           </Button>
         </div>
       </Modal>
-    </div>
+    </Paper>
   );
 }
 

@@ -39,8 +39,8 @@ const GraficIMC = () => {
         alignItems: "center",
       }}
     >
-      <Typography variant="button" fontSize="1.5rem">
-        Control your IMC
+      <Typography variant="button" fontSize="1.5rem" sx={{color:"#42B6C6"}}>
+        IMC
       </Typography>
       <BarChart
         width={500}
@@ -61,11 +61,11 @@ const GraficIMC = () => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="Low" fill="#F1948A" />
-        <Bar dataKey="YourIMC" fill="#5D6D7E" />
-        <Bar dataKey="Normal" fill="#82E0AA" />
-        <Bar dataKey="High" fill="#F0B27A" />
-        <Bar dataKey="Obesity" fill="#F1948A" />
+         <Bar dataKey="Low" fill="#F5B7B1" /> 
+        <Bar dataKey="YourIMC" fill="#42B6C6" />
+        <Bar dataKey="Normal" fill="#ABEBC6" /> 
+        <Bar dataKey="High" fill="#F5CBA7" />
+        <Bar dataKey="Obesity" fill="#F5B7B1" />
       </BarChart>
     </div>
   );
