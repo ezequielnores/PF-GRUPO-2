@@ -213,7 +213,7 @@ const Search = (props) => {
                     }}
                   >
                     State Active:{" "}
-                    <Typography>{patient?.active ? "Alta" : "Baja"}</Typography>
+                    <Typography>{patient?.active ? "Active" : "No activated"}</Typography>
                   </Typography>
                 </div>
 
@@ -241,7 +241,7 @@ const Search = (props) => {
                       props.setChange(!props.change);
                     }}
                   >
-                    Discharge
+                    Activate
                   </Button>
                 )}
               </Item>
@@ -341,7 +341,7 @@ const Search = (props) => {
                       props.setChange(!props.change);
                     }}
                   >
-                    Discharge
+                    Activate
                   </Button>
                 )}
               </Item>
@@ -402,8 +402,6 @@ const Search = (props) => {
                 {commentsByDoctor?.length && doctor2.name && (
                   <Comments
                     comments={commentsByDoctor}
-                    authorName={doctor2.name}
-                    authorLastName={doctor2.lastName}
                     deleteComment={props.deleteComment}
                     setRenderSearch={setRender}
                     renderSearch={render}
@@ -461,8 +459,6 @@ const Search = (props) => {
                 {commentsByPatient?.length && patient2?.name && (
                   <Comments
                     comments={commentsByPatient}
-                    authorName={patient2?.name}
-                    authorLastName={patient2?.lastName}
                     deleteComment={props.deleteComment}
                     setRenderSearch={setRender}
                     renderSearch={render}
