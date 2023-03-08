@@ -72,6 +72,10 @@ const postDoctor = async (
 };
 
 const putDoctor = async (id, values) => {
+  if (values.image) {
+    const imageUrl = await cloudinary.uploader.upload(values.image, {upload_preset: "iCare_Henry"});
+    values.image = imageUrl.url;
+  }
   const doctor = await Doctor.update(values, { where: { id: id } });
   return doctor;
 };

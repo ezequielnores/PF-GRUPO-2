@@ -1,11 +1,16 @@
 /* style={{border:"none",backgroundColor:"transparent",color:"blue",cursor:"pointer"}} */
 .buttonfilter{
-    border:none;
+    border:solid 2px #307196;
+    border-radius: 9999px;
     background-color:transparent;
-    color:blue;
+    /* background: #307196; */
     cursor:pointer;
+    margin-bottom: 1vh;
+    color: #307196;
+    font-weight: bold;
 }
 .buttonfilter:hover{
-    color:red;
+    background-color: #307196;
+    color: white;
 
 }
