@@ -274,10 +274,12 @@ const MedicForm = () => {
                 photoURL: form.image
                   ? form.image
                   : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+              }).then(async (res) => {
+                console.log(res);
+                //create empty user chats on firestore
+                await setDoc(doc(db, "userChats", userCredential.user.uid), {});
               });
 
-              //create empty user chats on firestore
-              await setDoc(doc(db, "userChats", userCredential.user.uid), {});
               setAlertSeverity("success");
               setAlertMessage(
                 "Account sent! Pending to activate.. Wait to be redirected"

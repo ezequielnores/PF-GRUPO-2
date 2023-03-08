@@ -68,7 +68,7 @@ const Register = () => {
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
   const [imageInputValue, setImageInputValue] = useState("");
- 
+
   const [form, setForm] = React.useState({
     name: "",
     surname: "",
@@ -83,8 +83,7 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
-    bmi:""
-    
+    bmi: "",
   });
 
   const disableButtonHandler = () => {
@@ -141,7 +140,6 @@ const Register = () => {
     image: "",
     mail: "",
     password: "",
-    
   });
 
   const handleImage = (e) => {
@@ -266,7 +264,7 @@ const Register = () => {
         phone: 12345,
         mail: auth.currentUser.email,
         uid: auth.currentUser.uid,
-        bmi:Math.floor(form?.weight/Math.pow((form?.height/100), 2))
+        bmi: Math.floor(form?.weight / Math.pow(form?.height / 100, 2)),
       })
     )
       .then(async (res) => {
@@ -277,18 +275,18 @@ const Register = () => {
           setAlertMessage("Account Created. Wait to be redirected");
           setShowAlert(true);
           //create user on firestore
-          await setDoc(doc(db, "users", userCredential.user.uid), {
-            uid: userCredential.user.uid,
+          await setDoc(doc(db, "users", auth.currentUser.user.uid), {
+            uid: auth.currentUser.user.uid,
             displayName: form.name + " " + form.surname,
             email: form.mail,
             photoURL: form.image
               ? form.image
               : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+          }).then(async (res) => {
+            console.log(res);
+            //create empty user chats on firestore
+            await setDoc(doc(db, "userChats", auth.currentUser.user.uid), {});
           });
-
-          //create empty user chats on firestore
-          await setDoc(doc(db, "userChats", userCredential.user.uid), {});
-
         } else {
           setAlertSeverity("error");
           setAlertMessage("Error creating account!");
@@ -311,27 +309,27 @@ const Register = () => {
         const user = userCredential.user;
         console.log("usuario creado: " + user.email);
         console.log(userCredential);
-        const success= dispatchRegister(userCredential)
+        const success = dispatchRegister(userCredential);
         if (success) {
-        const authenticatedPatient = patients.find((patient) => {
-          return patient.mail === auth.currentUser.email;
-        });
-        
-        const id = authenticatedPatient.id;
-        if (id) {
-        localStorage.setItem("id", id);
-        navigate("/HomeClient/Profile");
-      } else {
-        setAlertSeverity("error");
-        setAlertMessage("Patient not found");
-        setShowAlert(true);
-      }
-    } else {
-      console.log("Error creating account");
-      setAlertSeverity("error");
-      setAlertMessage("Error creating account");
-      setShowAlert(true);
-    }
+          const authenticatedPatient = patients.find((patient) => {
+            return patient.mail === auth.currentUser.email;
+          });
+
+          const id = authenticatedPatient.id;
+          if (id) {
+            localStorage.setItem("id", id);
+            navigate("/HomeClient/Profile");
+          } else {
+            setAlertSeverity("error");
+            setAlertMessage("Patient not found");
+            setShowAlert(true);
+          }
+        } else {
+          console.log("Error creating account");
+          setAlertSeverity("error");
+          setAlertMessage("Error creating account");
+          setShowAlert(true);
+        }
       } catch (error) {
         console.log({ Error: error.message });
       }
@@ -384,7 +382,7 @@ const Register = () => {
 
   if (patient) {
     // redirectToHome();
-    navigate("/HomeClient/Profile")
+    navigate("/HomeClient/Profile");
   }
 
   return (
