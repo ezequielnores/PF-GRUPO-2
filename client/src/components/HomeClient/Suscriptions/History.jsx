@@ -9,8 +9,7 @@ const root = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  paddingBottom: "4px",
-  padding: 10,
+  height: "45.5rem",
 };
 const test = {
   color: "#307196",
@@ -22,13 +21,13 @@ const test = {
   textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
 };
 const cardContainer = {
-  marginTop: "4px",
+  marginTop: "1rem",
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "center",
   padding: 10,
-  width:1000,
-    height: 1500,
+  width: 1000,
+  height: 1500,
 };
 const card = {
   width: "500px", // Se establece un ancho fijo para la card
@@ -49,7 +48,6 @@ const cardContent = {
   alignItems: "center",
   flexGrow: 1,
   padding: "15px",
-  
 };
 const cardActions = {
   display: "flex",
@@ -100,12 +98,12 @@ const cardGold = {
 const cardBlue = {
   border: "1px solid #1976d2",
   backgroundColor: "#f0f8ff",
-  height:378,
+  height: 378,
 };
-const cardSimple= {
+const cardSimple = {
   border: "1px solid black",
-  height:378,
-}
+  height: 378,
+};
 
 const History = () => {
   const dispatch = useDispatch();
@@ -184,12 +182,18 @@ const History = () => {
         Current plan
       </Typography>
       <div style={cardContainer}>
-        <Grid container spacing={3}>
+        <Grid
+          container
+          spacing={3}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           {patientDetail.PatientPlan ? (
             filteredPlans.map(renderPlanCard)
           ) : (
             <div>
-              <br />
               <Typography variant="h6">
                 You do not have a plan associated with your account, please go
                 back and associate with one
