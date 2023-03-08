@@ -4,6 +4,7 @@ import style from "./SideBar.module.css";
 import Stack from "@mui/material/Stack";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
+import ChatIcon from "@mui/icons-material/Chat";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
@@ -12,92 +13,122 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ForumIcon from "@mui/icons-material/Forum";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import LogoutIcon from "@mui/icons-material/Logout";
-import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
+import CoronavirusIcon from "@mui/icons-material/Coronavirus";
 import swal from "sweetalert";
 //Firebase
 import { signOut } from "firebase/auth";
-import { auth } from '../../../authentication/firebase';
+import { auth } from "../../../authentication/firebase";
+import { Button } from "@mui/material";
 
 const SideBar = ({ open, handleOpen, path }) => {
-    const handleLogout = async () => {
-      swal({
-        title: "Are you sure you want to log out?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          signOut(auth).then(()=>{
-          localStorage.clear();
-          window.location.href = "https://pf-grupo-2.vercel.app/";
-          }).catch((error) => {
-            console.log({Error: error.message});
+  const handleLogout = async () => {
+    swal({
+      title: "Are you sure you want to log out?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        signOut(auth)
+          .then(() => {
+            localStorage.clear();
+            window.location.href = "https://pf-grupo-2.vercel.app/";
           })
-        }
-      });
+          .catch((error) => {
+            console.log({ Error: error.message });
+          });
+      }
+    });
   };
 
   return (
     <div>
-      <div style={{ position: "fixed", left: "0", top: "9rem" }}>
-        <Stack spacing={6}>
-          <Stack spacing={1} width={open ? 200 : 45}>
-            <button onClick={handleOpen} className={style.menu}>
-              <MenuIcon />
-            </button>
+      <div
+        style={{
+          height: "100%",
+          position: "relative",
+          left: "0",
+          top: "10rem",
+        }}
+      >
+        <Stack spacing={2}>
+          <Button
+            onClick={handleOpen}
+            className={style.menu}
+            style={{
+              border: "none",
+              backgroundColor: "transparent",
+              cursor: "pointer",
+              alignSelf: "start",
+            }}
+          >
+            <MenuIcon />
+          </Button>
+          <Stack
+            spacing={1}
+            width={open ? 200 : 45}
+            style={{
+              display: "flex",
+              paddingLeft: "11px",
+              flexDirection: "column",
+              alignItems: "start",
+              textAlign: "center",
+            }}
+          >
             <button className={style.buttonBar}>
               <Link to="/HomeClient">
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <HomeIcon style={{ color: "white" }} />
-                      </div>
+                      <HomeIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <HomeIcon />
-                      </div>
+                      <HomeIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Home
+                    <p>Home</p>
                   </div>
                 ) : path.endsWith("/HomeClient") ? (
                   <HomeIcon />
                 ) : (
-                  <HomeIcon style={{ color: "grey" }} />
+                  <HomeIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
+            {/* <button className={style.buttonBar}>
+              <Link to="/HomeClient/Chat">
+                {open ? (
+                  <div className={style.divbutton}>
+                    {path.endsWith("/HomeClient/Chat") ? (
+                        <ChatIcon  />
+                    ) : (
+                      
+                        <ChatIcon style={{ color: "#c2c1c1" }} />
+                      
+                    )}
+                    <p>Chat</p>
+                  </div>
+                ) : path.endsWith("/HomeClient/Chat") ? (
+                  <ChatIcon />
+                ) : (
+                  <ChatIcon style={{ color: "#c2c1c1" }}  />
+                )}
+              </Link>
+            </button> */}
             <button className={style.buttonBar}>
               <Link to="/HomeClient/Profile">
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient/Profile") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <AccountCircleIcon style={{ color: "white" }} />
-                      </div>
+                      <AccountCircleIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <AccountCircleIcon />
-                      </div>
+                      <AccountCircleIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Profile
+                    <p>Profile</p>
                   </div>
                 ) : path.endsWith("/HomeClient/Profile") ? (
                   <AccountCircleIcon />
                 ) : (
-                  <AccountCircleIcon style={{ color: "grey" }} />
+                  <AccountCircleIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
@@ -106,26 +137,16 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient/MyAppointments") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <CalendarMonthIcon style={{ color: "white" }} />
-                      </div>
+                      <CalendarMonthIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <CalendarMonthIcon />
-                      </div>
+                      <CalendarMonthIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    My Appointments
+                    <p> My Appointments</p>
                   </div>
                 ) : path.endsWith("/HomeClient/MyAppointments") ? (
                   <CalendarMonthIcon />
                 ) : (
-                  <CalendarMonthIcon style={{ color: "grey" }} />
+                  <CalendarMonthIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
@@ -134,26 +155,16 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient/Urgency") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <MedicalServicesIcon style={{ color: "white" }} />
-                      </div>
+                      <MedicalServicesIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <MedicalServicesIcon />
-                      </div>
+                      <MedicalServicesIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Urgency
+                    <p>Urgency</p>
                   </div>
                 ) : path.endsWith("/HomeClient/Urgency") ? (
                   <MedicalServicesIcon />
                 ) : (
-                  <MedicalServicesIcon style={{ color: "grey" }} />
+                  <MedicalServicesIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
@@ -162,26 +173,16 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient/MedicalAppointments") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <AddCardIcon style={{ color: "white" }} />
-                      </div>
+                      <AddCardIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <AddCardIcon />
-                      </div>
+                      <AddCardIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Medical Appointments
+                    <p>Medical Appointments</p>
                   </div>
                 ) : path.endsWith("/HomeClient/MedicalAppointments") ? (
                   <AddCardIcon />
                 ) : (
-                  <AddCardIcon style={{ color: "grey" }} />
+                  <AddCardIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
@@ -190,26 +191,16 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient/MedicalHistory") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <AssignmentIcon style={{ color: "white" }} />
-                      </div>
+                      <AssignmentIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <AssignmentIcon />
-                      </div>
+                      <AssignmentIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Medical History
+                    <p>Medical History</p>
                   </div>
                 ) : path.endsWith("/HomeClient/MedicalHistory") ? (
                   <AssignmentIcon />
                 ) : (
-                  <AssignmentIcon style={{ color: "grey" }} />
+                  <AssignmentIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
@@ -218,26 +209,16 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient/Faq") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <ForumIcon style={{ color: "white" }} />
-                      </div>
+                      <ForumIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <ForumIcon />
-                      </div>
+                      <ForumIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    FAQ
+                    <p>FAQ</p>
                   </div>
                 ) : path.endsWith("/HomeClient/Faq") ? (
                   <ForumIcon />
                 ) : (
-                  <ForumIcon style={{ color: "grey" }} />
+                  <ForumIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
@@ -246,26 +227,16 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("HomeClient/Reviews") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <RateReviewIcon style={{ color: "white" }} />
-                      </div>
+                      <RateReviewIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <RateReviewIcon />
-                      </div>
+                      <RateReviewIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Reviews
+                    <p>Reviews</p>
                   </div>
                 ) : path.endsWith("HomeClient/Reviews") ? (
                   <RateReviewIcon />
                 ) : (
-                  <RateReviewIcon style={{ color: "grey" }} />
+                  <RateReviewIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
@@ -274,29 +245,37 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("HomeClient/Suscriptions") ? (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#307196" }}
-                      >
-                        <RequestQuoteIcon style={{ color: "white" }} />
-                      </div>
+                      <RequestQuoteIcon />
                     ) : (
-                      <div
-                        className={style.icon}
-                        style={{ background: "#c2c1c1" }}
-                      >
-                        <RequestQuoteIcon />
-                      </div>
+                      <RequestQuoteIcon style={{ color: "#c2c1c1" }} />
                     )}
-                    Suscriptions
+                    <p>Subscriptions</p>
                   </div>
                 ) : path.endsWith("HomeClient/Suscriptions") ? (
                   <RequestQuoteIcon />
                 ) : (
-                  <RequestQuoteIcon style={{ color: "grey" }} />
+                  <RequestQuoteIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
             </button>
+            {/* <button className={style.buttonBar}>
+              <Link to="/HomeClient/TestCovid">
+                {open ? (
+                  <div className={style.divbutton}>
+                    {path.endsWith("/HomeClient/TestCovid") ? (
+                      <CoronavirusIcon />
+                    ) : (
+                      <CoronavirusIcon style={{ color: "#c2c1c1" }} />
+                    )}
+                    <p>AutoTest Covid-19</p>
+                  </div>
+                ) : path.endsWith("/HomeClient/TestCovid") ? (
+                  <CoronavirusIcon />
+                ) : (
+                  <CoronavirusIcon style={{ color: "#c2c1c1" }} />
+                )}
+              </Link>
+            </button> */}
           </Stack>
           <button
             type="button"
@@ -304,7 +283,6 @@ const SideBar = ({ open, handleOpen, path }) => {
             style={{ width: open ? "9vw" : "2vw" }}
             onClick={handleLogout}
           >
-            {/* <Link to="/" > */}
             {open ? (
               <div className={style.divbutton} style={{ color: "white" }}>
                 <LogoutIcon />
@@ -313,7 +291,6 @@ const SideBar = ({ open, handleOpen, path }) => {
             ) : (
               <LogoutIcon style={{ color: "white" }} />
             )}
-            {/* </Link> */}
           </button>
         </Stack>
       </div>

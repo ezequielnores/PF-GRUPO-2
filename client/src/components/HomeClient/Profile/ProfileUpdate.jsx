@@ -1,20 +1,28 @@
 import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import {patientUpdate,patientGetDetail} from "../../../redux/reducers/patientReducer";
+import {
+  patientUpdate,
+  patientGetDetail,
+} from "../../../redux/reducers/patientReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmail, isNumeric, isStrongPassword, isAlpha, isInt } from "validator";
+import {
+  isEmail,
+  isNumeric,
+  isStrongPassword,
+  isAlpha,
+  isInt,
+} from "validator";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
-
-
+import swal from "sweetalert";
+import { IconButton, InputAdornment } from "@mui/material";
 
 //styles
 const padreDiv = {
@@ -42,100 +50,42 @@ const ProfileEdit = () => {
   const detailPatient = useSelector((state) => state.patient.detail);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const patientDetail = useSelector((state) => state.patient.detail);
+  const [imageInputValue, setImageInputValue] = useState("");
 
   const [infoNueva, setInfoNueva] = useState({
-    name: detailPatient? detailPatient.name:"",
-    surname: detailPatient? detailPatient.surname:"",
-    mail: detailPatient? detailPatient.mail:"",
-    password: detailPatient? detailPatient.password:"",
-    birthday: detailPatient? detailPatient.birthday:new Date(),
-    photo: detailPatient? detailPatient.photo:"",
-    weight: detailPatient? detailPatient.weight:"",
-    height: detailPatient? detailPatient.height:"",
-    allergies: detailPatient? detailPatient.allergies:"",
-    chronicDiseases: detailPatient? detailPatient.chronicDiseases:"",
-    location: detailPatient? detailPatient.location:"",
-    phone: detailPatient? detailPatient.phone:"",
+    name: detailPatient ? detailPatient.name : "",
+    surname: detailPatient ? detailPatient.surname : "",
+    // mail: detailPatient? detailPatient.mail:"",
+    // password: detailPatient? detailPatient.password:"",
+    birthday: detailPatient ? detailPatient.birthday : new Date(),
+    photo: detailPatient ? detailPatient.photo : "",
+    weight: detailPatient ? detailPatient.weight : "",
+    height: detailPatient ? detailPatient.height : "",
+    allergies: detailPatient ? detailPatient.allergies : "",
+    chronicDiseases: detailPatient ? detailPatient.chronicDiseases : "",
+    location: detailPatient ? detailPatient.location : "",
+    phone: detailPatient ? detailPatient.phone : "",
+    bmi: detailPatient ? detailPatient.bmi : "",
   });
 
   const [hasChanged, setHasChanged] = useState(false);
 
-  const [errors, setErrors] = useState({
+  const [error, setError] = useState({
+    photo: "",
     name: "",
-    mail: "",
+    // mail: "",
     phone: "",
-    password: "",
-    clinicMail: "",
+    // password: "",
     birthday: "",
     surname: "",
-    weight:"",
-    height:""
+    weight: "",
+    height: "",
+    location: "",
+    chronicDiseases: "",
+    allergies: "",
   });
-
-
-  const handleChange = (evento) => {
-    evento.preventDefault();
-    setInfoNueva({
-      ...infoNueva,
-      [evento.target.name]: evento.target.value,
-    });
-    setHasChanged(true);
-  };
-
-  const handleFechaNacimientoChange = (date) => {
-    setInfoNueva({ ...infoNueva, birthdate: date });
-  };
-
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const errors = validateFields();
-    if (Object.keys(errors).length === 0) {
-      dispatch(patientUpdate({ id: detailPatient.id, data: infoNueva }));
-      alert("Information updated");
-      navigate("/HomeClient/Profile");
-    } else {
-      setErrors(errors);
-    }
-  };
-
-
-  const validateFields = () => {
-    const errors = {};
-
-    if (!isAlpha(infoNueva.name)) {
-      errors.name = "Please enter valid name";
-    }
-
-    if (!isAlpha(infoNueva.surname)) {
-      errors.surname = "Please enter valid last name";
-    }
-
-    if (!isEmail(infoNueva.mail)) {
-      errors.mail = "Please enter a valid email address";
-    }
-
-    if (!isStrongPassword(infoNueva.password)) {
-      errors.password = "Please enter a valid password";
-    }
-
-    if (new Date(infoNueva.birthday) > new Date()) {
-      errors.birthday = "Please enter a valid birthdate";
-    }
-
-    if (!isNumeric(infoNueva.phone)) {
-      errors.phone = "Please enter a valid phone number";
-    }
-    if (!isInt(infoNueva.weight)) {
-      errors.weight = "Please enter a valid weight";
-    }
-    if (!isInt(infoNueva.height)) {
-      errors.height = "Please enter a valid height";
-    }
-
-    return errors;
-  };
-
+  const patientId = localStorage.getItem("id");
 
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -144,6 +94,96 @@ const ProfileEdit = () => {
     }
   }, []);
 
+  const handleChange = (name, value) => {
+    setInfoNueva({
+      ...infoNueva,
+      [name]: value,
+    });
+    validateFields({ ...infoNueva, [name]: value }, name);
+    setHasChanged(true);
+  };
+
+  const handleFechaNacimientoChange = (date) => {
+    setInfoNueva({ ...infoNueva, birthday: date });
+    setHasChanged(true);
+  };
+
+  const handleImage = (e) => {
+    const name = e.target.name;
+    setImageInputValue(e.target.value);
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setInfoNueva({ ...infoNueva, [name]: reader.result });
+      setHasChanged(true);
+      validateFields({ ...infoNueva }, name, file);
+    };
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // const errors = validateFields();
+    if (Object.values(error).every((item) => item === "")) {
+      dispatch(patientUpdate({ id: patientDetail.id, data: infoNueva }));
+      await swal("Information updated", {
+        icon: "success",
+      });
+      // alert("Information updated");
+      await navigate("/HomeClient/Profile");
+      dispatch(patientGetDetail(patientId));
+    } else {
+      alert("Error");
+    }
+  };
+
+  const validateFields = (form, name, file) => {
+    if (name === "name" || name === "lastName") {
+      if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
+        setError({ ...error, [name]: "•Only characters" });
+      } else setError({ ...error, [name]: "" });
+    }
+    if (name === "location") {
+      if (!/^[a-zA-Z,\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
+        setError({ ...error, [name]: "•Only characters and commas" });
+      } else setError({ ...error, [name]: "" });
+    }
+    // if (name === "password") {
+    //   if (
+    //     !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+    //       form[name] || form[name] !== ""
+    //     )
+    //   ) {
+    //     setError({
+    //       ...error,
+    //       [name]:
+    //         "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
+    //     });
+    //   } else {
+    //     setError({
+    //       ...error,
+    //       [name]: "",
+    //     });
+    //   }
+    // }
+    // if (name === "mail") {
+    //   if (
+    //     !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+    //       form[name] || form[name] !== ""
+    //     )
+    //   ) {
+    //     setError({ ...error, [name]: "•Musst be a valid email" });
+    //   } else setError({ ...error, [name]: "" });
+    // }
+
+    if (name === "photo") {
+      if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        setError({ ...error, [name]: "The image must be a jpeg or png file" });
+      } else {
+        setError({ ...error, [name]: "" });
+      }
+    }
+  };
 
   return (
     <div style={padreDiv}>
@@ -165,31 +205,34 @@ const ProfileEdit = () => {
       </Link>
       <Card style={carde}>
         <TextField
+          value={infoNueva.name}
           name="name"
           label="Name"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.name)}
-          helperText={errors.name}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={error.name}
+          helperText={error.name}
         />
         <TextField
+          value={infoNueva.surname}
           name="surname"
           label="Last name"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.surname)}
-          helperText={errors.surname}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={error.surname}
+          helperText={error.surname}
         />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
+            name="birthday"
             label="Birthdate"
             value={infoNueva.birthday}
             onChange={handleFechaNacimientoChange}
-            error={Boolean(errors.birthday)}
-            helperText={errors.birthday}
+            error={error.birthday}
+            helperText={error.birthday}
             format="dd/MM/yyyy"
             maxDate={new Date()}
             inputVariant="outlined"
@@ -197,91 +240,145 @@ const ProfileEdit = () => {
           />
         </LocalizationProvider>
 
-        <TextField
+        {/* <TextField
+        value={infoNueva.mail}
           name="mail"
           label="Mail"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.mail)}
-          helperText={errors.mail}
-        />
-        <TextField
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={error.mail}
+          helperText={error.mail}
+        /> */}
+        {/* <TextField
           name="password"
           label="Password"
+          value={infoNueva.password}
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.password)}
-          helperText={errors.password}
-        />
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={error.password}
+          helperText={error.password}
+        /> */}
+
         <TextField
-          name="photo"
+          sx={{ marginTop: 2 }}
           label="Photo"
-          style={typoTitle}
-          gutterBottom
-          onChange={(e) => handleChange(e)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          style={
+            infoNueva.photo
+              ? { width: "49.8vh", marginBottom: "1vh" }
+              : { width: "49.8vh", label: { paddingLeft: "5vh" } }
+          }
+          onChange={handleImage}
+          name="photo"
+          value={imageInputValue ? imageInputValue : ""}
+          type="file"
+          error={error.photo}
+          helperText={error.photo}
+          InputProps={
+            !infoNueva.photo
+              ? { inputProps: { style: { paddingLeft: "5vw" } } }
+              : {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {infoNueva.photo && (
+                        <IconButton
+                          onClick={() => {
+                            setInfoNueva(
+                              { ...infoNueva, photo: null },
+                              setImageInputValue("")
+                            );
+                          }}
+                        >
+                          X
+                        </IconButton>
+                      )}
+                    </InputAdornment>
+                  ),
+                }
+          }
         />
+
         <TextField
+          value={infoNueva.weight}
           name="weight"
           label="Weight"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.weight)}
-          helperText={errors.weight}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={error.weight}
+          helperText={error.weight}
         />
         <TextField
+          value={infoNueva.height}
           name="height"
           label="Height"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.height)}
-          helperText={errors.height}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={error.height}
+          helperText={error.height}
         />
         <TextField
+          value={infoNueva.allergies}
           name="allergies"
           label="Allergies"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
         />
         <TextField
+          value={infoNueva.chronicDiseases}
           name="chronicDiseases"
           label="Chronic diseases"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={error.chronicDiseases}
+          helperText={error.chronicDiseases}
         />
         <TextField
+          value={infoNueva.location}
           name="location"
           label="Location"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={error.location}
+          helperText={error.location}
         />
         <TextField
           name="phone"
           label="Phone"
-          style={typoTitle}
+          value={infoNueva.phone}
+          defaultCountry={"AR"}
+          style={{ width: "49.9vh", marginBottom: "1rem" }}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-          error={Boolean(errors.phone)}
-          helperText={errors.phone}
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+          error={error.phone}
+          helperText={error.phone}
         />
-        <TextField
+        {/* <TextField
+          value={infoNueva.bmi}
           name="bmi"
           label="BMI"
           style={typoTitle}
           gutterBottom
-          onChange={(e) => handleChange(e)}
-        />
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
+        /> */}
       </Card>
-      <Button variant="contained" onClick={(e) => handleSubmit(e)} disabled={!hasChanged}>
+      <Button
+        variant="contained"
+        onClick={(e) => handleSubmit(e)}
+        disabled={!hasChanged}
+      >
         Update information
       </Button>
-      <br/><br/>
+      <br />
+      <br />
     </div>
   );
 };

@@ -3,6 +3,7 @@ const axios = require("axios");
 const router = Router();
 const { PatientPlan, Patient, Plans } = require("../db");
 const { mercadopago } = require("../utils/mercadoPago");
+const { PASS_MAIL } = process.env;
 
 router.post("/producto", async (req, res) => {
   const prod = req.body;
@@ -12,6 +13,7 @@ router.post("/producto", async (req, res) => {
     back_urls: {
       //serán las URLS a las cuales puede redirigirnos luego de la compra
       success: "https://pf-grupo-2.vercel.app/HomeClient/Profile",
+      // "https://pf-grupo-2.vercel.app/HomeClient/Profile"
       failure: "",
       pending: "", //si tengo que hacer un pago en efectivo, queda pendiente
     },
@@ -40,6 +42,7 @@ router.post("/producto", async (req, res) => {
     notification_url: `https://pf-grupo-2-production.up.railway.app/payments/notificate`, //url a la que mercado pago nos va a notificar la compra
   };
   //`https://e738-152-170-158-127.sa.ngrok.io/payments/notificate`
+  // https://pf-grupo-2-production.up.railway.app/payments/notificate
 
   mercadopago.preferences
     .create(preference)
@@ -108,6 +111,54 @@ router.post("/notificate", async (req, res) => {
     //   patient.plan = payment.body.description;
     //   await patient.save();
     // }
+
+    //Enviar correo electrónico al cliente con los detalles de la compra
+    const nodemailer = require("nodemailer");
+
+    // Configurar el transporter con los detalles de autenticación de tu proveedor de correo electrónico
+    const transporter = nodemailer.createTransport({
+      port: 465,
+      host: "smtp.gmail.com",
+      secure: true,
+      auth: {
+        user: "icareh7@gmail.com",
+        pass: "xftqhjpgblkmnfno",
+      },
+    });
+
+    // Obtener el correo electrónico del cliente
+    const patient = await Patient.findByPk(patientId);
+    const email = patient.mail;
+    console.log(email);
+
+    // Construir el mensaje HTML con los detalles de la compra
+    const htmlMessage = `<div style="border: 2px solid #ccc; padding: 20px;">
+<h2 style="color: blue;">Thank you for your purchase on our site. Here are the details of your transaction:</h2>
+<ul>
+  <li>ID payment: ${paymentId}</li>
+  <li>Service: ${plan.name}</li>
+  <li>Price: $${plan.price}</li>
+  <li>Plan duration: ${plan.durationMonths} meses</li>
+</ul>
+<h5>iCare</h5>
+</div>`;
+
+    // Enviar el correo electrónico al cliente
+    transporter.sendMail(
+      {
+        from: "icarehenrypf@gmail.com",
+        to: email,
+        subject: "Detalles de la compra en MercadoPago",
+        html: htmlMessage,
+      },
+      function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Correo electrónico enviado: " + info.response);
+        }
+      }
+    );
   }
 
   res.sendStatus(200);

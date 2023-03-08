@@ -1,9 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { /* useRef, */ useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 /* import emailjs from "@emailjs/browser"; */
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
+import { MuiTelInput } from "mui-tel-input";
 import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -11,13 +14,15 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 //validaciones
-import { isEmail, isNumeric, isAlpha } from "validator";
-import { IconButton, InputAdornment } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { IconButton, InputAdornment, Snackbar } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import { doctorAdd } from "../../redux/reducers/doctorReducer";
 //Firebase
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../authentication/firebase';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../authentication/firebase";
+import axios from "axios";
+import { doc, setDoc } from "firebase/firestore";
+const { REACT_APP_BACKEND_URL } = process.env;
 
 //style
 const divPadre = {
@@ -40,7 +45,7 @@ const cardDiv = {
   marginTop: "4rem",
   display: "flex",
   flexDirection: "column",
-  width: "48rem",
+  width: "55rem",
   height: "45rem",
   boxShadow:
     "-10px 10px 0px #307196,-20px 20px 0px rgba(48, 113, 150, 0.7),-30px 30px 0px rgba(48, 113, 150, 0.4),-40px 40px 0px rgba(48, 113, 150, 0.1)",
@@ -62,28 +67,34 @@ const finalinput = {
 };
 
 const MedicForm = () => {
+  const doctors = useSelector((state) => state.doctor.list);
   const dispatch = useDispatch();
-/*   const {createUser} = new ManagementClient() */
+  const navigate = useNavigate();
+  /*   const {createUser} = new ManagementClient() */
   const [successForm, setSuccessForm] = useState(null);
   const [imageInputValue, setImageInputValue] = useState("");
   const [cvInputValue, setCvInputValue] = useState("");
+  //alert state
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
   //validacion state
-  const [errors, setErrors] = useState({
-    user_name: "",
-    user_lastName: "",
-    user_mail: "",
-    user_password: "",
-    // user_clinicMail: "",
-    user_phone: "",
-    user_dni: "",
-    user_license: "",
-    user_cv: "",
-    user_birthdate: "",
-    user_image: "",
-    user_speciality: "",
-    user_location: "",
+  const [error, setError] = useState({
+    name: "",
+    lastName: "",
+    mail: "",
+    password: "",
+    clinicMail: "",
+    phone: "",
+    dni: "",
+    license: "",
+    cv: "",
+    birthdate: "",
+    image: "",
+    speciality: "",
+    location: "",
   });
-  const [value, setValue] = useState({
+  const [form, setForm] = useState({
     name: "",
     lastName: "",
     mail: "",
@@ -98,26 +109,37 @@ const MedicForm = () => {
     speciality: "",
     location: "",
   });
-  //validacion submit button
-  const [hasChanged, setHasChanged] = useState(false);
-  //handler de inputs
-  const handleChange = (evento) => {
-    evento.preventDefault();
-    const fieldName = evento.target.name;
-    //Lo que tomo son :
-    setValue({
-      ...value,
-      [evento.target.name]: evento.target.value,
-    });
-    // Validar solo el campo que está cambiando
-    const errorsForField = validateFields(fieldName);
-    // Actualizar el estado de errores solo para el campo que está cambiando
-    setErrors({
-      ...errors,
-      [fieldName]: errorsForField[fieldName],
-    });
-    //Para el submiteo
-    setHasChanged(true);
+
+  const DisableButton = () => {
+    if (
+      error.mail !== "" ||
+      error.password !== "" ||
+      error.name !== "" ||
+      error.lastName !== "" ||
+      error.dni !== "" ||
+      error.license
+    ) {
+      return true;
+    }
+    if (
+      form.name === "" ||
+      form.lastName === "" ||
+      form.mail === "" ||
+      form.password === "" ||
+      form.phone === "" ||
+      form.dni === "" ||
+      form.license === "" ||
+      form.birthdate === "" ||
+      form.speciality === "" ||
+      form.location === "" ||
+      form.cv === "" ||
+      form.cv === null ||
+      form.image === "" ||
+      form.image === null
+    ) {
+      return true;
+    }
+    return false;
   };
 
   const handleImage = (e) => {
@@ -128,108 +150,197 @@ const MedicForm = () => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setValue({ ...value, [name]: reader.result });
+      setForm({ ...form, [name]: reader.result });
 
-      validateFields({ ...value, [name]: reader.result }, name);
+      validateForm({ ...form, [name]: reader.result }, name, file);
     };
   };
 
-  const handleFechaNacimientoChange = (date) => {
-    const errorsForField = validateFields();
+  const onChangeHandler = (name, value) => {
+    setForm({ ...form, [name]: value });
+    validateForm({ ...form, [name]: value }, name);
+  };
 
-    setValue({ ...value, birthdate: date });
-    setHasChanged(true);
-    setErrors({
-      ...errors,
-      [value]: errorsForField,
+  const onChangeEmail = (name, value) => {
+    setForm((prev) => {
+      return { ...prev, [name]: value };
     });
+
+    validateForm({ ...form, [name]: value }, name);
   };
-  const validateFields = () => {
-    const errors = {};
 
-    if (!isAlpha(value.name)) {
-      errors.name = "Please enter valid name";
-    }
+  const onChangePassword = (name, value) => {
+    setForm({ ...form, [name]: value });
 
-    if (!isAlpha(value.lastName)) {
-      errors.lastName = "Please enter valid last name";
-    }
-    if (!isAlpha(value.location)) {
-      errors.location = "Please enter a valid location";
-    }
-    if (!isAlpha(value.speciality)) {
-      errors.speciality = "Please enter a valid speciality";
-    }
-    if (!isEmail(value.mail)) {
-      errors.mail = "Please enter valid email";
-    }
-
-    // if (!isEmail(value.clinicMail)) {
-    //   errors.clinicMail = "Please enter valid email";
-    // }
-
-    if (!value.password) {
-      errors.password = "Please enter a password"
-    }
-
-    if (new Date(value.birthdate) > new Date() || value.birthdate === null) {
-      errors.birthdate = "Please enter a valid birthdate";
-    }
-
-    if (!isNumeric(value.phone)) {
-      errors.phone = "Please enter valid phone number";
-    }
-
-    if (!isNumeric(value.license)) {
-      errors.license = "Please enter valid license";
-    }
-    if (!isNumeric(value.dni)) {
-      errors.dni = "Please enter valid d.n.i";
-    }
-    if (!value.cv) {
-      errors.cv = "Please upload a cv";
-    }
-    return errors;
+    validateForm({ ...form, [name]: value }, name);
   };
-  console.log(value);
-  //Logic form
-  const form = useRef();
+
+  const handleFechaNacimientoChange = (date, name) => {
+    setForm({ ...form, birthdate: date });
+    validateForm({ ...form, [name]: form }, name);
+  };
+
+  const validateForm = async (form, name, file) => {
+    if (name === "name" || name === "lastName" || name === "speciality") {
+      if (!/^[A-Za-z\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
+        setError({ ...error, [name]: "•Only characters" });
+      } else setError({ ...error, [name]: "" });
+    }
+    if (name === "location") {
+      if (!/^[a-zA-Z,\s]+$/.test(form[name]) /* || /\W/.test(form[name]) */) {
+        setError({ ...error, [name]: "•Only characters and commas" });
+      } else setError({ ...error, [name]: "" });
+    }
+    if (name === "dni" || name === "license") {
+      if (!/^\d{4,8}$/.test(form[name])) {
+        setError({ ...error, [name]: "•Only numbers •Min 4 digits" });
+      } else {
+        setError({ ...error, [name]: "" });
+      }
+    }
+
+    if (name === "password") {
+      if (
+        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$/.test(
+          form[name] || form[name] !== ""
+        )
+      ) {
+        setError({
+          ...error,
+          [name]:
+            "•Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character",
+        });
+      } else {
+        setError({
+          ...error,
+          [name]: "",
+        });
+      }
+    }
+    if (name === "mail") {
+      const isValid = await axios
+        .get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`)
+        .then((r) => r.data);
+
+      if (isValid === true) {
+        setError((prev) => {
+          return { ...prev, [name]: "" };
+        });
+      } else {
+        setError((prev) => {
+          return { ...prev, [name]: "Must enter a valid email" };
+        });
+      }
+    }
+
+    if (name === "image") {
+      if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        setError({ ...error, [name]: "The image must be a jpeg or png file" });
+      } else {
+        setError({ ...error, [name]: "" });
+      }
+    }
+
+    if (name === "cv") {
+      if (file.type !== "application/pdf") {
+        setError({ ...error, [name]: "The cv must be a pdf file" });
+      } else {
+        setError({ ...error, [name]: "" });
+      }
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const errors = validateFields();
-    console.log(errors);
-    if (Object.values(errors).every((item) => item === "")) {
+    // const error = validateFields();
+    // console.log(errors);
+    if (Object.values(error).every((item) => item === "")) {
       try {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
-          value.mail,
-          value.password
+          form.mail,
+          form.password
         );
-        const user = userCredential.user;
-        console.log('medico creado: ' + user.email);
-        dispatch(doctorAdd({ ...value }))
-          .then((res) => {
+        // console.log("medico creado: " + user.email);
+        dispatch(doctorAdd({ ...form, uid: userCredential.user.uid }))
+          .then(async (res) => {
             if (res.type === "doctor/addById/fulfilled") {
-              alert("Account sent! Pending to activate..");
+              // alert("Account sent! Pending to activate..");
+              //create user on firestore
+              await setDoc(doc(db, "users", userCredential.user.uid), {
+                uid: userCredential.user.uid,
+                displayName: form.name + " " + form.lastName,
+                email: form.mail,
+                photoURL: form.image
+                  ? form.image
+                  : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+              });
+
+              //create empty user chats on firestore
+              await setDoc(doc(db, "userChats", userCredential.user.uid), {});
+              setAlertSeverity("success");
+              setAlertMessage(
+                "Account sent! Pending to activate.. Wait to be redirected"
+              );
+              setShowAlert(true);
+              const authenticatedDoctor = doctors.find((doctor) => {
+                return doctor.mail === auth.currentUser.email;
+              });
+              localStorage.setItem("idMedic", authenticatedDoctor.id);
+
+              navigate("/HomeMedic/Profile");
+              /*               setTimeout(() => {
+                navigate("/loginMedic");
+              }, 2500); */
             } else {
-              auth.currentUser.delete()
-              alert("Error sending account!");
+              auth.currentUser.delete();
+              setAlertSeverity("error");
+              setAlertMessage("Error, existing information");
+              setShowAlert(true);
             }
-            console.log(res.type);
           })
-          .catch((err) => alert("Error"));
+          .catch(
+            (err) => setAlertSeverity("success"),
+            setAlertMessage(
+              "Account sent! Pending to activate.. Wait to be redirected"
+            ),
+            setShowAlert(true)
+          );
       } catch (error) {
         console.log({ Error: error.message });
-        alert("Error");
+        setAlertSeverity("error");
+        setAlertMessage("Error, existing information");
+        setShowAlert(true);
+        // setAlertSeverity("success");
+        // setAlertMessage(
+        //   "Account sent! Pending to activate.. Wait to be redirected"
+        // );
+        // setShowAlert(true);
       }
     } else {
-      alert("Please complete all fields");
+      // alert("Please complete all fields");
+      setAlertSeverity("error");
+      setAlertMessage("Existing errors     ");
+      setShowAlert(true);
     }
   };
-  
+
   return (
     <div style={divPadre}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showAlert}
+        autoHideDuration={6000}
+        onClose={() => setShowAlert(false)}
+      >
+        <Alert
+          variant="filled"
+          severity={alertSeverity}
+          onClose={() => setShowAlert(false)}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <form
         component="form"
         sx={{
@@ -238,7 +349,6 @@ const MedicForm = () => {
         style={box}
         noValidate
         autoComplete="off"
-        ref={form}
         onSubmit={handleSubmit}
       >
         {successForm === "success" && (
@@ -267,66 +377,75 @@ const MedicForm = () => {
             <TextField
               name="name"
               label=" First Name"
-              onChange={handleChange}
-              error={Boolean(errors.name)}
-              helperText={errors.name}
+              onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+              error={error.name}
+              helperText={error.name}
             />
             <TextField
               name="lastName"
               label="Last Name"
               size="large"
-              onChange={handleChange}
-              error={Boolean(errors.lastName)}
-              helperText={errors.lastName}
+              onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+              error={error.lastName}
+              helperText={error.lastName}
             />
             <TextField
               name="mail"
               label="Email"
-              onChange={handleChange}
-              error={Boolean(errors.mail)}
-              helperText={errors.mail}
+              onChange={(e) => onChangeEmail(e.target.name, e.target.value)}
+              error={error.mail}
+              helperText={error.mail}
             />
+
+
             <TextField
-              error={errors.password}
+              error={error.password}
+              helperText={error.password}
               label="Password"
-              onChange={handleChange}
+              onChange={(e) => onChangePassword(e.target.name, e.target.value)}
               name="password"
-              value={value.password}
-              type="password"
+              type= "password"
+            
             />
+
+
           </div>
           <div style={divHijo}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 name="birthdate"
                 label="Birthdate"
-                value={value.birthdate}
+                value={form.birthdate}
                 maxDate={new Date()}
                 inputVariant="outlined"
                 onChange={handleFechaNacimientoChange}
-                helperText={errors.birthdate}
+                helperText={error.birthdate}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    helperText={errors.birthdate}
-                    error={Boolean(errors.birthdate)}
+                    helperText={error.birthdate}
+                    error={Boolean(error.birthdate)}
                   />
                 )}
               />
             </LocalizationProvider>
-            <TextField
-              name="phone"
+
+            <MuiTelInput
               label="Phone"
-              onChange={handleChange}
-              error={Boolean(errors.phone)}
-              helperText={errors.phone}
+              name="phone"
+              value={form.phone}
+              defaultCountry={"AR"}
+              style={{ width: "30vh" }}
+              onChange={(value) => onChangeHandler("phone", value)}
+              error={error.phone}
+              helperText={error.phone}
             />
             <TextField
               name="location"
               label="Location"
-              onChange={handleChange}
-              error={Boolean(errors.location)}
-              helperText={errors.location}
+              onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+              error={error.location}
+              helperText={error.location}
             />
           </div>
           <Divider />
@@ -334,32 +453,32 @@ const MedicForm = () => {
             <TextField
               name="dni"
               label="D.N.I"
-              onChange={handleChange}
-              error={Boolean(errors.dni)}
-              helperText={errors.dni}
+              onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+              error={error.dni}
+              helperText={error.dni}
             />
             <TextField
               name="license"
               label="License"
-              onChange={handleChange}
-              error={Boolean(errors.license)}
-              helperText={errors.license}
+              onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+              error={error.license}
+              helperText={error.license}
             />
             <TextField
               type="email"
               name="clinicMail"
               label="Clinic mail"
-              onChange={handleChange}
-              error={Boolean(errors.clinicMail)}
-              helperText={errors.clinicMail}
+              onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+              error={error.clinicMail}
+              helperText={error.clinicMail}
             />
           </div>
           <div style={finalinput}>
             <TextField
-              error={errors.image}
+              error={error.image}
               label="Image"
               style={
-                value.image
+                form.image
                   ? { width: "40vh", marginBottom: "1vh" }
                   : { width: "40vh", label: { paddingLeft: "5vw" } }
               }
@@ -367,17 +486,18 @@ const MedicForm = () => {
               name="image"
               value={imageInputValue ? imageInputValue : ""}
               type="file"
+              helperText={error.image}
               InputProps={
-                !value.image
+                !form.image
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }
                   : {
                       endAdornment: (
                         <InputAdornment position="end">
-                          {value.image && (
+                          {form.image && (
                             <IconButton
                               onClick={() => {
-                                setValue(
-                                  { ...value, image: null },
+                                setForm(
+                                  { ...form, image: null },
                                   setImageInputValue("")
                                 );
                               }}
@@ -391,19 +511,45 @@ const MedicForm = () => {
               }
             />
 
-            <TextField
+            {/* <TextField
               name="speciality"
               label="Especialty"
-              onChange={handleChange}
-              error={Boolean(errors.speciality)}
-              helperText={errors.speciality}
-            />
+              onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+              error={Boolean(error.speciality)}
+              helperText={error.speciality}
+            /> */}
+            <select
+              name="speciality"
+              style={{
+                height: "5.7vh",
+                width: "9vw",
+                marginLeft: "1vw",
+                marginRight: "1vw",
+                borderRadius: "0.2vw",
+                borderColor: "grey",
+              }}
+              onChange={(e) => onChangeHandler(e.target.name, e.target.value)}
+            >
+              <option value="">--Speciality--</option>
+              <option value="Cardiology">Cardiology</option>
+              <option value="Gynecology">Gynecology</option>
+              <option value="Neurology">Neurology</option>
+              <option value="Oncology">Oncology</option>
+              <option value="Psychiatry">Psychiatry</option>
+              <option value="Dermatology">Dermatology</option>
+              <option value="Ophthalmology">Ophthalmology</option>
+              <option value="Urology">Urology</option>
+              <option value="Endocrinology">Endocrinology</option>
+              <option value="Gastroenterology">Gastroenterology</option>
+              <option value="General">General</option>
+              <option value="Deportologist">Deportologist</option>
+            </select>
 
             <TextField
-              error={errors.cv}
+              error={error.cv}
               label="CV"
               style={
-                value.image
+                form.cv
                   ? { width: "40vh", marginBottom: "1vh" }
                   : { width: "40vh", label: { paddingLeft: "5vw" } }
               }
@@ -411,17 +557,17 @@ const MedicForm = () => {
               name="cv"
               value={cvInputValue ? cvInputValue : ""}
               type="file"
-              InputProps={
-                !value.cv
+              helperText={error.cv}
+              InputProps={ !form.cv
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }
                   : {
                       endAdornment: (
                         <InputAdornment position="end">
-                          {value.cv && (
+                          {form.cv && (
                             <IconButton
                               onClick={() => {
-                                setValue(
-                                  { ...value, cv: null },
+                                setForm(
+                                  { ...form, cv: null },
                                   setCvInputValue("")
                                 );
                               }}
@@ -440,7 +586,7 @@ const MedicForm = () => {
               variant="contained"
               type="submit"
               value="Send"
-              disabled={!hasChanged}
+              disabled={DisableButton()}
               style={{
                 backgroundColor: "#307196",
                 width: "50%",

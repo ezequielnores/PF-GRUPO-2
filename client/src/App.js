@@ -1,4 +1,5 @@
 import "./App.css";
+import React from "react";
 //components
 import Navbar from "./components/landing/navbar/navBar";
 import Footer from "./components/landing/footer/footer";
@@ -14,35 +15,55 @@ import LoginClient from "./components/LoginClient/LoginClient";
 import MedicForm from "./components/medicWorkForm/medicForm";
 import Register from "./components/HomeClient/Register/Register";
 import LoginMedic from "./components/LoginMedic/LoginMedic";
-import LoginAdmin from './components/LoginAdmin/LoginAdmin';
+import LoginAdmin from "./components/LoginAdmin/LoginAdmin";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 import { Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import {
-  Chat,
   HomeClient,
+  /* Chat,
   MedicalHistory,
   MedicalAppointments,
   MyShifts,
   Profile,
   Reviews,
   Urgency,
-  HomeView,
+  HomeView, */
 } from "./components/HomeClient/index";
 import { HomeMedic } from "./components/HomeMedic/index";
 import HomeAdmin from "./components/DashboardAdmin/Home";
+import ErrorPage from "./components/ErrorPage/ErrorPage";
+import Review from "./components/ChatBot/Review";
+import { auth } from "./authentication/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const location = useLocation();
 
+  const [isLogged, setIsLogged] = React.useState(null);
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      if (isLogged === false || isLogged === null) setIsLogged((prev) => true);
+    } else {
+      if (isLogged === true || isLogged === null) setIsLogged((prev) => false);
+    }
+  });
+
   return (
     <div className="App">
       {location.pathname.startsWith("/HomeClient") ? (
-        <HomeClient />
+        <HomeClient isLogged={isLogged} />
       ) : location.pathname.startsWith("/HomeMedic") ? (
-        <HomeMedic />
+        <HomeMedic isLogged={isLogged} />
       ) : location.pathname.startsWith("/HomeAdmin") ? (
-        <HomeAdmin />
+        <HomeAdmin isLogged={isLogged}  />
+      ) : location.pathname.startsWith("/loginAdmin") ? (
+        <LoginAdmin isLogged={isLogged}  />
+      ) : location.pathname.startsWith("/resetPassword") ? (
+        <ResetPassword />
       ) : (
+
         <>
           <Navbar />
           <Routes>
@@ -60,8 +81,13 @@ function App() {
             <Route path="/loginMedic" element={<LoginMedic />} />
 
             <Route path="/register" element={<Register />}/>
-            <Route path="/loginAdmin" element={<LoginAdmin />}/>
+            {/* <Route path="/loginAdmin" element={<LoginAdmin />}/> */}
+            <Route path="/resetPassword" element={<ResetPassword/>}/>
+            <Route path='*' element={<ErrorPage/>} />
+            <Route path="/totalReviews" element={<Review/>} />
 
+
+            <Route path="/totalReviews" element={<Review />} />
           </Routes>
           <Footer />
         </>

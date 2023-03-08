@@ -43,7 +43,6 @@ export const patientRegister = createAsyncThunk(
       .catch((err) => {
         throw new Error("Failed");
       });
-    console.log(response);
     return response.data;
   }
 );
@@ -61,6 +60,21 @@ export const patientUpdate = createAsyncThunk(
     const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/patient/edit/${id}`,
       data
+    );
+    return response.data;
+  }
+);
+
+export const patientUpdatePassword = createAsyncThunk("patient/changePassword", async (id, password) => {
+  const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/patient/changePassword/${id}`, password);
+  return response.data;
+})
+
+export const setMakeDisableAdmin = createAsyncThunk(
+  "patient/editById",
+  async (id) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/patient/setMakeDisableAdmin/${id}`
     );
     return response.data;
   }
@@ -142,6 +156,17 @@ const patientSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
+      .addCase(setMakeDisableAdmin.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(setMakeDisableAdmin.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.detail = action.payload;
+      })
+      .addCase(setMakeDisableAdmin.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
   },
 });
 

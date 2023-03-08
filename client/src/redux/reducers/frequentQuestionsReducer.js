@@ -23,7 +23,7 @@ export const getFrequentAskById = createAsyncThunk(
 );
 
 export const getFrequentAskByAsk = createAsyncThunk(
-  "frequentQuestions/getDetail",
+  "frequentQuestions/getDetailByAsk",
   async (data) => {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/frequentQuestions?ask=${data}`
@@ -44,10 +44,9 @@ export const getAllFrequentQuestions = createAsyncThunk(
 
 export const updateFrequentAskById = createAsyncThunk(
   "frequentQuestions/update",
-  async (id, data) => {
+  async ({ id, ask, answer }) => {
     const response = await axios.put(
-      `${process.env.REACT_APP_BACKEND_URL}/frequentQuestions/update/${id}`,
-      data
+      `${process.env.REACT_APP_BACKEND_URL}/frequentQuestions/update/${id}?ask=${ask}&answer=${answer}`
     );
     return response.data;
   }
@@ -112,7 +111,7 @@ const frequentQuestionsSlice = createSlice({
         })
         .addCase(getFrequentAskByAsk.fulfilled, (state, action) => {
             state.status = "succeeded";
-            state.detail = action.payload;
+            state.list = action.payload;
         })
         .addCase(getFrequentAskByAsk.rejected, (state, action) => {
             state.status = "failed";

@@ -7,7 +7,8 @@ import commentsReducer from "./reducers/commentsReducer";
 import attendReducer from "./reducers/attendReducer";
 import urgencyReducer from "./reducers/urgencyReducer";
 import adminReducer from "./reducers/adminReducer";
-import plansSlice from "./reducers/plansReducer"
+import plansSlice from "./reducers/plansReducer";
+import frequentQuestionsReducer from "./reducers/frequentQuestionsReducer";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     urgency: urgencyReducer,
     admin: adminReducer,
     plans:plansSlice,
+    frequentQuestions: frequentQuestionsReducer,
   },
 });
 

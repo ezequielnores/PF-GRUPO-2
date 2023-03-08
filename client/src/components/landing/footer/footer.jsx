@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import CopyrightIcon from "@mui/icons-material/Copyright";
 import Logo from "../../../assets/logoiCare.png";
+import { Link } from "react-router-dom";
 const footer = {
   backgroundColor: "#F0F8FF",
   width: "100%",
@@ -35,26 +36,31 @@ const butonGroup = {
 };
 const logo = {
   height: "7vh",
-  width: "3.3vw"
-}
+  width: "3.3vw",
+};
 
 const Navbar = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static">
         <Toolbar style={footer}>
           <Box style={divtext}>
-            <CopyrightIcon style={{ color: "black", marginRight: "0.8vw" }} />
-          <img src={Logo} style={logo} alt="" />
-          <Typography variant="h5" color="black">iCare</Typography>
+            <CopyrightIcon
+              style={{
+                color: "black",
+                marginLeft: "4rem",
+              }}
+            />
+            <img src={Logo} style={logo} alt="" />
+            <Typography variant="h5" color="black">
+              iCare
+            </Typography>
             <Typography
               variant="body1"
               color="text.secondary"
               align="justify"
               style={{ fontWeight: "semibold" }}
-            >
-              
-            </Typography>
+            ></Typography>
           </Box>
           <Box style={butonGroup}>
             <Typography variant="subtitle2" color="black" align="center">
@@ -62,13 +68,19 @@ const Navbar = () => {
             </Typography>
             <ButtonGroup>
               <IconButton>
-                <FacebookRoundedIcon />
+                <Link to="https://es-la.facebook.com/">
+                  <FacebookRoundedIcon color="primary" />
+                </Link>
               </IconButton>
               <IconButton>
-                <LinkedInIcon />
+                <Link to="https://www.linkedin.com/">
+                  <LinkedInIcon />
+                </Link>
               </IconButton>
               <IconButton>
-                <YouTubeIcon />
+                <Link to="https://www.youtube.com/">
+                  <YouTubeIcon color="error" />
+                </Link>
               </IconButton>
             </ButtonGroup>
           </Box>

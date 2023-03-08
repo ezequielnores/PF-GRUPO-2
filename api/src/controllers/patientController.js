@@ -35,9 +35,21 @@ const getPatientInactive = async () => {
   return filterPatient;
 };
 
+const setMakeDisableAdmin = async id => {
+  const patient = await Patient.findByPk(id);
+  await Patient.update({ admin: !patient.admin }, { where: { id: id } });
+  return patient;
+};
+
+const changePassword = async (id, password) => {
+  return await Patient.update({password: password}, {where: {id: id}});
+}
+
 module.exports = {
   getPatient,
   getPatientActive,
   getPatientInactive,
   getPatientByMail,
+  setMakeDisableAdmin,
+  changePassword,
 };

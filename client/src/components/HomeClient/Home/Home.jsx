@@ -4,8 +4,9 @@ import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import logoICare from "../../../assets/logoiCare.png";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import Loading from "../../Loader/Loader";
 import {
   Faq,
   MedicalHistory,
@@ -17,15 +18,19 @@ import {
   HomeView,
   ProfileUpdate,
   Suscriptions,
-  History
+  History,
+  ChatHome,
+  TestCovid,
 } from "../index";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { patientGetDetail } from "../../../redux/reducers/patientReducer";
 
 import Register from "../Register/Register.jsx";
+import ErrorPage from "../../ErrorPage/ErrorPage";
 
-const Home = () => {
+const Home = ({ isLogged }) => {
+
   const dispatch = useDispatch();
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -39,34 +44,43 @@ const Home = () => {
   const handleOpen = () => {
     setOpen(!open);
   };
-  return (
-    <div style={{ position: "relative" }}>
+
+  if(isLogged === null){
+    return (
+     <Loading />
+    )
+  }
+
+  if (isLogged === false) {
+    return <Navigate to="/loginClient" />;
+  }
+
+  if (isLogged === true) {
+    return (
       <div
         style={{
-          width: "100vw",
-          position: "absolute",
-          display: "flex",
-          justifyContent: "space-between",
+          height: "100vh",
+          backgroundColor: "white",
         }}
       >
-        <div
+        <img
           style={{
-            width: open ? "15vw" : "10vw",
-            display: "flex",
-            justifyContent: "center",
+            width: "4.3vw",
+            position: "absolute",
+            top: "0.5rem",
+            left: "4.3rem",
           }}
-        >
-          <img
-            style={{ width: "4.3vw", marginTop: "0.3vw" }}
-            src={logoICare}
-            alt=""
-          />
-        </div>
+          src={logoICare}
+          alt=""
+        />
         <Stack
           style={{
+            position: "absolute",
+            top: "0",
+            right: "0",
             height: "5rem",
-            width: open ? "85vw" : "90vw",
-            background: "rgba(64, 184,200)",
+            width: "85vw",
+            background: "#43B8C8",
             display: "flex",
             justifyContent: "flex-end",
             padding: "1rem 2rem",
@@ -83,19 +97,25 @@ const Home = () => {
             }}
           >
             <p
-              style={{ margin: "0", fontWeight: "bolder", fontSize: "1.1rem" }}
+              style={{
+                margin: "0",
+                fontWeight: "bolder",
+                fontSize: "1.1rem",
+              }}
             >
               {patient?.name + " " + patient?.surname}
             </p>
             <p
               style={{
                 margin: "0",
-                fontSize: "0.9rem",
+                fontSize: "1rem",
                 fontWeight: "500",
-                color: "gray",
+                color: "#2d4059",
               }}
             >
-              {patient?.PatientPlan?.name ? patient?.PatientPlan?.name : "Without plan"}
+              {patient?.PatientPlan?.name
+                ? patient?.PatientPlan?.name
+                : "Without plan"}
             </p>
           </div>
 
@@ -106,38 +126,58 @@ const Home = () => {
             />
           </Avatar>
         </Stack>
+
+        <SideBar open={open} handleOpen={handleOpen} path={location.pathname} />
+
+        <div
+          style={{
+            position: "absolute",
+            top: "6rem",
+            width: "85vw",
+            right: "0",
+          }}
+        >
+          {(location.pathname.endsWith("/HomeClient") && <HomeView />) ||
+            (location.pathname.endsWith("/HomeClient/Profile") && (
+              <Profile />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Profile/Edit") && (
+              <ProfileUpdate />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/MyAppointments") && (
+              <MyAppointments />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Urgency") && (
+              <Urgency />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/MedicalAppointments") && (
+              <MedicalAppointments />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/MedicalHistory") && (
+              <MedicalHistory />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Reviews") && (
+              <Reviews />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Faq") && <Faq />) ||
+            // (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
+            (location.pathname.endsWith("/HomeClient/Register") && (
+              <Register />
+            )) ||
+            (location.pathname.endsWith("/HomeClient/Suscriptions") && (
+              <Suscriptions />
+            )) ||
+            // (location.pathname.endsWith("/HomeClient/TestCovid") && (
+            //   <TestCovid />
+            // )) ||
+            (location.pathname.endsWith("/HomeClient/Suscriptions/history") && (
+              <History />
+            )) || <ErrorPage />}
+        </div>
       </div>
-      <SideBar open={open} handleOpen={handleOpen} path={location.pathname} />
-      <div
-        style={{
-          position: "absolute",
-          top: "6rem",
-          width: open ? "85vw" : "95vw",
-          right: "0",
-        }}
-      >
-        {location.pathname.endsWith("/HomeClient") && <HomeView />}
-        {location.pathname.endsWith("/HomeClient/Profile") && <Profile />}
-        {location.pathname.endsWith("/HomeClient/Profile/Edit") && (
-          <ProfileUpdate />
-        )}
-        {location.pathname.endsWith("/HomeClient/MyAppointments") && (
-          <MyAppointments />
-        )}
-        {location.pathname.endsWith("/HomeClient/Urgency") && <Urgency />}
-        {location.pathname.endsWith("/HomeClient/MedicalAppointments") && (
-          <MedicalAppointments />
-        )}
-        {location.pathname.endsWith("/HomeClient/MedicalHistory") && (
-          <MedicalHistory />
-        )}
-        {location.pathname.endsWith("/HomeClient/Reviews") && <Reviews />}
-        {location.pathname.endsWith("/HomeClient/Faq") && <Faq />}
-        {location.pathname.endsWith("/HomeClient/Register") && <Register />}
-        {location.pathname.endsWith("/HomeClient/Suscriptions") && <Suscriptions />}
-        {location.pathname.endsWith("/HomeClient/Suscriptions/history") && <History/>}
-      </div>
-    </div>
-  );
+    );
+  }
+
+  
 };
 export default Home;
