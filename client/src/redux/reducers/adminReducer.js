@@ -39,7 +39,6 @@ export const adminRegister = createAsyncThunk(
       .catch((err) => {
         throw new Error("Failed");
       });
-    console.log(response);
     return response.data;
   }
 );

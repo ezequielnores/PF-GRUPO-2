@@ -29,14 +29,14 @@ const Rows = ({ appointment,setDeleteAppointment,deleteAppointment }) => {
                 
                 axios.delete(`${process.env.REACT_APP_BACKEND_URL}/turns/delete/${appointment.id}`)
                 .then(res => {
-                    console.log(res);
+ 
                     swal("Appointment deleted!", {
                         icon: "success",
                     });
                     setDeleteAppointment(!deleteAppointment)
                 })
                 .catch(err => {
-                    console.log(err);
+ 
                 })
             } 
             });

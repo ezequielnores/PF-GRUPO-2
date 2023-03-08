@@ -128,7 +128,7 @@ const FormLoginClient = () => {
         info.password
       );
       const user = userCredential.user;
-      console.log("usuario logeado: " + user.email);
+ 
 
       //Aca lo que hay que hacer es que firebase se ocupe de el logueo del usuario y no se haga una corroboracion con la db. Lo unico que se deberia hacer con la db es que mediante
       //un atributo como el uid brindado por firebase al registrarse, se guarde en un atributo de la db para que en este momento de logueo se encuentre al usuario mediante ese uid.
@@ -144,7 +144,7 @@ const FormLoginClient = () => {
             patientUpdatePassword(authenticatedPatient.id, info.password)
           );
         }
-        console.log(authenticatedPatient);
+ 
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);
         await navigate("/HomeClient/Profile");
@@ -155,7 +155,7 @@ const FormLoginClient = () => {
         });
       }
     } catch (error) {
-      console.log({ Error: error.message });
+ 
       setAlertSeverity("error");
       setAlertMessage(`Error: ${error.message}`);
       setShowAlert(true);
@@ -170,8 +170,7 @@ const FormLoginClient = () => {
       const found = pacientes.find((paciente) => {
         return paciente.mail === auth.currentUser.email;
       });
-      console.log(found);
-      console.log(auth.currentUser);
+ 
       if (!found) {
         await auth.currentUser.delete();
         // alert("The user doesnt exists in the app");
@@ -184,7 +183,7 @@ const FormLoginClient = () => {
         navigate("/HomeClient/Profile", { state: { id } });
       }
     } catch (error) {
-      console.log(error.message);
+ 
       // alert(`Error: ${error.message}`);
       setAlertSeverity("error");
       setAlertMessage(`Error: ${error.message}`);

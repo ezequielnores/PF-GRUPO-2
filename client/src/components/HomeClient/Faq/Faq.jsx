@@ -30,7 +30,7 @@ const Faq = () => {
       .then((res) => {
         setAllFaq(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Faq = () => {
       .then((res) => {
         setFaq(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   };
   useEffect(() => {
     if (search === "") {

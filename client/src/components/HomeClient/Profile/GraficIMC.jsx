@@ -21,8 +21,7 @@ const GraficIMC = () => {
   const altura2 = altura / 100;
 
   const IMC = Math.floor(peso / Math.pow(altura2, 2));
-
-  console.log(IMC);
+ 
 
   const data = [
     { name: "IMC", YourIMC: IMC, Low: 18, Normal: 22, High: 28, Obesity: 35 },

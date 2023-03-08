@@ -49,12 +49,8 @@
   cursor: pointer;
 }
 .symptomsAndUpload {
-  display: flex;
-  flex-direction: column;
   width: 48%;
-  height: 40vh;
-  align-items: flex-start;
-  justify-content: space-between;
+  height: 100%;
 }
 .symtoms {
   display: flex;
@@ -73,6 +69,8 @@
   flex-direction: column;
   gap: 2vh;
   align-items: flex-start;
+  height: 100%;
+  box-sizing: border-box;
 }
 .titleDiv {
   display: flex;
