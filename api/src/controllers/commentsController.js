@@ -1,4 +1,4 @@
-const { Comments, Patient, Doctor, Report } = require('../db.js');
+const { Comments, Patient, Doctor } = require('../db.js');
 const axios = require("axios");
 const BadWords = require("bad-words");
 
