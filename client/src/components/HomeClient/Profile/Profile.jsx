@@ -55,204 +55,408 @@ const Profile = () => {
   }, []);
 
   return (
+    // <Grid
+    //   container
+    //   spacing={2}
+    //   style={{
+    //     marginLeft: "4px",
+    //     display: "flex",
+    //     flexDirection: "column",
+    //     width: "100%",
+    //     height: "100%",
+    //   }}
+    // >
+    //   <Typography
+    //     variant="button"
+    //     fontSize="2.5rem"
+    //     color="#307196"
+    //     fontWeight="bold"
+    //     style={test}
+    //   >
+    //     Personal information
+    //   </Typography>
+    //   <div
+    //     style={{
+    //       display: "flex",
+    //       flexDirection: "row",
+    //       gap: "10px",
+    //       width: "100%",
+    //     }}
+    //   >
+    //     <Grid item xs={12} md={6}>
+    //       <Paper elevation={3}>
+    //         <Divider />
+    //         <br></br>
+    //         <Stack
+    //           direction="column"
+    //           justifyContent="space-evenly"
+    //           alignItems="flex-start"
+    //           spacing={2}
+    //           sx={{ marginLeft: "20%" }}
+    //         >
+    //           {patientDetail !== null ? (
+    //             <Avatar
+    //               alt="Remy Sharp"
+    //               sx={{ width: 100, height: 100 }}
+    //               src={patientDetail?.photo}
+    //             />
+    //           ) : (
+    //             <Avatar src="/broken-image.jpg" />
+    //           )}
+    //           <Divider />
+
+    //           <div style={{ display: "flex", flexDirection: "row" }}>
+    //             <Item
+    //               sx={{
+    //                 backgroundColor: "#D9D9D9",
+    //                 color: "#307196",
+    //                 fontWeight: "bold",
+    //               }}
+    //             >
+    //               Name:
+    //             </Item>
+    //             <Item sx={{ marginLeft: 3, color: "black" }}>
+    //               {patientDetail?.name}{" "}
+    //             </Item>
+    //           </div>
+    //           <div style={{ display: "flex", flexDirection: "row" }}>
+    //             <Item
+    //               sx={{
+    //                 backgroundColor: "#D9D9D9",
+    //                 color: "#307196",
+    //                 fontWeight: "bold",
+    //               }}
+    //             >
+    //               Surname:
+    //             </Item>
+    //             <Item sx={{ marginLeft: 3, color: "black" }}>
+    //               {patientDetail?.surname}{" "}
+    //             </Item>
+    //           </div>
+
+    //           <div style={{ display: "flex", flexDirection: "row" }}>
+    //             <Item
+    //               sx={{
+    //                 backgroundColor: "#D9D9D9",
+    //                 color: "#307196",
+    //                 fontWeight: "bold",
+    //               }}
+    //             >
+    //               DNI:
+    //             </Item>
+    //             <Item sx={{ marginLeft: 3, color: "black" }}>
+    //               {patientDetail?.dni}{" "}
+    //             </Item>
+    //           </div>
+    //           <div style={{ display: "flex", flexDirection: "row" }}>
+    //             <Item
+    //               sx={{
+    //                 backgroundColor: "#D9D9D9",
+    //                 color: "#307196",
+    //                 fontWeight: "bold",
+    //               }}
+    //             >
+    //               Mail:
+    //             </Item>
+    //             <Item sx={{ marginLeft: 3, color: "black" }}>
+    //               {patientDetail.mail}{" "}
+    //             </Item>
+    //           </div>
+    //           <div style={{ display: "flex", flexDirection: "row" }}>
+    //             <Item
+    //               sx={{
+    //                 backgroundColor: "#D9D9D9",
+    //                 color: "#307196",
+    //                 fontWeight: "bold",
+    //               }}
+    //             >
+    //               Date:
+    //             </Item>
+    //             <Item sx={{ marginLeft: 3, color: "black" }}>
+    //               {patientDetail?.birthday}{" "}
+    //             </Item>
+    //           </div>
+    //           <div style={{ display: "flex", flexDirection: "row" }}>
+    //             <Item
+    //               sx={{
+    //                 backgroundColor: "#D9D9D9",
+    //                 color: "#307196",
+    //                 fontWeight: "bold",
+    //               }}
+    //             >
+    //               Weigth:
+    //             </Item>
+    //             <Item sx={{ marginLeft: 3, color: "black" }}>
+    //               {patientDetail?.weight}{" "}
+    //             </Item>
+    //           </div>
+    //           <div style={{ display: "flex", flexDirection: "row" }}>
+    //             <Item
+    //               sx={{
+    //                 backgroundColor: "#D9D9D9",
+    //                 color: "#307196",
+    //                 fontWeight: "bold",
+    //               }}
+    //             >
+    //               Heigth:
+    //             </Item>
+    //             <Item sx={{ marginLeft: 3, color: "black" }}>
+    //               {patientDetail?.height}{" "}
+    //             </Item>
+    //           </div>
+    //           <div style={{ display: "flex", flexDirection: "row" }}>
+    //             <Item
+    //               sx={{
+    //                 backgroundColor: "#D9D9D9",
+    //                 color: "#307196",
+    //                 fontWeight: "bold",
+    //               }}
+    //             >
+    //               Plan:
+    //             </Item>
+    //             <Item
+    //               sx={{ marginLeft: 3, color: "black", fontWeight: "bold" }}
+    //             >
+    //               {patientDetail?.PatientPlan?.name}{" "}
+    //             </Item>
+    //           </div>
+    //           <br />
+    //         </Stack>
+    //       </Paper>
+    //     </Grid>
+    //     <Grid
+    //       item
+    //       xs={12}
+    //       md={6}
+    //       style={{
+    //         width: "100%",
+    //         marginRight: "1rem",
+    //         // border: "2px solid red",
+    //         display: "flex",
+    //         flexDirection: "column",
+    //         justifyContent: "center",
+    //         alignItems: "center",
+    //       }}
+    //     >
+    //       <Paper
+    //         elevation={3}
+    //         style={{
+    //           display: "flex",
+    //           flexDirection: "column",
+    //           justifyContent: "center",
+    //           alignItems: "center",
+    //           height: "100%",
+    //           width: "100%",
+    //         }}
+    //       >
+    //         <GraficIMC />
+    //       </Paper>
+    //     </Grid>
+    //   </div>
+
+
+
+
+
     <Grid
-      container
-      spacing={2}
+    container
+    spacing={2}
+    style={{
+      marginLeft: "4px",
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      height: "100%",
+    }}
+  >
+    <Typography
+      variant="button"
+      fontSize="2.5rem"
+      color="#307196"
+      fontWeight="bold"
+      style={test}
+    >
+      Personal information
+    </Typography>
+    <div
       style={{
-        marginLeft: "4px",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
+        gap: "10px",
         width: "100%",
-        height: "100%",
       }}
     >
-      <Typography
-        variant="button"
-        fontSize="2.5rem"
-        color="#307196"
-        fontWeight="bold"
-        style={test}
-      >
-        Personal information
-      </Typography>
-      <div
+      <Grid item xs={12} md={6}>
+        <Paper elevation={3}>
+          <Divider />
+          <br></br>
+          <Stack
+            direction="column"
+            justifyContent="space-evenly"
+            alignItems="flex-start"
+            spacing={2}
+            sx={{ marginLeft: "20%" }}
+          >
+            {patientDetail !== null ? (
+              <Avatar
+                alt="Remy Sharp"
+                sx={{ width: 100, height: 100 }}
+                src={patientDetail?.photo}
+              />
+            ) : (
+              <Avatar src="/broken-image.jpg" />
+            )}
+            <Divider />
+
+            <div style={{ display: "flex", flexDirection: "row",alignItems: "center" }}>
+              <Typography
+                sx={{
+                 
+                  color: "#307196",
+                  fontWeight: "bold",
+                }}
+              >
+                Name:
+              </Typography>
+
+              <Typography sx={{ marginLeft: 5.1, color: "black" }}>
+                {patientDetail?.name}{" "}
+              </Typography>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row", marginTop:20,alignItems: "center" }}>
+              <Typography
+                sx={{
+                  
+                  color: "#307196",
+                  fontWeight: "bold",
+                }}
+              >
+                Surname:
+              </Typography>
+              <Typography sx={{ marginLeft: 2.5, color: "black" }}>
+                {patientDetail?.surname}{" "}
+              </Typography>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "row",marginTop:20 }}>
+              <Typography
+                sx={{
+                  
+                  color: "#307196",
+                  fontWeight: "bold",
+                }}
+              >
+                DNI:
+              </Typography>
+              <Typography sx={{ marginLeft: 7.3, color: "black" }}>
+                {patientDetail?.dni}{" "}
+              </Typography>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row",marginTop:20 }}>
+              <Typography
+                sx={{
+                  
+                  color: "#307196",
+                  fontWeight: "bold",
+                }}
+              >
+                Mail:
+              </Typography>
+              <Typography sx={{ marginLeft: 6.5, color: "black" }}>
+                {patientDetail.mail}{" "}
+              </Typography>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row",marginTop:20 }}>
+              <Typography
+                sx={{
+                  
+                  color: "#307196",
+                  fontWeight: "bold",
+                }}
+              >
+                Date:
+              </Typography>
+              <Typography sx={{ marginLeft: 6.3, color: "black" }}>
+                {patientDetail?.birthday}{" "}
+              </Typography>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row",marginTop:20 }}>
+              <Typography
+                sx={{
+                  
+                  color: "#307196",
+                  fontWeight: "bold",
+                }}
+              >
+                Weigth:
+              </Typography>
+              <Typography sx={{ marginLeft: 4.4, color: "black" }}>
+                {patientDetail?.weight}{" "}
+              </Typography>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row",marginTop:20 }}>
+              <Typography
+                sx={{
+                 
+                  color: "#307196",
+                  fontWeight: "bold",
+                }}
+              >
+                Heigth:
+              </Typography>
+              <Typography sx={{ marginLeft: 4.6, color: "black" }}>
+                {patientDetail?.height}{" "}
+              </Typography>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row",marginTop:20 }}>
+              <Typography
+                sx={{
+                  
+                  color: "#307196",
+                  fontWeight: "bold",
+                }}
+              >
+                Plan:
+              </Typography>
+              <Typography
+                sx={{ marginLeft: 6.6, color: "black", fontWeight: "bold" }}
+              >
+                {patientDetail?.PatientPlan?.name}{" "} 
+              </Typography>
+            </div>
+            <br />
+          </Stack>
+        </Paper>
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        md={6}
         style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "10px",
           width: "100%",
+          marginRight: "1rem",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Grid item xs={12} md={6}>
-          <Paper elevation={3}>
-            <Divider />
-            <br></br>
-            <Stack
-              direction="column"
-              justifyContent="space-evenly"
-              alignItems="flex-start"
-              spacing={2}
-              sx={{ marginLeft: "20%" }}
-            >
-              {patientDetail !== null ? (
-                <Avatar
-                  alt="Remy Sharp"
-                  sx={{ width: 100, height: 100 }}
-                  src={patientDetail?.photo}
-                />
-              ) : (
-                <Avatar src="/broken-image.jpg" />
-              )}
-              <Divider />
-
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <Item
-                  sx={{
-                    backgroundColor: "#D9D9D9",
-                    color: "#307196",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Name:
-                </Item>
-                <Item sx={{ marginLeft: 3, color: "black" }}>
-                  {patientDetail?.name}{" "}
-                </Item>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <Item
-                  sx={{
-                    backgroundColor: "#D9D9D9",
-                    color: "#307196",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Surname:
-                </Item>
-                <Item sx={{ marginLeft: 3, color: "black" }}>
-                  {patientDetail?.surname}{" "}
-                </Item>
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <Item
-                  sx={{
-                    backgroundColor: "#D9D9D9",
-                    color: "#307196",
-                    fontWeight: "bold",
-                  }}
-                >
-                  DNI:
-                </Item>
-                <Item sx={{ marginLeft: 3, color: "black" }}>
-                  {patientDetail?.dni}{" "}
-                </Item>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <Item
-                  sx={{
-                    backgroundColor: "#D9D9D9",
-                    color: "#307196",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Mail:
-                </Item>
-                <Item sx={{ marginLeft: 3, color: "black" }}>
-                  {patientDetail.mail}{" "}
-                </Item>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <Item
-                  sx={{
-                    backgroundColor: "#D9D9D9",
-                    color: "#307196",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Date:
-                </Item>
-                <Item sx={{ marginLeft: 3, color: "black" }}>
-                  {patientDetail?.birthday}{" "}
-                </Item>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <Item
-                  sx={{
-                    backgroundColor: "#D9D9D9",
-                    color: "#307196",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Weigth:
-                </Item>
-                <Item sx={{ marginLeft: 3, color: "black" }}>
-                  {patientDetail?.weight}{" "}
-                </Item>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <Item
-                  sx={{
-                    backgroundColor: "#D9D9D9",
-                    color: "#307196",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Heigth:
-                </Item>
-                <Item sx={{ marginLeft: 3, color: "black" }}>
-                  {patientDetail?.height}{" "}
-                </Item>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <Item
-                  sx={{
-                    backgroundColor: "#D9D9D9",
-                    color: "#307196",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Plan:
-                </Item>
-                <Item
-                  sx={{ marginLeft: 3, color: "black", fontWeight: "bold" }}
-                >
-                  {patientDetail?.PatientPlan?.name}{" "}
-                </Item>
-              </div>
-              <br />
-            </Stack>
-          </Paper>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={6}
+        <Paper
+          elevation={3}
           style={{
-            width: "100%",
-            marginRight: "1rem",
-            // border: "2px solid red",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            height: "100%",
+            width: "100%",
           }}
         >
-          <Paper
-            elevation={3}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
-              width: "100%",
-            }}
-          >
-            <GraficIMC />
-          </Paper>
-        </Grid>
-      </div>
+          <GraficIMC/>
+        </Paper>
+      </Grid >
+    </div>
+  
       <Link to="/HomeClient/Profile/Edit">
         <Button
           variant="contained"
