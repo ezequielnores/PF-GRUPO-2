@@ -222,7 +222,7 @@ const MedicForm = () => {
         .get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`)
         .then((r) => r.data);
 
-      if (isValid) {
+      if (isValid === true) {
         setError((prev) => {
           return { ...prev, [name]: "" };
         });
@@ -396,14 +396,19 @@ const MedicForm = () => {
               error={error.mail}
               helperText={error.mail}
             />
+
+
             <TextField
               error={error.password}
               helperText={error.password}
               label="Password"
               onChange={(e) => onChangePassword(e.target.name, e.target.value)}
               name="password"
-              type="password"
+              type= "password"
+            
             />
+
+
           </div>
           <div style={divHijo}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -553,8 +558,7 @@ const MedicForm = () => {
               value={cvInputValue ? cvInputValue : ""}
               type="file"
               helperText={error.cv}
-              InputProps={
-                !form.cv
+              InputProps={ !form.cv
                   ? { inputProps: { style: { paddingLeft: "4vw" } } }
                   : {
                       endAdornment: (
