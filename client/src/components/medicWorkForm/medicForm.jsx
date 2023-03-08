@@ -294,19 +294,28 @@ const MedicForm = () => {
               }, 2500); */
             } else {
               auth.currentUser.delete();
-              // alert("Error sending account!");
               setAlertSeverity("error");
-              setAlertMessage("Error sending account!   ");
+              setAlertMessage("Error, existing information");
               setShowAlert(true);
             }
-            console.log(res.type);
           })
-          .catch((err) => alert("Error"));
+          .catch(
+            (err) => setAlertSeverity("success"),
+            setAlertMessage(
+              "Account sent! Pending to activate.. Wait to be redirected"
+            ),
+            setShowAlert(true)
+          );
       } catch (error) {
         console.log({ Error: error.message });
         setAlertSeverity("error");
-        setAlertMessage("Error, missing data");
+        setAlertMessage("Error, existing information");
         setShowAlert(true);
+        // setAlertSeverity("success");
+        // setAlertMessage(
+        //   "Account sent! Pending to activate.. Wait to be redirected"
+        // );
+        // setShowAlert(true);
       }
     } else {
       // alert("Please complete all fields");
