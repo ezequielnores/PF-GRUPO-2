@@ -130,9 +130,9 @@ const History = () => {
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
         <Card
           style={
-            plan.name === "iCare pro"
+            plan.name === "iCare Full"
               ? cardGold
-              : plan.name === "iCare simple"
+              : plan.name === "iCare Guard"
               ? {}
               : cardBlue
           }
