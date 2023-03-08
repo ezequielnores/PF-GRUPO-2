@@ -185,21 +185,29 @@ const ProfileEdit = () => {
     }
   };
 
+  const test = {
+    color: "#307196",
+    font: "700 3em/1",
+    fontFamily: "tahoma",
+    padding: ".25em 0 .325em",
+    display: "block",
+    margin: "0 auto",
+    textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
+  };
+
   return (
     <div style={padreDiv}>
       <Typography
-        variant="h2"
-        gutterBottom
-        style={{
-          color: "#147bf4",
-          fontWeight: "bold",
-          fontSize: "2.5rem",
-        }}
+       variant="button"
+       fontSize="2rem"
+       color="#307196"
+       fontWeight="bold"
+       style={test}
       >
         Edit information
       </Typography>
       <Link to="/HomeClient/Profile">
-        <Button underline="hover" color="inherit">
+        <Button underline="hover" sx={{color:"#307196"}}>
           Back
         </Button>
       </Link>
@@ -374,6 +382,7 @@ const ProfileEdit = () => {
         variant="contained"
         onClick={(e) => handleSubmit(e)}
         disabled={!hasChanged}
+        sx={{backgroundColor:"#307196"}}
       >
         Update information
       </Button>
