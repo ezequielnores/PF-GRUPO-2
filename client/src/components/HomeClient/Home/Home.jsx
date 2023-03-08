@@ -29,7 +29,7 @@ import Register from "../Register/Register.jsx";
 import ErrorPage from "../../ErrorPage/ErrorPage";
 
 const Home = ({ isLogged }) => {
-  isLogged = true;
+
   const dispatch = useDispatch();
   useEffect(() => {
     const patientId = localStorage.getItem("id");
@@ -44,6 +44,11 @@ const Home = ({ isLogged }) => {
     setOpen(!open);
   };
 
+  if(isLogged === null){
+    return (
+      <h1>Loading...</h1>
+    )
+  }
   if (isLogged === true) {
     return (
       <div
