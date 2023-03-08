@@ -32,6 +32,7 @@ const container = {
   alignItems: "center",
   width: "100%",
   height: "100vh",
+  backgroundColor: "white",
 };
 const gridContainer = {
   display: "flex",
@@ -209,20 +210,23 @@ const ManagePlans = () => {
         </Alert>
       </Snackbar>
       <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          textAlign: "center",
-          alignItems: "center",
-        }}
+        style={
+          {
+            // display: "flex",
+            // flexDirection: "row",
+            // // justifyContent: "center",
+            // // alignContent: "center",
+          }
+        }
       >
         <Typography
           variant="h4"
+          fontWeight="bold"
+          color="#307196"
           style={{
-            marginTop: "2rem",
-            marginBottom: "2rem",
-            marginLeft: "5rem",
+            marginTop: "1rem",
+            marginBottom: "1rem",
+            // textAlign: "center",
           }}
         >
           PLANS
@@ -235,7 +239,7 @@ const ManagePlans = () => {
         </Button>
       </div>
 
-      <Grid container style={gridContainer} gap={4}>
+      <Grid container style={gridContainer} gap={5}>
         {dataPlans.map((plan, index) => (
           <>
             <Grid key={plan.id}>

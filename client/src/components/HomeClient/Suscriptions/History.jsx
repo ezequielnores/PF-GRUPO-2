@@ -9,16 +9,17 @@ const root = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  paddingTop: "4px",
   paddingBottom: "4px",
-  backgroundColor: "#f5f5f5",
   padding: 10,
 };
-const title = {
-  marginBottom: "2px",
-  fontWeight: "bold",
-  color: "#333333",
-  textAlign: "center",
+const test = {
+  color: "#307196",
+  font: "700 3em/1",
+  fontFamily: "tahoma",
+  padding: ".25em 0 .325em",
+  display: "block",
+  margin: "0 auto",
+  textShadow: "0 0.36px 8.896px #d4c7b3,0 -2px 1px #fff",
 };
 const cardContainer = {
   marginTop: "4px",
@@ -125,7 +126,6 @@ const History = () => {
   );
 
   const renderPlanCard = (plan) => {
- 
     return (
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
         <Card
@@ -178,10 +178,11 @@ const History = () => {
   return (
     <div style={root}>
       <Typography
-        variant="h4"
-        component="h1"
-        style={title}
-        sx={{ fontSize: 50 }}
+        variant="button"
+        fontSize="2.5rem"
+        color="#307196"
+        fontWeight="bold"
+        style={test}
       >
         Current plan
       </Typography>
@@ -192,16 +193,16 @@ const History = () => {
           ) : (
             <div>
               <br />
-              <h3>
+              <Typography variant="h6">
                 You do not have a plan associated with your account, please go
                 back and associate with one
-              </h3>
+              </Typography>
               <Button
                 variant="contained"
                 color="primary"
                 component={Link}
                 to="/HomeClient/Suscriptions"
-                sx={{ marginLeft: 100 }}
+                sx={{ backgroundColor: "#307196", marginTop: "1rem" }}
               >
                 Back
               </Button>
