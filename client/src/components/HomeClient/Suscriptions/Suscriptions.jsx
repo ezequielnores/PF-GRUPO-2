@@ -24,10 +24,11 @@ const test = {
 };
 const styles = {
   root: {
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height: "45.5rem",
+    height: "70rem",
   },
   title: {
     fontWeight: "bold",
@@ -39,12 +40,10 @@ const styles = {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
-    width:1000,
+    width: 1000,
     height: 1500,
   },
   card: {
-    
-    
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -53,7 +52,6 @@ const styles = {
     overflow: "hidden",
     backgroundColor: "#ffffff",
     margin: "1px",
-    
   },
   cardContent: {
     display: "flex",
@@ -61,7 +59,6 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     flexGrow: 1,
-    
     padding: "15px",
   },
   cardActions: {
@@ -105,18 +102,15 @@ const styles = {
   cardGold: {
     border: "1px solid #ffd700",
     backgroundColor: "#fffacd",
-
   },
   cardBlue: {
     border: "1px solid #1976d2",
     backgroundColor: "#f0f8ff",
-    height:378
-
+    height: 378,
   },
   cardSimple: {
     border: "1px solid black",
-    height:378
-
+    height: 378,
   },
 };
 
@@ -134,8 +128,6 @@ const Subscriptions = () => {
   const filteredPlans = plans.filter(
     (plan) => plan.name !== patientDetail.PatientPlan?.name
   );
-
- 
 
   const handleBuyPlan = (plan) => {
     axios
@@ -156,14 +148,12 @@ const Subscriptions = () => {
     return (
       <Grid item xs={12} sm={6} md={4} key={plan.id}>
         <Card
-        
           style={
             plan.name === "iCare Full"
               ? styles.cardGold
               : plan.name === "iCare Guard"
               ? styles.cardBlue
               : styles.cardSimple
-            
           }
         >
           <CardContent style={styles.cardContent}>
@@ -200,7 +190,7 @@ const Subscriptions = () => {
   };
 
   return (
-    <div style={styles.root} > 
+    <div style={styles.root}>
       <Typography
         variant="button"
         fontSize="2.5rem"
@@ -225,18 +215,18 @@ const Subscriptions = () => {
             : plans.map(renderPlanCard)}
         </Grid>
       </div>
-      <div style={{ marginTop: "10%" }}>
+      <div style={{ marginTop: "4%" }}>
         <Button
           variant="contained"
           color="primary"
           component={Link}
           to="/HomeClient/Suscriptions/history"
-          sx={{ backgroundColor: "#307196" }}
+          sx={{ backgroundColor: "#307196", marginBottom: "1rem" }}
         >
           Current plan
         </Button>
       </div>
-      <br></br>
+      {/* <br></br> */}
     </div>
   );
 };

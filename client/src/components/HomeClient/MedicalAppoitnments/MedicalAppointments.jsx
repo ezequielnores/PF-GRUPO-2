@@ -81,7 +81,6 @@ const MedicalAppointments = () => {
     dispatch(docrtorGetAll());
   }, []);
 
-
   const handleSelectType = (e) => {
     setSelectedType(e.target.value);
   };
@@ -132,12 +131,10 @@ const MedicalAppointments = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
- 
     // if (!patientDetail.PatientPlan) {
     //   await swal("Sorry, you must purchase a plan to book an appointment.");
     //   return;
     // }
-
 
     if (!patientDetail.PatientPlan) {
       await swal({
@@ -156,8 +153,6 @@ const MedicalAppointments = () => {
       });
       return;
     }
-    
-
 
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}/turns/turnByDateAndHourAndDoctor`,
@@ -182,8 +177,7 @@ const MedicalAppointments = () => {
           attended,
         })
       );
-      setModalAbierto(true)
-       
+      setModalAbierto(true);
     } else {
       setModalReserved(true);
       // alert("Sorry, the appointment is already reserved");
@@ -195,13 +189,13 @@ const MedicalAppointments = () => {
   };
   const closeModal = () => {
     setModalAbierto(false);
-    resetForm()
+    resetForm();
   };
-
+  const filterActive = doctors.filter((doctor) => doctor.active === true);
   const filterClinicMail =
     type === "Face-to-face"
-      ? doctors.filter((doctor) => doctor.clinicMail === "")
-      : doctors.filter((doctor) => doctor.clinicMail !== "");
+      ? filterActive.filter((doctor) => doctor.clinicMail === "")
+      : filterActive.filter((doctor) => doctor.clinicMail !== "");
 
   const filterSpeciality = filterClinicMail
     .map((doctor) => doctor.speciality)

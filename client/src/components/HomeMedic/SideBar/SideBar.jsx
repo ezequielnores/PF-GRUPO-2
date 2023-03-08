@@ -37,12 +37,13 @@ const SideBar = ({ open, handleOpen, path }) => {
   const isActive = useSelector((state) => state.doctor.detail.active);
 
   return (
-    <div>
+    <div style={{ backgroundColor: "white" }}>
       <div
         style={{
-          position: "fixed",
+          height: "100%",
+          position: "relative",
           left: "0",
-          top: "9rem",
+          top: "10rem",
         }}
       >
         <Stack spacing={2}>
