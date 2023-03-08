@@ -3,7 +3,7 @@ const axios = require("axios");
 const router = Router();
 const { PatientPlan, Patient, Plans } = require("../db");
 const { mercadopago } = require("../utils/mercadoPago");
-const {PASS_MAIL} = process.env;
+const { PASS_MAIL } = process.env;
 
 router.post("/producto", async (req, res) => {
   const prod = req.body;
@@ -112,27 +112,27 @@ router.post("/notificate", async (req, res) => {
     //   await patient.save();
     // }
 
-//Enviar correo electrónico al cliente con los detalles de la compra
-const nodemailer = require('nodemailer');
+    //Enviar correo electrónico al cliente con los detalles de la compra
+    const nodemailer = require("nodemailer");
 
-// Configurar el transporter con los detalles de autenticación de tu proveedor de correo electrónico
-const transporter = nodemailer.createTransport({
-  port:465,
-  host:'smtp.gmail.com',
-  secure:true,
-  auth: {
-    user: 'icareh7@gmail.com',
-    pass: PASS_MAIL,
-  }
-});
+    // Configurar el transporter con los detalles de autenticación de tu proveedor de correo electrónico
+    const transporter = nodemailer.createTransport({
+      port: 465,
+      host: "smtp.gmail.com",
+      secure: true,
+      auth: {
+        user: "icareh7@gmail.com",
+        pass: "xftqhjpgblkmnfno",
+      },
+    });
 
-// Obtener el correo electrónico del cliente
-const patient = await Patient.findByPk(patientId);
-const email = patient.mail;
-console.log(email)
+    // Obtener el correo electrónico del cliente
+    const patient = await Patient.findByPk(patientId);
+    const email = patient.mail;
+    console.log(email);
 
-// Construir el mensaje HTML con los detalles de la compra
-const htmlMessage = `<div style="border: 2px solid #ccc; padding: 20px;">
+    // Construir el mensaje HTML con los detalles de la compra
+    const htmlMessage = `<div style="border: 2px solid #ccc; padding: 20px;">
 <h2 style="color: blue;">Thank you for your purchase on our site. Here are the details of your transaction:</h2>
 <ul>
   <li>ID payment: ${paymentId}</li>
@@ -141,34 +141,27 @@ const htmlMessage = `<div style="border: 2px solid #ccc; padding: 20px;">
   <li>Plan duration: ${plan.durationMonths} meses</li>
 </ul>
 <h5>iCare</h5>
-</div>`
+</div>`;
 
-
-// Enviar el correo electrónico al cliente
-transporter.sendMail({
-  from: 'icarehenrypf@gmail.com',
-  to: email,
-  subject: 'Detalles de la compra en MercadoPago',
-  html: htmlMessage
-}, function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Correo electrónico enviado: ' + info.response);
+    // Enviar el correo electrónico al cliente
+    transporter.sendMail(
+      {
+        from: "icarehenrypf@gmail.com",
+        to: email,
+        subject: "Detalles de la compra en MercadoPago",
+        html: htmlMessage,
+      },
+      function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Correo electrónico enviado: " + info.response);
+        }
+      }
+    );
   }
-});
-
-
-
-
-  }
-  
 
   res.sendStatus(200);
 });
 
 module.exports = router;
-
-
-
-

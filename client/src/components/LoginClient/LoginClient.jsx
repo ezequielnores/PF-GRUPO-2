@@ -109,7 +109,7 @@ const FormLoginClient = () => {
         console.log(authenticatedPatient);
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);
-        // navigate("/HomeClient/Profile", { state: { id } });
+        await navigate("/HomeClient/Profile");
       } else {
         setSuccessLogin("error");
       }
@@ -117,7 +117,7 @@ const FormLoginClient = () => {
       console.log({ Error: error.message });
     }
   };
-
+  // , { state: { id } }
   //SUBMIT WITH GOOGLE
   const handleLoginWithGoogle = async (e) => {
     e.preventDefault();

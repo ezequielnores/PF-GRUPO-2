@@ -81,9 +81,9 @@ const SideBar = ({ open, handleOpen, path }) => {
                 {open ? (
                   <div className={style.divbutton}>
                     {path.endsWith("/HomeClient") ? (
-                        <HomeIcon  />
+                      <HomeIcon />
                     ) : (
-                        <HomeIcon style={{ color: "#c2c1c1" }} />
+                      <HomeIcon style={{ color: "#c2c1c1" }} />
                     )}
                     <p>Home</p>
                   </div>
@@ -94,7 +94,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
-            <button className={style.buttonBar}>
+            {/* <button className={style.buttonBar}>
               <Link to="/HomeClient/Chat">
                 {open ? (
                   <div className={style.divbutton}>
@@ -113,7 +113,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                   <ChatIcon style={{ color: "#c2c1c1" }}  />
                 )}
               </Link>
-            </button>
+            </button> */}
             <button className={style.buttonBar}>
               <Link to="/HomeClient/Profile">
                 {open ? (
@@ -258,7 +258,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                 )}
               </Link>
             </button>
-            <button className={style.buttonBar}>
+            {/* <button className={style.buttonBar}>
               <Link to="/HomeClient/TestCovid">
                 {open ? (
                   <div className={style.divbutton}>
@@ -275,7 +275,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                   <CoronavirusIcon style={{ color: "#c2c1c1" }} />
                 )}
               </Link>
-            </button>
+            </button> */}
           </Stack>
           <button
             type="button"
