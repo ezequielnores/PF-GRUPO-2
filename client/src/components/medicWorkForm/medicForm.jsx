@@ -279,9 +279,7 @@ const MedicForm = () => {
               //create empty user chats on firestore
               await setDoc(doc(db, "userChats", userCredential.user.uid), {});
               setAlertSeverity("success");
-              setAlertMessage(
-                "Account sent! Pending to activate.. Wait to be redirected"
-              );
+              setAlertMessage("Account sent! Pending to activate.");
               setShowAlert(true);
               const authenticatedDoctor = doctors.find((doctor) => {
                 return doctor.mail === auth.currentUser.email;

@@ -109,7 +109,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                 </Link>
               </button>
             )}
-            {isActive && (
+            {/* {isActive && (
               <button
                 style={{ border: "none", backgroundColor: "transparent" }}
               >
@@ -130,7 +130,7 @@ const SideBar = ({ open, handleOpen, path }) => {
                   )}
                 </Link>
               </button>
-            )}
+            )} */}
 
             {isActive && (
               <button

@@ -115,7 +115,7 @@ const FormLoginClient = () => {
       ...info,
       [name]: value,
     });
-    validateForm({ ...info, [name]: value}, name);
+    validateForm({ ...info, [name]: value }, name);
   };
 
   //SUBMIT
@@ -128,7 +128,6 @@ const FormLoginClient = () => {
         info.password
       );
       const user = userCredential.user;
- 
 
       //Aca lo que hay que hacer es que firebase se ocupe de el logueo del usuario y no se haga una corroboracion con la db. Lo unico que se deberia hacer con la db es que mediante
       //un atributo como el uid brindado por firebase al registrarse, se guarde en un atributo de la db para que en este momento de logueo se encuentre al usuario mediante ese uid.
@@ -144,7 +143,7 @@ const FormLoginClient = () => {
             patientUpdatePassword(authenticatedPatient.id, info.password)
           );
         }
- 
+
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);
         await navigate("/HomeClient/Profile");
@@ -155,7 +154,6 @@ const FormLoginClient = () => {
         });
       }
     } catch (error) {
- 
       setAlertSeverity("error");
       setAlertMessage(`Error: ${error.message}`);
       setShowAlert(true);
@@ -170,7 +168,7 @@ const FormLoginClient = () => {
       const found = pacientes.find((paciente) => {
         return paciente.mail === auth.currentUser.email;
       });
- 
+
       if (!found) {
         await auth.currentUser.delete();
         // alert("The user doesnt exists in the app");
@@ -183,7 +181,6 @@ const FormLoginClient = () => {
         navigate("/HomeClient/Profile", { state: { id } });
       }
     } catch (error) {
- 
       // alert(`Error: ${error.message}`);
       setAlertSeverity("error");
       setAlertMessage(`Error: ${error.message}`);
@@ -252,12 +249,11 @@ const FormLoginClient = () => {
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             value={info.mail}
           />
-          {error.mail && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Musst be a valid email
-            </Typography>}
+          {error.mail && (
+            <Typography variant="caption" color="error">
+              •Musst be a valid email
+            </Typography>
+          )}
           <label>Password</label>
           <Input
             type="password"
@@ -266,12 +262,12 @@ const FormLoginClient = () => {
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             value={info.password}
           />
-          {error.password && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character
-            </Typography>}
+          {error.password && (
+            <Typography variant="caption" color="error">
+              •Minimum 8 characters •One upper case letter •One loweer case
+              letter •One number •One special character
+            </Typography>
+          )}
           <Button
             variant="contained"
             type="submit"
