@@ -127,7 +127,7 @@ const Agenda = () => {
     };
     setAppointment(dataAppointmen);
     setIdTurn(id);
-    console.log(response.data);
+ 
     dispatch(urgencyEdit({ id, data }));
     setIsUrgencyUpdated(true);
   };
@@ -140,7 +140,7 @@ const Agenda = () => {
   const handlerRefresh = () => {
     dispatch(urgencyGetAll());
   };
-  console.log(sortedUrgencias);
+ 
   const formatDate = (dateStr) => {
     //creo date
     const date = new Date(dateStr);

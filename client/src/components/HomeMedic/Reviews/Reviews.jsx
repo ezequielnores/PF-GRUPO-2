@@ -64,8 +64,6 @@ const Reviews = () => {
   const reviews = useSelector((state) => state.comments.list);
   const doctorIdLocal = localStorage.getItem("idMedic");
   const dispatch = useDispatch();
-  console.log(reviews);
-  console.log(doctorIdLocal);
 
   const [filter, setFilter] = useState("all");
 
@@ -80,8 +78,6 @@ const Reviews = () => {
       return review.rating === parseInt(filter);
     }
   });
-
-  console.log(filteredReviews);
 
   useEffect(() => {
     dispatch(commentsByDoctor(doctorIdLocal));

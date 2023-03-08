@@ -10,8 +10,8 @@ import {
   Slide,
 } from "@mui/material";
 import { useState } from "react";
-import {sendPasswordResetEmail} from "firebase/auth";
-import { auth } from './../../authentication/firebase';
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "./../../authentication/firebase";
 
 function MailSender({ open, setOpen }) {
   const [email, setEmail] = useState("");
@@ -26,10 +26,11 @@ function MailSender({ open, setOpen }) {
 
   const handleSubmit = async () => {
     try {
-      await sendPasswordResetEmail(auth, email, {url: "http://localhost:3001/loginClient"});
+      await sendPasswordResetEmail(auth, email, {
+        url: "http://localhost:3001/loginClient",
+      });
       alert("Mail enviado!");
-    } catch (error) { 
-      console.log(error.message);
+    } catch (error) {
       alert(error.message); //Esto es temporal!
     }
   };

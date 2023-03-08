@@ -25,7 +25,7 @@ const Home = ({ isLogged }) => {
   const dispatch = useDispatch();
   //logic para mostrar render el doc actual logeado
   const dataDoc = useSelector((state) => state.doctor.detail);
-  // console.log(dataDoc);
+ 
 
   const location = useLocation();
   const [open, setOpen] = useState(true);

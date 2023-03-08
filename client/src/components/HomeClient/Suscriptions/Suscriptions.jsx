@@ -131,7 +131,7 @@ const Subscriptions = () => {
     (plan) => plan.name !== patientDetail.PatientPlan?.name
   );
 
-  console.log(filteredPlans);
+ 
 
   const handleBuyPlan = (plan) => {
     axios

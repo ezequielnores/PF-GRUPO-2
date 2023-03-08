@@ -78,7 +78,7 @@ const MedicalAppointments = () => {
   useEffect(() => {
     dispatch(docrtorGetAll());
   }, []);
-  console.log(turnos);
+ 
 
   const handleSelectType = (e) => {
     setSelectedType(e.target.value);
