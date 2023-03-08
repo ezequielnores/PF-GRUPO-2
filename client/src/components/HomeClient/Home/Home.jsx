@@ -160,7 +160,7 @@ const Home = ({ isLogged }) => {
               <Reviews />
             )) ||
             (location.pathname.endsWith("/HomeClient/Faq") && <Faq />) ||
-            // (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
+            (location.pathname.endsWith("/HomeClient/Chat") && <ChatHome />) ||
             (location.pathname.endsWith("/HomeClient/Register") && (
               <Register />
             )) ||

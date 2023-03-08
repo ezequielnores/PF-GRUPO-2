@@ -274,21 +274,27 @@ const MedicForm = () => {
                 photoURL: form.image
                   ? form.image
                   : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg",
+              }).then(async (res) => {
+                //create empty user chats on firestore
+                await setDoc(
+                  doc(db, "userChats", userCredential.user.uid),
+                  {}
+                ).then(() => {
+                  const authenticatedDoctor = doctors.find((doctor) => {
+                    return doctor.mail === auth.currentUser.email;
+                  });
+                  localStorage.setItem("idMedic", authenticatedDoctor.id);
+
+                  navigate("/HomeMedic/Profile");
+                });
               });
 
-              //create empty user chats on firestore
-              await setDoc(doc(db, "userChats", userCredential.user.uid), {});
               setAlertSeverity("success");
               setAlertMessage(
                 "Account sent! Pending to activate.. Wait to be redirected"
               );
               setShowAlert(true);
-              const authenticatedDoctor = doctors.find((doctor) => {
-                return doctor.mail === auth.currentUser.email;
-              });
-              localStorage.setItem("idMedic", authenticatedDoctor.id);
 
-              navigate("/HomeMedic/Profile");
               /*               setTimeout(() => {
                 navigate("/loginMedic");
               }, 2500); */
@@ -307,7 +313,7 @@ const MedicForm = () => {
             setShowAlert(true)
           );
       } catch (error) {
-        console.log({ Error: error.message });
+        console.log({ Error: error });
         setAlertSeverity("error");
         setAlertMessage("Error, existing information");
         setShowAlert(true);

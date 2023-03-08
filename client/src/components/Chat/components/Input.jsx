@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Img from "../img/img.png";
 import Attach from "../img/attach.png";
 import { AuthContext } from "../../../context/AuthContext";
@@ -22,10 +22,16 @@ const Input = () => {
   const { data } = useContext(ChatContext);
 
   const handlePress = (event) => {
-    if (event.key === 'Enter') {
-      handleSend()
+    if (event.key === "Enter") {
+      handleSend();
     }
   };
+
+  useEffect(() => {
+    if (img) {
+      handleSend();
+    }
+  }, [img]);
 
   const handleSend = async () => {
     if (img) {
@@ -52,7 +58,7 @@ const Input = () => {
         }
       );
     } else {
-      setText("")
+      setText("");
       await updateDoc(doc(db, "chats", data.chatId), {
         messages: arrayUnion({
           id: uuid(),
@@ -61,7 +67,6 @@ const Input = () => {
           date: Timestamp.now(),
         }),
       });
-      
     }
 
     await updateDoc(doc(db, "userChats", currentUser.uid), {
@@ -85,14 +90,15 @@ const Input = () => {
     <div className="input">
       <input
         type="text"
-        placeholder={data.chatId == "null" ? "Select a chat" : "Type something..."}
+        placeholder={
+          data.chatId == "null" ? "Select a chat" : "Type something..."
+        }
         onChange={(e) => setText(e.target.value)}
         value={text}
         onKeyDown={handlePress}
         disabled={data.chatId == "null"}
       />
       <div className="send">
-        <img src={Attach} alt="" />
         <input
           type="file"
           style={{ display: "none" }}
@@ -103,7 +109,7 @@ const Input = () => {
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label>
-        <button onClick={handleSend} >Send</button>
+        <button onClick={handleSend}>Send</button>
       </div>
     </div>
   );
