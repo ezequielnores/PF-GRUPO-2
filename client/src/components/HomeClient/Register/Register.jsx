@@ -281,13 +281,17 @@ const Register = () => {
           }).then(async (res) => {
             console.log(res);
             //create empty user chats on firestore
-            await setDoc(doc(db, "userChats", auth.currentUser.uid), {});
+            await setDoc(doc(db, "userChats", auth.currentUser.uid), {}).then(
+              () => {
+                return;
+              }
+            );
           });
 
           // alert("Account Created");
           setAlertSeverity("success");
           setAlertMessage("Account Created. Wait to be redirected");
-          setShowAlert(true); 
+          setShowAlert(true);
         } else {
           setAlertSeverity("error");
           setAlertMessage("Error creating account!");
