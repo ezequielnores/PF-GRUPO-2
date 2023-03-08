@@ -222,7 +222,7 @@ const MedicForm = () => {
         .get(`${REACT_APP_BACKEND_URL}/emailVerification?mail=${form[name]}`)
         .then((r) => r.data);
 
-      if (isValid) {
+      if (isValid === true) {
         setError((prev) => {
           return { ...prev, [name]: "" };
         });
@@ -253,7 +253,7 @@ const MedicForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const error = validateFields();
-    // console.log(errors);
+
     if (Object.values(error).every((item) => item === "")) {
       try {
         const userCredential = await createUserWithEmailAndPassword(
@@ -261,7 +261,7 @@ const MedicForm = () => {
           form.mail,
           form.password
         );
-        // console.log("medico creado: " + user.email);
+
         dispatch(doctorAdd({ ...form, uid: userCredential.user.uid }))
           .then(async (res) => {
             if (res.type === "doctor/addById/fulfilled") {
@@ -294,19 +294,27 @@ const MedicForm = () => {
               }, 2500); */
             } else {
               auth.currentUser.delete();
-              // alert("Error sending account!");
               setAlertSeverity("error");
-              setAlertMessage("Error sending account!   ");
+              setAlertMessage("Error, existing information");
               setShowAlert(true);
             }
-            console.log(res.type);
           })
-          .catch((err) => alert("Error"));
+          .catch(
+            (err) => setAlertSeverity("success"),
+            setAlertMessage(
+              "Account sent! Pending to activate.. Wait to be redirected"
+            ),
+            setShowAlert(true)
+          );
       } catch (error) {
-        console.log({ Error: error.message });
         setAlertSeverity("error");
-        setAlertMessage("Error, missing data");
+        setAlertMessage("Error, existing information");
         setShowAlert(true);
+        // setAlertSeverity("success");
+        // setAlertMessage(
+        //   "Account sent! Pending to activate.. Wait to be redirected"
+        // );
+        // setShowAlert(true);
       }
     } else {
       // alert("Please complete all fields");
@@ -387,6 +395,7 @@ const MedicForm = () => {
               error={error.mail}
               helperText={error.mail}
             />
+
             <TextField
               error={error.password}
               helperText={error.password}

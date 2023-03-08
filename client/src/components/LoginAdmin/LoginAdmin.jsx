@@ -92,18 +92,17 @@ export default function LoginAdmin() {
       ...info,
       [name]: value,
     });
-    validateForm({ ...info, [name]: value}, name);
+    validateForm({ ...info, [name]: value }, name);
   };
 
   //SUBMIT
-  const handleSubmit =  async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try{
       const authAdmin = await admin.find((admin) => {
         return admin.mail === info.mail && admin.password === info.password;
       })
       if(authAdmin) {
-        console.log("respuest: " + authAdmin);
         if(authAdmin.active === false){
           setSuccessLogin(false);
           await swal("Administrator disabled", {
@@ -122,9 +121,8 @@ export default function LoginAdmin() {
           icon: "warning",
         });
       }
-    } catch(error){
-      console.log({ Error: error.message });
-      await swal("Registered administrator error", {
+    } catch (error) {
+      await swal("Unregistered administrator", {
         icon: "warning",
       });
     }
@@ -132,10 +130,11 @@ export default function LoginAdmin() {
 
   useEffect(() => {
     const admin = localStorage.getItem("mailAdmin");
-    if (admin){
-      dispatch(adminGetAll())
+    if (admin) {
+      dispatch(adminGetAll());
       navigate("/HomeAdmin");
-    } dispatch(adminGetAll())
+    }
+    dispatch(adminGetAll());
   }, [dispatch, navigate]);
 
   return (
@@ -178,12 +177,11 @@ export default function LoginAdmin() {
             // fullWidth
             // margin="normal"
           />
-          {error.mail && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Musst be a valid email
-            </Typography>}
+          {error.mail && (
+            <Typography variant="caption" color="error">
+              •Musst be a valid email
+            </Typography>
+          )}
           <label>Password</label>
           <Input
             // error={error.password}
@@ -196,12 +194,12 @@ export default function LoginAdmin() {
             // fullWidth
             // margin="normal"
           />
-          {error.password && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character
-            </Typography>}
+          {error.password && (
+            <Typography variant="caption" color="error">
+              •Minimum 8 characters •One upper case letter •One loweer case
+              letter •One number •One special character
+            </Typography>
+          )}
           <Button
             variant="contained"
             type="submit"

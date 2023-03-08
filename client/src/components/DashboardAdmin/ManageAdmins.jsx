@@ -9,11 +9,11 @@ import Alert from "@mui/material/Alert";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import swal from "sweetalert";
-import { 
-  adminRegister, 
-  adminGetAll, 
-  deleteAdmin, 
-  disableAdmin, 
+import {
+  adminRegister,
+  adminGetAll,
+  deleteAdmin,
+  disableAdmin,
   adminEdit,
   adminGetDetail,
   adminGetDetailForEdit,
@@ -205,13 +205,13 @@ const dispatchRegister = async (data) => {
         password: "",
       });
     } else {
-      console.log({ ...data });
+
       setAlertSeverity("error");
       setAlertMessage("Error creating account!");
       setShowAlert(true);
-      // auth.currentUser.delete();
+
     }
-    // console.log(res.type);
+
   })
   .catch((err) => alert(err));
 };
@@ -238,16 +238,16 @@ const handleRegiterAdmin = async () => {
 
 };
 
-useEffect(() => {
-  if (adminDetail) {
-    setOldData({
-      name: adminDetail.name,
-      surname: adminDetail.surname,
-      mail: adminDetail.mail,
-      password: adminDetail.password,
-    });
-  }
-}, [adminDetail]);
+  useEffect(() => {
+    if (adminDetail) {
+      setOldData({
+        name: adminDetail.name,
+        surname: adminDetail.surname,
+        mail: adminDetail.mail,
+        password: adminDetail.password,
+      });
+    }
+  }, [adminDetail]);
 
 return (
   <div style={container}>
@@ -419,76 +419,76 @@ return (
               Save
               </Button>
               </div>
-            {/* </form> */}
-          </div>
-        </div>
-      </>
-    )}
-    {isOpenForEdit && (
-      <>
-      <div style={overlay}>
-        <div style={modalContainer}>
-          <div style={modal}>
-          <Typography variant="h5" style={{ marginBottom: "2rem" }}>
-            Edit administrator
-          </Typography>
-          {/* <form onSubmit={handleEditAdmin}> */}
-              <TextField
-                label="Name"
-                defaultValue="Default Value"
-                name="name"
-                value={adminDetail ? oldData.name : ""}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Lastname"
-                name="surname"
-                defaultValue="Default Value"
-                value={adminDetail ? oldData.surname : ""}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Password"
-                name="password"
-                defaultValue="Default Value"
-                value={adminDetail ? oldData.password : ""}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
-                required
-                fullWidth
-                margin="normal"
-              />
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button
-                  type="button"
-                  variant="outlined"
-                  style={{ marginRight: "1rem" }}
-                  onClick={() => setIsOpenForEdit(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  onClick={handleEditAdmin}
-                >
-                  Save
-                </Button>
-                </div>
               {/* </form> */}
+            </div>
           </div>
-        </div>
-      </div>
-      </>
-    )}
-  </div>  
-  )
+        </>
+      )}
+      {isOpenForEdit && (
+        <>
+          <div style={overlay}>
+            <div style={modalContainer}>
+              <div style={modal}>
+                <Typography variant="h5" style={{ marginBottom: "2rem" }}>
+                  Edit administrator
+                </Typography>
+                {/* <form onSubmit={handleEditAdmin}> */}
+                <TextField
+                  label="Name"
+                  defaultValue="Default Value"
+                  name="name"
+                  value={adminDetail ? oldData.name : ""}
+                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  required
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  label="Lastname"
+                  name="surname"
+                  defaultValue="Default Value"
+                  value={adminDetail ? oldData.surname : ""}
+                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  required
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  label="Password"
+                  name="password"
+                  defaultValue="Default Value"
+                  value={adminDetail ? oldData.password : ""}
+                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  required
+                  fullWidth
+                  margin="normal"
+                />
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button
+                    type="button"
+                    variant="outlined"
+                    style={{ marginRight: "1rem" }}
+                    onClick={() => setIsOpenForEdit(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={handleEditAdmin}
+                  >
+                    Save
+                  </Button>
+                </div>
+                {/* </form> */}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default ManageAdmins;

@@ -12,7 +12,7 @@ import {
   patientGetAll,
   patientUpdatePassword,
 } from "../../redux/reducers/patientReducer";
-import { Alert } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
 //Firebase
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../authentication/firebase";
@@ -61,6 +61,9 @@ const FormLoginClient = () => {
   const pacientes = useSelector((state) => state.patient.list);
   const [successLogin, setSuccessLogin] = useState(null);
   const [open, setOpen] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
   //me creo estado para guardar lo que toma de inptus
   const [info, setInfo] = useState({
     mail: "",
@@ -125,7 +128,7 @@ const FormLoginClient = () => {
         info.password
       );
       const user = userCredential.user;
-      console.log("usuario logeado: " + user.email);
+ 
 
       //Aca lo que hay que hacer es que firebase se ocupe de el logueo del usuario y no se haga una corroboracion con la db. Lo unico que se deberia hacer con la db es que mediante
       //un atributo como el uid brindado por firebase al registrarse, se guarde en un atributo de la db para que en este momento de logueo se encuentre al usuario mediante ese uid.
@@ -141,7 +144,7 @@ const FormLoginClient = () => {
             patientUpdatePassword(authenticatedPatient.id, info.password)
           );
         }
-        console.log(authenticatedPatient);
+ 
         const id = authenticatedPatient.id;
         localStorage.setItem("id", id);
         await navigate("/HomeClient/Profile");
@@ -152,10 +155,10 @@ const FormLoginClient = () => {
         });
       }
     } catch (error) {
-      console.log({ Error: error.message });
-      await swal("Unregistered patient", {
-        icon: "warning",
-      });
+ 
+      setAlertSeverity("error");
+      setAlertMessage(`Error: ${error.message}`);
+      setShowAlert(true);
     }
   };
   // , { state: { id } }
@@ -167,25 +170,24 @@ const FormLoginClient = () => {
       const found = pacientes.find((paciente) => {
         return paciente.mail === auth.currentUser.email;
       });
-      console.log(found);
-      console.log(auth.currentUser);
+ 
       if (!found) {
         await auth.currentUser.delete();
         // alert("The user doesnt exists in the app");
-        await swal("The user doesnt exists in the app", {
-          icon: "warning",
-        });
+        setAlertSeverity("error");
+        setAlertMessage("The user doesnt exists in the app");
+        setShowAlert(true);
       } else {
         const id = found.id;
         localStorage.setItem("id", id);
         navigate("/HomeClient/Profile", { state: { id } });
       }
     } catch (error) {
-      console.log(error.message);
+ 
       // alert(`Error: ${error.message}`);
-      await swal("Unregistered patient", {
-        icon: "warning",
-      });
+      setAlertSeverity("error");
+      setAlertMessage(`Error: ${error.message}`);
+      setShowAlert(true);
     }
   };
 
@@ -202,6 +204,20 @@ const FormLoginClient = () => {
 
   return (
     <div style={divPadre}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showAlert}
+        autoHideDuration={6000}
+        onClose={() => setShowAlert(false)}
+      >
+        <Alert
+          variant="filled"
+          severity={alertSeverity}
+          onClose={() => setShowAlert(false)}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <form
         component="form"
         sx={{

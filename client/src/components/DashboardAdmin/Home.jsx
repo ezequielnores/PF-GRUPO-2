@@ -144,11 +144,8 @@ const Home = (props) => {
 
     if (adminId) {
       dispatch(adminLogin(adminId));
-      console.log("despachado");
     }
   }, []);
-
-  // console.log(patients);
 
   return (
     <div style={container}>
@@ -244,15 +241,9 @@ const Home = (props) => {
             toRenderDoctors={selected.doctors}
           />
         )}
-        {selected.comments && (
-          <ToManage
-            toRenderComments={selected.comments}
-          />
-        )}
+        {selected.comments && <ToManage toRenderComments={selected.comments} />}
         {selected.frequentQuestions && (
-          <ToManage
-            toRenderFrequentQuestions={selected.frequentQuestions}
-          />
+          <ToManage toRenderFrequentQuestions={selected.frequentQuestions} />
         )}
 
         {selected.plans && <ManagePlans />}

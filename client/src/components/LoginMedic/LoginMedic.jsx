@@ -3,8 +3,7 @@ import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
-import { Alert } from "@mui/material";
-import swal from "sweetalert";
+import { Alert, Snackbar } from "@mui/material";
 //logic
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,6 +55,10 @@ const FormLoginMedic = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginSuccess, setLoginSuccess] = useState(null);
+  //alert state
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
   //me creo estado para guardar lo que toma de inptus
   const [info, setInfo] = useState({
     mail: "",
@@ -102,9 +105,9 @@ const FormLoginMedic = () => {
       ...info,
       [name]: value,
     });
-    validateForm({ ...info, [name]: value}, name);
+    validateForm({ ...info, [name]: value }, name);
   };
-  // console.log(doctores);
+ 
 
   //SUBMIT
   const handleSubmit = async (e) => {
@@ -116,7 +119,7 @@ const FormLoginMedic = () => {
         info.password
       );
       const user = userCredential.user;
-      // console.log('medico logeado: ' + user.email);
+ 
       const authenticatedDoctor = doctores.find((doctor) => {
         return doctor.mail === info.mail && doctor.password === info.password;
       });
@@ -125,12 +128,12 @@ const FormLoginMedic = () => {
         localStorage.setItem("idMedic", id);
         setLoginSuccess(true);
         navigate("/HomeMedic/Profile");
-      } 
+      }
     } catch (error) {
-      console.log({ Error: error.message });
-      await swal("Unregistered doctor", {
-        icon: "warning",
-      });
+ 
+      setAlertSeverity("error");
+      setAlertMessage(`Error: ${error.message}`);
+      setShowAlert(true);
     }
   };
   //primera carga
@@ -141,12 +144,25 @@ const FormLoginMedic = () => {
     } else {
       dispatch(docrtorGetAll());
     }
-  }, [dispatch,navigate]);
+  }, [dispatch, navigate]);
 
-  // console.log(info);
   //RENDER
   return (
     <div style={divPadre}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showAlert}
+        autoHideDuration={6000}
+        onClose={() => setShowAlert(false)}
+      >
+        <Alert
+          variant="filled"
+          severity={alertSeverity}
+          onClose={() => setShowAlert(false)}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <form
         component="form"
         sx={{
@@ -181,12 +197,11 @@ const FormLoginMedic = () => {
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             value={info.mail}
           />
-          {error.mail && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Musst be a valid email
-            </Typography>}
+          {error.mail && (
+            <Typography variant="caption" color="error">
+              •Musst be a valid email
+            </Typography>
+          )}
           <label>Password</label>
           <Input
             type="password"
@@ -195,12 +210,12 @@ const FormLoginMedic = () => {
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             value={info.password}
           />
-          {error.password && 
-            <Typography
-              variant="caption" 
-              color="error">
-                •Minimum 8 characters •One upper case letter •One loweer case letter •One number •One special character
-            </Typography>}
+          {error.password && (
+            <Typography variant="caption" color="error">
+              •Minimum 8 characters •One upper case letter •One loweer case
+              letter •One number •One special character
+            </Typography>
+          )}
           <Button
             variant="contained"
             type="submit"

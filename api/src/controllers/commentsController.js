@@ -1,4 +1,4 @@
-const { Comments, Patient, Doctor } = require('../db.js');
+const { Comments, Patient, Doctor, Report } = require('../db.js');
 const axios = require("axios");
 const BadWords = require("bad-words");
 
@@ -62,8 +62,23 @@ filter.addWords(...newBadWords)
 
 
 const getComments =  async () => {
-    const infoComments = await Comments.findAll(
-    );
+    const infoComments = await Comments.findAll({
+        attributes: ['id', 'rating', 'title', 'message', 'doctorId', 'PatientId' ],
+        include: [
+            {
+                model: Doctor,
+                attributes: ['name', 'lastName', "mail"]
+            },
+            {
+                model: Patient,
+                attributes: ['name', 'surname', "mail"]
+            },
+            {
+                model: Report,
+                as: "reports"
+            }
+        ],
+    });
     return infoComments;
 };
 

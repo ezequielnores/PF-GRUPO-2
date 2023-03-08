@@ -26,11 +26,11 @@ const Faq = () => {
   const [allFaq, setAllFaq] = React.useState([]);
   useEffect(() => {
     axios
-      .get("http://localHost:3001/frequentQuestions")
+      .get(`${process.env.REACT_APP_BACKEND_URL}/frequentQuestions`)
       .then((res) => {
         setAllFaq(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Faq = () => {
       .then((res) => {
         setFaq(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   };
   useEffect(() => {
     if (search === "") {

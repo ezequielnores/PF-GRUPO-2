@@ -142,7 +142,6 @@ const ManagePlans = () => {
       ...oldData,
       [evento.target.name]: evento.target.value,
     });
-    console.log(oldData);
   };
   //eliminar un plan
   const handleDeletePlan = async (id) => {
@@ -167,7 +166,7 @@ const ManagePlans = () => {
   const handleAddPlan = async (e) => {
     e.preventDefault();
     const response = await dispatch(postPlans(data));
-    console.log(response);
+
     setIsOpen(false);
     dispatch(plansGetAll());
     setData({

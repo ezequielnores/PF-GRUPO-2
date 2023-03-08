@@ -86,7 +86,7 @@ const Agenda = () => {
   const dispatch = useDispatch();
   const dataTurnos = useSelector((state) => state.appointment.list);
   const dataHistoria = useSelector((state) => state.history.list);
-  // console.log(dataTurnos);
+ 
 
   ///// ORDENAMIENTO POR MAS PROXIMO, NO PUEDO USAR EL OTRO DATATURNOS, NO DEJA MODIFICAR!! ! ! !
   const dataTurnosd = useSelector((state) =>
@@ -137,7 +137,6 @@ const Agenda = () => {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/turns/${e.target.value}`
     );
-    console.log({ response: response });
     const data = {
       idTurn: e.target.value,
       date: response.data.date,
@@ -184,7 +183,7 @@ const Agenda = () => {
               value={
                 proximoTurno
                   ? `${proximoTurno.Patient.name} ${proximoTurno.Patient.surname} - ${proximoTurno.date} - ${proximoTurno.hour}`
-                  : "No upcoming shifts"
+                  : "You don't have any appointments"
               }
               fullWidth
               InputProps={{
@@ -208,7 +207,8 @@ const Agenda = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {dataTurnos?.map((turno, index) => (
+                  {dataTurnos[0]? 
+                  dataTurnos.map((turno, index) => (
                     <React.Fragment key={turno.id}>
                       <TableRow>
                         <TableCell style={{ fontSize: "17px" }}>
@@ -311,7 +311,8 @@ const Agenda = () => {
                                         </TableRow>
                                       </TableHead>
                                       <TableBody>
-                                        {dataHistoria.map((historia) => (
+                                        {dataHistoria[0]?
+                                        dataHistoria.map((historia) => (
                                           <TableRow key={historia.id}>
                                             <TableCell>
                                               {historia.register[0].date}
@@ -330,7 +331,13 @@ const Agenda = () => {
                                               H
                                             </TableCell>
                                           </TableRow>
-                                        ))}
+                                        ))
+                                        :<TableRow>
+                                          <TableCell>
+                                            <h4 style={{fontWeight:"400"}}>Not history</h4>
+                                          </TableCell>
+                                        </TableRow>
+                                      }
                                       </TableBody>
                                     </Table>
                                   </TableContainer>
@@ -414,7 +421,14 @@ const Agenda = () => {
                         </TableCell>
                       </TableRow>
                     </React.Fragment>
-                  ))}
+                  ))
+                  : 
+                  
+                  <TableRow>
+                      <TableCell>
+                        You don't have any appointments
+                      </TableCell>
+                    </TableRow>}
                 </TableBody>
               </Table>
             </TableContainer>

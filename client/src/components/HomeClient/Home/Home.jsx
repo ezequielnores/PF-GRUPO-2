@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import logoICare from "../../../assets/logoiCare.png";
 import { Navigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import Loading from "../../Loader/Loader";
 import {
   Faq,
   MedicalHistory,
@@ -46,9 +47,14 @@ const Home = ({ isLogged }) => {
 
   if(isLogged === null){
     return (
-      <h1>Loading...</h1>
+     <Loading />
     )
   }
+
+  if (isLogged === false) {
+    return <Navigate to="/loginClient" />;
+  }
+
   if (isLogged === true) {
     return (
       <div
@@ -171,8 +177,7 @@ const Home = ({ isLogged }) => {
       </div>
     );
   }
-  if (isLogged === false) {
-    return <Navigate to="/loginClient" />;
-  }
+
+  
 };
 export default Home;
