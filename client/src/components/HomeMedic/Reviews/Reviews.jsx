@@ -15,10 +15,11 @@ import { useEffect } from "react";
 const root = {
   float: "right",
   width: "83.4vw",
-  padding: "1rem",
-  marginLeft: "3rem",
-  backgroundColor: "#f7f7f7",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+  // padding: "1rem",
+  // marginLeft: "3rem",
+  // backgroundColor: "#f7f7f7",
+  // boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+  boxSizing: "border-box",
 };
 const test = {
   color: "#307196",
@@ -50,6 +51,8 @@ const ratingContainer = {
   display: "flex",
   alignItems: "center",
   marginBottom: "1rem",
+  justifyContent: "space-between",
+
 };
 const reviewerName = {
   fontWeight: "bold",
@@ -84,7 +87,7 @@ const Reviews = () => {
   }, []);
 
   return (
-    <Paper style={root}>
+    <div style={root}>
       <div style={header}>
         <Typography
           variant="button"
@@ -114,16 +117,19 @@ const Reviews = () => {
       </div>
 
       {filteredReviews.length > 0 ? (
-        <div>
+        <div style={{display:"flex", flexDirection:"column",alignItems:"center",width:"90%"}}>
           {filteredReviews.map((review) => (
-            <Box key={review.id} style={reviewContainer} sx={{ padding: 2 }}>
+            <Box key={review.id} style={reviewContainer} sx={{ padding: 2, boxSizing:"border-box", width:"90%"}}>
               <div style={ratingContainer}>
-                <Rating name="read-only" value={review.rating} readOnly />
-                <Typography variant="body2" color="textSecondary">
-                  {" "}
-                  ({review.rating})
-                </Typography>
-                <Typography style={reviewerName} sx={{ marginLeft: 70 }}>
+                <div style={{display:"flex",gap:".5vw",alignItems:"center"}}>
+
+                  <Rating name="read-only" value={review.rating} readOnly />
+                  <Typography variant="body2" color="textSecondary">
+                    {" "}
+                    ({review.rating})
+                  </Typography>
+                </div>
+                <Typography style={reviewerName}>
                   Review #{review.id}
                 </Typography>
               </div>
@@ -147,7 +153,7 @@ const Reviews = () => {
           There are no reviews with that rating
         </Typography>
       )}
-    </Paper>
+    </div>
   );
 };
 

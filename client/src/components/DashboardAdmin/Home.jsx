@@ -34,6 +34,7 @@ const navBar = {
   flexDirection: "row",
   height: "8rem",
   width: "100%",
+  gap:"2vw"
 };
 const casiContainer = {
   width: "100%",
@@ -163,7 +164,7 @@ const Home = (props) => {
           }}
         />
         <div style={navBar}>
-          <div style={{ marginLeft: "25rem", display: "flex", gap: "1rem" }}>
+          <div style={{ marginLeft: "25vw", display: "flex", gap: "1rem" }}>
             <Button
               variant="contained"
               onClick={handleClickPatients}

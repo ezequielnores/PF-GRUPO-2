@@ -124,7 +124,7 @@ const ManageFQ = (props) => {
       <Button
         onClick={findFQ}
         variant="contained"
-        style={{ marginLeft: "1rem" }}
+        style={{ marginLeft: "1rem", backgroundColor:"#307196"}}
       >
         FIND
       </Button>
