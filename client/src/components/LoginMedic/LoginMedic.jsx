@@ -107,7 +107,6 @@ const FormLoginMedic = () => {
     });
     validateForm({ ...info, [name]: value }, name);
   };
- 
 
   //SUBMIT
   const handleSubmit = async (e) => {
@@ -119,7 +118,7 @@ const FormLoginMedic = () => {
         info.password
       );
       const user = userCredential.user;
- 
+
       const authenticatedDoctor = doctores.find((doctor) => {
         return doctor.mail === info.mail && doctor.password === info.password;
       });
@@ -130,7 +129,6 @@ const FormLoginMedic = () => {
         navigate("/HomeMedic/Profile");
       }
     } catch (error) {
- 
       setAlertSeverity("error");
       setAlertMessage(`Error: ${error.message}`);
       setShowAlert(true);
@@ -187,7 +185,7 @@ const FormLoginMedic = () => {
               fontSize: "3rem",
             }}
           >
-            Login
+            Doctor Login
           </Typography>
           <label>Email</label>
           <Input

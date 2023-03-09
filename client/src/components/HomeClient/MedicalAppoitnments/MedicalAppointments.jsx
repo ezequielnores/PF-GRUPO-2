@@ -193,7 +193,7 @@ const MedicalAppointments = () => {
   };
   const filterActive = doctors.filter((doctor) => doctor.active === true);
   const filterClinicMail =
-    type === "Face-to-face"
+    type === "Virtual"
       ? filterActive.filter((doctor) => doctor.clinicMail === "")
       : filterActive.filter((doctor) => doctor.clinicMail !== "");
 
