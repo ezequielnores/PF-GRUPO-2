@@ -110,12 +110,12 @@ const SeePatients = ({ idTurn, appointment }) => {
     window.location.reload();
   };
 
-  const handleChat = (e) => {
-    e.preventDefault();
-    const queryString = `?d=${appointment.doctor.uid}&p=${appointment.Patient.uid}`;
-    // const encodedQueryString = encodeURIComponent(queryString);
-    window.open(`/HomeMedic/Chat${queryString}`, "_blank");
-  };
+  // const handleChat = (e) => {
+  //   e.preventDefault();
+  //   const queryString = `?d=${appointment.doctor.uid}&p=${appointment.Patient.uid}`;
+  //   // const encodedQueryString = encodeURIComponent(queryString);
+  //   window.open(`/HomeMedic/Chat${queryString}`, "_blank");
+  // };
 
   const handleSendLink = (e) => {
     e.preventDefault();
@@ -285,12 +285,16 @@ const SeePatients = ({ idTurn, appointment }) => {
               ></TextField>
             )}
 
-            <button className={style.saveButton} onClick={handleSendLink} disabled={linkSent} >
+            <button
+              className={style.saveButton}
+              onClick={handleSendLink}
+              disabled={linkSent}
+            >
               Send Link
             </button>
-            <button className={style.saveButton} onClick={handleChat}>
+            {/* <button className={style.saveButton} onClick={handleChat}>
               Chat
-            </button>
+            </button> */}
           </div>
           <h4 style={{ textAlign: "start" }}>Appoinment Details</h4>
           <Stack spacing={2}>
