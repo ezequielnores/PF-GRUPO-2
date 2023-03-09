@@ -60,7 +60,7 @@ const Urgency = () => {
   const misTurnosActivos = pacientes.filter(
     (paciente) => paciente.id === idNumerico
   );
- 
+
   const [openModal, setOpenModal] = React.useState(false);
   const [body, setBody] = React.useState({
     patient: patientId,
@@ -179,7 +179,7 @@ const Urgency = () => {
             className={style.sendButton}
             onClick={handleSubmit}
             variant="contained"
-            style={{ marginTop: "1rem" }}
+            style={{ marginTop: "1rem", backgroundColor: "#307196" }}
           >
             <div
               style={{
@@ -234,9 +234,7 @@ const Urgency = () => {
         {misTurnosActivos.length === 0 ? (
           <>
             <div style={{ width: "100%" }}>
-              <div
-                style={{ width: "100%"}}
-              >
+              <div style={{ width: "100%" }}>
                 <div
                   style={{
                     display: "flex",
@@ -246,7 +244,7 @@ const Urgency = () => {
                   }}
                 >
                   <div className={style.symptomsAndUpload}>
-                    <div style={{ width: "100%" , height:"100%"}}>
+                    <div style={{ width: "100%", height: "100%" }}>
                       <div className={style.labelAndSymtoms}>
                         <FormLabel component="legend" sx={{ color: "#307196" }}>
                           Symptomatology
@@ -437,6 +435,7 @@ const Urgency = () => {
                 {errorTemp ? (
                   <Button
                     variant="contained"
+                    style={{ backgroundColor: "#307196" }}
                     disabled
                     sx={{ width: 1 / 9, borderRadius: 9999 }}
                   >
@@ -445,8 +444,13 @@ const Urgency = () => {
                 ) : (
                   <Button
                     variant="contained"
+                    style={{ backgroundColor: "#307196" }}
                     onClick={handleOpenModal}
-                    sx={{ width: 1 / 9, borderRadius: 9999 , marginTop:"1.5vh"}}
+                    sx={{
+                      width: 1 / 9,
+                      borderRadius: 9999,
+                      marginTop: "1.5vh",
+                    }}
                   >
                     Submit
                   </Button>
