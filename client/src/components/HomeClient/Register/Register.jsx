@@ -227,7 +227,7 @@ const Register = () => {
         });
       }
     }
-    /* if (name === "mail") {
+     if (name === "mail") {
       const isValid = await axios
         .get(
           `${process.env.REACT_APP_BACKEND_URL}/emailVerification?mail=${form.mail}`
@@ -247,7 +247,7 @@ const Register = () => {
           };
         });
       }
-    } */
+    } 
 
     if (name === "image") {
       if (file.type !== "image/jpeg" && file.type !== "image/png") {
