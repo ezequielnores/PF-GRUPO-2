@@ -16,7 +16,7 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     const commentsInfo = await getComments();
-    console.log(commentsInfo);
+
     if (!commentsInfo.length) {
       //res.status(404).send("No comments in data base");
       res.status(200).json(commentsInfo);
@@ -112,7 +112,6 @@ router.get("/patient/:id", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const getById = await getComments();
 
     if (id) {
       const commentsById = await Comments.findByPk(id);
