@@ -133,9 +133,10 @@ router.post("/", async (req, res) => {
   try {
     const { title, message, rating, doctorId, patientId } = req.body;
     if (message) {
-      const filterMessage = containOffensiveWords(message);
+      const filterMessage = containOffensiveWords(title);
+      const filterTitle = containOffensiveWords(message);
       const comment = await Comments.create({
-        title: title,
+        title: filterTitle,
         message: filterMessage,
         rating: rating,
       });

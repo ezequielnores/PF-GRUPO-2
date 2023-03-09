@@ -68,7 +68,7 @@ function Reviews() {
         message: fields.message,
         title: fields.title,
         doctorId: name.doctorId,
-        PatientId: patientIdLocal,
+        patientId: patientIdLocal,
         doctorName: name.name,
         doctorLastName: name.lastName,
         rating: value,
