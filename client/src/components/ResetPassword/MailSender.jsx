@@ -8,12 +8,18 @@ import {
   DialogTitle,
   TextField,
   Slide,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "./../../authentication/firebase";
 
 function MailSender({ open, setOpen }) {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
+  
   const [email, setEmail] = useState("");
 
   const handleClose = () => {
@@ -29,9 +35,13 @@ function MailSender({ open, setOpen }) {
       await sendPasswordResetEmail(auth, email, {
         url: "http://localhost:3001/loginClient",
       });
-      alert("Mail enviado!");
+      setAlertSeverity("success");
+      setAlertMessage("Mail Sent");
+      setShowAlert(true);
     } catch (error) {
-      alert(error.message); //Esto es temporal!
+      setAlertSeverity("error");
+      setAlertMessage(error.message);
+      setShowAlert(true); //Esto es temporal!
     }
   };
 
@@ -42,6 +52,20 @@ function MailSender({ open, setOpen }) {
       TransitionComponent={Slide}
       transitionDuration={500}
     >
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showAlert}
+        autoHideDuration={6000}
+        onClose={() => setShowAlert(false)}
+      >
+        <Alert
+          variant="filled"
+          severity={alertSeverity}
+          onClose={() => setShowAlert(false)}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <DialogTitle>Reset Password</DialogTitle>
       <DialogContent>
         <DialogContentText>
