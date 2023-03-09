@@ -185,7 +185,7 @@ const FormLoginMedic = () => {
               fontSize: "3rem",
             }}
           >
-            Login
+            Doctor Login
           </Typography>
           <label>Email</label>
           <Input

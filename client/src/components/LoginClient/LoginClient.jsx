@@ -164,22 +164,27 @@ const FormLoginClient = () => {
   const handleLoginWithGoogle = async (e) => {
     e.preventDefault();
     try {
-      await signInWithPopup(auth, googleProvider);
-      const found = pacientes.find((paciente) => {
-        return paciente.mail === auth.currentUser.email;
-      });
+      await signInWithPopup(auth, googleProvider).then(async ()=> {
+        const found = pacientes.find((paciente) => {
+          return paciente.mail === auth.currentUser.email;
+        });
+  
+        if (!found) {
+          await auth.currentUser.delete();
+          // alert("The user doesnt exists in the app");
+          setAlertSeverity("error");
+          setAlertMessage("The user doesnt exists in the app");
+          setShowAlert(true);
+        } else {
+          const id = found.id;
+          localStorage.setItem("id", found.id);
+          navigate("/HomeClient/Profile"
+          // , { state: { id } }
+          );
+        }
 
-      if (!found) {
-        await auth.currentUser.delete();
-        // alert("The user doesnt exists in the app");
-        setAlertSeverity("error");
-        setAlertMessage("The user doesnt exists in the app");
-        setShowAlert(true);
-      } else {
-        const id = found.id;
-        localStorage.setItem("id", id);
-        navigate("/HomeClient/Profile", { state: { id } });
-      }
+      })
+      
     } catch (error) {
       // alert(`Error: ${error.message}`);
       setAlertSeverity("error");
@@ -239,7 +244,7 @@ const FormLoginClient = () => {
               fontSize: "3rem",
             }}
           >
-            Login
+            Patient Login
           </Typography>
           <label>Email</label>
           <Input
@@ -251,7 +256,7 @@ const FormLoginClient = () => {
           />
           {error.mail && (
             <Typography variant="caption" color="error">
-              •Musst be a valid email
+              •Must be a valid email
             </Typography>
           )}
           <label>Password</label>
@@ -264,7 +269,7 @@ const FormLoginClient = () => {
           />
           {error.password && (
             <Typography variant="caption" color="error">
-              •Minimum 8 characters •One upper case letter •One loweer case
+              •Minimum 8 characters •One upper case letter •One lower case
               letter •One number •One special character
             </Typography>
           )}
