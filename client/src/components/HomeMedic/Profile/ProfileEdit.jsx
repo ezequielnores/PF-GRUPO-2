@@ -62,7 +62,7 @@ const ProfileEdit = () => {
     image: dataDoc ? dataDoc.image : "",
     location: dataDoc ? dataDoc.location : "",
   });
- 
+
   //estado para validar el button
   const [hasChanged, setHasChanged] = useState(false);
   //estado de errores validaciones
@@ -322,6 +322,7 @@ const ProfileEdit = () => {
         variant="contained"
         onClick={(e) => handleSubmit(e)}
         disabled={!hasChanged}
+        style={{ backgroundColor: "#307196" }}
       >
         Update information
       </Button>
