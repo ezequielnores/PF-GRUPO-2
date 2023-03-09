@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TextField, Stack } from "@mui/material";
+import { TextField, Stack, Alert, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   attendPatientTurns,
@@ -28,6 +28,10 @@ const validate = (input, linkSent) => {
 };
 
 const SeePatients = ({ idTurn, appointment }) => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const dispatch = useDispatch();
   // useEffect(() => {
   //     dispatch(attendPatientTurns(idTurn))
@@ -84,7 +88,9 @@ const SeePatients = ({ idTurn, appointment }) => {
     try {
       dispatch(createMedicalHistory(newHistorial));
     } catch (error) {
-      alert(error);
+      setAlertSeverity("error");
+      setAlertMessage(error);
+      setShowAlert(true);
     }
     await swal("The medical record has been saved!", {
       icon: "success",
@@ -145,6 +151,20 @@ const SeePatients = ({ idTurn, appointment }) => {
         height: "100vh",
       }}
     >
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showAlert}
+        autoHideDuration={6000}
+        onClose={() => setShowAlert(false)}
+      >
+        <Alert
+          variant="filled"
+          severity={alertSeverity}
+          onClose={() => setShowAlert(false)}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <div
         onClick={handleOpenModal}
         className={style.generalModalDiv}

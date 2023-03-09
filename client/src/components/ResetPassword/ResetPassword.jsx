@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import {confirmPasswordReset} from "firebase/auth"
+import { confirmPasswordReset } from "firebase/auth";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -9,12 +9,18 @@ import {
   FormGroup,
   TextField,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 /* import { swal } from "sweetalert"; */
 import { auth } from "./../../authentication/firebase";
 import logo from "../../assets/logoiCare.png";
 
 function ResetPassword() {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const div = {
     height: "100vh",
     alignItems: "center",
@@ -67,7 +73,9 @@ function ResetPassword() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (errors.password || errors.confirmPassword) {
-      alert("It can not be sent! Correct the errors before sending.");
+      setAlertSeverity("error");
+      setAlertMessage("Please correct errors.");
+      setShowAlert(true);
     } else {
       confirmPasswordReset(auth, oobCode, form.confirmPassword);
       navigate("/LoginClient");
@@ -76,6 +84,20 @@ function ResetPassword() {
 
   return (
     <div style={div}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showAlert}
+        autoHideDuration={6000}
+        onClose={() => setShowAlert(false)}
+      >
+        <Alert
+          variant="filled"
+          severity={alertSeverity}
+          onClose={() => setShowAlert(false)}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <Container style={container}>
         <div style={title}>
           <img
