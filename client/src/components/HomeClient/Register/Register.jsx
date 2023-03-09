@@ -309,7 +309,7 @@ const Register = () => {
           await dispatch(patientGetAll());
         setEffect(!effect);
       } catch (error) {
-        console.log("handleRegister / Error: " + error.message);
+        
       }
       // { state: { id } }
     } else {
@@ -339,7 +339,7 @@ const Register = () => {
   };
 
   const fillPatient = () => {
-    console.log(patients);
+   
     const patientfound = patients.find((patient) => {
       return patient.mail === auth.currentUser.email;
     });
@@ -347,8 +347,7 @@ const Register = () => {
       localStorage.setItem("id", patientfound.id);
       setPatient(patientfound);
     } else {
-      console.log("Patient not found");
-      console.log(patients);
+      
     }
   };
 
